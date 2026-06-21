@@ -1,0 +1,23 @@
+---
+# This front matter tells Jekyll to process this file
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Pages Directory</title>
+</head>
+<body>
+    <h1>List of Available Pages</h1>
+    <ul>
+        {% for my_page in site.html_pages %}
+            {% if my_page.name != 'index.html' %}
+                <li>
+                    <a href="{{ my_page.url | relative_url }}">{{ my_page.name }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</body>
+</html>
