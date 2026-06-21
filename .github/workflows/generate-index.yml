@@ -1,0 +1,66 @@
+name: Generate Index
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  generate-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate index.html
+        run: |
+          cat > index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>Pages</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                margin: 40px;
+              }
+              ul {
+                line-height: 2;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Available Pages</h1>
+            <ul>
+          EOF
+
+          find . -maxdepth 1 -name "*.html" \
+            ! -name "index.html" \
+            | sort \
+            | sed 's|^\./||' \
+            | while read file; do
+                echo "<li><a href=\"$file\">$file</a></li>" >> index.html
+              done
+
+          cat >> index.html << 'EOF'
+            </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add index.html
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto-generate index.html"
+            git push
+          fi
