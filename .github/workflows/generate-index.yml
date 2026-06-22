@@ -15,10 +15,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Generate index.html
         run: |
-          cat > index.html << 'EOF'
+          cat > index.html <<'EOF'
           <!DOCTYPE html>
           <html>
           <head>
@@ -27,40 +29,113 @@ jobs:
             <style>
               body {
                 font-family: Arial, sans-serif;
-                margin: 40px;
+                max-width: 1000px;
+                margin: 40px auto;
+                padding: 20px;
+                background: #f8f9fa;
               }
+
+              h1 {
+                color: #222;
+                margin-bottom: 30px;
+              }
+
+              .folder {
+                background: white;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+              }
+
+              .folder h2 {
+                margin-top: 0;
+                color: #444;
+                font-size: 20px;
+              }
+
               ul {
-                line-height: 2;
+                list-style: none;
+                padding-left: 0;
+              }
+
+              li {
+                padding: 8px 0;
+              }
+
+              a {
+                color: #0366d6;
+                text-decoration: none;
+              }
+
+              a:hover {
+                text-decoration: underline;
+              }
+
+              .count {
+                color: #666;
+                font-size: 14px;
               }
             </style>
           </head>
           <body>
-            <h1>Available Pages</h1>
-            <ul>
+            <h1>📄 Available Pages</h1>
           EOF
 
-          find . -maxdepth 1 -name "*.html" \
+          current_dir=""
+
+          find . \
+            -type f \
+            -name "*.html" \
             ! -name "index.html" \
+            ! -path "./.github/*" \
             | sort \
             | sed 's|^\./||' \
-            | while read file; do
-                echo "<li><a href=\"$file\">$file</a></li>" >> index.html
-              done
+            | while read file
+          do
+            dir=$(dirname "$file")
 
-          cat >> index.html << 'EOF'
-            </ul>
+            if [ "$dir" != "$current_dir" ]; then
+              if [ -n "$current_dir" ]; then
+                echo "</ul></div>" >> index.html
+              fi
+
+              current_dir="$dir"
+
+              if [ "$dir" = "." ]; then
+                display="Root"
+              else
+                display="$dir"
+              fi
+
+              echo "<div class=\"folder\">" >> index.html
+              echo "<h2>📁 $display</h2>" >> index.html
+              echo "<ul>" >> index.html
+            fi
+
+            filename=$(basename "$file")
+            echo "<li>📄 <a href=\"$file\">$filename</a></li>" >> index.html
+          done
+
+          if [ -n "$current_dir" ]; then
+            echo "</ul></div>" >> index.html
+          fi
+
+          cat >> index.html <<'EOF'
           </body>
           </html>
           EOF
 
       - name: Commit and push if changed
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add index.html
 
           if ! git diff --cached --quiet; then
             git commit -m "Auto-generate index.html"
             git push
+          else
+            echo "No changes"
           fi
