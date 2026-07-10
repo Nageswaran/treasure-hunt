@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔍 Internet Detective Academy: Het Mysterie van de Stukke Fiets</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 850px; margin: 0 auto; padding: 20px; background: #f4f7f6; color: #333; line-height: 1.6; }
+    h1 { color: #1e5631; font-size: 2.4em; text-align: center; border-bottom: 3px solid #4c9a2a; padding-bottom: 10px; margin-top: 10px; }
+    h2 { color: #2d6a4f; font-size: 1.4em; margin-top: 0; display: flex; align-items: center; }
+    p { font-size: 1.1em; }
+    .intro-card { background: #e8f5e9; border-left: 6px solid #2d6a4f; padding: 15px 20px; margin-bottom: 25px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .mission-box { background: white; border: 2px solid #b7e4c7; padding: 25px; margin: 30px 0; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
+    .mission-box:hover { transform: translateY(-2px); }
+    svg { max-width: 100%; height: auto; display: block; margin: 20px auto; background: #fafafa; border: 1px solid #e0e0e0; border-radius: 8px; }
+    .input-zone { background: #f8f9fa; border-top: 1px solid #e9ecef; padding: 15px; margin-top: 20px; border-radius: 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 15px; }
+    label { font-weight: bold; font-size: 1.05em; color: #495057; }
+    input[type="text"], select { padding: 10px 14px; font-size: 1.05em; border: 2px solid #ced4da; border-radius: 6px; width: 220px; outline: none; transition: border-color 0.2s; }
+    input[type="text"]:focus, select:focus { border-color: #52b788; }
+    button { padding: 11px 22px; font-size: 1.05em; font-weight: bold; background: #2d6a4f; color: white; border: none; cursor: pointer; border-radius: 6px; transition: background 0.2s, transform 0.1s; }
+    button:hover { background: #1b4332; }
+    button:active { transform: scale(0.98); }
+    .feedback { font-weight: bold; font-size: 1.1em; margin-left: 10px; display: inline-block; vertical-align: middle; }
+    .correct { color: #2d6a4f; }
+    .incorrect { color: #d90429; }
+    details { background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px 15px; margin-top: 15px; border-radius: 4px; cursor: pointer; }
+    details summary { font-weight: bold; color: #856404; outline: none; font-size: 1em; }
+    details p { margin: 8px 0 0 0; font-size: 0.98em; color: #66521a; }
+    .radio-group { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; width: 100%; }
+    .radio-option { background: #f8f9fa; border: 2px solid #e9ecef; padding: 12px 15px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 1.05em; transition: background 0.2s; }
+    .radio-option:hover { background: #f1f3f5; }
+    .radio-option input { width: 18px; height: 18px; cursor: pointer; }
+    .badge { background: #52b788; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8em; margin-right: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .congrats-card { background: linear-gradient(135deg, #1b4332, #2d6a4f); color: white; padding: 35px; border-radius: 12px; text-align: center; margin-top: 40px; display: none; box-shadow: 0 10px 20px rgba(45,106,79,0.2); }
+    .congrats-card h2 { color: #fff; font-size: 2.2em; justify-content: center; margin-bottom: 15px; }
+    .congrats-card p { font-size: 1.2em; color: #d8f3dc; }
+  </style>
+</head>
+<body>
+
+  <h1>🔍 Internet Detective Academy</h1>
+  
+  <div class="intro-card">
+    <p><strong>🚨 ALARM! HUISWERK IN GEVAAR!</strong> Jouw klasgenoot Daan heeft een groot probleem. Morgen moet hij zijn topgeheime spreekbeurt-bouwtekening inleveren bij meester Bart. Maar vanochtend ging het helemaal mis: op weg naar school gleed hij uit, crashte zijn fiets tegen een paaltje, en vloog zijn rugzak in de struiken! Daan mankeert niks, maar zijn flitsende fiets is kapot én hij is een belangrijk onderdeel van zijn cijfercode kwijtgeraakt om zijn kluisje te openen.</p>
+    <p>Als gecertificeerd Internet Detective is het jouw taak om Daan te helpen de sporen te onderzoeken, de reparatiekosten te berekenen, verkeersveiligheid toe te passen en de missende kluiscode te kraken. Pak je computer, open een leeg tabblad voor Google, en start het onderzoek!</p>
+  </div>
+
+  <!-- PUZZLE 1: OBSERVATION -->
+  <div class="mission-box" id="box1">
+    <h2><span class="badge">Missie 1</span>De Plaats van het Ongeluk (Kijken & Tellen)</h2>
+    <p>Daan is gecrasht vlak bij een groen parkje. In de paniek heeft hij een aantal spullen laten liggen op en rondom het grasveld. Kijk heel goed naar de onderstaande scan van de locatie. Hoeveel <strong>oranje bidons (waterflessen)</strong> zie je rondslingeren in de buurt van het fietspad en het gras?</p>
+    
+    <svg viewBox="0 0 500 250" aria-label="Een groen veld met een fietspad waarop verschillende spullen liggen">
+      <!-- Achtergrond gras -->
+      <rect width="500" height="250" fill="#74c69d" />
+      <!-- Fietspad -->
+      <path d="M 0 180 Q 250 140 500 190 L 500 240 Q 250 190 0 240 Z" fill="#6c757d" />
+      <path d="M 0 210 Q 250 165 500 215" stroke="#ffffff" stroke-width="2" stroke-dasharray="8,8" fill="none" />
+      <!-- Het paaltje waar hij tegenaan botste -->
+      <rect x="240" y="110" width="12" height="50" fill="#d90429" />
+      <circle cx="246" cy="110" r="6" fill="#ffffff" />
+      <!-- Verspreide rommel: Fietswiel -->
+      <circle cx="120" cy="150" r="18" stroke="#111111" stroke-width="2" fill="none" />
+      <circle cx="120" cy="150" r="3" fill="#111111" />
+      <line x1="102" y1="150" x2="138" y2="150" stroke="#111111" stroke-width="1" />
+      <line x1="120" y1="132" x2="120" y2="168" stroke="#111111" stroke-width="1" />
+      <!-- Verspreide rommel: Rugzak -->
+      <rect x="360" y="70" width="25" height="30" rx="4" fill="#0077b6" />
+      <rect x="365" y="75" width="15" height="18" rx="2" fill="#0096c7" />
+      <!-- Oranje bidons (Het echte doel) -->
+      <!-- Bidon 1: In de buurt van het wiel -->
+      <rect x="80" y="135" width="8" height="16" rx="2" fill="#f77f00" />
+      <rect x="82" y="132" width="4" height="3" fill="#333333" />
+      <!-- Bidon 2: Vlak naast het rode paaltje -->
+      <rect x="215" y="150" width="8" height="16" rx="2" fill="#f77f00" />
+      <rect x="217" y="147" width="4" height="3" fill="#333333" />
+      <!-- Bidon 3: In het gras linksboven -->
+      <rect x="60" y="50" width="8" height="16" rx="2" fill="#f77f00" />
+      <rect x="62" y="47" width="4" height="3" fill="#333333" />
+      <!-- Bidon 4: Half verstopt achter de boom stam rechts -->
+      <rect x="440" y="65" width="8" height="16" rx="2" fill="#f77f00" />
+      <rect x="442" y="62" width="4" height="3" fill="#333333" />
+      <!-- Bidon 5: Op het fietspad helemaal links -->
+      <rect x="15" y="195" width="16" height="8" rx="2" fill="#f77f00" />
+      <rect x="31" y="197" width="3" height="4" fill="#333333" />
+      <!-- Decoratie: Bomen -->
+      <rect x="450" y="40" width="10" height="40" fill="#5c4033" />
+      <circle cx="455" cy="40" r="22" fill="#2d6a4f" />
+      <rect x="160" y="30" width="8" height="30" fill="#5c4033" />
+      <circle cx="164" cy="30" r="18" fill="#40916c" />
+    </svg>
+
+    <div class="input-zone">
+      <label for="ans1">Aantal oranje bidons op het scherm:</label>
+      <input type="text" id="ans1" placeholder="Typ een getal...">
+      <button onclick="verify1()">Verifieer Clue</button>
+      <span id="fb1" class="feedback"></span>
+    </div>
+
+    <details>
+      <summary>💡 Hint (Als je er niet uitkomt)</summary>
+      <p>Kijk niet alleen op de grijze weg! Er liggen er ook een paar diep in het groene gras: eentje linksboven, eentje vlak bij het rode paaltje, en eentje rechts bij de grote boom.</p>
+    </details>
+  </div>
+
+  <!-- PUZZLE 2: GOOGLE IT -->
+  <div class="mission-box" id="box2">
+    <h2><span class="badge">Missie 2</span>De Vermiste Uitvinder (Google Research)</h2>
+    <p>De fiets van Daan is een modern hoogstandje, maar de allereerste loopfiets (de voorloper van onze fiets) werd heel lang geleden uitgevonden door een Duitse uitvinder. Daan herinnert zich dat de achternaam van deze uitvinder de sleutel is tot stap 2. </p>
+    <p><strong>Jouw internettaak:</strong> Zoek op Google naar: <code>"uitvinder van de loopfiets"</code> of ontdek wie de beroemde <em>Laufmaschine</em> ontwierp in het jaar 1817. Wat was de <strong>achternaam</strong> van deze uitvinder? (Let op de spelling!)</p>
+
+    <svg viewBox="0 0 400 150" aria-label="Historische houten loopfiets schets">
+      <rect width="400" height="150" fill="#f8f9fa" />
+      <circle cx="120" cy="90" r="30" stroke="#8b5a2b" stroke-width="4" fill="none" />
+      <circle cx="120" cy="90" r="6" fill="#8b5a2b" />
+      <circle cx="280" cy="90" r="30" stroke="#8b5a2b" stroke-width="4" fill="none" />
+      <circle cx="280" cy="90" r="6" fill="#8b5a2b" />
+      <line x1="120" y1="90" x2="280" y2="90" stroke="#8b5a2b" stroke-width="6" />
+      <line x1="160" y1="90" x2="180" y2="40" stroke="#8b5a2b" stroke-width="4" />
+      <rect x="165" y="35" width="30" height="8" rx="2" fill="#333333" />
+      <line x1="260" y1="90" x2="250" y2="40" stroke="#8b5a2b" stroke-width="4" />
+      <line x1="235" y1="35" x2="265" y2="35" stroke="#333333" stroke-width="4" />
+    </svg>
+
+    <div class="input-zone">
+      <label for="ans2">Achternaam van de uitvinder:</label>
+      <input type="text" id="ans2" placeholder="Bijv. Jansen...">
+      <button onclick="verify2()">Verifieer Clue</button>
+      <span id="fb2" class="feedback"></span>
+    </div>
+
+    <details>
+      <summary>💡 Hint (Als je er niet uitkomt)</summary>
+      <p>Zoek naar de persoon die de 'Draisine' heeft bedacht. Zijn volledige naam begint met Karl Freiherr von...</p>
+    </details>
+  </div>
+
+  <!-- PUZZLE 3: TRAFFIC RULES (QUICK-LEARN) -->
+  <div class="mission-box" id="box3">
+    <h2><span class="badge">Missie 3</span>Veiligheid op de Rotonde (Verkeersregels VVN)</h2>
+    <p>Daan vertelt dat hij vlak voor het ongeluk over een rotonde reed. Hij twijfelde of hij wel goed oplette. Volgens de officiële regels van <strong>Veilig Verkeer Nederland (VVN)</strong> hangt voorrang op rotondes af van de verkeersborden en tekens op de weg.</p>
+    <p>Bekijk de onderstaande situatie. De fietser rijdt op het fietspad rondom de rotonde en nadert een zijstraat. Op de grond voor de fietser staan witte driehoeken (haaientanden) getekend, en er staat een specifiek blauw bord met drie witte pijlen in een cirkel.</p>
+    
+    <svg viewBox="0 0 400 200" aria-label="Een verkeerssituatie met haaientanden op het fietspad">
+      <rect width="400" height="200" fill="#e9ecef" />
+      <!-- Blauw rotondebord -->
+      <circle cx="80" cy="80" r="30" fill="#0056b3" />
+      <circle cx="80" cy="80" r="24" stroke="#ffffff" stroke-width="3" stroke-dasharray="15,10" fill="none" />
+      <!-- Haaientanden symbool op de weg getekend -->
+      <polygon points="220,130 230,150 240,130" fill="#ffffff" />
+      <polygon points="245,130 255,150 265,130" fill="#ffffff" />
+      <polygon points="270,130 280,150 290,130" fill="#ffffff" />
+      <!-- Tekst representatie van wegas -->
+      <rect x="180" y="160" width="200" height="20" fill="#495057" />
+      <text x="210" y="105" font-family="Arial" font-size="14" font-weight="bold" fill="#333">Fietspad met haaientanden</text>
+    </svg>
+
+    <p><strong>De VVN Verkeersvraag:</strong> Als Daan op dit fietspad rijdt met <strong>haaientanden op het fietspad vóór de kruising</strong>, en er komt een auto aanrijden vanaf de rotonde die de zijstraat in wil slaan, wie moet er dan voorrang verlenen?</p>
+
+    <div class="radio-group">
+      <div class="radio-option" onclick="document.getElementById('r3a').checked=true">
+        <input type="radio" name="q3" id="r3a" value="fietser">
+        <span>A) Daan (de fietser) moet voorrang geven aan de auto, vanwege de haaientanden.</span>
+      </div>
+      <div class="radio-option" onclick="document.getElementById('r3b').checked=true">
+        <input type="radio" name="q3" id="r3b" value="auto">
+        <span>B) De auto moet sowieso stoppen voor Daan, want verkeer op de rotonde heeft altijd voorrang.</span>
+      </div>
+      <div class="radio-option" onclick="document.getElementById('r3c').checked=true">
+        <input type="radio" name="q3" id="r3c" value="rechts">
+        <span>C) Wie van rechts komt heeft hier voorrang, dus het hangt ervan af van welke kant de auto komt.</span>
+      </div>
+    </div>
+
+    <div class="input-zone">
+      <button onclick="verify3()">Verifieer Verkeersregel</button>
+      <span id="fb3" class="feedback"></span>
+    </div>
+
+    <details>
+      <summary>💡 Hint (Als je er niet uitkomt)</summary>
+      <p>Haaientanden hebben een hele duidelijke betekenis in de Nederlandse wet (RVV 1990). Ze verplichten je altijd om voorrang te verlenen aan bestuurders op de kruisende weg, wie er ook van links of rechts komt!</p>
+    </details>
+  </div>
+
+  <!-- PUZZLE 4: MULTI-STEP MATH (DECOMPOSITION & SYNTHESIS) -->
+  <div class="mission-box" id="box4">
+    <h2><span class="badge">Missie 4</span>De Reparatie-Rekensom (Probleem Opbreken & Samenvoegen)</h2>
+    <p>De lokale fietsenmaker heeft de schade aan Daans fiets bekeken. De totale reparatie bestaat uit drie losse onderdelen. Om de totale kosten te weten, moet je de drie delen los van elkaar uitrekenen (Decompositie) en daarna bij elkaar optellen (Synthese)!</p>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6;">
+      <p><strong>De drie sub-clues:</strong></p>
+      <ul>
+        <li>🔧 <strong>Deel 1 (Nieuw wiel):</strong> Een standaard wiel kost €45, maar de fietsenmaker geeft Daan een korting van 20%. Hoeveel kost het wiel na de korting?</li>
+        <li>🔧 <strong>Deel 2 (Nieuwe remkabel):</strong> Daan heeft 2 meter remkabel nodig. De kabel kost €3,50 per meter. Hoeveel kost de kabel in totaal?</li>
+        <li>🔧 <strong>Deel 3 (Arbeidstijd):</strong> De fietsenmaker werkt precies 1,5 uur aan de fiets. Zijn uurtarief is €40 per uur. Hoeveel kost het werk?</li>
+      </ul>
+    </div>
+
+    <p><strong>Jouw taak:</strong> Bereken de uitkomst van Deel 1, Deel 2 en Deel 3. Tel deze drie bedragen daarna bij elkaar op. Wat zijn de <strong>totale kosten</strong> in euro's?</p>
+
+    <div class="input-zone">
+      <label for="ans4">Totale kosten (€):</label>
+      <input type="text" id="ans4" placeholder="Bijv. 120...">
+      <button onclick="verify4()">Controleer Eindbedrag</button>
+      <span id="fb4" class="feedback"></span>
+    </div>
+
+    <details>
+      <summary>💡 Hint (Als je er niet uitkomt)</summary>
+      <p>Reken eerst de delen los uit: Deel 1 is 45 min 20% (dus €45 - €9 = ...). Deel 2 is 2 keer €3,50. Deel 3 is 1,5 keer €40. Tel die drie antwoorden aan het einde bij elkaar op voor het unieke eindbedrag!</p>
+    </details>
+  </div>
+
+  <!-- PUZZLE 5: LOGICAL DEDUCTION -->
+  <div class="mission-box" id="box5">
+    <h2><span class="badge">Missie 5</span>Wie Zag Het Gebeuren? (Logisch Redeneren)</h2>
+    <p>Daan weet dat er drie getuigen in het park waren die de crash zagen: <strong>Thijs, Emma en Sophie</strong>. Een van hen heeft Daans weggevlogen kluisjes-papiertje opgeraapt en veilig opgeborgen. Je moet logisch nadenken om de juiste vinder aan te wijzen. Je hebt de volgende drie harde feiten:</p>
+    
+    <blockquote>
+      1. De vinder van het papiertje droeg die ochtend <strong>geen</strong> rode jas.<br>
+      2. Thijs was aan het skaten en droeg een blauwe jas.<br>
+      3. Degene met de rode jas was aan het wandelen met een hond. Sophie was aan het hardlopen.
+    </blockquote>
+
+    <svg viewBox="0 0 400 130" aria-label="Drie jassen in de kleuren blauw, rood en geel">
+      <rect width="400" height="130" fill="#f8f9fa" />
+      <!-- Blauwe jas symbool -->
+      <path d="M 50 110 L 50 60 L 35 65 L 45 40 L 95 40 L 105 65 L 90 60 L 90 110 Z" fill="#0077b6" />
+      <text x="58" y="30" font-family="Arial" font-size="12" font-weight="bold" fill="#333">BLAUW</text>
+      <!-- Rode jas symbool -->
+      <path d="M 180 110 L 180 60 L 165 65 L 175 40 L 225 40 L 235 65 L 220 60 L 220 110 Z" fill="#d90429" />
+      <text x="192" y="30" font-family="Arial" font-size="12" font-weight="bold" fill="#333">ROOD</text>
+      <!-- Gele jas symbool -->
+      <path d="M 310 110 L 310 60 L 295 65 L 305 40 L 355 40 L 365 65 L 350 60 L 350 110 Z" fill="#ffb703" />
+      <text x="320" y="30" font-family="Arial" font-size="12" font-weight="bold" fill="#333">GEEL</text>
+    </svg>
+
+    <p><strong>De Vraag:</strong> Wie is de eerlijke vinder die het papiertje heeft?</p>
+
+    <div class="input-zone">
+      <label for="ans5">Naam van de vinder:</label>
+      <select id="ans5">
+        <option value="">-- Kies een getuige --</option>
+        <option value="thijs">Thijs</option>
+        <option value="emma">Emma</option>
+        <option value="sophie">Sophie</option>
+      </select>
+      <button onclick="verify5()">Controleer Getuige</button>
+      <span id="fb5" class="feedback"></span>
+    </div>
+
+    <details>
+      <summary>💡 Hint (Als je er niet uitkomt)</summary>
+      <p>Combineer de hints stap voor stap. Als Sophie aan het hardlopen was, liep zij dus niet met de hond. Dat betekent dat Sophie dus NIET de rode jas droeg. Wie droeg dan wel de rode jas? En wie blijft er over als vinder als de rode jas het niet was en Thijs het ook niet was?</p>
+    </details>
+  </div>
+
+  <!-- PUZZLE 6: ENVIRONMENT & RECYCLING (QUICK-LEARN) -->
+  <div class="mission-box" id="box6">
+    <h2><span class="badge">Missie 6</span>De Batterijen-Check (Milieu Centraal)</h2>
+    <p>Emma (de vinder) wil het papiertje teruggeven, maar ze vraagt Daan eerst om advies over het milieu. Tijdens de crash vloog namelijk ook Daans digitale kilometerteller uit elkaar. De kleine, platte, ronde <strong>knoopcelbatterij</strong> ligt op de grond. Emma wil weten wat de juiste manier is om deze op te ruimen volgens de officiële regels van <strong>Milieu Centraal</strong>.</p>
+    
+    <svg viewBox="0 0 400 140" aria-label="Een platte ronde knoopcelbatterij met een plus-teken">
+      <rect width="400" height="140" fill="#f8f9fa" />
+      <!-- Knoopcel batterij -->
+      <circle cx="200" cy="70" r="40" fill="#b0b0b0" stroke="#707070" stroke-width="3" />
+      <circle cx="200" cy="70" r="34" fill="#d0d0d0" />
+      <text x="190" y="78" font-family="Arial" font-size="32" font-weight="bold" fill="#606060">+</text>
+      <text x="175" y="125" font-family="Arial" font-size="12" font-weight="bold" fill="#333">CR2032 Lithium</text>
+    </svg>
+
+    <p><strong>Milieuvraag:</strong> Wat moet Daan doen met deze losse knoopcelbatterij voordat hij hem inlevert in de bekende batterijen-inzamelbak in de winkel?</p>
+
+    <div class="radio-group">
+      <div class="radio-option" onclick="document.getElementById('r6a').checked=true">
+        <input type="radio" name="q6" id="r6a" value="afplakken">
+        <span>A) De polen (boven- en onderkant) afplakken met plakband om kortsluiting en brand te voorkomen.</span>
+      </div>
+      <div class="radio-option" onclick="document.getElementById('r6b').checked=true">
+        <input type="radio" name="q6" id="r6b" value="restafval">
+        <span>B) Gewoon direct in de grijze restafvalcontainer gooien, want hij is te klein voor de inzamelbak.</span>
+      </div>
+      <div class="radio-option" onclick="document.getElementById('r6c').checked=true">
+        <input type="radio" name="q6" id="r6c" value="wassen">
+        <span>C) Eerst goed afspoelen onder de kraan met zeep zodat er geen chemicaliën meer aan de buitenkant zitten.</span>
+      </div>
+    </div>
+
+    <div class="input-zone">
+      <button onclick="verify6()">Verifieer Milieurichtlijn</button>
+      <span id="fb6" class="feedback"></span>
+    </div>
+
+    <details>
+      <summary>💡 Hint (Als je er niet uitkomt)</summary>
+      <p>Milieu Centraal waarschuwt dat ook lege batterijen nog een restje energie hebben. Als platte knoopcellen in een bak tegen elkaar aanliggen, kunnen ze kortsluiting veroorzaken. Wat helpt daartegen?</p>
+    </details>
+  </div>
+
+  <!-- PUZZLE 7: CODE BREAKING (THE BIG REVEAL) -->
+  <div class="mission-box" id="box7">
+    <h2><span class="badge">Missie 7</span>De Geheime Kluiscode (Code Kraken)</h2>
+    <p>Super! Emma heeft Daan het gevonden papiertje overhandigd. Er staat een mysterieuze code op geschreven. Gelukkig staat er een aanwijzing bij: <em>"Vervang elke letter door de letter die er in het alfabet direct VÓÓR staat (A wordt Z, B wordt A, C wordt B, enzovoort)"</em>.</p>
+    <p>De gecodeerde tekst op het papiertje is: <strong style="font-size: 1.3em; letter-spacing: 2px; color: #d90429;">VUIIE</strong></p>
+    <p><strong>De Laatste Uitdaging:</strong> Welk Nederlands woord komt tevoorschijn als je deze code kraakt? Dit woord is het wachtwoord van zijn kluisje waar de spreekbeurt in ligt!</p>
+
+    <div class="input-zone">
+      <label for="ans7">Het gekraakte woord:</label>
+      <input type="text" id="ans7" placeholder="Typ het woord...">
+      <button onclick="verify7()">Kraak de Kluis!</button>
+      <span id="fb7" class="feedback"></span>
+    </div>
+
+    <details>
+      <summary>💡 Hint (Als je er niet uitkomt)</summary>
+      <p>Kijk goed naar de letters: V-U-I-I-E. Welke letter staat er vlak vóór de V in het alfabet? (A, B, C... T, U, V!). Doe dit voor alle letters en ontdek het toepasselijke fietsonderdeel.</p>
+    </details>
+  </div>
+
+  <!-- CONGRATS SECTION -->
+  <div class="congrats-card" id="congrats">
+    <h2>🎉 MISSIE VOLBRACHT, DETECTIVE!</h2>
+    <p>Ongelooflijk gedaan! Je hebt alle 7 clues feilloos opgelost. Dankzij jouw scherpe blik en fantastische research weet Daan precies waar zijn spullen zijn, hoe hij veilig over de rotonde moet fietsen, wat de reparatie kost, hoe hij batterijen veilig weggooit en heeft hij het wachtwoord van zijn kluisje terug: <strong>STUUR</strong>!</p>
+    <p>Meester Bart gaat morgen een fantastische spreekbeurt horen. Je mag jezelf officieel een Master Internet Detective noemen!</p>
+  </div>
+
+  <script>
+    // Validatie logica voor de interactieve elementen
+    function verify1() {
+      const ans = document.getElementById('ans1').value.trim();
+      const fb = document.getElementById('fb1');
+      if(ans === '5') {
+        fb.innerHTML = "✓ Correct! Je hebt alle 5 de bidons scherp gezien.";
+        fb.className = "feedback correct";
+      } else {
+        fb.innerHTML = "✗ Nog niet helemaal. Tel nog eens goed in het gras en rond de boom!";
+        fb.className = "feedback incorrect";
+      }
+    }
+
+    function verify2() {
+      const ans = document.getElementById('ans2').value.trim().toLowerCase();
+      const fb = document.getElementById('fb2');
+      if(ans.includes('drais') || ans === 'von drais') {
+        fb.innerHTML = "✓ Top Research! Karl von Drais is de uitvinder van de loopfiets (de Draisine).";
+        fb.className = "feedback correct";
+      } else {
+        fb.innerHTML = "✗ Onjuist. Zoek op Google naar de uitvinder van de loopfiets uit 1817.";
+        fb.className = "feedback incorrect";
+      }
+    }
+
+    function verify3() {
+      const fb = document.getElementById('fb3');
+      if(document.getElementById('r3a').checked) {
+        fb.innerHTML = "✓ Veilig en correct! Haaientanden verplichten Daan om de auto voor te laten gaan.";
+        fb.className = "feedback correct";
+      } else {
+        fb.innerHTML = "✗ Oei, gevaarlijke situatie! Kijk nog eens goed naar de betekenis van de haaientanden.";
+        fb.className = "feedback incorrect";
+      }
+    }
+
+    function verify4() {
+      const ans = document.getElementById('ans4').value.trim();
+      const fb = document.getElementById('fb4');
+      if(ans === '103' || ans === '103,00' || ans === '€103') {
+        fb.innerHTML = "✓ Perfect gerekend! De som klopt tot op de euro cent: €36 + €7 + €60 = €103.";
+        fb.className = "feedback correct";
+      } else {
+        fb.innerHTML = "✗ Rekenfoutje gespot! Deel 1 = 36, Deel 2 = 7, Deel 3 = 60. Tel ze nog eens zorgvuldig op.";
+        fb.className = "feedback incorrect";
+      }
+    }
+
+    function verify5() {
+      const ans = document.getElementById('ans5').value;
+      const fb = document.getElementById('fb5');
+      if(ans === 'thijs') {
+        fb.innerHTML = "✓ Logisch meesterwerk! Thijs droeg de blauwe jas en is de vinder.";
+        fb.className = "feedback correct";
+      } else if(ans === '') {
+        fb.innerHTML = "Kies eerst een optie uit de lijst.";
+        fb.className = "feedback incorrect";
+      } else {
+        fb.innerHTML = "✗ Dat klopt logisch gezien niet. Gebruik de hints om personen uit te sluiten.";
+        fb.className = "feedback incorrect";
+      }
+    }
+
+    function verify6() {
+      const fb = document.getElementById('fb6');
+      if(document.getElementById('r6a').checked) {
+        fb.innerHTML = "✓ Uitstekend! Milieu Centraal adviseert knoopcellen af te plakken tegen kortsluiting.";
+        fb.className = "feedback correct";
+      } else {
+        fb.innerHTML = "✗ Onjuist. Dit kan gevaarlijke situaties of brand veroorzaken in de winkel of vuilniswagen.";
+        fb.className = "feedback incorrect";
+      }
+    }
+
+    function verify7() {
+      const ans = document.getElementById('ans7').value.trim().toUpperCase();
+      const fb = document.getElementById('fb7');
+      if(ans === 'STUUR') {
+        fb.innerHTML = "✓ CODE GEKRAAKT! Het kluisje springt open!";
+        fb.className = "feedback correct";
+        document.getElementById('congrats').style.display = 'block';
+        document.getElementById('congrats').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        fb.innerHTML = "✗ Het kluisje blijft dicht. Schuif elke letter één stapje terug in het alfabet!";
+        fb.className = "feedback incorrect";
+      }
+    }
+  </script>
+</body>
+</html>
