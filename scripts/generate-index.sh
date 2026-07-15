@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+cat > index.html <<'EOF'
 <!DOCTYPE html>
 <html>
 <head>
@@ -112,23 +118,56 @@
       <p class="intro">Choose a case file to start the kid-facing mission. Parent answer keys are listed second so the mission link always comes first.</p>
     </header>
     <section class="mission-grid">
-<article class="mission-card">
-<h2>broken bicycle</h2>
-<p>Case folder: broken-bicycle</p>
-<div class="actions">
-<a class="button primary" href="broken-bicycle/mission.html">Start mission</a>
-<a class="button secondary" href="broken-bicycle/answer.html">Parent answer key</a>
-</div>
-</article>
-<article class="mission-card">
-<h2>museum heist</h2>
-<p>Case folder: museum-heist</p>
-<div class="actions">
-<a class="button primary" href="museum-heist/mission.html">Start mission</a>
-<a class="button secondary" href="museum-heist/answer.html">Parent answer key</a>
-</div>
-</article>
+EOF
+
+while IFS= read -r dir; do
+  display=$(basename "$dir" | tr '-' ' ')
+  mission_path="$dir/mission.html"
+  answer_path="$dir/answer.html"
+
+  echo "<article class=\"mission-card\">" >> index.html
+  echo "<h2>$display</h2>" >> index.html
+  echo "<p>Case folder: $dir</p>" >> index.html
+  echo "<div class=\"actions\">" >> index.html
+
+  if [ -f "$mission_path" ]; then
+    echo "<a class=\"button primary\" href=\"$mission_path\">Start mission</a>" >> index.html
+  fi
+
+  if [ -f "$answer_path" ]; then
+    echo "<a class=\"button secondary\" href=\"$answer_path\">Parent answer key</a>" >> index.html
+  fi
+
+  while IFS= read -r file; do
+    filename=$(basename "$file")
+    echo "<a class=\"button secondary\" href=\"$file\">$filename</a>" >> index.html
+  done < <(
+    find "$dir" \
+      -maxdepth 1 \
+      -type f \
+      -name "*.html" \
+      ! -name "mission.html" \
+      ! -name "answer.html" \
+      | sort
+  )
+
+  echo "</div>" >> index.html
+  echo "</article>" >> index.html
+done < <(
+  find . \
+    -mindepth 2 \
+    -maxdepth 2 \
+    -type f \
+    -name "mission.html" \
+    ! -path "./.github/*" \
+    -exec dirname {} \; \
+    | sort \
+    | sed 's|^\./||'
+)
+
+cat >> index.html <<'EOF'
     </section>
   </main>
 </body>
 </html>
+EOF

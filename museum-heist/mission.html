@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Museum Heist — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #7A4F9A;
+    --accent-dark: #513269;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #2E6F7E;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .note {
+    background: rgba(122,79,154,0.09);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 0.9rem;
+    margin: 0.8rem 0;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+  code { background: rgba(0,0,0,0.08); padding: 0.12rem 0.3rem; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Museum Heist</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+</div>
+
+<div class="intro">
+  <p>A famous museum has found an empty frame in Gallery 7. The thief did not steal the painting for money. They left a trail of art clues to test whether a real detective can follow evidence, check facts, and think clearly.</p>
+  <p>Your job is to recover the curator's seal. Each answer gives you a clue. The final lock reveals the value that every great investigator needs.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Apron in the Frame</h2>
+    <div class="puzzle">
+      <p>The thief first points you to Johannes Vermeer's painting <em>The Milkmaid</em>. Study the real painting image carefully.</p>
+      <p>What color is the large apron tied around the woman's waist?</p>
+    </div>
+    <img class="clue-img" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg" alt="Johannes Vermeer's The Milkmaid, showing a woman pouring milk at a table">
+    <div class="clue-caption">Look at the cloth wrapped around her waist, not the cap or sleeves.</div>
+    <details class="hint"><summary>Hint 1</summary><p>The answer is a color. Scan the lower middle of the painting.</p></details>
+    <div class="answer-box">
+      <label for="m1-answer">Your answer:</label>
+      <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Signature Search</h2>
+    <div class="puzzle">
+      <p>The next clue says: "Find the huge painting called <em>The Night Watch</em> on the Rijksmuseum website."</p>
+      <p>Search the web for <code>Rijksmuseum The Night Watch artist</code>. What is the painter's surname?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Use the official Rijksmuseum result if you see it. The full artist name has three parts.</p></details>
+    <div class="answer-box">
+      <label for="m2-answer">Your answer:</label>
+      <input id="m2-answer" type="text" placeholder="Type the surname...">
+    </div>
+  </div>
+</div>
+
+<p class="fact">Did you know? The Rijksmuseum lists <em>The Night Watch</em> as 379.5 cm high and 453.5 cm wide.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Frame Measure</h2>
+    <div class="puzzle">
+      <p>The empty frame belongs to <em>The Milkmaid</em>. The Rijksmuseum lists its dimensions as height 45.5 cm and width 41 cm.</p>
+      <p>A rectangular frame needs two heights and two widths. What is the perimeter of the painting in centimeters?</p>
+      <div class="note">Perimeter means the distance around the outside edge.</div>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add height + width + height + width.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Double 45.5, double 41, then add those two results.</p></details>
+    <div class="answer-box">
+      <label for="m3-answer">Your answer:</label>
+      <input id="m3-answer" type="text" placeholder="Type the number...">
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Dutch Label Mix-Up</h2>
+    <div class="puzzle">
+      <p>The thief swapped four Dutch museum labels. Three use <strong>het</strong>. One uses <strong>de</strong>.</p>
+      <p>Which word is the odd one out?</p>
+      <div class="note">
+        het museum<br>
+        het schilderij<br>
+        het doek<br>
+        de verf
+      </div>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You are not translating the words. You are comparing the article before each word.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Circle every word with <em>het</em>. The one left over is the answer.</p></details>
+    <div class="answer-box">
+      <label for="m4-answer">Your answer:</label>
+      <input id="m4-answer" type="text" placeholder="Type the Dutch word...">
+    </div>
+  </div>
+</div>
+
+<p class="fact">Did you know? The Louvre says the Mona Lisa was stolen on 21 August 1911 and was missing for more than two years.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Guard Roster</h2>
+    <div class="puzzle">
+      <p>Three guards were near Gallery 7: Noor, Bram, and Lina. One guard found the curator's seal and locked it in a safe.</p>
+      <p>Use the facts to find the guard.</p>
+      <div class="note">
+        1. The seal-finder was not carrying a flashlight.<br>
+        2. Bram carried the radio.<br>
+        3. The guard with the flashlight checked the west door.<br>
+        4. Lina checked the east door.<br>
+        5. Noor did not carry the keycard.
+      </div>
+      <p>The three tools were flashlight, radio, and keycard. The three doors were west, east, and archive. Who found the seal?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with doors. If the flashlight guard checked the west door and Lina checked east, Lina did not have the flashlight.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Bram has the radio, so he cannot also have the flashlight or keycard. Work out who must have the flashlight, then remove that person.</p></details>
+    <div class="answer-box">
+      <label for="m5-answer">Your answer:</label>
+      <input id="m5-answer" type="text" placeholder="Type the guard's name...">
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Glass Case Fact-Check</h2>
+    <div class="puzzle">
+      <p>The thief wrote: "The Mona Lisa is painted on canvas." A good detective checks claims before trusting them.</p>
+      <p>Search the Louvre page about the Mona Lisa in the Salle des Etats. What material does the Louvre say the Mona Lisa is painted on?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look for the paragraph that explains why the painting is kept in a special glass case.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The answer is a type of wood, not a fabric.</p></details>
+    <div class="answer-box">
+      <label for="m6-answer">Your answer:</label>
+      <input id="m6-answer" type="text" placeholder="Type the material...">
+    </div>
+  </div>
+</div>
+
+<p class="fact">Did you know? The Louvre keeps the Mona Lisa in a temperature and humidity-controlled glass case to help prevent more damage.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Bedroom Inventory</h2>
+    <div class="puzzle">
+      <p>The last gallery note mentions Vincent van Gogh's painting <em>The Bedroom</em>.</p>
+      <p>Search the Van Gogh Museum collection page for <em>The Bedroom</em>. The museum tags the work with several "More to explore" words. Which color appears directly after <strong>Yellow</strong> in that list?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Use the official Van Gogh Museum collection page, not a shopping page or poster page.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Find the "More to explore" list near the bottom of the page and read the colors in order.</p></details>
+    <div class="answer-box">
+      <label for="m7-answer">Your answer:</label>
+      <input id="m7-answer" type="text" placeholder="Type the color...">
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Curator's Cipher</h2>
+    <div class="puzzle">
+      <p>You have checked images, facts, numbers, language, and logic. The thief left one final cipher on the back of the empty frame:</p>
+      <div class="note"><code>EJTDPWFSZ</code></div>
+      <p>Shift every letter one step backward in the alphabet. For example, B becomes A and F becomes E. What reward word does the cipher reveal?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Decode one letter at a time. Start with E.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first four decoded letters should spell D I S C.</p></details>
+    <div class="answer-box">
+      <label for="finale-answer">Your answer:</label>
+      <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The museum seal can only be returned by an agent who follows the evidence: looking closely, checking sources, and changing their mind when the facts say so.</p>
+</div>
+
+</body>
+</html>
