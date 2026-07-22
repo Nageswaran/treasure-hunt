@@ -1,3 +1,4 @@
 qodana_code_quality.yml
 .idea/
 qodana.yaml
+.DS_Store
