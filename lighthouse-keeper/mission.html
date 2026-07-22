@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Lighthouse Keeper's Last Message — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* THEME: sea / lighthouse — deep navy-blue accent. */
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2B5D8A;
+    --accent-dark: #1C3E5E;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-svg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Coast Guard File</div>
+  <h1>The Lighthouse Keeper's Last Message</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 55–75 minutes</div>
+</div>
+
+<div class="intro">
+  On a lonely rock by the North Sea stands an old lighthouse. Its keeper, Mr. Bram, has kept the light burning
+  every single night for forty years — until last week, when he suddenly vanished. He left behind only his
+  logbook, full of puzzles, and a promise scribbled on the last page: <em>"Whoever is patient enough to solve
+  every clue will find my secret, and the word I lived by."</em> As the Academy's coastal detective, follow
+  Mr. Bram's clues one by one to uncover where he hid his secret — and the word that kept his light shining.
+</div>
+
+<!-- MISSION 01 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Harbour Roll-Call</h2>
+    <div class="puzzle">
+      <p>Mr. Bram's logbook starts with a sketch of the harbour on the morning he disappeared. Each little boat
+      flies a coloured flag at the top of its mast. Look carefully at every boat.</p>
+      <p>How many boats are flying a <strong>red</strong> flag? (Type just the number.)</p>
+    </div>
+    <svg class="clue-svg" viewBox="0 0 500 220" role="img" aria-label="A harbour with five sailing boats, each flying a coloured flag">
+      <rect width="500" height="220" fill="#cfe3ef"/>
+      <!-- sea -->
+      <rect y="150" width="500" height="70" fill="#3f7ca6"/>
+      <path d="M0 150 q 25 -8 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" fill="none" stroke="#5b9bc4" stroke-width="2"/>
+      <!-- Boat A (red flag) -->
+      <g>
+        <polygon points="40,175 100,175 90,195 50,195" fill="#7a4a22"/>
+        <line x1="70" y1="175" x2="70" y2="120" stroke="#5a3a1a" stroke-width="3"/>
+        <polygon points="70,120 70,135 92,127" fill="#d33a2c"/>
+      </g>
+      <!-- Boat B (blue flag) -->
+      <g>
+        <polygon points="140,175 200,175 190,195 150,195" fill="#7a4a22"/>
+        <line x1="170" y1="175" x2="170" y2="120" stroke="#5a3a1a" stroke-width="3"/>
+        <polygon points="170,120 170,135 192,127" fill="#2b6cb0"/>
+      </g>
+      <!-- Boat C (red flag) -->
+      <g>
+        <polygon points="240,175 300,175 290,195 250,195" fill="#7a4a22"/>
+        <line x1="270" y1="175" x2="270" y2="120" stroke="#5a3a1a" stroke-width="3"/>
+        <polygon points="270,120 270,135 292,127" fill="#d33a2c"/>
+      </g>
+      <!-- Boat D (yellow flag) -->
+      <g>
+        <polygon points="340,175 400,175 390,195 350,195" fill="#7a4a22"/>
+        <line x1="370" y1="175" x2="370" y2="120" stroke="#5a3a1a" stroke-width="3"/>
+        <polygon points="370,120 370,135 392,127" fill="#e8b93a"/>
+      </g>
+      <!-- Boat E (red flag) -->
+      <g>
+        <polygon points="430,178 490,178 482,196 438,196" fill="#7a4a22"/>
+        <line x1="460" y1="178" x2="460" y2="125" stroke="#5a3a1a" stroke-width="3"/>
+        <polygon points="460,125 460,140 482,132" fill="#d33a2c"/>
+      </g>
+    </svg>
+    <div class="clue-caption">Look only at the small flag at the very top of each mast — not the boats themselves.</div>
+    <details class="hint"><summary>Hint 1</summary><p>There are five boats in total. Point at each flag one at a time and say its colour out loud. Then count only the ones that are red.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m1-answer">Your answer (a number):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 02 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Oldest Beacon</h2>
+    <div class="puzzle">
+      <p>Mr. Bram admired the <strong>oldest working lighthouse in the whole Netherlands</strong>, a tall tower
+      called the <em>Brandaris</em>, first built way back in 1594. He wrote: "That is where my family's story
+      began."</p>
+      <p><strong>Your internet task:</strong> Search for the Brandaris lighthouse. On which Dutch <strong>Wadden
+      island</strong> does it stand? (Type the name of the island.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search: <em>Brandaris lighthouse Netherlands island</em>. It is one of the Wadden Sea islands in the north of the country, and its name begins with "Ter…".</p></details>
+    <div class="answer-box" data-answer-hash="d89d4c7b">
+      <label for="m2-answer">Your answer (the island's name):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Brandaris on the island of Terschelling was first built in 1594, which makes it the oldest working lighthouse in the Netherlands — it has been guiding ships for more than 400 years.</p>
+
+<!-- MISSION 03 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Follow the Keeper's Steps</h2>
+    <div class="puzzle">
+      <p>Inside the lighthouse, Mr. Bram left a treasure grid on the floor and this note: <em>"Start on the
+      DOOR square. Walk 3 squares North, then 2 squares East. Whatever object you land on is the key to my
+      secret."</em></p>
+      <p>On this map, <strong>North is up</strong> the page and <strong>East is to the right</strong>. Follow
+      the steps and tell me: what object is drawn in the square you land on?</p>
+    </div>
+    <svg class="clue-svg" viewBox="0 0 340 360" role="img" aria-label="A five by five grid of squares with a start door and several small objects, plus a compass showing North is up">
+      <rect width="340" height="360" fill="#f5efe0"/>
+      <!-- compass -->
+      <g font-family="Atkinson Hyperlegible, sans-serif" font-weight="700">
+        <text x="300" y="24" font-size="14" text-anchor="middle" fill="#1c3e5e">N</text>
+        <line x1="300" y1="28" x2="300" y2="48" stroke="#1c3e5e" stroke-width="2"/>
+        <polygon points="300,26 296,34 304,34" fill="#1c3e5e"/>
+        <text x="300" y="60" font-size="10" text-anchor="middle" fill="#666">up</text>
+      </g>
+      <!-- grid 5x5, cell 60, origin x=20 y=20 -->
+      <g stroke="#b9a97e" stroke-width="1.5" fill="none">
+        <rect x="20" y="20" width="300" height="300"/>
+        <line x1="80" y1="20" x2="80" y2="320"/>
+        <line x1="140" y1="20" x2="140" y2="320"/>
+        <line x1="200" y1="20" x2="200" y2="320"/>
+        <line x1="260" y1="20" x2="260" y2="320"/>
+        <line x1="20" y1="80" x2="320" y2="80"/>
+        <line x1="20" y1="140" x2="320" y2="140"/>
+        <line x1="20" y1="200" x2="320" y2="200"/>
+        <line x1="20" y1="260" x2="320" y2="260"/>
+      </g>
+      <!-- objects (emoji as text). Anchor is the target at col3,row4 -> center (170,110). -->
+      <g font-size="34" text-anchor="middle">
+        <text x="170" y="122">⚓</text>            <!-- target: anchor -->
+        <text x="290" y="52">⭐</text>             <!-- col5 row5 -->
+        <text x="110" y="172">🐚</text>            <!-- col2 row2 -->
+        <text x="230" y="312">🐟</text>            <!-- col4 row1 -->
+        <text x="290" y="232">🗝️</text>           <!-- col5 row3 -->
+        <text x="170" y="252">🦀</text>            <!-- col3 row2 -->
+      </g>
+      <!-- DOOR marker at col1,row1 -> center (50,290) -->
+      <g>
+        <rect x="30" y="270" width="40" height="40" fill="#2b5d8a" opacity="0.25"/>
+        <text x="50" y="284" font-size="11" text-anchor="middle" font-weight="700" fill="#1c3e5e" font-family="Atkinson Hyperlegible, sans-serif">DOOR</text>
+        <text x="50" y="302" font-size="20" text-anchor="middle">🚪</text>
+      </g>
+    </svg>
+    <div class="clue-caption">Count the squares as you move: 3 up, then 2 to the right, starting from the DOOR square.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Put your finger on the DOOR square. Moving North means going straight up the grid. Move up 3 squares (do not count the door itself as a move). Then move 2 squares to the right. What is drawn there?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>From the door, three squares up lands you on the left-hand column. Then two squares right puts you in the middle column, near the top. There is a heavy metal object there that ships drop to stay in place.</p></details>
+    <div class="answer-box" data-answer-hash="42edcab4">
+      <label for="m3-answer">Your answer (the object you land on):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 04 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Keeper's Dutch Word-List</h2>
+    <div class="puzzle">
+      <p>Mr. Bram kept a little Dutch word-list of things around his lighthouse. Here are four of them.
+      <strong>Three</strong> use the article <strong>"de"</strong>. Only <strong>one</strong> uses
+      <strong>"het"</strong>.</p>
+      <p>The words are: <strong>vuurtoren</strong> (lighthouse), <strong>zee</strong> (sea),
+      <strong>schip</strong> (ship), <strong>haven</strong> (harbour).</p>
+      <p>Which single word goes with <strong>"het"</strong>? (Type the Dutch word.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try each word with "de" and with "het". Three sound normal with "de". The odd one out is the word for the thing that <em>sails on</em> the sea.</p></details>
+    <div class="answer-box" data-answer-hash="5c7c6218">
+      <label for="m4-answer">Your answer (the "het" word):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 05 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Great Dutch Sailor</h2>
+    <div class="puzzle">
+      <p>Mr. Bram loved the story of a brave Dutch sea captain from the 1600s. In 1642 this captain sailed
+      further south than any European before him and reached a large island near Australia. Long after, that
+      island was renamed in his honour — today we call it <strong>Tasmania</strong>.</p>
+      <p><strong>Your internet task:</strong> Search for the Dutch explorer that Tasmania is named after. Type
+      his <strong>last name</strong> (the surname — one word).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search: <em>which explorer is Tasmania named after</em>. He was a navigator for the Dutch East India Company.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Take the name of the island — <em>Tasmania</em> — and remove the "-ia" ending. His full name was Abel ______.</p></details>
+    <div class="answer-box" data-answer-hash="6980a551">
+      <label for="m5-answer">Your answer (the explorer's surname):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? About a quarter of the Netherlands — roughly 26% of the country — actually lies below sea level. Clever dikes and pumps are what keep all that land dry.</p>
+
+<!-- MISSION 06 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Which Ship Came First?</h2>
+    <div class="puzzle">
+      <p>Three fishing boats came home to the harbour that week: <strong>de Zeemeeuw</strong> (the Seagull),
+      <strong>de Dolfijn</strong> (the Dolphin) and <strong>de Walvis</strong> (the Whale). One arrived on
+      Monday, one on Tuesday, and one on Wednesday. Use Mr. Bram's notes to work out which boat arrived on
+      <strong>Monday</strong>.</p>
+      <p><strong>Note 1:</strong> de Walvis arrived on a later day than de Dolfijn.<br>
+      <strong>Note 2:</strong> de Zeemeeuw arrived on Tuesday.<br>
+      <strong>Note 3:</strong> de Dolfijn did <em>not</em> arrive on Wednesday.</p>
+      <p>Which boat arrived on Monday? (Type just the boat's name, for example: dolfijn.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Note 2 fixes one boat straight away: de Zeemeeuw is Tuesday. So Monday and Wednesday must belong to de Dolfijn and de Walvis.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Note 3 says de Dolfijn is not Wednesday, so de Dolfijn must be Monday — and that leaves Wednesday for de Walvis. Check it against Note 1: the Whale really did come after the Dolphin.</p></details>
+    <div class="answer-box" data-answer-hash="aa91f365">
+      <label for="m6-answer">Your answer (a boat name):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 07 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp finale">AHA!</span>
+    <h2>The Flashing Light</h2>
+    <div class="puzzle">
+      <p>On his last night, Mr. Bram flashed one secret word from the top of the lighthouse using
+      <strong>Morse code</strong> — long flashes (dashes) and short flashes (dots). Sailors have used this code
+      for over a hundred years.</p>
+      <p>Here is what the light flashed, letter by letter:</p>
+      <p style="font-size:1.3rem; letter-spacing:0.2rem; text-align:center; color:var(--accent-dark);"><strong>&minus;·&minus;·&nbsp;&nbsp;·&minus;&nbsp;&nbsp;···&minus;&nbsp;&nbsp;·</strong></p>
+      <p style="text-align:center;">( &minus;·&minus;· / ·&minus; / ···&minus; / · )</p>
+      <p><strong>Your task:</strong> Look up a <em>Morse code alphabet</em> chart online, decode the four letters,
+      and type the word. (It is a place where someone might hide a secret by the sea.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search: <em>Morse code alphabet chart</em>. Then match each group of dots and dashes to a letter. The first group, &minus;·&minus;· , is the letter C.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The four letters decode to C, then A, then V, then E. Put them together into one short word.</p></details>
+    <div class="answer-box" data-answer-hash="9731fe58">
+      <label for="m7-answer">Your answer (the decoded word):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Word He Lived By</h2>
+    <div class="puzzle">
+      <p>You followed every clue to a hidden sea cave below the lighthouse. Inside is Mr. Bram's logbook, open to
+      the last page. He is safe — he had rowed to the mainland for help in a storm and could not get back for
+      days. His final note reads: <em>"You solved it all. Now unscramble the letters below to find the one word
+      that kept my light burning every night, even when it was hard."</em></p>
+      <p>The scrambled letters are:</p>
+      <p style="font-size:1.25rem; letter-spacing:0.3rem; text-align:center; color:var(--finale);"><strong>E C N A R E V E S R E P</strong></p>
+      <p>Unscramble them into one <strong>12-letter word</strong> that means "to keep going and never give up,
+      even when things are difficult." Type that word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The word starts with the letter "P". It is what Mr. Bram showed by lighting the lamp every single night for forty years without giving up.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It begins P-E-R-S-E-V… It is the noun that goes with the phrase "to persevere". Sound it out: per-se-ver-ance.</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="finale-answer">Your answer (the 12-letter word):</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>You did it, Detective. The word Mr. Bram lived by was <strong>PERSEVERANCE</strong> — never giving up, night
+  after night, storm after storm. You showed the very same thing by solving every clue in his logbook. The light
+  on the lonely rock is shining again, and this time it's thanks to you. 🗼</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

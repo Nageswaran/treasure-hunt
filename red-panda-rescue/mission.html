@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Zoo's Missing Red Panda — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* THEME: red panda / zoo — warm rusty-orange accent. */
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C0562E;
+    --accent-dark: #8F3D1E;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-svg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Wildlife Unit &middot; Case File</div>
+  <h1>The Zoo's Missing Red Panda</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 50–70 minutes</div>
+</div>
+
+<div class="intro">
+  This morning the City Zoo opened to a shock: <strong>Fenna the red panda</strong> was not in her enclosure!
+  The gate was open, but nothing was broken. The keepers are worried someone took her. As the Academy's Wildlife
+  Detective, it's your job to follow the clues, learn about red pandas, avoid a nasty online trick, and figure
+  out what really happened to Fenna — and to end the case with the one thing every animal needs most.
+</div>
+
+<!-- MISSION 01 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Follow the Paw Prints</h2>
+    <div class="puzzle">
+      <p>Fenna left a trail of muddy paw prints leading away from her open gate and across the grass. If you can
+      count them, you'll know she walked off on her own four feet — she wasn't carried.</p>
+      <p>Look at the picture. How many red-panda paw prints are in the trail? (Type just the number.)</p>
+    </div>
+    <svg class="clue-svg" viewBox="0 0 500 240" role="img" aria-label="A grassy zoo enclosure with an open gate and a trail of paw prints leading across to a tree">
+      <rect width="500" height="240" fill="#cfe6c3"/>
+      <!-- fence / open gate on the left -->
+      <g stroke="#7a5a34" stroke-width="4">
+        <line x1="30" y1="60" x2="30" y2="210"/>
+        <line x1="30" y1="80" x2="95" y2="80"/>
+        <line x1="30" y1="140" x2="95" y2="140"/>
+        <line x1="95" y1="60" x2="95" y2="210" stroke-dasharray="6,6"/>
+      </g>
+      <text x="34" y="50" font-size="12" fill="#5a4020" font-family="Atkinson Hyperlegible, sans-serif" font-weight="700">OPEN GATE</text>
+      <!-- tree on the right -->
+      <rect x="452" y="120" width="16" height="90" fill="#6b4a2b"/>
+      <circle cx="460" cy="105" r="34" fill="#4c7a52"/>
+      <!-- Trail of 6 paw prints -->
+      <!-- print 1 -->
+      <g fill="#6b4326">
+        <ellipse cx="120" cy="185" rx="7" ry="9"/>
+        <circle cx="114" cy="174" r="3"/><circle cx="118" cy="171" r="3"/><circle cx="123" cy="171" r="3"/><circle cx="127" cy="174" r="3"/>
+      </g>
+      <!-- print 2 -->
+      <g fill="#6b4326">
+        <ellipse cx="170" cy="160" rx="7" ry="9"/>
+        <circle cx="164" cy="149" r="3"/><circle cx="168" cy="146" r="3"/><circle cx="173" cy="146" r="3"/><circle cx="177" cy="149" r="3"/>
+      </g>
+      <!-- print 3 -->
+      <g fill="#6b4326">
+        <ellipse cx="225" cy="170" rx="7" ry="9"/>
+        <circle cx="219" cy="159" r="3"/><circle cx="223" cy="156" r="3"/><circle cx="228" cy="156" r="3"/><circle cx="232" cy="159" r="3"/>
+      </g>
+      <!-- print 4 -->
+      <g fill="#6b4326">
+        <ellipse cx="280" cy="150" rx="7" ry="9"/>
+        <circle cx="274" cy="139" r="3"/><circle cx="278" cy="136" r="3"/><circle cx="283" cy="136" r="3"/><circle cx="287" cy="139" r="3"/>
+      </g>
+      <!-- print 5 -->
+      <g fill="#6b4326">
+        <ellipse cx="340" cy="160" rx="7" ry="9"/>
+        <circle cx="334" cy="149" r="3"/><circle cx="338" cy="146" r="3"/><circle cx="343" cy="146" r="3"/><circle cx="347" cy="149" r="3"/>
+      </g>
+      <!-- print 6 -->
+      <g fill="#6b4326">
+        <ellipse cx="400" cy="145" rx="7" ry="9"/>
+        <circle cx="394" cy="134" r="3"/><circle cx="398" cy="131" r="3"/><circle cx="403" cy="131" r="3"/><circle cx="407" cy="134" r="3"/>
+      </g>
+    </svg>
+    <div class="clue-caption">Each paw print has one big pad with four little toe-dots above it. Count the whole prints.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Start at the open gate on the left and follow the trail toward the tree on the right. Touch each paw print once as you count. They lead up and across, so don't miss the ones higher up.</p></details>
+    <div class="answer-box" data-answer-hash="330ca589">
+      <label for="m1-answer">Your answer (a number):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 02 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Where Do Red Pandas Come From?</h2>
+    <div class="puzzle">
+      <p>To find Fenna, it helps to know her kind. In the wild, red pandas live high up in cool mountain forests
+      in countries like Nepal, Bhutan, India, China and Myanmar.</p>
+      <p><strong>Your internet task:</strong> Search for <em>"where do red pandas live"</em> and find out which
+      <strong>continent</strong> all of those countries belong to. Type the name of the continent.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search: <em>which continent is Nepal in</em>. All five countries — Nepal, Bhutan, India, China and Myanmar — are on the same, very large continent, and its name begins with "A".</p></details>
+    <div class="answer-box" data-answer-hash="9ae8ff7">
+      <label for="m2-answer">Your answer (a continent):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A red panda has a long, bushy, striped tail that it wraps around its body like a cosy blanket to stay warm on cold mountain nights.</p>
+
+<!-- MISSION 03 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Zoo's Dutch Animal Signs</h2>
+    <div class="puzzle">
+      <p>The City Zoo is in the Netherlands, so every enclosure has a Dutch name-sign. Here are four animal words.
+      <strong>Three</strong> use the article <strong>"de"</strong>. Only <strong>one</strong> uses
+      <strong>"het"</strong>.</p>
+      <p>The words are: <strong>olifant</strong> (elephant), <strong>tijger</strong> (tiger),
+      <strong>panda</strong> (panda), <strong>konijn</strong> (rabbit).</p>
+      <p>Which single word goes with <strong>"het"</strong>? (Type the Dutch word.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Say each word with "de" and then with "het". Three of them sound right with "de". The odd one out is the small, long-eared, hopping animal.</p></details>
+    <div class="answer-box" data-answer-hash="f9e99556">
+      <label for="m3-answer">Your answer (the "het" word):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 04 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Ticket-Booth Sum</h2>
+    <div class="puzzle">
+      <p>While you investigate, a family arrives at the zoo ticket booth to help with the search. The prices are:</p>
+      <p>🎟️ <strong>Child ticket: €8</strong> &nbsp;•&nbsp; 🎟️ <strong>Adult ticket: €12</strong></p>
+      <p>The family buys <strong>2 adult tickets</strong> and <strong>3 child tickets</strong>. What is the
+      <strong>total</strong> they pay, in euros? (Type just the number.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out the two groups on their own first: 2 adults at €12 each, and 3 children at €8 each. Then add your two answers together.</p></details>
+    <div class="answer-box" data-answer-hash="91e39541">
+      <label for="m4-answer">Your answer (total in euros):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Red pandas are such amazing climbers that they can walk down a tree trunk head-first — something almost no other animal can do, thanks to ankles that bend right around.</p>
+
+<!-- MISSION 05 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>What Does Fenna Eat?</h2>
+    <div class="puzzle">
+      <p>To coax Fenna back safely, the keepers need her favourite food. Red pandas are picky eaters — almost
+      their whole diet is just one single plant, the same tall, green, hollow plant that giant pandas love too.</p>
+      <p><strong>Your internet task:</strong> Search for <em>"what do red pandas mostly eat"</em>. What is the one
+      plant that makes up about 95% of a red panda's food? (Type the plant's name.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search: <em>red panda diet</em>. It's the same fast-growing plant that giant pandas eat, and its name begins with "b".</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's a tall grass with hollow, jointed stems that grows in Asian forests. Pandas — both red and giant — munch it all day long.</p></details>
+    <div class="answer-box" data-answer-hash="1909e631">
+      <label for="m5-answer">Your answer (a plant):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Red pandas spend so much time nibbling that one red panda can eat around 20,000 bamboo leaves in a single day!</p>
+
+<!-- MISSION 06 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The "Free Red Panda" Trap</h2>
+    <div class="puzzle">
+      <p>While searching, the zoo's computer gets this pop-up message:</p>
+      <p style="background:#fff3cd; border-left:4px solid #d33; padding:0.7rem 0.9rem; border-radius:3px;">
+      🎉 <strong>CONGRATULATIONS!!!</strong> You have WON a FREE baby red panda!!! Click this link and type your
+      <strong>password</strong> RIGHT NOW to claim your prize before it's gone!!! ⏰</p>
+      <p>This is a classic online <strong>scam</strong> — a trick to steal something. A real zoo would never
+      message you like this. Tip: you can even search for the zoo's real website to compare — the real one never
+      asks for this.</p>
+      <p><strong>Question:</strong> There is one secret thing you must <em>never</em> type or share with a
+      stranger online to claim a "prize." In one word, what is that secret thing the scam is trying to steal?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look closely at what the message is actually asking you to type in. It is the secret word you use to log in to an account — something you should keep private and never give away.</p></details>
+    <div class="answer-box" data-answer-hash="364b5f18">
+      <label for="m6-answer">Your answer (one word):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 07 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp finale">AHA!</span>
+    <h2>Who Saw Fenna Last?</h2>
+    <div class="puzzle">
+      <p>Three keepers were on duty this morning: <strong>Nina</strong>, <strong>Ravi</strong> and
+      <strong>Bo</strong>. Each one looked after a different animal: the <strong>penguins</strong>, the
+      <strong>lions</strong>, or the <strong>red panda</strong>. Whoever looked after the red panda was the last
+      person to see Fenna — and might know where she went. Work out who that was.</p>
+      <p><strong>Clue 1:</strong> Nina spent the whole morning at the penguin pool.<br>
+      <strong>Clue 2:</strong> Ravi is a little scared of the big cats, so he did <em>not</em> look after the lions.<br>
+      <strong>Clue 3:</strong> Each keeper looked after just one, different animal.</p>
+      <p>Who looked after the red panda? (Type the keeper's first name.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Clue 1 puts Nina with the penguins. So the red panda and the lions belong to Ravi and Bo. Now use Clue 2 to decide which is which.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Ravi didn't take the lions, and Nina had the penguins — so Ravi must have looked after the red panda, and Bo took the lions.</p></details>
+    <div class="answer-box" data-answer-hash="ae881995">
+      <label for="m7-answer">Your answer (a keeper's name):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Bringing Fenna Home</h2>
+    <div class="puzzle">
+      <p>Ravi remembered the truth: no one stole Fenna at all. Startled by a loud rubbish truck, she had slipped
+      through the gate a keeper forgot to latch, and climbed high into the big oak tree by the café — right where
+      her paw prints led.</p>
+      <p>Now comes the most important part. You don't chase or grab a frightened animal. You stay calm and quiet,
+      set out some bamboo, give her space, and gently wait. That gentle, caring way of treating every creature
+      has a name — and it's the reward of this whole case.</p>
+      <p>Unscramble these eight letters to find it:</p>
+      <p style="font-size:1.35rem; letter-spacing:0.35rem; text-align:center; color:var(--finale);"><strong>S S E N D N I K</strong></p>
+      <p>Type the <strong>8-letter word</strong> that means "being warm, gentle and caring toward others."</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The word starts with "K". It's how you treated Fenna — calm, gentle and caring — instead of scaring her.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It begins K-I-N-D… and then "-ness". Put those together.</p></details>
+    <div class="answer-box" data-answer-hash="ae84d384">
+      <label for="finale-answer">Your answer (the 8-letter word):</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Fenna climbed down on her own and padded straight to the bamboo you left out. Case solved — and no one ever
+  had to frighten her. The reward of this case is <strong>KINDNESS</strong>: you used your head to find the
+  facts, and your heart to bring Fenna home safely. That's what makes a truly great Wildlife Detective. 🐾</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

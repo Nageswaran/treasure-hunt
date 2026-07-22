@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Lost Signal from Probe Aurora — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* THEME: space — teal accent. Rest of the case-file system stays the same. */
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E7D8C;
+    --accent-dark: #1F5965;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-svg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Space Division &middot; Case File</div>
+  <h1>The Lost Signal from Probe Aurora</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 50–70 minutes</div>
+</div>
+
+<div class="intro">
+  Years ago, scientists launched a little space probe named <strong>Aurora</strong> to explore the edge of our
+  solar system. One day its radio went silent, and everyone thought Aurora was lost forever. But last night —
+  after all this time — Aurora started beeping again! Its messages are scrambled, and its batteries are almost
+  empty. Solve the missions one by one to decode Aurora's signals and discover the amazing thing it found out
+  there, before it fades for good.
+</div>
+
+<!-- MISSION 01 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Aurora's First Photo</h2>
+    <div class="puzzle">
+      <p>Aurora's camera snapped one last photo of deep space before its lens froze over. Most of the tiny
+      white dots are just stars. But a few objects in the photo are <strong>comets</strong> — and you can
+      always spot a comet by the long, bright <strong>tail</strong> streaming behind it.</p>
+      <p>Look carefully across the whole photo — corners too. How many comets (objects with a tail) do you count?</p>
+    </div>
+    <svg class="clue-svg" viewBox="0 0 520 320" role="img" aria-label="A dark space photo showing many small stars, two planets, and several comets with glowing tails">
+      <rect width="520" height="320" fill="#0d1b3a"/>
+      <!-- plain stars (decoys, no tails) -->
+      <circle cx="70" cy="150" r="2" fill="#ffffff"/>
+      <circle cx="120" cy="120" r="1.6" fill="#ffffff"/>
+      <circle cx="200" cy="60" r="2.2" fill="#ffffff"/>
+      <circle cx="260" cy="130" r="1.8" fill="#ffffff"/>
+      <circle cx="300" cy="60" r="2" fill="#ffffff"/>
+      <circle cx="340" cy="160" r="1.6" fill="#ffffff"/>
+      <circle cx="250" cy="220" r="2.1" fill="#ffffff"/>
+      <circle cx="190" cy="180" r="1.5" fill="#ffffff"/>
+      <circle cx="470" cy="180" r="2" fill="#ffffff"/>
+      <circle cx="410" cy="210" r="1.7" fill="#ffffff"/>
+      <circle cx="60" cy="250" r="1.8" fill="#ffffff"/>
+      <circle cx="300" cy="270" r="1.6" fill="#ffffff"/>
+      <circle cx="130" cy="300" r="1.6" fill="#ffffff"/>
+      <circle cx="480" cy="260" r="1.7" fill="#ffffff"/>
+      <!-- a 4-point sparkle star (still just a star) -->
+      <path d="M275 175 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 z" fill="#ffffff" opacity="0.9"/>
+      <!-- decoy planet 1: plain red planet, no tail -->
+      <circle cx="215" cy="120" r="16" fill="#c4633a"/>
+      <!-- decoy planet 2: ringed planet, no tail -->
+      <g>
+        <ellipse cx="360" cy="110" rx="26" ry="8" fill="none" stroke="#d9c48a" stroke-width="3"/>
+        <circle cx="360" cy="110" r="12" fill="#8aa0c4"/>
+      </g>
+      <!-- COMET 1 (top-left) -->
+      <polygon points="30,26 92,66 86,74" fill="#9fd8ff" opacity="0.85"/>
+      <circle cx="90" cy="70" r="6" fill="#ffffff"/>
+      <circle cx="90" cy="70" r="3" fill="#ffe9a8"/>
+      <!-- COMET 2 (top-right) -->
+      <polygon points="500,40 432,84 438,92" fill="#9fd8ff" opacity="0.85"/>
+      <circle cx="430" cy="88" r="6" fill="#ffffff"/>
+      <circle cx="430" cy="88" r="3" fill="#ffe9a8"/>
+      <!-- COMET 3 (bottom-left) -->
+      <polygon points="92,300 150,246 158,252" fill="#9fd8ff" opacity="0.85"/>
+      <circle cx="152" cy="250" r="6" fill="#ffffff"/>
+      <circle cx="152" cy="250" r="3" fill="#ffe9a8"/>
+      <!-- COMET 4 (bottom-right) -->
+      <polygon points="452,292 386,244 380,252" fill="#9fd8ff" opacity="0.85"/>
+      <circle cx="384" cy="248" r="6" fill="#ffffff"/>
+      <circle cx="384" cy="248" r="3" fill="#ffe9a8"/>
+    </svg>
+    <div class="clue-caption">Stars are just dots. A comet always drags a bright tail behind it.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Ignore all the plain dots — those are stars. Count only the objects with a streak or tail trailing away from them. There is one near each corner of the photo, so check the edges carefully.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m1-answer">Your answer (type just the number):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 02 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Who Went First?</h2>
+    <div class="puzzle">
+      <p>Aurora is not the first thing humans ever sent into space. That honour belongs to a shiny metal ball —
+      about the size of a beach ball — launched in the year <strong>1957</strong>. It beeped as it circled the
+      Earth, and people all over the world could hear it on their radios.</p>
+      <p><strong>Your internet task:</strong> Search the web for <em>"first artificial satellite 1957"</em> and
+      find its name. Type the name (it is one short word).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching: <em>first satellite launched in 1957</em>. It was launched by the Soviet Union (the USSR), and its name begins with the letter S.</p></details>
+    <div class="answer-box" data-answer-hash="d9114a7">
+      <label for="m2-answer">Your answer (one word):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? That very first satellite, Sputnik 1, was only about the size of a beach ball — 58 cm across — yet in 1957 its radio beeps could be heard by people all around the world.</p>
+
+<!-- MISSION 03 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Aurora's Dutch Control Panel</h2>
+    <div class="puzzle">
+      <p>Part of Aurora was built in the Netherlands, so some of its buttons are labelled in Dutch. Here are four
+      Dutch space words. <strong>Three</strong> of them use the article <strong>"de"</strong>. Only <strong>one</strong>
+      special word uses <strong>"het"</strong> instead.</p>
+      <p>The four words are: <strong>planeet</strong> (planet), <strong>maan</strong> (moon),
+      <strong>raket</strong> (rocket), <strong>heelal</strong> (universe / all of space).</p>
+      <p>Which one word goes with <strong>"het"</strong>? (Type the Dutch word.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Say each word out loud with "de" and then with "het". Three of them sound right with "de". The odd one out is the big word that means <em>the whole universe</em>.</p></details>
+    <div class="answer-box" data-answer-hash="8e64de82">
+      <label for="m3-answer">Your answer (the "het" word):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 04 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Speed-of-Light Lock</h2>
+    <div class="puzzle">
+      <p>To wake up its main computer, Aurora needs a secret number code. Here is the clue it gives you:</p>
+      <p>Light from the Sun takes about <strong>8 minutes</strong> to travel all the way to Earth. Detectives
+      round that to a neat 8 minutes.</p>
+      <p>Your code is the answer to this: <strong>how many seconds are there in exactly 8 minutes?</strong>
+      (Type just the number.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>One minute is 60 seconds. So 8 minutes is 8 × 60. Work that out and you have the code.</p></details>
+    <div class="answer-box" data-answer-hash="1a4440e3">
+      <label for="m4-answer">Your answer (a number of seconds):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The footprints astronauts left on the Moon could stay there for millions of years. The Moon has almost no wind and no rain, so there is almost nothing to wipe them away.</p>
+
+<!-- MISSION 05 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The First Flyer</h2>
+    <div class="puzzle">
+      <p>Aurora's log mentions a famous "cousin" robot — the first machine ever to fly like a helicopter on
+      <strong>another planet</strong>. In 2021, NASA's <em>Perseverance</em> rover carried this tiny helicopter
+      to <strong>Mars</strong>, and it lifted off into the thin Martian air. It was only about the size of a
+      tissue box, but it made history.</p>
+      <p><strong>Your internet task:</strong> Search for the name of NASA's little Mars helicopter. Type its
+      one-word name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search: <em>first helicopter to fly on Mars 2021</em>. It flew above the Perseverance rover in a place called Jezero Crater.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Its name starts with "In-" and means cleverness or inventiveness — the kind of word you'd use for a really smart, clever idea.</p></details>
+    <div class="answer-box" data-answer-hash="500e82bd">
+      <label for="m5-answer">Your answer (one word):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 06 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Which Planet Did She Study?</h2>
+    <div class="puzzle">
+      <p>Three of Aurora's crew — <strong>Mila</strong>, <strong>Sam</strong> and <strong>Tom</strong> — each
+      studied one planet: <strong>Mars</strong>, <strong>Venus</strong> or <strong>Jupiter</strong>. Use the
+      clues to work out who studied <strong>Jupiter</strong>, the giant planet with the Great Red Spot.</p>
+      <p><strong>Clue 1:</strong> Sam studied the hottest planet in the solar system.<br>
+      <strong>Clue 2:</strong> Tom studied the planet that has exactly two small moons.<br>
+      <strong>Clue 3:</strong> Each crew member studied a different planet.</p>
+      <p>Who studied Jupiter? (Type the crew member's first name.) Not sure which planet is the hottest, or which
+      one has two moons? You're allowed to look it up!</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the facts you can check online. Which of these three planets is the hottest? Which one has two little moons? Once you know those two, only one crew member is left.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The hottest planet is Venus, so that's Sam's. The planet with two moons (they are called Phobos and Deimos) is Mars, so that's Tom's. Only one crew member and one planet have not been used yet.</p></details>
+    <div class="answer-box" data-answer-hash="8e8e8414">
+      <label for="m6-answer">Your answer (a first name):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Jupiter's Great Red Spot is a giant storm that has been swirling for hundreds of years — and it is so wide that the whole planet Earth could fit inside it.</p>
+
+<!-- MISSION 07 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp finale">AHA!</span>
+    <h2>The Beacon's Secret Word</h2>
+    <div class="puzzle">
+      <p>Aurora's beacon keeps flashing one secret word — but every letter was pushed <strong>3 steps forward</strong>
+      in the alphabet to hide it. To read the real word, shift each letter <strong>3 steps back</strong>
+      (so D → A, E → B, F → C, and so on).</p>
+      <p>The hidden word flashing from Aurora is:</p>
+      <p style="font-size:1.5rem; letter-spacing:0.4rem; text-align:center; color:var(--accent-dark);"><strong>F R P H W</strong></p>
+      <p>What real word appears when you decode it? (Type the word.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write out the alphabet: A B C D E F G … For each letter, count 3 steps backwards. For example, F → (E, D, C) → C. Now do the same for R, P, H and W.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Decode them one at a time: F → C, R → O. Keep going with P, then H, then W, and read the five letters together.</p></details>
+    <div class="answer-box" data-answer-hash="c50e150f">
+      <label for="m7-answer">Your answer (the decoded word):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Aurora's Final Gift</h2>
+    <div class="puzzle">
+      <p>You've done it, Detective. Aurora's last message is almost clear. It says it found the brand-new space
+      object you decoded in Mission 07 — right at the very edge of the solar system — and it wants to name that
+      find after the one thing that powered your whole investigation.</p>
+      <p>Aurora sends you nine scrambled letters:</p>
+      <p style="font-size:1.4rem; letter-spacing:0.35rem; text-align:center; color:var(--finale);"><strong>V R E Y D I S C O</strong></p>
+      <p>Unscramble them into one <strong>9-letter English word</strong> that means "finding something no one has
+      ever found before." Type that word to receive Aurora's final gift.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The word starts with "D". Think about what an explorer or a detective does when they find something completely new that nobody has ever seen.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It is the naming word (noun) that goes with the verb "to discover". It begins D-I-S-C-O… keep going to the end.</p></details>
+    <div class="answer-box" data-answer-hash="89fa7115">
+      <label for="finale-answer">Your answer (the 9-letter word):</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Aurora's batteries went quiet for the very last time — but not before handing you its greatest treasure:
+  <strong>DISCOVERY</strong>. Every code you cracked and every fact you hunted down is exactly what real
+  explorers do. You didn't just find Aurora's comet; you proved you have the curiosity and courage of a true
+  Space Detective. 🚀</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
