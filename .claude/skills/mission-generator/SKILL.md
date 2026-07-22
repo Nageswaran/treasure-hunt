@@ -69,7 +69,7 @@ Solve every puzzle yourself, the same way the child would: do the actual search,
 
 ## Output: one folder per mission, two files inside
 
-Every mission lives in its own folder, named after the theme in kebab-case (e.g. `broken-bicycle`, `missing-birthday-present`), saved directly inside the local `treasure-hunt` repo at `/Users/nageswaran/github/treasure-hunt/<theme-slug>/` — the same level as the existing `broken-bicycle/`, `museum-heist/`, and `mummys-warning/` folders there. If that path doesn't exist on this machine, search for a repo named `treasure-hunt` before falling back to anywhere else, and confirm with the user where to save.
+Every mission lives in its own folder, named after the theme in kebab-case (e.g. `broken-bicycle`, `missing-birthday-present`), saved at the root of the `treasure-hunt` repo checkout you're already working in — the same level as the existing `broken-bicycle/`, `museum-heist/`, and `mummys-warning/` folders there. On the primary local machine that repo lives at `/Users/nageswaran/github/treasure-hunt/`; if you're instead running from a different checkout (a fresh clone, a cloud/CI sandbox), use that checkout's root instead of the absolute local path — don't assume `/Users/nageswaran/...` exists. If no `treasure-hunt` checkout is available at all, say so and confirm with the user where to save.
 
 Inside the folder, always exactly two files, with these exact names (not `mission-<theme>.html` — just `mission.html`, since the folder name already carries the theme):
 
@@ -80,10 +80,10 @@ The answer key must never be visible to the child — the moment they can peek, 
 
 Read both templates fully before writing — match their structure and CSS, swap in fresh content, and adjust only the accent color/imagery to suit the theme (keep the overall case-file look consistent across missions so it stays recognizable as "Internet Detective Academy").
 
-Save to:
-- `/Users/nageswaran/github/treasure-hunt/<theme-slug>/mission.html`
-- `/Users/nageswaran/github/treasure-hunt/<theme-slug>/answer.html`
-- `/Users/nageswaran/github/treasure-hunt/<theme-slug>/images/` — only if any images were downloaded locally (see Images below); omit this folder entirely if every image is linked externally.
+Save to (relative to the repo checkout root, see above):
+- `<theme-slug>/mission.html`
+- `<theme-slug>/answer.html`
+- `<theme-slug>/images/` — only if any images were downloaded locally (see Images below); omit this folder entirely if every image is linked externally.
 
 After writing both files, regenerate the index (see step 11 of the process above) before telling the user you're done. When you present the files, say plainly which one is for the parent and suggest they keep it closed unless the child is stuck or done.
 
