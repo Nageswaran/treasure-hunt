@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{MISSION TITLE}} — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /*
+    THEMING: this file's accent color should shift per mission theme.
+    Swap --accent / --accent-dark to fit the story (examples):
+      treasure/pirate  -> gold:    #B5792B / #8A5A1E
+      space/ocean      -> teal:   #2E7D8C / #1F5965
+      egypt/desert     -> ochre:  #C08A2E / #8F6420
+      forest/nature    -> green:  #4C7A52 / #355B3A
+    Leave the rest of the system (paper, ink, stamp colors) as-is so every
+    mission still reads as the same Internet Detective Academy series.
+  */
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #B5792B;
+    --accent-dark: #8A5A1E;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>{{MISSION TITLE}}</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: {{e.g. "45-60 minutes" — rough total across all missions, for parents planning a session}}</div>
+</div>
+
+<div class="intro">
+  {{2-4 sentence story intro: what's missing/wrong/hidden, why the child has been called in, and what solving the final mission will reveal}}
+</div>
+
+<!--
+  Repeat ONE .mission block per mission (6-8 total), in order, following the
+  difficulty curve: Easy, Easy, Medium, Medium, Hard, Hard, Big "Aha!", Grand Finale.
+  The block below shows the full markup pattern for an EASY mission with an
+  image clue — copy this shape for every mission, deleting parts that don't apply
+  (e.g. no <img> if that mission isn't image-based, only one <details class="hint">
+  if it's an Easy/Medium mission).
+-->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>{{Mission title, written like a detective briefing}}</h2>
+    <div class="puzzle">
+      <p>{{The puzzle/question itself, in story voice}}</p>
+    </div>
+    <img class="clue-img" src="{{REAL image URL found via image_search, OR a relative path like images/mission-03.jpg if it was downloaded into this mission's folder}}" alt="{{short alt text}}">
+    <div class="clue-caption">{{one line telling the child what to look for in the image, without giving away the answer}}</div>
+    <details class="hint"><summary>Hint 1</summary><p>{{gentle nudge — where/how to look, not what to find}}</p></details>
+    <div class="answer-box" data-answer-hash="{{hashAnswer('normalized correct answer') — computed with the hashAnswer() function in the script at the bottom of this file, see Answer Checking in SKILL.md}}">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Insert a .fact block between some missions (2-3 total across the set), verified via web_search: -->
+<p class="fact">💡 Did you know? {{verified easter-egg fact}}</p>
+
+<!--
+  Example of a HARD mission with two hints — use this pattern for missions 5-6:
+
+  <div class="mission">
+    <div class="tab">MISSION 05</div>
+    <div class="mission-body">
+      <span class="stamp hard">HARD</span>
+      <h2>{{title}}</h2>
+      <div class="puzzle"><p>{{puzzle text}}</p></div>
+      <details class="hint"><summary>Hint 1</summary><p>{{gentle nudge}}</p></details>
+      <details class="hint"><summary>Hint 2</summary><p>{{stronger clue}}</p></details>
+      <div class="answer-box" data-answer-hash="{{hashAnswer('normalized correct answer')}}">
+        <label for="m5-answer">Your answer:</label>
+        <div class="answer-row">
+          <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+          <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+        </div>
+        <p class="check-result" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+-->
+
+<!-- The LAST mission always uses class="mission finale" and tab text "GRAND FINALE": -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>{{final mission title}}</h2>
+    <div class="puzzle">
+      <p>{{final puzzle — solving it reveals the reward word}}</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>{{gentle nudge}}</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>{{stronger clue}}</p></details>
+    <div class="answer-box" data-answer-hash="{{hashAnswer('normalized correct answer')}}">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>{{1-2 sentence closing line that ties the reward value (curiosity / courage / discovery / creativity / teamwork / kindness / wisdom / perseverance) back to the story, congratulating the agent on cracking the case}}</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

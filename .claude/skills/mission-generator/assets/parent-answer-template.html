@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Answer Key — {{MISSION TITLE}}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Use the SAME --accent color here as in the matching kid-mission file, so the two are visually linked as one case. */
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #B5792B;
+    --stamp-red: #A33B2D;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+  }
+  h1, .banner, .label-eyebrow { font-family: 'Special Elite', monospace; }
+  .banner {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    border: 3px solid var(--stamp-red);
+    color: var(--stamp-red);
+    padding: 0.9rem 1rem;
+    transform: rotate(-1deg);
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2rem; }
+  .case-header h1 { font-size: clamp(1.5rem, 4.5vw, 2.1rem); margin: 0; }
+  .case-header .subtitle { color: rgba(0,0,0,0.55); font-size: 0.9rem; margin-top: 0.4rem; }
+  .answer-card {
+    max-width: 700px;
+    margin: 0 auto 1.6rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    padding: 1.5rem 1.6rem;
+  }
+  .answer-card .eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+  .answer-card h2 { margin: 0.2rem 0 0.9rem; font-size: 1.15rem; }
+  .answer {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+    background: var(--paper-dark);
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 3px;
+  }
+  .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(0,0,0,0.5); margin-top: 1rem; }
+  .answer-card p { margin: 0.35rem 0 0; }
+  .answer-card a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="banner">🔒 CONFIDENTIAL — PARENT / GUARDIAN ANSWER KEY — DO NOT SHOW TO THE CHILD</div>
+
+<div class="case-header">
+  <h1>{{MISSION TITLE}} — Answer Key</h1>
+  <div class="subtitle">Keep this closed until your agent is stuck or finished. Matches mission.html in this same folder.</div>
+</div>
+
+<!-- Repeat ONE .answer-card per mission, same order/numbering as the kid file -->
+<div class="answer-card">
+  <div class="eyebrow">Mission 01 &middot; Easy</div>
+  <h2>{{Mission title}}</h2>
+  <div class="answer">Answer: {{exact answer}}</div>
+  <div class="label">How to get there</div>
+  <p>{{step-by-step explanation a parent could read aloud if the child needs more than the in-app hints}}</p>
+  <div class="label">Why this is the only answer</div>
+  <p>{{one line on what would make a different reading of the clue wrong}}</p>
+  <div class="label">Source / fact used</div>
+  <p>{{source name, and a link if it's a web source — this is also where you note the result of your web_search verification}}</p>
+</div>
+
+<!-- ...one .answer-card per remaining mission... -->
+
+<div class="answer-card">
+  <div class="eyebrow">Grand Finale</div>
+  <h2>{{final mission title}}</h2>
+  <div class="answer">Answer: {{exact answer}}</div>
+  <div class="label">How to get there</div>
+  <p>{{explanation}}</p>
+  <div class="label">Why this is the only answer</div>
+  <p>{{uniqueness note}}</p>
+  <div class="label">Source / fact used</div>
+  <p>{{source}}</p>
+  <div class="label">Reward revealed</div>
+  <p>{{the value word — curiosity / courage / discovery / creativity / teamwork / kindness / wisdom / perseverance — and how the answer spells/reveals it}}</p>
+</div>
+
+</body>
+</html>
