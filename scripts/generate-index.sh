@@ -169,7 +169,7 @@ done < <(
         fi
         printf '%s\t%s\n' "$added" "$d"
       done \
-    | sort -r \
+    | sort \
     | cut -f2
 )
 
