@@ -103,6 +103,16 @@
     display: block;
   }
   .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
   details.hint {
     margin-top: 0.7rem;
     background: var(--paper-dark);
@@ -222,6 +232,47 @@
         <label for="m5-answer">Your answer:</label>
         <div class="answer-row">
           <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+          <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+        </div>
+        <p class="check-result" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+-->
+
+<!--
+  Example of a geometry/measurement mission using a self-drawn diagram instead
+  of a found image (see "Diagrams" in SKILL.md) — worked, correct example:
+  an L-shaped garden = a 12m x 8m rectangle with a 5m x 3m notch removed from
+  the top-right corner. Scale used below: 1 meter = 16px.
+  Area = (12 x 8) - (5 x 3) = 96 - 15 = 81 m². Perimeter = 7+3+5+5+12+8 = 40 m.
+  Swap the theme/numbers/answer for your actual puzzle, but keep the pattern:
+  build the polygon from the exact numbers you label, so picture and math
+  always agree.
+
+  <div class="mission">
+    <div class="tab">MISSION 03</div>
+    <div class="mission-body">
+      <span class="stamp medium">MEDIUM</span>
+      <h2>{{title, e.g. "The Gardener's Missing Measurement"}}</h2>
+      <div class="puzzle"><p>{{puzzle text asking for the garden's total area in square meters — swap to perimeter and re-hash "40" instead if you want a perimeter question}}</p></div>
+      <svg class="clue-diagram" viewBox="0 0 260 190" width="260" height="190"
+           role="img" aria-label="An L-shaped garden: a large rectangle with a smaller rectangular notch cut from the top-right corner">
+        <polygon points="20,20 132,20 132,68 212,68 212,148 20,148"
+                 fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+        <text x="76" y="12" text-anchor="middle" font-size="12">7 m</text>
+        <text x="172" y="62" text-anchor="middle" font-size="12">5 m</text>
+        <text x="238" y="112" text-anchor="middle" font-size="12" transform="rotate(-90 238 112)">5 m</text>
+        <text x="116" y="168" text-anchor="middle" font-size="12">12 m</text>
+        <text x="8" y="88" text-anchor="middle" font-size="12" transform="rotate(-90 8 88)">8 m</text>
+        <text x="150" y="48" text-anchor="middle" font-size="12" transform="rotate(-90 150 48)">3 m</text>
+      </svg>
+      <div class="clue-caption">{{one line telling the child what to do with the marked measurements, without giving away the formula/answer}}</div>
+      <details class="hint"><summary>Hint 1</summary><p>{{e.g. "Try splitting the L-shape into two rectangles."}}</p></details>
+      <div class="answer-box" data-answer-hash="9101a8c2">
+        <label for="m3-answer">Your answer:</label>
+        <div class="answer-row">
+          <input id="m3-answer" type="text" placeholder="Type what you discovered...">
           <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
         </div>
         <p class="check-result" aria-live="polite"></p>

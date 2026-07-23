@@ -1,6 +1,6 @@
 ---
 name: mission-generator
-description: "Generates a complete, ready-to-play 'Internet Detective Academy' mission: an educational detective-mystery/treasure-hunt/escape-room adventure for a 10-year-old (Dutch Group 6 level) that teaches real skills (math, language, geography, science, logic, cryptography, internet research, financial literacy, history, internet safety) through 6-8 difficulty-curved missions with hints and exactly one correct, verified answer per puzzle. Produces one folder per mission (named after the theme, e.g. broken-bicycle/) containing exactly two files inside it: mission.html (kid-facing) and answer.html (parent-only answer key) — this matches the Nageswaran/treasure-hunt repo layout so the folder can be dropped straight in and pushed. Use whenever the user says 'generate a mission,' asks for an Internet Detective Academy adventure, or asks to build any detective mystery, treasure hunt, escape-room game, secret-agent mission, or educational scavenger hunt for a child, even phrased casually ('make my kid another puzzle adventure', 'a fun screen-time activity that's actually educational'). Also use for making an existing mission harder/easier, a new theme, or more puzzles."
+description: "Generates a complete, ready-to-play 'Internet Detective Academy' mission: an educational detective-mystery/treasure-hunt/escape-room adventure for a 10-year-old (Dutch Group 6 level) that teaches real skills (math, geometry/measurement, logical reasoning, language, geography, science, cryptography, internet research, financial literacy, history, internet safety) through 6-10 difficulty-curved missions with hints and exactly one correct, verified answer per puzzle. Can draw its own shape diagrams (inline SVG) for area/perimeter/measurement puzzles instead of relying on external images. Produces one folder per mission (named after the theme, e.g. broken-bicycle/) containing exactly two files inside it: mission.html (kid-facing) and answer.html (parent-only answer key) — this matches the Nageswaran/treasure-hunt repo layout so the folder can be dropped straight in and pushed. Use whenever the user says 'generate a mission,' asks for an Internet Detective Academy adventure, or asks to build any detective mystery, treasure hunt, escape-room game, secret-agent mission, or educational scavenger hunt for a child, even phrased casually ('make my kid another puzzle adventure', 'a fun screen-time activity that's actually educational'). Also use for making an existing mission harder/easier, a new theme, or more puzzles."
 ---
 
 # Internet Detective Academy — Mission Generator
@@ -20,9 +20,13 @@ A 10-year-old playing this should feel like a real investigator who cracked the 
 
 1. **Pick a story theme.** Pull from `references/puzzle-library.md` or invent one in the same spirit (mystery / treasure hunt / escape room / secret agent / archaeological dig / science expedition). Never repeat a theme already used earlier in this conversation or already present as a folder in the repo (see "When you're invoked" above).
 2. **Pick 4-6 learning domains** for this mission set from `references/learning-domains.md`. Spread them across missions rather than clustering — don't reuse the exact same 4-6 combo two missions in a row.
-3. **Build 6-8 missions** following this difficulty curve: Easy, Easy, Medium, Medium, Hard, Hard, Big "Aha!" moment, Grand Finale. (6 missions is fine for a shorter session — drop two of the middle ones, keep the curve shape.)
+3. **Build 6, 8, or 10 missions** following this difficulty curve, choosing the length based on the user's request (default 8 if unspecified):
+   - **6** (shorter session): Easy, Easy, Medium, Medium, Hard, Grand Finale.
+   - **8** (default): Easy, Easy, Medium, Medium, Hard, Hard, Big "Aha!" moment, Grand Finale.
+   - **10** (longer session): Easy, Easy, Medium, Medium, Medium, Hard, Hard, Hard, Big "Aha!" moment, Grand Finale.
 4. **Check the full set covers:**
-   - At least 1 dedicated logical-reasoning puzzle (sequence, elimination, logic grid, truth/lies, deduction, spatial reasoning...)
+   - At least 1 dedicated logical-reasoning puzzle for a 6- or 8-mission set, **at least 2** for a 10-mission set (sequence, elimination, logic grid, truth/lies, deduction, spatial reasoning — see the Logical Reasoning domain). These must be solvable purely by reasoning from the clues given, never by looking anything up.
+   - If Mathematics is one of the chosen domains, consider at least one geometry/measurement puzzle: a shape (or combination of shapes) you draw yourself as a labeled diagram, where the child finds the area, perimeter, or a missing measurement (see "Diagrams" below).
    - At least 3 missions requiring active internet use (search, read an article, compare two sites, Google Maps/Street View, a museum site, Wikipedia)
    - At least 1 mission solved mainly by close observation of a real image
    - Roughly the spread in **Skill balance** below across the whole set (it's fine for one mission to satisfy two categories at once)
@@ -46,6 +50,8 @@ Solve every puzzle yourself, the same way the child would: do the actual search,
 - Rewrite or replace any puzzle that has ambiguous wording, more than one defensible answer, an answer that depends on opinion, or that relies on information that changes (news, sports results, rankings, prices, anything "current").
 - For each answer, sanity-check uniqueness: would any other reasonable reading of the clue lead somewhere else? If yes, tighten the wording.
 - Double-check no puzzle's story/flavor text accidentally leaks its own answer.
+- For any math/geometry puzzle (including diagram-based ones), actually recompute the answer from the same numbers stated in the puzzle — don't eyeball it. For a diagram, also check that every coordinate you drew is mutually consistent with the labeled dimensions (e.g. in an L-shaped figure, the two rectangles' shared edges must actually add up), so the picture never contradicts the numbers.
+- For a logical-reasoning puzzle, actually work it yourself from only the clues given (no answer key, no shortcuts) to confirm it's solvable and has exactly one forced solution — if you find yourself needing to guess or check multiple branches, tighten the clue set.
 
 ## Hint system
 
@@ -54,9 +60,18 @@ Solve every puzzle yourself, the same way the child would: do the actual search,
 
 ## Skill balance (across the whole set, not per-mission)
 
+For a 6- or 8-mission set:
 - 1 mathematics challenge
 - 1 language challenge (Dutch only when the puzzle is specifically testing Dutch — see Language Rules)
 - 1 logical-reasoning challenge
+- 1 internet-research challenge
+- 1 challenge from geography, science, history, or technology
+- 1 creative "aha" challenge
+
+For a 10-mission set, double up the two most important categories instead of just adding filler:
+- 2 mathematics challenges (if Mathematics is a chosen domain, make at least one of these a geometry/measurement diagram puzzle)
+- 2 logical-reasoning challenges (different mechanics from each other — e.g. one logic grid, one sequence/pattern)
+- 1 language challenge
 - 1 internet-research challenge
 - 1 challenge from geography, science, history, or technology
 - 1 creative "aha" challenge
@@ -106,6 +121,15 @@ Two ways an image can end up in a mission, and when to use each:
 2. **Optional — download the image into the mission's own `images/` folder**, if the person asks for locally-hosted images (so nothing depends on a third-party link staying alive) or if you're re-processing an image (cropping, combining). Use `curl`/`Bash` or `WebFetch` to save it under the mission's own `images/` folder in the repo (see path above) — this is a local machine, not a restricted hosted sandbox, so most image hosts should work directly. If a particular download does fail (paywall, bot-blocking, rate limit), don't fight it: fall back to linking that image externally instead, and tell the person plainly which images could be downloaded and which had to stay linked.
 
 Either way, run the same verification: an image-based puzzle only ships if you've actually looked at the image and confirmed the clue is unambiguous in it.
+
+## Diagrams: drawing your own shapes for measurement puzzles
+
+For area/perimeter/measurement puzzles, don't go looking for a stock image — draw the shape yourself, since you control the exact numbers and can guarantee the diagram and the math agree.
+
+- **Default: plain inline SVG, no external library.** Draw the shape directly in `mission.html` as an inline `<svg>...</svg>` (see the geometry example in `assets/kid-mission-template.html`), styled with the `.clue-diagram` class already in the template's CSS. This needs no network access, works offline from a local file, and keeps the mission fully self-contained — consistent with everything else in this file.
+- **Build it to scale.** Pick a consistent unit-to-pixel scale (e.g. 1 cm = 20px) and use it for every shape in that puzzle, so the diagram is genuinely proportioned, not just decorative. Label each side length directly on the diagram with SVG `<text>` elements — the child should be able to read every dimension they need straight off the picture.
+- **Optional polish:** if you want a hand-drawn/sketched look (fitting the case-file paper aesthetic), a small permissively-licensed drawing library loaded from a CDN (e.g. a sketchy-rendering library for canvas/SVG) is fine to use — the user has explicitly OK'd this. Treat it as optional visual polish only, though: it's an external network dependency like the Google Fonts link already in the template, so it can fail to load if the page is ever opened offline. Never make a puzzle depend on it rendering correctly — the plain SVG shape and its labeled dimensions must already be fully solvable without it.
+- **Composite shapes are the interesting case.** An L-shaped garden, a room with a rectangular alcove, two rectangles joined at an edge — these test whether the child can decompose a shape into simpler pieces. Give enough dimensions to solve it (not necessarily every side — a classic composite-shape puzzle gives you the outer dimensions plus one notch, and the child derives the rest), and verify in Red-Team Validation that the given numbers are actually sufficient and self-consistent.
 
 ## Reference files
 

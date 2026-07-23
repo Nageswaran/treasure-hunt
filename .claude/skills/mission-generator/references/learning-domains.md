@@ -7,8 +7,12 @@ de vs het words, spelling patterns, grammar, synonyms and opposites, word catego
 *Seeds: "Is it 'de' or 'het' [woord]?" sorting puzzle; unscramble a Dutch word from letters found in clues; find the odd-one-out in a list of synonyms.*
 
 ## ➕ Mathematics
-arithmetic, percentages, fractions, dates and timelines, prime numbers, number patterns, estimation, basic geometry.
-*Seeds: a discount/percentage puzzle tied to a "shop" in the story; a number-pattern lock combination; calculating how many days/years between two real historical dates.*
+arithmetic, percentages, fractions, dates and timelines, prime numbers, number patterns, estimation, geometry and measurement.
+*Seeds: a discount/percentage puzzle tied to a "shop" in the story; a number-pattern lock combination; calculating how many days/years between two real historical dates; find the area or perimeter of a composite shape (e.g. an L-shaped garden made of two rectangles, or a room with a rectangular alcove) drawn as a labeled diagram — see "Diagrams" in SKILL.md for how to draw these; find a missing side length given a shape's total perimeter or area; compare the area of two differently-shaped regions to see which is bigger.*
+
+## 🧩 Logical Reasoning
+deduction from clues, elimination, sequences and patterns, truth-tellers and liars, spatial/visual reasoning, multi-step reasoning chains.
+*Seeds: a logic grid ("who owns the red bike?") solved by combining 3-4 clues through elimination; a knights-and-knaves puzzle where one character always lies; a sequence of shapes/numbers where the child finds the next one and explains the rule; a multi-step chain where solving clue A is required to even understand clue B; a spatial puzzle (which of these folded/rotated shapes matches the original?). The defining trait of a *good* one: solvable purely by reasoning from the clues given, with exactly one logically forced answer — no outside lookup, no lucky guessing.*
 
 ## 🌍 Geography & World Knowledge
 countries and capitals, flags, rivers and mountains, continents, time zones, distances, maps.

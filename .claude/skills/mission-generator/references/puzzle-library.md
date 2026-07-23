@@ -37,6 +37,8 @@ Mix and match across the mission set — avoid leaning on the same mechanic for 
 - Comparing sources (which of two claims/sites is actually correct)
 - Finding the mistake (in a sentence, image, or claim)
 - Multi-step reasoning chains (clue A unlocks clue B unlocks the answer)
+- Measurement puzzles from a drawn diagram (a shape you draw yourself to the exact stated dimensions — area, perimeter, a missing side length, or comparing two composite/combined regions; see "Diagrams" in SKILL.md)
+- Logic grids and knights-and-knaves (deduce the answer from a small set of clues, purely by elimination)
 
 ## "Did you know?" facts — examples of the right shape
 
