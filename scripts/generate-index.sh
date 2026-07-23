@@ -161,8 +161,16 @@ done < <(
     -name "mission.html" \
     ! -path "./.github/*" \
     -exec dirname {} \; \
-    | sort \
-    | sed 's|^\./||'
+    | sed 's|^\./||' \
+    | while IFS= read -r d; do
+        added=$(git log --follow --diff-filter=A --format=%aI -- "$d/mission.html" 2>/dev/null | tail -1)
+        if [ -z "$added" ]; then
+          added=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        fi
+        printf '%s\t%s\n' "$added" "$d"
+      done \
+    | sort -r \
+    | cut -f2
 )
 
 cat >> index.html <<'EOF'
