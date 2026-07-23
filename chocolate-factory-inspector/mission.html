@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Chocolate Factory Inspector — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #7A4B28;
+    --accent-dark: #5A3719;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .note {
+    background: rgba(122,75,40,0.09);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 0.9rem;
+    margin: 0.8rem 0;
+  }
+  .clue-img, .clue-svg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+    background: #fff;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Chocolate Factory Inspector</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-75 minutes</div>
+</div>
+
+<div class="intro">
+  <p>De Bruin Chocolate Factory has been making chocolate in the Dutch town of Zaandam for three generations. This week they have their biggest order ever: 240 boxes of pralines for the town's 100th Chocolate Festival, due by Friday.</p>
+  <p>But this morning, in all the rush, the factory's <strong>recept-ledger</strong> — the leather notebook holding the family's exact secret recipe — went missing. Mrs. Nel de Bruin has called you in as Junior Inspector.</p>
+  <p>Follow the clues through the factory. Solve every mission, and you will not only find the ledger — you will uncover the one quality that has kept this little factory going for a hundred years.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Ledger Shelf</h2>
+    <div class="puzzle">
+      <p>The office shelf is crowded with old leather notebooks: order books, delivery logs, and recipe books, all mixed together.</p>
+      <p>Only real recipe ledgers in the de Bruin family carry one special mark: a small <strong>gold cacao-pod seal</strong> stamped on the spine. Study the shelf below.</p>
+      <p>How many notebooks on the shelf show the gold cacao-pod seal?</p>
+    </div>
+    <svg class="clue-svg" viewBox="0 0 500 260" role="img" aria-label="A wooden shelf holding twelve leather notebooks of different colors standing side by side, some with small round stamps on their spines">
+      <rect x="0" y="0" width="500" height="260" fill="#f4ecd8"/>
+      <rect x="0" y="228" width="500" height="14" fill="#8a5a2e"/>
+      <rect x="0" y="242" width="500" height="10" fill="#5a3d26"/>
+
+      <rect x="20" y="50" width="40" height="178" fill="#6d4c30" stroke="#3d2a18" stroke-width="1.5"/>
+      <line x1="20" y1="70" x2="60" y2="70" stroke="#3d2a18" stroke-width="1"/>
+
+      <rect x="62" y="60" width="35" height="168" fill="#8a5a2e" stroke="#3d2a18" stroke-width="1.5"/>
+      <circle cx="79.5" cy="80" r="8" fill="#d4af37" stroke="#8f6420" stroke-width="1.5"/>
+      <line x1="79.5" y1="75" x2="79.5" y2="85" stroke="#8f6420" stroke-width="1"/>
+
+      <rect x="99" y="45" width="30" height="183" fill="#4c3620" stroke="#2b1f12" stroke-width="1.5"/>
+      <line x1="99" y1="65" x2="129" y2="65" stroke="#2b1f12" stroke-width="1"/>
+
+      <rect x="131" y="55" width="45" height="173" fill="#7a2419" stroke="#4a1610" stroke-width="1.5"/>
+      <circle cx="153.5" cy="78" r="8" fill="#b3382c" stroke="#7a2419" stroke-width="1.5"/>
+      <text x="146" y="82" font-family="Arial" font-size="8" fill="#fff">R</text>
+
+      <rect x="178" y="62" width="32" height="166" fill="#355b3a" stroke="#1e3521" stroke-width="1.5"/>
+      <line x1="178" y1="82" x2="210" y2="82" stroke="#1e3521" stroke-width="1"/>
+
+      <rect x="212" y="48" width="38" height="180" fill="#8a5a2e" stroke="#3d2a18" stroke-width="1.5"/>
+      <circle cx="231" cy="72" r="8" fill="#d4af37" stroke="#8f6420" stroke-width="1.5"/>
+      <line x1="231" y1="67" x2="231" y2="77" stroke="#8f6420" stroke-width="1"/>
+
+      <rect x="252" y="58" width="28" height="170" fill="#1f5965" stroke="#0d2a30" stroke-width="1.5"/>
+      <line x1="252" y1="78" x2="280" y2="78" stroke="#0d2a30" stroke-width="1"/>
+
+      <rect x="282" y="52" width="42" height="176" fill="#6d4c30" stroke="#3d2a18" stroke-width="1.5"/>
+      <circle cx="303" cy="76" r="6" fill="#b0b0b0" stroke="#707070" stroke-width="1.5"/>
+
+      <rect x="326" y="44" width="34" height="184" fill="#4c3620" stroke="#2b1f12" stroke-width="1.5"/>
+      <circle cx="343" cy="68" r="8" fill="#d4af37" stroke="#8f6420" stroke-width="1.5"/>
+      <line x1="343" y1="63" x2="343" y2="73" stroke="#8f6420" stroke-width="1"/>
+
+      <rect x="362" y="60" width="36" height="168" fill="#7a2419" stroke="#4a1610" stroke-width="1.5"/>
+      <line x1="362" y1="82" x2="398" y2="82" stroke="#4a1610" stroke-width="1"/>
+
+      <rect x="400" y="66" width="30" height="162" fill="#355b3a" stroke="#1e3521" stroke-width="1.5"/>
+      <line x1="400" y1="86" x2="430" y2="86" stroke="#1e3521" stroke-width="1"/>
+
+      <rect x="432" y="50" width="40" height="178" fill="#8a5a2e" stroke="#3d2a18" stroke-width="1.5"/>
+      <line x1="432" y1="72" x2="472" y2="72" stroke="#3d2a18" stroke-width="1"/>
+
+      <text x="14" y="20" font-family="Arial" font-size="12" fill="#2B2A24">De Bruin Chocolate Factory — Office Shelf</text>
+    </svg>
+    <div class="clue-caption">Watch closely — a plain silver rivet and a red "RETURNED" stamp are on the shelf too, but neither of those counts as the gold cacao-pod seal.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Look only for round <strong>gold</strong> circles near the top of a spine, each with a small stem line through the middle like a tiny cacao pod. Skip anything silver or red.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type a number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Words on the Corkboard</h2>
+    <div class="puzzle">
+      <p>Pinned to the office corkboard are four old note cards. Each one has a factory word, but the little word in front of it (called a <strong>lidwoord</strong>, or article, in Dutch — "de" or "het") has faded away:</p>
+      <div class="note">___ chocolade &nbsp;·&nbsp; ___ cacao &nbsp;·&nbsp; ___ fabriek &nbsp;·&nbsp; ___ recept</div>
+      <p>Three of these words use <strong>"de"</strong>. Only ONE of them uses <strong>"het"</strong> instead. Search online (a Dutch dictionary site works well) to check each word if you're not sure.</p>
+      <p>Which single word uses "het"?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "de of het" followed by each word, one at a time. Most Dutch nouns use "de" — this one is the exception.</p></details>
+    <div class="answer-box" data-answer-hash="6ed0d78">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? In the Aztec empire, cacao beans were sometimes used as real money. One record from 1545 shows a turkey hen cost about 100 cacao beans!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Festival Order</h2>
+    <div class="puzzle">
+      <p>The festival committee ordered <strong>240 boxes</strong> of pralines. Each box normally costs <strong>€5</strong>.</p>
+      <p>Because it's such a huge order, Nel is giving the committee a <strong>15% discount</strong> off the total price.</p>
+      <p>What is the total price AFTER the discount, in euros? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the full price with no discount: 240 boxes × €5. Then work out what 15% of that total is.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>240 × 5 = 1200. 15% of 1200 is the same as 1200 × 0.15. Subtract that amount from 1200.</p></details>
+    <div class="answer-box" data-answer-hash="8e9cf1f6">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Checking the Rules</h2>
+    <div class="puzzle">
+      <p>One torn ledger page claims: "Our festival pralines are proper dark chocolate." Before trusting that page, you decide to fact-check it properly.</p>
+      <p>Search online — Wikipedia's "Types of chocolate" article is a good place to look — to find the official rule: what is the <strong>minimum percentage of cocoa solids</strong> a chocolate bar must contain to legally be called "dark chocolate"?</p>
+      <div class="note">Type just the number, with no % sign.</div>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "minimum cocoa percentage dark chocolate rule." Look for a rule used across the European Union.</p></details>
+    <div class="answer-box" data-answer-hash="8cf05955">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Nearly half of the world's cocoa beans — about 40 to 45% — are grown in just one country: Ivory Coast, in West Africa.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Bean Suppliers</h2>
+    <div class="puzzle">
+      <p>To finish the order, the factory needs one more 25 kg bag of cacao beans. Two suppliers sent invoices:</p>
+      <div class="note">
+        <strong>Supplier A:</strong> €80 for the bag. Delivery is free.<br>
+        <strong>Supplier B:</strong> €68 for the bag, plus a separate €15 "handling and delivery" fee.
+      </div>
+      <p>Add up the TRUE total cost for each supplier, including every fee. Once you include everything, how many euros CHEAPER is the better deal than the other one?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Don't just compare the bag prices. Supplier B's invoice has a second line you need to add in before comparing.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Supplier A's true total is €80. Supplier B's true total is €68 + €15. Compare those two totals.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Name on the Wall</h2>
+    <div class="puzzle">
+      <p>A framed newspaper clipping hangs by the office door. Part of it reads:</p>
+      <div class="note">"...in 1828, this Dutch family patented a hydraulic press that squeezed the fat out of roasted cacao beans, leaving a dry cake that could be ground into cocoa powder — helping launch modern chocolate-making as we know it..."</div>
+      <p>Search online to find out: what <strong>surname</strong> (family name) is credited with this 1828 invention?</p>
+      <div class="note">Type the full surname, including the word "Van".</div>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "1828 cocoa press invented" or "Dutch process cocoa." This same Dutch family name is still on cocoa tins today.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The surname has two words. It starts with "Van" and ends with a word that means a small town or place — check Wikipedia's page on "Dutch process cocoa."</p></details>
+    <div class="answer-box" data-answer-hash="d753ee7d">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the surname...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Netherlands imports roughly a fifth of all the cocoa beans traded worldwide, and the Amsterdam–Zaandam area is considered the biggest cocoa-processing cluster on Earth — exactly why Nel de Bruin's little factory calls Zaandam home.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>Who Was in the Storeroom?</h2>
+    <div class="puzzle">
+      <p>The ledger vanished sometime between <strong>1pm and 3pm on Tuesday</strong>, somewhere in the storeroom, mixed up with a stack of delivery papers. Three workers were on shift: Fenneke, Guus, and Ivo.</p>
+      <div class="note">
+        1. Fenneke restocked sugar in the storeroom from 12pm to 1pm, then spent the rest of the afternoon at the front shop counter.<br>
+        2. Guus mixed chocolate in the kitchen from noon until 5pm and never once left — the kitchen's oven-timer log proves it.<br>
+        3. Ivo was due to start deliveries at 3pm, but the van had a flat tire. He spent 1pm to 3pm fixing it right outside the storeroom, ducking in and out to grab tools kept there.
+      </div>
+      <p>Only one of these three workers was actually inside the storeroom at some point during the 1pm–3pm window. Who accidentally mixed up the ledger?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Check each worker's alibi against the exact window: 1pm to 3pm. Cross off anyone who was somewhere else that whole time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Fenneke left the storeroom right as the window began. Guus never left the kitchen at all. Only one worker was actually in and out of the storeroom during 1pm–3pm.</p></details>
+    <div class="answer-box" data-answer-hash="9cfd111b">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type a name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Ledger's Last Page</h2>
+    <div class="puzzle">
+      <p>Right where Ivo left it — tucked under a delivery slip in the storeroom — you find the missing ledger. Its very last page has no recipe on it at all. Instead, following an old family tradition, it has a row of numbers:</p>
+      <div class="note"><code>4 - 9 - 19 - 3 - 15 - 22 - 5 - 18 - 25</code></div>
+      <p>The de Bruin family always numbered the alphabet A = 1, B = 2, C = 3, and so on up to Z = 26. Convert each number back into its letter to reveal the final word — the one thing this whole case was really about.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The first number is 4. Counting A, B, C, D — the 4th letter is D. Keep going one number at a time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The decoded word begins D-I-S-C...</p></details>
+    <div class="answer-box" data-answer-hash="89fa7115">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every shelf, every invoice, every alibi, every search — they all led here. Chasing down small clues until the whole picture snaps into place is exactly what makes a great inspector, and a great scientist too. Well done, Agent — the recipe, and the festival, are saved.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

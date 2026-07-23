@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Northern Lights Expedition — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E8B6E;
+    --accent-dark: #1F5F49;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .note {
+    background: rgba(46,139,110,0.09);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 0.9rem;
+    margin: 0.8rem 0;
+  }
+  .clue-img, .clue-svg {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+    background: #fff;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Northern Lights Expedition</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  <p>High in the Arctic, a team of four scientists at <strong>Camp Nordlys</strong> ("nordlys" is Norwegian for "northern lights") studies the aurora borealis — the glowing curtains of light caused by particles from the sun crashing into our atmosphere.</p>
+  <p>Two nights ago, a huge magnetic storm lit up the sky. Then the radio went silent. No messages. No check-in call. Nothing.</p>
+  <p>You have been called in as a Junior Detective. All that's left behind is a torn field notebook, a radio log, and a set of GPS coordinates. Follow every clue, and you will find the missing team — and uncover the one quality that helped them survive.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Empty Camp</h2>
+    <div class="puzzle">
+      <p>Search-and-rescue drones flew over Camp Nordlys and photographed the site glowing under the aurora. Study the scene below.</p>
+      <p>How many brown wooden crates (the ones with wood-plank lines across them) are sitting around the camp?</p>
+    </div>
+    <svg class="clue-svg" viewBox="0 0 500 300" role="img" aria-label="A nighttime Arctic research camp glowing under green and purple aurora curtains, with tents, a sled, and wooden crates in the snow">
+      <rect x="0" y="0" width="500" height="190" fill="#0b1a2b"/>
+      <rect x="0" y="190" width="500" height="110" fill="#e4eef4"/>
+      <path d="M 0 60 Q 120 10 250 55 T 500 40 L 500 0 L 0 0 Z" fill="#3fae8a" opacity="0.35"/>
+      <path d="M 0 90 Q 140 40 280 85 T 500 75 L 500 40 Q 280 55 140 20 Q 60 5 0 40 Z" fill="#6fdba8" opacity="0.3"/>
+      <path d="M 20 120 Q 160 70 300 110 T 500 100 L 500 75 Q 300 90 160 45 Q 80 25 20 60 Z" fill="#9a6fd6" opacity="0.22"/>
+      <circle cx="30" cy="18" r="1.4" fill="#fff" opacity="0.8"/>
+      <circle cx="70" cy="10" r="1" fill="#fff" opacity="0.7"/>
+      <circle cx="130" cy="30" r="1.3" fill="#fff" opacity="0.75"/>
+      <circle cx="320" cy="14" r="1.2" fill="#fff" opacity="0.75"/>
+      <circle cx="420" cy="22" r="1" fill="#fff" opacity="0.7"/>
+      <circle cx="470" cy="10" r="1.3" fill="#fff" opacity="0.75"/>
+      <ellipse cx="230" cy="150" rx="55" ry="40" fill="#e8935c"/>
+      <ellipse cx="230" cy="150" rx="55" ry="40" fill="none" stroke="#8f5a30" stroke-width="2"/>
+      <rect x="212" y="172" width="36" height="18" fill="#5c3a1e"/>
+      <line x1="230" y1="150" x2="230" y2="112" stroke="#8f5a30" stroke-width="2"/>
+      <circle cx="230" cy="110" r="3" fill="#cfd8dc"/>
+      <polygon points="380,205 415,155 450,205" fill="#c9d6df" stroke="#607d8b" stroke-width="2"/>
+      <rect x="393" y="188" width="15" height="17" fill="#3a4a52"/>
+      <rect x="70" y="255" width="70" height="8" fill="#2f4a5e"/>
+      <path d="M 70 255 L 55 263 L 70 263 Z" fill="#2f4a5e"/>
+      <path d="M 140 255 L 155 263 L 140 263 Z" fill="#2f4a5e"/>
+      <ellipse cx="30" cy="268" rx="16" ry="9" fill="#4a3527"/>
+      <ellipse cx="15" cy="272" rx="12" ry="7" fill="#4a3527"/>
+      <rect x="95" y="228" width="26" height="34" rx="10" fill="#b3382c"/>
+      <ellipse cx="108" cy="228" rx="13" ry="5" fill="#8f281f"/>
+      <rect x="165" y="235" width="34" height="8" fill="#e0c23a"/>
+      <polygon points="195,239 210,232 210,246" fill="#8a8a8a"/>
+      <rect x="300" y="240" width="20" height="26" rx="4" fill="#c9d6df" stroke="#607d8b" stroke-width="1.5"/>
+      <line x1="310" y1="240" x2="310" y2="222" stroke="#607d8b" stroke-width="1.5"/>
+      <circle cx="310" cy="220" r="1.8" fill="#607d8b"/>
+      <rect x="55" y="232" width="52" height="35" fill="#8a6a3f" stroke="#5c4626" stroke-width="1.5"/>
+      <line x1="55" y1="245" x2="107" y2="245" stroke="#5c4626" stroke-width="1"/>
+      <line x1="55" y1="257" x2="107" y2="257" stroke="#5c4626" stroke-width="1"/>
+      <line x1="81" y1="232" x2="81" y2="267" stroke="#5c4626" stroke-width="1"/>
+      <rect x="150" y="247" width="48" height="30" fill="#8a6a3f" stroke="#5c4626" stroke-width="1.5"/>
+      <line x1="150" y1="258" x2="198" y2="258" stroke="#5c4626" stroke-width="1"/>
+      <line x1="150" y1="269" x2="198" y2="269" stroke="#5c4626" stroke-width="1"/>
+      <line x1="174" y1="247" x2="174" y2="277" stroke="#5c4626" stroke-width="1"/>
+      <rect x="152" y="217" width="44" height="28" fill="#96784a" stroke="#5c4626" stroke-width="1.5"/>
+      <line x1="152" y1="227" x2="196" y2="227" stroke="#5c4626" stroke-width="1"/>
+      <line x1="152" y1="237" x2="196" y2="237" stroke="#5c4626" stroke-width="1"/>
+      <line x1="174" y1="217" x2="174" y2="245" stroke="#5c4626" stroke-width="1"/>
+      <rect x="340" y="238" width="46" height="30" fill="#8a6a3f" stroke="#5c4626" stroke-width="1.5"/>
+      <line x1="340" y1="249" x2="386" y2="249" stroke="#5c4626" stroke-width="1"/>
+      <line x1="340" y1="260" x2="386" y2="260" stroke="#5c4626" stroke-width="1"/>
+      <line x1="363" y1="238" x2="363" y2="268" stroke="#5c4626" stroke-width="1"/>
+      <rect x="420" y="228" width="44" height="32" fill="#8a6a3f" stroke="#5c4626" stroke-width="1.5"/>
+      <line x1="420" y1="239" x2="464" y2="239" stroke="#5c4626" stroke-width="1"/>
+      <line x1="420" y1="250" x2="464" y2="250" stroke="#5c4626" stroke-width="1"/>
+      <line x1="442" y1="228" x2="442" y2="260" stroke="#5c4626" stroke-width="1"/>
+      <text x="15" y="195" font-family="Arial" font-size="11" fill="#2B2A24">Camp Nordlys</text>
+    </svg>
+    <div class="clue-caption">Count only the brown wooden crates with plank lines. Skip the tents, the sled, the two sled dogs, the yellow shovel, the red fuel drum, and the silver instrument box with the antenna.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Two crates are stacked directly on top of each other near the middle of camp. One more crate sits half-hidden behind the small pointed tent on the right — look carefully past its edge.</p></details>
+    <div class="answer-box" data-answer-hash="300ca0d0">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type a number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Last Ping</h2>
+    <div class="puzzle">
+      <p>Before the radio died, the camp's GPS beacon sent one final location: <strong>78.9235° N, 11.9099° E</strong>.</p>
+      <p>Type these coordinates into an online map (like Google Maps) and zoom in. A small international research settlement sits right at this spot — home to scientists from more than ten countries, though only a few dozen people live there all winter.</p>
+      <p>What is this settlement called?</p>
+      <div class="note">Type it as two words, using a plain letter "A" instead of the special Norwegian letter, and no hyphen: for example, "Ny Alesund".</div>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Type the coordinates straight into a map app's search bar, or search "78.9235, 11.9099 map".</p></details>
+    <div class="answer-box" data-answer-hash="5c0e345e">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the settlement name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? At this settlement's latitude, the sun does not rise at all for about four months every winter — a period called the polar night.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Last Radio Call</h2>
+    <div class="puzzle">
+      <p>The radio log's final line isn't words — it's Morse code, tapped out fast right before the signal cut out.</p>
+      <div class="note"><code>-... . .- -.-. --- -.</code></div>
+      <p>Decode it letter by letter using a Morse code chart. What device were they naming — the one a lost team uses to broadcast its exact location?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Morse code alphabet chart" and match each group of dots and dashes to one letter. There are six letters in total.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The decoded word starts with B-E-A... it's a device that sends out a signal so rescuers can find you.</p></details>
+    <div class="answer-box" data-answer-hash="5d826019">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Four Scientists, One Shed</h2>
+    <div class="puzzle">
+      <p>Camp Nordlys has four scientists: Elin, Tomas, Priya, and Jonas. When the storm knocked out the power, one of them was alone in the equipment shed, watching the magnetometer (the instrument that measures the storm's magnetic strength).</p>
+      <div class="note">
+        1. Whoever was watching the magnetometer was wearing a red parka.<br>
+        2. Elin was in the mess tent playing cards at the time.<br>
+        3. Tomas was outside walking the sled dogs, wearing a blue parka.<br>
+        4. Priya's parka is orange. Jonas's parka is red.
+      </div>
+      <p>Who was watching the magnetometer when the power died?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Two clues tell you exactly where two people were standing already — that rules them both out right away.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Only two scientists are left after that. One clue names the color of the monitor's parka. Match it to the right person.</p></details>
+    <div class="answer-box" data-answer-hash="b17a8b48">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type a name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The name "aurora borealis" was coined by the astronomer Galileo Galilei in 1619, combining Aurora, the Roman goddess of dawn, with Boreas, the Greek god of the north wind.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Weather Log</h2>
+    <div class="puzzle">
+      <p>The last weather log entry, scribbled just before the power failed, reads: <em>"Outside temp: -15°C, wind rising."</em></p>
+      <p>The rescue pilot flying in only reads temperatures in Fahrenheit. Convert -15°C to Fahrenheit so the flight plan is correct.</p>
+      <div class="note">Formula: F = C × 9 ÷ 5 + 32. Type only the number — no words, no degree sign, no letter F.</div>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Multiply -15 by 9 first. Then divide that result by 5. Then add 32.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>-15 × 9 = -135. Divide -135 by 5 to get -27. Now add 32 to -27.</p></details>
+    <div class="answer-box" data-answer-hash="300ca0d0">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Torn Photograph</h2>
+    <div class="puzzle">
+      <p>Tucked in the field notebook is a torn photo of an old portrait, with a caption underneath:</p>
+      <div class="note">"The Norwegian physicist who first proved the aurora is caused by charged particles from the sun, guided to the poles by Earth's magnetic field. He tested his idea using a lab model he called a 'terrella' — Latin for 'little Earth.'"</div>
+      <p>Search online to find this scientist. What is his last name?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "terrella experiment aurora scientist" or "father of modern aurora research."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>His first name was Kristian. His last name is also attached to a famous type of space electric current — search "aurora electric currents named after a scientist" to confirm it.</p></details>
+    <div class="answer-box" data-answer-hash="f60febd3">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type his last name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? This scientist once appeared on Norway's old 200-kroner banknote, printed right next to a drawing of his terrella experiment.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>Red, Green, Violet</h2>
+    <div class="puzzle">
+      <p>The notebook's last full page describes three colors the team saw on the storm's worst night: a rare glow high overhead, a wide band in the middle of the sky, and a faint fringe low near the horizon.</p>
+      <p>Search online to learn which aurora color glows at the <strong>highest</strong> altitude, which glows in the <strong>middle</strong>, and which glows at the <strong>lowest</strong> altitude.</p>
+      <p>Now write down just the first letter of each color, in order from highest altitude to lowest. You'll spot a three-letter shorthand you've definitely seen before — on a screen, in a paint program, anywhere colors are mixed with light.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "aurora colors by altitude" and read a science or space-agency page. It should name three colors and three rough heights.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Highest up is a rare red glow. The middle band is the most common color of all. Lowest down, near the ground, is a faint blue-violet fringe.</p></details>
+    <div class="answer-box" data-answer-hash="46f9077c">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type the three-letter shorthand...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Found, Safe, and Sound</h2>
+    <div class="puzzle">
+      <p>You track the team to an ice cave near Camp Nordlys, where they sheltered through the whole storm. All four scientists are safe. Pinned to the cave wall is one last note, in code:</p>
+      <div class="note"><code>ODQRDUDQZMBD</code></div>
+      <p>Shift every letter forward one step in the alphabet (A becomes B, B becomes C, and so on, with Z wrapping back around to A) to reveal the final word — the one quality that helped this team survive.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Decode one letter at a time. The first letter, O, shifts forward to become P.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The decoded word begins P-E-R-S-E-V...</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Through the storm, the dark, and the cold, the team at Camp Nordlys never gave up — and neither did you. Every code, coordinate, and clue you cracked took real perseverance. Well done, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
