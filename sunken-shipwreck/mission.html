@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Sunken Ship's Secret Cargo — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E7D8C;
+    --accent-dark: #1F5965;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Sunken Ship's Secret Cargo</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 55-75 minutes</div>
+</div>
+
+<div class="intro">
+  <p>A museum archive just recovered a water-damaged logbook from the wreck of the <em>De Adelaar</em>, a 17th-century trading ship that sank on its way home from the Spice Islands. Most pages are unreadable — but a few survived, coded in the captain's own hand. Historians think the ship's final cargo is still down there, exactly where the log says. Follow the clues, and you could be the first to pinpoint it in almost 400 years.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Company Behind the Ship</h2>
+    <div class="puzzle">
+      <p>A faded stamp on the logbook's cover reads "VOC" — the initials of the Dutch East India Company, the trading company that owned ships like this one. Search online to find the exact year this company was founded.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Dutch East India Company founded year" or look up "VOC 1602" to check the date.</p></details>
+    <div class="answer-box" data-answer-hash="c27ae188">
+      <label for="m1-answer">Your answer (digits only):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The VOC's 1602 share offering was the world's first initial public offering (IPO). For the first time ever, ordinary people could buy a piece of a company on the world's first stock exchange, in Amsterdam.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Odd Seal</h2>
+    <div class="puzzle">
+      <p>Six crates from the cargo hold were recovered, each with a wax seal stamped on its lid. Five crates share the exact same seal. One doesn't match. Which crate number is it?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 320 130" width="320" height="130" role="img" aria-label="Six numbered wooden crates in a row, each with a wax seal stamped on the lid; crate 4's seal is a plain circle while the others have a circle with a diamond inside">
+      <g font-size="12" text-anchor="middle" font-family="Atkinson Hyperlegible, sans-serif">
+        <g>
+          <rect x="15" y="45" width="40" height="45" fill="#E8DEC4" stroke="#2B2A24" stroke-width="2"/>
+          <circle cx="35" cy="45" r="11" fill="#2E7D8C" stroke="#2B2A24" stroke-width="1.5"/>
+          <polygon points="35,38 42,45 35,52 28,45" fill="#F3ECDA"/>
+          <text x="35" y="105" fill="#2B2A24">1</text>
+        </g>
+        <g>
+          <rect x="65" y="45" width="40" height="45" fill="#E8DEC4" stroke="#2B2A24" stroke-width="2"/>
+          <circle cx="85" cy="45" r="11" fill="#2E7D8C" stroke="#2B2A24" stroke-width="1.5"/>
+          <polygon points="85,38 92,45 85,52 78,45" fill="#F3ECDA"/>
+          <text x="85" y="105" fill="#2B2A24">2</text>
+        </g>
+        <g>
+          <rect x="115" y="45" width="40" height="45" fill="#E8DEC4" stroke="#2B2A24" stroke-width="2"/>
+          <circle cx="135" cy="45" r="11" fill="#2E7D8C" stroke="#2B2A24" stroke-width="1.5"/>
+          <polygon points="135,38 142,45 135,52 128,45" fill="#F3ECDA"/>
+          <text x="135" y="105" fill="#2B2A24">3</text>
+        </g>
+        <g>
+          <rect x="165" y="45" width="40" height="45" fill="#E8DEC4" stroke="#2B2A24" stroke-width="2"/>
+          <circle cx="185" cy="45" r="11" fill="#2E7D8C" stroke="#2B2A24" stroke-width="1.5"/>
+          <text x="185" y="105" fill="#2B2A24">4</text>
+        </g>
+        <g>
+          <rect x="215" y="45" width="40" height="45" fill="#E8DEC4" stroke="#2B2A24" stroke-width="2"/>
+          <circle cx="235" cy="45" r="11" fill="#2E7D8C" stroke="#2B2A24" stroke-width="1.5"/>
+          <polygon points="235,38 242,45 235,52 228,45" fill="#F3ECDA"/>
+          <text x="235" y="105" fill="#2B2A24">5</text>
+        </g>
+        <g>
+          <rect x="265" y="45" width="40" height="45" fill="#E8DEC4" stroke="#2B2A24" stroke-width="2"/>
+          <circle cx="285" cy="45" r="11" fill="#2E7D8C" stroke="#2B2A24" stroke-width="1.5"/>
+          <polygon points="285,38 292,45 285,52 278,45" fill="#F3ECDA"/>
+          <text x="285" y="105" fill="#2B2A24">6</text>
+        </g>
+      </g>
+    </svg>
+    <div class="clue-caption">Compare every seal carefully — five have a small diamond shape inside the circle, one is just a plain circle.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Go crate by crate, left to right, and check whether you can see a diamond shape inside the circle.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m2-answer">Your answer (digits only):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Captain's Ledger</h2>
+    <div class="puzzle">
+      <p>One surviving ledger page records a single trade: "Bought 1 sack of nutmeg in the Indies for 40 guilders. Sold the same sack in Amsterdam for 200 guilders." What percent profit did the captain make on this one trade?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the profit in guilders (selling price minus buying price). Then compare that profit to the original 40 guilders, as a percentage.</p></details>
+    <div class="answer-box" data-answer-hash="aa3008db">
+      <label for="m3-answer">Your answer (just the number, no % sign):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Nutmeg and cloves were once worth more than gold and silver in Europe. In the Middle Ages, a single nutmeg could be worth enough to buy a house, because of how far it had to travel.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Islands of Fortune</h2>
+    <div class="puzzle">
+      <p>The nutmeg aboard the <em>De Adelaar</em> came from a real group of islands in present-day Indonesia, called the Maluku Islands. Search to find the famous nickname these islands share, earned because of the valuable spices that grow there.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Maluku Islands nickname" — the nickname is two words, and it's exactly what you'd expect from an island full of nutmeg and cloves.</p></details>
+    <div class="answer-box" data-answer-hash="7bff6b7f">
+      <label for="m4-answer">Your answer (two words):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Mirror Alphabet</h2>
+    <div class="puzzle">
+      <p>One coded strip uses a mirror trick: A becomes Z, B becomes Y, C becomes X — each letter swaps with its opposite-end partner all the way through the alphabet. Decode this word. It's the compass direction the wreck lies in from the last known port.</p>
+    </div>
+    <p style="font-family:'Special Elite',monospace; letter-spacing:0.15em; font-size:1.1rem;">HLFGSVZHG</p>
+    <details class="hint"><summary>Hint 1</summary><p>Write the alphabet forwards on one line and backwards underneath it (A under Z, B under Y...), then match each coded letter to the one above or below it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first letter, H, swaps with S. The word has 9 letters and names a direction between two compass points.</p></details>
+    <div class="answer-box" data-answer-hash="482bc3b3">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Captain's Crate Numbers</h2>
+    <div class="puzzle">
+      <p>The captain numbered his crates in a pattern, skipping numbers on purpose so rival sailors couldn't guess how many crates he had: <strong>2, 5, 11, 23, 47, ...</strong> If he kept numbering the same way, what number would the next crate have?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at what you do to each number to get the next one. It's a two-step rule, not just adding or just multiplying.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Try doubling a number, then see what small adjustment gets you to the next one in the list.</p></details>
+    <div class="answer-box" data-answer-hash="8fe9413">
+      <label for="m6-answer">Your answer (digits only):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? By the time it stopped trading, the VOC had operated more than 1,500 ships and employed over a million people across Europe and Asia — making it one of the largest companies the world has ever seen.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Sea Chest's Dial</h2>
+    <div class="puzzle">
+      <p>A small iron chest has a 4-dial combination lock. Build the code from what you've already found, in this exact order:</p>
+      <p>Dial 1-2: the last two digits of the year the VOC was founded (Mission 1).<br>
+      Dial 3: the number of the odd crate (Mission 2).<br>
+      Dial 4: the first digit of the next crate number in the captain's pattern (Mission 6).</p>
+      <p>Put all four digits together, in order, with no spaces (keep any leading zero). What's the code?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>1602's last two digits are "02" — don't drop the leading zero. Then add your Mission 2 and Mission 6 digits in order.</p></details>
+    <div class="answer-box" data-answer-hash="d6777570">
+      <label for="m7-answer">Your answer (4 digits, no spaces):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Captain's Final Word</h2>
+    <div class="puzzle">
+      <p>The chest creaks open at last. Inside, instead of gold, is a single folded note in a shifted code: every letter was moved forward by 5 in the alphabet (A→F, B→G, and so on, wrapping around after Z). Shift each letter <strong>back</strong> by 5 to read the captain's last word.</p>
+    </div>
+    <p style="font-family:'Special Elite',monospace; letter-spacing:0.15em; font-size:1.1rem;">BNXITR</p>
+    <details class="hint"><summary>Hint 1</summary><p>Count backwards 5 letters in the alphabet from each coded letter, one at a time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first letter, B, shifted back 5 becomes W. The word has 6 letters.</p></details>
+    <div class="answer-box" data-answer-hash="2e0e79e6">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The chest held no gold — just the captain's careful notes, kept for the historians who'd one day come looking. Following his ciphers, his numbers, and his ledger taught you more than any treasure could. That's <strong>wisdom</strong>: knowledge earned by working for it. Well done, Agent.</p>
+</div>
+
+
+<script>
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

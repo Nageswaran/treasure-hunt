@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Golden Windmill Cipher — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #B5792B;
+    --accent-dark: #8A5A1E;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Golden Windmill Cipher</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 50-70 minutes</div>
+</div>
+
+<div class="intro">
+  <p>During restoration work on an old Dutch windmill, a worker found a sealed brass tube hidden inside the cap. Inside was a scrap of coded paper and half a map — nothing else. The mill's owners have called in the Internet Detective Academy. Somewhere nearby, a small chest has been waiting almost three centuries to be found. Crack every clue, and you'll be the one to open it.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>How Many Giants Stand Guard?</h2>
+    <div class="puzzle">
+      <p>The map fragment shows a cluster of windmills next to a river, but no name. Search online for the famous group of windmills at <strong>Kinderdijk</strong> in the Netherlands, a UNESCO World Heritage Site. Find out exactly how many windmills stand together there.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching the official Kinderdijk website or its Wikipedia page — look for the total count of windmills at the site.</p></details>
+    <div class="answer-box" data-answer-hash="14eb1f3f">
+      <label for="m1-answer">Your answer (type the number using digits):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Kinderdijk windmills weren't built to grind grain at all. They were built to pump water out of the low-lying polder, so the land behind the dikes would stay dry.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Count the Sails</h2>
+    <div class="puzzle">
+      <p>A sketch of the windmill was tucked inside the tube too. Count the sails (the big spinning arms) drawn on it — a traditional Dutch windmill always has the same number.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 240 260" width="240" height="260" role="img" aria-label="A sketch of a Dutch windmill with a tower and four spinning sails arranged in a cross shape">
+      <polygon points="104,258 136,258 128,120 112,120" fill="#E8DEC4" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="98,122 142,122 130,96 110,96" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <circle cx="120" cy="100" r="7" fill="#B5792B" stroke="#2B2A24" stroke-width="2"/>
+      <g stroke="#2B2A24" stroke-width="2" fill="#FFFDF7">
+        <g transform="rotate(0 120 100)">
+          <rect x="112" y="10" width="16" height="86" rx="2"/>
+          <line x1="120" y1="10" x2="120" y2="96"/>
+          <line x1="114" y1="28" x2="126" y2="28"/>
+          <line x1="114" y1="50" x2="126" y2="50"/>
+          <line x1="114" y1="72" x2="126" y2="72"/>
+        </g>
+        <g transform="rotate(90 120 100)">
+          <rect x="112" y="10" width="16" height="86" rx="2"/>
+          <line x1="120" y1="10" x2="120" y2="96"/>
+          <line x1="114" y1="28" x2="126" y2="28"/>
+          <line x1="114" y1="50" x2="126" y2="50"/>
+          <line x1="114" y1="72" x2="126" y2="72"/>
+        </g>
+        <g transform="rotate(180 120 100)">
+          <rect x="112" y="10" width="16" height="86" rx="2"/>
+          <line x1="120" y1="10" x2="120" y2="96"/>
+          <line x1="114" y1="28" x2="126" y2="28"/>
+          <line x1="114" y1="50" x2="126" y2="50"/>
+          <line x1="114" y1="72" x2="126" y2="72"/>
+        </g>
+        <g transform="rotate(270 120 100)">
+          <rect x="112" y="10" width="16" height="86" rx="2"/>
+          <line x1="120" y1="10" x2="120" y2="96"/>
+          <line x1="114" y1="28" x2="126" y2="28"/>
+          <line x1="114" y1="50" x2="126" y2="50"/>
+          <line x1="114" y1="72" x2="126" y2="72"/>
+        </g>
+      </g>
+    </svg>
+    <div class="clue-caption">Look closely — how many separate sails spin around the centre hub?</div>
+    <details class="hint"><summary>Hint 1</summary><p>Every traditional Dutch windmill has the same number of sails. Count them in pairs across from each other.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m2-answer">Your answer (type the number using digits):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Miller's Word List</h2>
+    <div class="puzzle">
+      <p>Tucked in the tube was a torn page from the old miller's Dutch notebook, listing five windmill words. Four of them use <strong>"de"</strong> and one uses <strong>"het"</strong>. Find the odd one out.</p>
+      <p><em>molen &middot; wiek &middot; dijk &middot; kaart &middot; dorp</em></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "de of het" plus each word to check its article. Four words share the same one.</p></details>
+    <div class="answer-box" data-answer-hash="21c1dbc6">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Grain Room Floor</h2>
+    <div class="puzzle">
+      <p>Below the mill's turning gears is an L-shaped grain-storage room. The old floor plan gives you the outer measurements and the size of a missing corner. Find the total floor area in square metres.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 260 210" width="260" height="210" role="img" aria-label="An L-shaped floor plan: a large rectangle with a smaller rectangular notch cut from the top-right corner">
+      <polygon points="30,30 190,30 190,110 230,110 230,170 30,170" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="130" y="22" text-anchor="middle" font-size="13">10 m</text>
+      <text x="15" y="100" text-anchor="middle" font-size="13" transform="rotate(-90 15 100)">7 m</text>
+      <text x="210" y="102" text-anchor="middle" font-size="13">4 m</text>
+      <text x="245" y="140" text-anchor="middle" font-size="13" transform="rotate(-90 245 140)">3 m</text>
+    </svg>
+    <div class="clue-caption">The full floor would be a rectangle, but a corner is missing. Split it into two rectangles to work out the total area.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Imagine the whole shape as one big rectangle, then subtract the missing corner's area.</p></details>
+    <div class="answer-box" data-answer-hash="8be14d38">
+      <label for="m4-answer">Your answer (square metres, digits only):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The name Kinderdijk means "Children's Dike." Legend says the name comes from a great flood in 1421, when people found a baby safe in a floating cradle, kept balanced by a cat pacing back and forth to stop it from tipping over.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Shifted Letters</h2>
+    <div class="puzzle">
+      <p>The coded strip from the brass tube uses a simple trick: every letter was shifted forward by 3 in the alphabet (A→D, B→E, C→F, and so on, wrapping back to A after Z). Shift each letter <strong>back</strong> by 3 to read the message. It names the group of eight mills you must investigate next.</p>
+      <p style="font-family:'Special Elite',monospace; letter-spacing:0.15em; font-size:1.1rem;">QHGHUZDDUG</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write out the alphabet and mark every 3rd letter back, or just count backwards 3 letters from each one in the code.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first letter Q shifted back 3 is N. Keep going letter by letter.</p></details>
+    <div class="answer-box" data-answer-hash="70c745d0">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Millers, One Secret</h2>
+    <div class="puzzle">
+      <p>Four millers — Anna, Bram, Cato, and Daan — each tend one of mills No. 1, No. 3, No. 5, and No. 7 in the Nederwaard group. Use only these clues to work out who tends which mill:</p>
+      <p>1. Cato's mill number is the largest of the four.<br>
+      2. Daan's mill is number 3.<br>
+      3. Bram's mill is not number 5.<br>
+      4. Anna's mill number is greater than Bram's.</p>
+      <p>The treasure is hidden at the mill of whichever miller's name comes first in the alphabet. Which mill number is it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue that gives you an exact number right away, then work out who's left for the remaining three mills.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once Daan's mill is fixed, only three numbers remain for Anna, Bram and Cato. Clue 1 tells you the biggest one right away.</p></details>
+    <div class="answer-box" data-answer-hash="300ca0d0">
+      <label for="m6-answer">Your answer (digits only):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The eight stone Nederwaard windmills were built in 1738 — and just two years later, in 1740, eight wooden Overwaard windmills were added nearby to help pump even more water.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Combination Lock</h2>
+    <div class="puzzle">
+      <p>Under the miller's floorboards is a small chest with a 4-dial combination lock. Build the code from what you've already discovered, in this order:</p>
+      <p>Dial 1-2: the number of windmills at Kinderdijk (Mission 1).<br>
+      Dial 3: the mill number where the treasure hides (Mission 6).<br>
+      Dial 4: the number of sails on a Dutch windmill (Mission 2).</p>
+      <p>Put the digits together, in order, with no spaces. What's the full code?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Line up your three earlier answers side by side, in the exact order listed above, and squeeze them into one number.</p></details>
+    <div class="answer-box" data-answer-hash="274e2d3e">
+      <label for="m7-answer">Your answer (digits only):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>What the Chest Was Really Guarding</h2>
+    <div class="puzzle">
+      <p>The chest creaks open. Inside is one last note: a row of numbers. Use A=1, B=2, C=3, all the way to Z=26, to turn each number into a letter and spell out one word.</p>
+      <p style="font-family:'Special Elite',monospace; letter-spacing:0.1em; font-size:1.1rem;">4 - 9 - 19 - 3 - 15 - 22 - 5 - 18 - 25</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write the alphabet out with a number under each letter, then match each number in the code to its letter.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first number, 4, is the letter D. The word has 9 letters in total.</p></details>
+    <div class="answer-box" data-answer-hash="89fa7115">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The chest never held gold at all — just the miller's old notebook, full of questions he never got to answer. The real treasure was the chase itself: every windmill, cipher, and clue along the way was its own small <strong>discovery</strong>. Well done, Agent.</p>
+</div>
+
+
+<script>
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
