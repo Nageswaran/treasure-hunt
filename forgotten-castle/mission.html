@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Secret of Muiderslot — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #4A5A6A;
+    --accent-dark: #33404C;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .morse {
+    font-size: 1.4rem;
+    letter-spacing: 0.3em;
+    text-align: center;
+    background: var(--paper-dark);
+    padding: 1rem;
+    border-radius: 3px;
+    margin: 0.9rem 0;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Secret of Muiderslot</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-75 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Muiderslot is a real, 700-year-old moated castle in the Netherlands, built by Count Floris V. While unpacking old books for a new exhibit, the museum's curator found a folded, yellowed note hidden inside a book that once belonged to the poet P.C. Hooft, who lived in the castle in the 1600s. The note hints that something has stayed hidden inside these walls since the count's own lifetime.</p>
+  <p>The curator needs a sharp young detective to research the castle's true history, crack the old codes, and follow the clues to whatever the note is pointing to — before the museum's reopening this weekend. Grab a notebook, open a search tab, and get started, Agent!</p>
+</div>
+
+<!-- MISSION 1 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Count's Blueprint</h2>
+    <div class="puzzle">
+      <p>The curator explains that Muiderslot sits exactly where a river meets the water, and that it was first built for a Count of Holland named Floris V. But nobody on the tour can remember the exact year the count had it built.</p>
+      <p>Search online to find out: in what year did Count Floris V have Muiderslot built?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for "Floris V Muiderslot built" and look for the year on a trusted history or museum page.</p></details>
+    <div class="answer-box" data-answer-hash="ecb2bf19">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the year...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Guard's Vocabulary Test</h2>
+    <div class="puzzle">
+      <p>An old wooden sign near the water ring around the castle walls uses the Dutch word for that ring of water (in English, we call it "the moat").</p>
+      <p>Search online for the Dutch word used for a castle's moat. Once you find the word, every Dutch noun needs the right little word in front of it — either <strong>"de"</strong> or <strong>"het"</strong>. Which one goes with this word?</p>
+      <p>Type just the article: <strong>de</strong> or <strong>het</strong>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Dutch word for moat" or "gracht castle Netherlands" — Dutch city guides use this word all the time for their canals too.</p></details>
+    <div class="answer-box" data-answer-hash="5c1ccea2">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="de or het...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Muiderslot stands exactly where the river Vecht flows into what used to be the Zuiderzee sea. Long ago, every ship that sailed past had to stop and pay a toll to the count!</p>
+
+<!-- MISSION 3 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Courtyard Measurement</h2>
+    <div class="puzzle">
+      <p>Inside the castle walls is a stone courtyard. The old castle keeper sketched its shape for the curator: a rectangle with a smaller square corner cut away, where the base of one tower pokes into the yard.</p>
+      <p>Using the measurements on the sketch below, work out the total area of the courtyard in square meters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 280 220" width="280" height="220"
+         role="img" aria-label="A courtyard shape: a large rectangle with a smaller rectangular notch cut from the top-right corner">
+      <polygon points="20,20 188,20 188,62 244,62 244,188 20,188"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="104" y="13" text-anchor="middle" font-size="12">12 m</text>
+      <text x="200" y="44" text-anchor="middle" font-size="12" transform="rotate(-90 200 44)">3 m</text>
+      <text x="216" y="54" text-anchor="middle" font-size="12">4 m</text>
+      <text x="256" y="125" text-anchor="middle" font-size="12" transform="rotate(-90 256 125)">9 m</text>
+      <text x="132" y="204" text-anchor="middle" font-size="12">16 m</text>
+      <text x="8" y="104" text-anchor="middle" font-size="12" transform="rotate(-90 8 104)">12 m</text>
+    </svg>
+    <div class="clue-caption">Split the shape into two simple rectangles before you calculate.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try drawing one straight line across the shape to turn it into two ordinary rectangles.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Find the area of the whole big rectangle (as if the corner wasn't cut away) first, then subtract the area of the small cut-away corner.</p></details>
+    <div class="answer-box" data-answer-hash="f71f9c94">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Number only, no units...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Two Guards at the Fork</h2>
+    <div class="puzzle">
+      <p>Deep under the castle, a stone passage splits into two doors: <strong>Door A</strong> and <strong>Door B</strong>. A guard stands at each one. The old castle log says that exactly one of the two guards always tells the truth, and the other always lies — every single time, no exceptions.</p>
+      <p>You already know for a fact that <strong>one of the two doors truly leads to the hidden passage</strong> the note is pointing to.</p>
+      <p>The guard at Door A says: <em>"Door A leads to the hidden passage."</em></p>
+      <p>The guard at Door B says: <em>"Both doors lead only to danger — neither one leads to the hidden passage."</em></p>
+      <p>Which door should you choose?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You already know for certain that one door really does lead to the passage. So can the guard at Door B possibly be telling the truth?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If the guard at Door B must be lying, that tells you exactly which guard is the truth-teller — and what the truth-teller said.</p></details>
+    <div class="answer-box" data-answer-hash="ea148d7e">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type: Door A or Door B...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The poet and writer P.C. Hooft lived at Muiderslot for almost 40 years in the 1600s. He invited so many famous writers, painters, and thinkers to visit that historians later nicknamed the group "de Muiderkring" — the Muiden Circle.</p>
+
+<!-- MISSION 5 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Coded Note</h2>
+    <div class="puzzle">
+      <p>Tucked between the pages of P.C. Hooft's old book, the curator finds the note the legend keeps talking about. It isn't written in letters at all — it's written in dots and dashes.</p>
+      <p>Decode the message below to find out what the old legend says is hidden in the castle.</p>
+    </div>
+    <div class="morse">.--. .- ... ... .- &nbsp;&nbsp; --. .</div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Morse code alphabet" for a chart if you need one. A dot is a short signal, a dash is a long one — each letter has its own pattern.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The message is one single English word, seven letters long. It's the kind of word a detective loves to find in an old castle!</p></details>
+    <div class="answer-box" data-answer-hash="1a6894e3">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Betrayal of Count Floris</h2>
+    <div class="puzzle">
+      <p>The note also hints at the count's own tragic story. Not long after Muiderslot was built, some of Floris V's own nobles turned against him, captured him, and held him prisoner inside his own castle. It didn't end well for the count.</p>
+      <p>Search online to find out: in what year was Count Floris V murdered — the very event that led to Muiderslot being destroyed and later rebuilt?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Floris V murdered year" or "Floris V Count of Holland death."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It happened just a few years after Mission 1's answer — the castle barely got to stand for a decade before disaster struck.</p></details>
+    <div class="answer-box" data-answer-hash="fbb5154d">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the year...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Muiderslot is now an official national museum that anyone can visit — more than 700 years after Count Floris V first had it built.</p>
+
+<!-- MISSION 7 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Shields of the Knights' Hall</h2>
+    <div class="puzzle">
+      <p>In the castle's Knights' Hall, painted shields line the wall. Some show the golden lion of Holland — the emblem the Counts of Holland (including Floris V) used on their own coat of arms: a red lion on a gold background. Others show a different symbol from a different noble house entirely.</p>
+      <p>Study the sketch of the wall below very closely. How many shields show the <strong>golden lion of Holland</strong> (gold background, red lion shape)?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 400 170" width="400" height="170"
+         role="img" aria-label="A row of seven painted heraldic shields on a stone wall, some gold with a red lion, some blue with a white ship shape">
+      <rect width="400" height="170" fill="#EDE3CC"/>
+      <!-- stone wall texture lines -->
+      <line x1="0" y1="30" x2="400" y2="30" stroke="#d8cba9" stroke-width="2"/>
+      <line x1="0" y1="150" x2="400" y2="150" stroke="#d8cba9" stroke-width="2"/>
+      <!-- Shield 1: ship (blue) -->
+      <g>
+        <path d="M 25,35 L 65,35 L 65,75 Q 45,100 25,75 Z" fill="#2E5C8A" stroke="#1F3D5C" stroke-width="2"/>
+        <path d="M 32,68 Q 45,80 58,68 L 55,60 L 35,60 Z" fill="#F3ECDA"/>
+      </g>
+      <!-- Shield 2: lion (gold) -->
+      <g>
+        <path d="M 80,35 L 120,35 L 120,75 Q 100,100 80,75 Z" fill="#D9A82C" stroke="#8A5A1E" stroke-width="2"/>
+        <path d="M 100,45 Q 92,55 95,68 Q 90,78 100,82 Q 110,78 105,68 Q 108,55 100,45 Z" fill="#A33B2D"/>
+      </g>
+      <!-- Shield 3: ship (blue) -->
+      <g>
+        <path d="M 135,35 L 175,35 L 175,75 Q 155,100 135,75 Z" fill="#2E5C8A" stroke="#1F3D5C" stroke-width="2"/>
+        <path d="M 142,68 Q 155,80 168,68 L 165,60 L 145,60 Z" fill="#F3ECDA"/>
+      </g>
+      <!-- Shield 4: lion (gold) -->
+      <g>
+        <path d="M 190,35 L 230,35 L 230,75 Q 210,100 190,75 Z" fill="#D9A82C" stroke="#8A5A1E" stroke-width="2"/>
+        <path d="M 210,45 Q 202,55 205,68 Q 200,78 210,82 Q 220,78 215,68 Q 218,55 210,45 Z" fill="#A33B2D"/>
+      </g>
+      <!-- Shield 5: ship (blue) -->
+      <g>
+        <path d="M 245,35 L 285,35 L 285,75 Q 265,100 245,75 Z" fill="#2E5C8A" stroke="#1F3D5C" stroke-width="2"/>
+        <path d="M 252,68 Q 265,80 278,68 L 275,60 L 255,60 Z" fill="#F3ECDA"/>
+      </g>
+      <!-- Shield 6: ship (blue) -->
+      <g>
+        <path d="M 300,35 L 340,35 L 340,75 Q 320,100 300,75 Z" fill="#2E5C8A" stroke="#1F3D5C" stroke-width="2"/>
+        <path d="M 307,68 Q 320,80 333,68 L 330,60 L 310,60 Z" fill="#F3ECDA"/>
+      </g>
+      <!-- Shield 7: lion (gold) -->
+      <g>
+        <path d="M 355,35 L 395,35 L 395,75 Q 375,100 355,75 Z" fill="#D9A82C" stroke="#8A5A1E" stroke-width="2"/>
+        <path d="M 375,45 Q 367,55 370,68 Q 365,78 375,82 Q 385,78 380,68 Q 383,55 375,45 Z" fill="#A33B2D"/>
+      </g>
+    </svg>
+    <div class="clue-caption">Count carefully — the shields aren't in a simple repeating pattern.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at the background color of each shield first: gold, or blue?</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Number of lion shields...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8: GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Page of the Logbook</h2>
+    <div class="puzzle">
+      <p>One final page is folded inside the note. It's written in the same kind of shifted code the castle keepers used to protect their secrets: every letter has been pushed forward through the alphabet by a fixed number of steps.</p>
+      <p>The keeper's rule: shift each letter of the coded word <strong>back</strong> through the alphabet by the same number as the lion shields you counted in Mission 7.</p>
+    </div>
+    <p style="text-align:center; font-size:1.4rem; letter-spacing:0.35em; font-family:'Special Elite',monospace; background: var(--paper-dark); padding: 1rem; border-radius: 3px;">GLVFRYHUB</p>
+    <details class="hint"><summary>Hint 1</summary><p>Go back to your Mission 7 answer — that number is your shift. For example, with a shift of 2, the letter Z shifted back becomes X.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The decoded word describes exactly what a good detective loves to make, every time they crack a case.</p></details>
+    <div class="answer-box" data-answer-hash="89fa7115">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every clue you followed — the count's blueprint, the coded note, the guards, the shields — was really one long act of <strong>discovery</strong>. The curator hangs your case file in the Knights' Hall as proof: Muiderslot's oldest secret was never really lost. It just needed a detective curious enough to go looking.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

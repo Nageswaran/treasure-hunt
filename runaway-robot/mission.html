@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Case of the Runaway Robot — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #D2601A;
+    --accent-dark: #A34712;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .password-list {
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.9rem 1.1rem;
+    margin: 0.9rem 0;
+  }
+  .password-list p { margin: 0.35rem 0; font-family: 'Special Elite', monospace; font-size: 0.95rem; }
+  .clue-list {
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.9rem 1.1rem;
+    margin: 0.9rem 0;
+  }
+  .clue-list p { margin: 0.4rem 0; }
+  .claim-block {
+    border-left: 3px solid var(--accent);
+    padding: 0.5rem 0.9rem;
+    margin: 0.7rem 0;
+    background: var(--paper-dark);
+    border-radius: 0 3px 3px 0;
+  }
+  .code-block {
+    text-align: center;
+    font-size: 1.4rem;
+    letter-spacing: 0.35em;
+    font-family: 'Special Elite', monospace;
+    background: var(--paper-dark);
+    padding: 1rem;
+    border-radius: 3px;
+    margin: 0.9rem 0;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Case of the Runaway Robot</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 65-80 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Sanne runs a small robotics workshop in Eindhoven, a Dutch city famous for its robot-builders and engineers. Her newest creation, a helper-robot named <strong>PIP-7</strong>, was halfway through a software update last night when something went wrong — and PIP-7 rolled straight out the workshop door into the dark streets.</p>
+  <p>All Sanne has left is a trail of error logs, sticky notes, and a battery counting down toward zero. She needs a sharp young detective to follow PIP-7's digital trail and bring it home before the battery dies for good.</p>
+</div>
+
+<!-- MISSION 1 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Boot-Screen Tribute</h2>
+    <div class="puzzle">
+      <p>Sanne restarts the workshop's main computer to check the last thing PIP-7 did before it vanished. Every time this computer boots up, it flashes a short tribute message honoring someone Sanne admires:</p>
+      <p><em>"In honor of the woman historians call the world's first computer programmer — who wrote a step-by-step algorithm for Charles Babbage's Analytical Engine in the 1840s, long before real computers even existed."</em></p>
+      <p>Search online to find out: what is this person's full name?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "first computer programmer Analytical Engine 1840s" and look for the name on a trustworthy history or museum site.</p></details>
+    <div class="answer-box" data-answer-hash="9814377e">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type her full name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>PIP-7's Last Note</h2>
+    <div class="puzzle">
+      <p>Taped to the workshop door is a sticky note in PIP-7's own handwriting-font, written half in Dutch, the way it always practiced:</p>
+      <p><em>"Verbinding verbroken met ___ netwerk. Ik ga zoeken."</em> ("Connection lost with the network. I am going to search.")</p>
+      <p>Every Dutch noun needs the right little word in front of it — either <strong>"de"</strong> or <strong>"het"</strong>. Search online to find out which article belongs with the Dutch word <strong>"netwerk"</strong> (network).</p>
+      <p>Type just the article: <strong>de</strong> or <strong>het</strong>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "netwerk de of het" and check a Dutch grammar or dictionary site for the answer.</p></details>
+    <div class="answer-box" data-answer-hash="f2b48a66">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="de or het...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The word "robot" comes from an old Slavic word, "robota," meaning forced labor. Writer Karel Čapek first used it in his 1920 play about machines that rebel against their makers!</p>
+
+<!-- MISSION 3 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Charging Dock Blueprint</h2>
+    <div class="puzzle">
+      <p>PIP-7's charging dock is built into the corner of the workshop, in an L-shape, so the storage closet door doesn't bump into the charger. Sanne sketched the floor plan with every measurement marked.</p>
+      <p>Using the measurements on the sketch below, calculate the total floor area of the charging dock, in square meters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 260 180" width="260" height="180"
+         role="img" aria-label="An L-shaped charging dock floor plan: a large rectangle with a smaller rectangular notch cut from the top-right corner, with every side length labeled">
+      <polygon points="20,20 140,20 140,60 220,60 220,140 20,140"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="80" y="13" text-anchor="middle" font-size="12">6 m</text>
+      <text x="150" y="40" text-anchor="middle" font-size="12" transform="rotate(-90 150 40)">2 m</text>
+      <text x="180" y="53" text-anchor="middle" font-size="12">4 m</text>
+      <text x="232" y="100" text-anchor="middle" font-size="12" transform="rotate(-90 232 100)">4 m</text>
+      <text x="120" y="156" text-anchor="middle" font-size="12">10 m</text>
+      <text x="8" y="80" text-anchor="middle" font-size="12" transform="rotate(-90 8 80)">6 m</text>
+    </svg>
+    <div class="clue-caption">Split the L-shape into two simple rectangles before you calculate — or think of it as one big rectangle with a corner missing.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try drawing one straight line across the shape to turn it into two ordinary rectangles.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>One way: find the area of the whole outer rectangle (10 m × 6 m) as if the corner wasn't missing, then subtract the missing notch (4 m × 2 m).</p></details>
+    <div class="answer-box" data-answer-hash="85e143c6">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Number only, no units...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The New Lock Code</h2>
+    <div class="puzzle">
+      <p>Before it glitched, PIP-7 was choosing a new password to protect its charging station. Its system log shows four passwords it was considering:</p>
+    </div>
+    <div class="password-list">
+      <p>Password A: <strong>PIP2024</strong></p>
+      <p>Password B: <strong>123456789</strong></p>
+      <p>Password C: <strong>hunter2</strong></p>
+      <p>Password D: <strong>Qm7!vLxT2#dRwZp9</strong></p>
+    </div>
+    <div class="puzzle">
+      <p>Which ONE of these four passwords is the strongest? Think about length, whether it uses a real word or personal information, and how many different kinds of characters it mixes together.</p>
+      <p>Type your answer like this: "Password A", "Password B", "Password C", or "Password D".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at length first — a short password is easy to crack no matter what characters it uses.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A strong password avoids real words, avoids anything personal (like a name or a year), and mixes uppercase, lowercase, numbers, and symbols unpredictably.</p></details>
+    <div class="answer-box" data-answer-hash="62baf6a4">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Password A, B, C, or D...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The very first computer mouse, built in 1964, had a carved wooden case and just one button!</p>
+
+<!-- MISSION 5 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Sensor Logs</h2>
+    <div class="puzzle">
+      <p>The workshop has four rooms: the <strong>Workshop</strong>, the <strong>Server Closet</strong>, the <strong>Break Room</strong>, and the <strong>Garage</strong>. Each room has a different type of sensor: <strong>Motion</strong>, <strong>Light</strong>, <strong>Sound</strong>, and <strong>Door</strong> — one sensor type per room.</p>
+      <p>PIP-7 tripped exactly one sensor in each room on its way out, but the software glitch scrambled which sensor belongs to which room in the printout. Use these clues to work it out:</p>
+    </div>
+    <div class="clue-list">
+      <p>1. The Light sensor triggered in the Server Closet.</p>
+      <p>2. The Motion sensor did not trigger in the Server Closet or the Break Room.</p>
+      <p>3. The Door sensor did not trigger in the Workshop or the Garage.</p>
+      <p>4. The Sound sensor did not trigger in the Garage.</p>
+    </div>
+    <div class="puzzle">
+      <p>Which sensor triggered in the <strong>Garage</strong> — the room PIP-7 used to escape into the street?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try making a table: the four rooms across the top, the four sensor types down the side. Cross off a box every time a clue rules it out.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Clue 1 gives you one exact match right away. Then use clue 3 to figure out where the Door sensor must be, since the Server Closet is already taken.</p></details>
+    <div class="answer-box" data-answer-hash="bd73a627">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the sensor type...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Bug in the System</h2>
+    <div class="puzzle">
+      <p>PIP-7's error log ends with a strange line: <strong>"ERROR: BUG DETECTED."</strong> Underneath it, someone has scribbled two competing explanations for where the word "bug" (meaning a computer glitch) actually came from. Only one of them is true — the other is a popular myth.</p>
+    </div>
+    <div class="claim-block"><strong>Claim A:</strong> In September 1947, engineers found a real moth stuck inside a relay of the Harvard Mark II computer, taped it into their logbook, and joked it was the "first actual case of bug being found."</div>
+    <div class="claim-block"><strong>Claim B:</strong> The word "bug" for a computer problem was invented by Bill Gates in the 1980s.</div>
+    <div class="puzzle">
+      <p>Search online to find out which claim is actually true. Type: <strong>Claim A</strong> or <strong>Claim B</strong>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "first computer bug moth story" and see what a trusted computer-history site says really happened.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Look for a museum or computer-history website — does it credit Bill Gates, or someone else entirely, decades earlier?</p></details>
+    <div class="answer-box" data-answer-hash="ba62a274">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Claim A or Claim B...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A robot soccer team from Eindhoven, called Tech United, has been crowned world champion multiple times at the RoboCup competition — right in PIP-7's home city!</p>
+
+<!-- MISSION 7: BIG AHA -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Battery Safe</h2>
+    <div class="puzzle">
+      <p>Behind a loose panel in the workshop wall, Sanne finds PIP-7's emergency spare battery locked inside a small safe. The keypad doesn't use number buttons — it uses PIP-7's favorite binary status lights instead.</p>
+      <p>Look closely at the panel below. A glowing (filled) light means <strong>1</strong>, a dark (empty) light means <strong>0</strong>. Reading left to right, add up the place values of only the glowing lights to find the code.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 340 140" width="340" height="140"
+         role="img" aria-label="A dark control panel with a row of eight round status lights, some glowing green and some dark, each labeled underneath with its binary place value">
+      <rect x="10" y="10" width="320" height="90" rx="6" fill="#20241f" stroke="#2B2A24" stroke-width="2"/>
+      <text x="170" y="26" text-anchor="middle" font-size="10" fill="#F3ECDA" letter-spacing="1">PIP-7 BATTERY SAFE — STATUS LIGHTS</text>
+      <circle cx="40" cy="60" r="14" fill="#3A3F38" stroke="#111" stroke-width="2"/>
+      <circle cx="78" cy="60" r="14" fill="#3A3F38" stroke="#111" stroke-width="2"/>
+      <circle cx="116" cy="60" r="14" fill="#4CAF50" stroke="#245C28" stroke-width="2"/>
+      <circle cx="154" cy="60" r="14" fill="#3A3F38" stroke="#111" stroke-width="2"/>
+      <circle cx="192" cy="60" r="14" fill="#4CAF50" stroke="#245C28" stroke-width="2"/>
+      <circle cx="230" cy="60" r="14" fill="#4CAF50" stroke="#245C28" stroke-width="2"/>
+      <circle cx="268" cy="60" r="14" fill="#3A3F38" stroke="#111" stroke-width="2"/>
+      <circle cx="306" cy="60" r="14" fill="#4CAF50" stroke="#245C28" stroke-width="2"/>
+      <text x="40" y="118" text-anchor="middle" font-size="12">128</text>
+      <text x="78" y="118" text-anchor="middle" font-size="12">64</text>
+      <text x="116" y="118" text-anchor="middle" font-size="12">32</text>
+      <text x="154" y="118" text-anchor="middle" font-size="12">16</text>
+      <text x="192" y="118" text-anchor="middle" font-size="12">8</text>
+      <text x="230" y="118" text-anchor="middle" font-size="12">4</text>
+      <text x="268" y="118" text-anchor="middle" font-size="12">2</text>
+      <text x="306" y="118" text-anchor="middle" font-size="12">1</text>
+    </svg>
+    <div class="clue-caption">The number under each light is what it's worth if it's glowing. Add up only the glowing ones.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Binary place values double each time, starting from 1 on the right: 1, 2, 4, 8, 16, 32, 64, 128. Add up the place values of only the glowing lights.</p></details>
+    <div class="answer-box" data-answer-hash="8ce38d62">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type the code...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8: GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>PIP-7 Comes Home</h2>
+    <div class="puzzle">
+      <p>Sanne finds PIP-7 powered down behind a recycling bin, two streets from the workshop, its battery at zero. Right before shutting off, it printed one last coded line — using the same shifting code its programmers taught it to hide secret messages: every letter is pushed forward through the alphabet by a fixed number of steps.</p>
+      <p>To read the message, shift each letter <strong>backward</strong> through the alphabet by the same number as the lights that were glowing in Mission 7's battery safe.</p>
+    </div>
+    <p class="code-block">TIVWIZIVERGI</p>
+    <details class="hint"><summary>Hint 1</summary><p>Go back and count how many lights were actually glowing in Mission 7's panel. That number is your shift.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>For example, with a shift of 4: the letter E shifted back becomes A. Try that pattern on the first few letters and see what starts to appear.</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every glitch you traced — the boot screen, the sensor logs, the coded shutdown message — you never gave up, even when the trail went cold. That's real <strong>perseverance</strong>, the same quality every great troubleshooter and every great detective shares. Sanne reboots PIP-7 right there on the sidewalk, and its very first word is "thank you."</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

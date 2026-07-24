@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Secret Time Machine — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #1C6FD9;
+    --accent-dark: #123F7A;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Secret Time Machine</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-75 minutes</div>
+</div>
+
+<div class="intro">
+  <p>In the dusty back room of the Old Observatory Museum, behind a locked door nobody has opened in years, sits a brass-and-glass machine on wheels: the <strong>Chrono-Cycler</strong>. A yellowed tag says it was built by a forgotten inventor, Dr. Ada Vintner, who vanished the same week it stopped working — mid-jump, frozen between two moments in time.</p>
+  <p>The museum director just handed you the key. Every dial on the control panel is jammed, scrambled, or stuck on the wrong reading. To wake the machine up — and find out what happened to Dr. Vintner — you'll need to recalibrate it, dial by dial, using real facts, real maps, and real numbers. Get to work, Agent.</p>
+</div>
+
+<!-- MISSION 1 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Flight Stabilizer Ring</h2>
+    <div class="puzzle">
+      <p>The first thing you notice is a ring of five small brass gauges bolted around the main window. Dr. Vintner's notebook (open on the desk) says the ring only spins smoothly when every single gauge shows a creature that can actually fly.</p>
+      <p>Look closely at the five gauges below. One of them is jamming the ring. Which creature doesn't belong?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 420 150" width="420" height="150"
+         role="img" aria-label="Five brass gauges in a row, each showing a small creature: a bat, an eagle, a butterfly, a cat, and a dragonfly">
+      <rect width="420" height="150" fill="#EDE3CC"/>
+      <!-- Gauge 1: Bat -->
+      <g>
+        <circle cx="50" cy="55" r="34" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+        <path d="M50,45 Q35,30 20,42 Q30,45 33,52 Q40,44 50,55 Q60,44 67,52 Q70,45 80,42 Q65,30 50,45 Z" fill="#3A3630"/>
+        <circle cx="46" cy="48" r="1.6" fill="#F3ECDA"/>
+        <circle cx="54" cy="48" r="1.6" fill="#F3ECDA"/>
+        <text x="50" y="108" text-anchor="middle" font-size="13" font-weight="700">BAT</text>
+      </g>
+      <!-- Gauge 2: Eagle -->
+      <g>
+        <circle cx="134" cy="55" r="34" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+        <path d="M134,50 Q112,38 100,48 Q116,50 122,56 Q128,46 134,50 Q140,46 146,56 Q152,50 168,48 Q156,38 134,50 Z" fill="#8A5A1E"/>
+        <path d="M129,53 L134,62 L139,53 Z" fill="#D9A82C"/>
+        <text x="134" y="108" text-anchor="middle" font-size="13" font-weight="700">EAGLE</text>
+      </g>
+      <!-- Gauge 3: Butterfly -->
+      <g>
+        <circle cx="218" cy="55" r="34" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+        <line x1="218" y1="38" x2="218" y2="70" stroke="#2B2A24" stroke-width="2"/>
+        <ellipse cx="206" cy="46" rx="12" ry="9" fill="#2E5C8A"/>
+        <ellipse cx="230" cy="46" rx="12" ry="9" fill="#2E5C8A"/>
+        <ellipse cx="207" cy="62" rx="9" ry="7" fill="#4A7CB0"/>
+        <ellipse cx="229" cy="62" rx="9" ry="7" fill="#4A7CB0"/>
+        <text x="218" y="108" text-anchor="middle" font-size="13" font-weight="700">BUTTERFLY</text>
+      </g>
+      <!-- Gauge 4: Cat -->
+      <g>
+        <circle cx="302" cy="55" r="34" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+        <path d="M285,66 Q283,42 293,38 L296,48 L308,48 L311,38 Q321,42 319,66 Q302,74 285,66 Z" fill="#A33B2D"/>
+        <circle cx="295" cy="55" r="1.6" fill="#2B2A24"/>
+        <circle cx="309" cy="55" r="1.6" fill="#2B2A24"/>
+        <path d="M319,62 Q332,58 334,68" stroke="#A33B2D" stroke-width="3" fill="none"/>
+        <text x="302" y="108" text-anchor="middle" font-size="13" font-weight="700">CAT</text>
+      </g>
+      <!-- Gauge 5: Dragonfly -->
+      <g>
+        <circle cx="386" cy="55" r="34" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+        <line x1="366" y1="55" x2="406" y2="55" stroke="#2B2A24" stroke-width="2.5"/>
+        <ellipse cx="378" cy="44" rx="16" ry="7" fill="#4C7A52" opacity="0.8"/>
+        <ellipse cx="394" cy="44" rx="16" ry="7" fill="#4C7A52" opacity="0.8"/>
+        <ellipse cx="378" cy="66" rx="16" ry="7" fill="#6FA377" opacity="0.8"/>
+        <ellipse cx="394" cy="66" rx="16" ry="7" fill="#6FA377" opacity="0.8"/>
+        <text x="386" y="108" text-anchor="middle" font-size="13" font-weight="700">DRAGONFLY</text>
+      </g>
+    </svg>
+    <div class="clue-caption">Every gauge on this ring is supposed to show a flying creature. Study each one carefully.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Four of these five creatures can truly fly through the air. Think about which one only jumps and climbs.</p></details>
+    <div class="answer-box" data-answer-hash="6745c07">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the creature that doesn't belong...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Spinning Compass Needle</h2>
+    <div class="puzzle">
+      <p>Bolted to the side of the Chrono-Cycler is a brass compass dial. Dr. Vintner's notebook says it was pointing due <strong>North</strong> the moment the power surge hit.</p>
+      <p>During the surge, the needle spun clockwise three times in a row: first a <strong>half turn</strong>, then a <strong>quarter turn</strong>, then another <strong>half turn</strong>.</p>
+      <p>Which direction does the needle point now?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>A half turn is 180°, and a quarter turn is 90°. Add up all three turns, then work out where that lands you starting from North and turning clockwise.</p></details>
+    <div class="answer-box" data-answer-hash="53723c">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type a compass direction...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Before pendulum clocks existed, the best clocks in the world lost about 15 minutes a day. Christiaan Huygens' pendulum design (you'll meet him again later) shrank that error down to just 15 seconds a day!</p>
+
+<!-- MISSION 3 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Control Panel's Missing Measurement</h2>
+    <div class="puzzle">
+      <p>The Chrono-Cycler's main control panel is shaped like a wide base with a tall dial tower rising from its center — like a chimney on a house. A sticky note from Dr. Vintner says the panel's total surface area, in square centimeters, is the code that unlocks the tower's dial tray.</p>
+      <p>Use the measurements labeled on the diagram to find the total area of the whole panel (base + tower combined).</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 240 190" width="240" height="190"
+         role="img" aria-label="A control panel shaped like a wide rectangle with a narrower rectangular tower rising from its center, like a chimney on a house">
+      <polygon points="80,20 140,20 140,104 200,104 200,152 20,152 20,104 80,104"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="110" y="13" text-anchor="middle" font-size="12">10 cm</text>
+      <text x="214" y="132" text-anchor="middle" font-size="12" transform="rotate(-90 214 132)">8 cm</text>
+      <text x="110" y="168" text-anchor="middle" font-size="12">30 cm</text>
+      <text x="11" y="86" text-anchor="middle" font-size="12" transform="rotate(-90 11 86)">22 cm</text>
+      <line x1="10" y1="20" x2="10" y2="152" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="6" y1="20" x2="14" y2="20" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="6" y1="152" x2="14" y2="152" stroke="#2B2A24" stroke-width="1"/>
+    </svg>
+    <div class="clue-caption">The tower's width is marked at the top, the base's full width along the bottom, the base's own height on the right, and the panel's total height on the left.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Split the whole shape into two ordinary rectangles: the wide base, and the narrow tower on top.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The tower's own height isn't labeled directly — but you can work it out: total height minus the base's height. Then find each rectangle's area and add them together.</p></details>
+    <div class="answer-box" data-answer-hash="d5645b9a">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Number only, no units...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Brass Switch Labels</h2>
+    <div class="puzzle">
+      <p>Four brass switches on the panel are labeled with old Dutch words for time: <strong>uur</strong>, <strong>jaar</strong>, <strong>moment</strong>, and <strong>tijd</strong>. Every Dutch noun needs the right little word in front of it — either <strong>"de"</strong> or <strong>"het"</strong>.</p>
+      <p>Three of these four words use "het." One of them is different — it uses "de" instead. Which word is the odd one out?</p>
+      <p>Type just that one Dutch word (without its article).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try each word with both articles: "de uur" or "het uur"? "de jaar" or "het jaar"? Search if you're not sure — Dutch grammar sites list this for every noun.</p></details>
+    <div class="answer-box" data-answer-hash="7c3f0b48">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the Dutch word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A day on Venus (about 243 Earth days, the time it takes to spin around once) is actually longer than its year (about 225 Earth days, the time it takes to circle the Sun)!</p>
+
+<!-- MISSION 5 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Power Dial's Rhythm</h2>
+    <div class="puzzle">
+      <p>The Chrono-Cycler's power dial ticks up by a strange rhythm every time its gear turns. Dr. Vintner recorded the first five readings before the machine froze:</p>
+      <p style="text-align:center; font-size:1.6rem; letter-spacing:0.15em; font-family:'Special Elite',monospace; background: var(--paper-dark); padding: 1rem; border-radius: 3px;">3, 6, 11, 18, 27, ?</p>
+      <p>What number comes next on the dial? (Figure out the rule the numbers follow, then use it to find the missing one.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at how much the dial jumps up each time: from 3 to 6, from 6 to 11, from 11 to 18, from 18 to 27. Write those jumps down as their own list of numbers.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The jumps themselves go up by the same amount each time. Once you spot that pattern in the jumps, you can predict the next jump — and add it to 27.</p></details>
+    <div class="answer-box" data-answer-hash="8ff05e0e">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the next number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Frozen World Clock</h2>
+    <div class="puzzle">
+      <p>Set into the dashboard is a small "world clock" dial — two linked clock faces that are supposed to always agree on what time it really is in two cities at once. It's frozen showing <strong>3:00 PM in Tokyo, Japan, on August 15, 2026</strong>.</p>
+      <p>The Chrono-Cycler is actually sitting in a lab in <strong>Amsterdam, the Netherlands</strong>. Search online to find the real time zones (UTC offsets) for Tokyo and for Amsterdam on that date — remember, Amsterdam runs on summer time in August, but Tokyo never changes its clocks at all.</p>
+      <p>What time is it in Amsterdam at that exact moment? Type your answer like this: <strong>8:00 AM</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Tokyo time zone UTC offset" and "Amsterdam summer time UTC offset" separately — Japan uses one single offset all year, but Amsterdam's offset changes with the seasons.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know both cities' distance from UTC, find the difference between them in hours. Tokyo is ahead of Amsterdam, so Amsterdam's clock reads earlier in the day.</p></details>
+    <div class="answer-box" data-answer-hash="d83029cb">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="e.g. 8:00 AM">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Japan never changes its clocks for daylight saving — it stays on the exact same time zone all year round, while the Netherlands (and most of Europe) shifts its clocks forward and back twice a year.</p>
+
+<!-- MISSION 7: BIG AHA -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Era-Counter's Missing Number</h2>
+    <div class="puzzle">
+      <p>Deep inside the Chrono-Cycler is its "era-counter" — a dial that's supposed to show a single number: the number of years between two completely different ways humans have kept time.</p>
+      <p>Search online to find two real facts:</p>
+      <p>1. What year did the Dutch scientist <strong>Christiaan Huygens build his first working pendulum clock</strong>? (Be careful — some pages mention a patent from a year later, but you want the year he actually built and tested it.)</p>
+      <p>2. What year was the world's <strong>first accurate atomic clock</strong> built?</p>
+      <p>Subtract the earlier year from the later year. That gap, in years, is the number the era-counter needs.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Christiaan Huygens pendulum clock year built" and, separately, "first atomic clock year invented."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The pendulum clock came first, in the 1600s. The atomic clock came much later, in the 1950s. Subtract the smaller year from the bigger one.</p></details>
+    <div class="answer-box" data-answer-hash="36f95587">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Number of years...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8: GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Dr. Vintner's Last Nameplate</h2>
+    <div class="puzzle">
+      <p>With every dial recalibrated, the Chrono-Cycler hums to life — and a small brass nameplate slides out from under the main window. It's engraved with a worn quote from a famous scientist who spent his whole life studying time, space, and the universe:</p>
+      <p style="text-align:center; font-style:italic; font-size:1.15rem; background: var(--paper-dark); padding: 1rem; border-radius: 3px;">"I have no special talent. I am only passionately &hellip;"</p>
+      <p>Search online to find the rest of this real quote and who said it. The missing word describes a feeling — a hunger to explore, ask questions, and find things out.</p>
+      <p>Type the <strong>one-word noun</strong> for that feeling (not the "-ous" describing-word from the quote itself, but the "-ity" word for the feeling — like how "brave" becomes "bravery").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for the exact quote "I have no special talent" to find who said it and the missing word.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The describing-word in the quote ends in "-ous." The noun you need to type is the related word that ends in "-ity" instead.</p></details>
+    <div class="answer-box" data-answer-hash="15878246">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type the one-word feeling...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The Chrono-Cycler's window fills with light, and a final message from Dr. Vintner scrolls across it: she didn't vanish by accident — she followed her own <strong>curiosity</strong> straight into history, chasing exactly the kind of questions you just answered. The machine was never really broken. It was just waiting for another curious mind to find it.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

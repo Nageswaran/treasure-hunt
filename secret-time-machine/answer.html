@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Answer Key — The Secret Time Machine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Same --accent color as mission.html so the two files are visually linked as one case. */
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #1C6FD9;
+    --stamp-red: #A33B2D;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+  }
+  h1, .banner, .label-eyebrow { font-family: 'Special Elite', monospace; }
+  .banner {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    border: 3px solid var(--stamp-red);
+    color: var(--stamp-red);
+    padding: 0.9rem 1rem;
+    transform: rotate(-1deg);
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2rem; }
+  .case-header h1 { font-size: clamp(1.5rem, 4.5vw, 2.1rem); margin: 0; }
+  .case-header .subtitle { color: rgba(0,0,0,0.55); font-size: 0.9rem; margin-top: 0.4rem; }
+  .answer-card {
+    max-width: 700px;
+    margin: 0 auto 1.6rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    padding: 1.5rem 1.6rem;
+  }
+  .answer-card .eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+  .answer-card h2 { margin: 0.2rem 0 0.9rem; font-size: 1.15rem; }
+  .answer {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+    background: var(--paper-dark);
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 3px;
+  }
+  .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(0,0,0,0.5); margin-top: 1rem; }
+  .answer-card p { margin: 0.35rem 0 0; }
+  .answer-card a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="banner">🔒 CONFIDENTIAL — PARENT / GUARDIAN ANSWER KEY — DO NOT SHOW TO THE CHILD</div>
+
+<div class="case-header">
+  <h1>The Secret Time Machine — Answer Key</h1>
+  <div class="subtitle">Keep this closed until your agent is stuck or finished. Matches mission.html in this same folder.</div>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 01 &middot; Easy</div>
+  <h2>The Flight Stabilizer Ring</h2>
+  <div class="answer">Answer: cat</div>
+  <div class="label">How to get there</div>
+  <p>Look at each of the five gauges: bat, eagle, butterfly, cat, dragonfly. Bats, eagles, butterflies, and dragonflies can all truly fly through the air. Cats can jump and climb, but they cannot fly. The cat is the gauge that breaks the "everything here flies" rule.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>All four other creatures are genuine fliers (mammal, bird, and two kinds of insect); the cat is the sole non-flying animal shown, so it's the only defensible odd one out. The picture itself (icons plus labels) carries the whole clue — no outside lookup needed.</p>
+  <div class="label">Source / fact used</div>
+  <p>General, well-established biology (bats, eagles, butterflies, and dragonflies fly; cats do not) — no web source needed, this is common knowledge appropriate for the puzzle's image-observation format.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 02 &middot; Easy</div>
+  <h2>The Spinning Compass Needle</h2>
+  <div class="answer">Answer: East</div>
+  <div class="label">How to get there</div>
+  <p>Starting at North (0°), turning clockwise: a half turn (+180°) lands on South (180°). A quarter turn (+90°) lands on West (270°). Another half turn (+180°) lands on 450°, which wraps around past a full 360° circle to 90° — which is East.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Compass rotation is fully deterministic: adding the three turns (180+90+180=450°) and reducing modulo 360° gives exactly one direction, East. There is no alternative reading of "clockwise" or "starting from North" that changes the result.</p>
+  <div class="label">Source / fact used</div>
+  <p>Pure arithmetic/geometric reasoning on compass directions — no external source needed.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 03 &middot; Medium</div>
+  <h2>The Control Panel's Missing Measurement</h2>
+  <div class="answer">Answer: 380</div>
+  <div class="label">How to get there</div>
+  <p>Split the "chimney on a house" shape into two rectangles. The base rectangle is 30 cm wide by 8 cm tall: 30 &times; 8 = 240 cm&sup2;. The tower's height isn't labeled directly, but the total height (22 cm) minus the base's height (8 cm) gives the tower's height: 22 &minus; 8 = 14 cm. The tower is 10 cm wide by 14 cm tall: 10 &times; 14 = 140 cm&sup2;. Total area: 240 + 140 = 380 cm&sup2;.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>The diagram's polygon coordinates were built directly from these same four labeled numbers (10, 8, 30, 22 cm at a scale of 6 px per cm, with the tower centered on the base), so the picture and the arithmetic always agree. Decomposing the shape any other way (e.g. splitting the tower and base along a different line) still yields the same two rectangle areas summing to 380 cm&sup2; — there is exactly one consistent total.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-drawn, to-scale composite-rectangle diagram (verified by re-deriving the area from the exact labeled dimensions: 240 + 140 = 380).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 04 &middot; Medium</div>
+  <h2>The Brass Switch Labels</h2>
+  <div class="answer">Answer: tijd</div>
+  <div class="label">How to get there</div>
+  <p>"Het uur" (the hour), "het jaar" (the year), and "het moment" (the moment) are all "het-woorden." "De tijd" (the time) is the odd one out — it takes "de" instead of "het."</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Dutch noun gender is fixed per word (not a matter of opinion), and all four articles were checked against standard Dutch reference sources. Only "tijd" pairs with "de"; the other three all pair with "het," so "tijd" is the single defensible odd one out.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search against Dutch grammar references (ANW Algemeen Nederlands Woordenboek and standard Dutch de/het word lists): "het uur," "het jaar," "het moment," "de tijd."</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 05 &middot; Hard</div>
+  <h2>The Power Dial's Rhythm</h2>
+  <div class="answer">Answer: 38</div>
+  <div class="label">How to get there</div>
+  <p>The jumps between numbers are 3, 5, 7, 9 (6&minus;3=3, 11&minus;6=5, 18&minus;11=7, 27&minus;18=9) — each jump is exactly 2 more than the last. So the next jump is 9+2=11, and 27+11=38.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>The first differences (3, 5, 7, 9) form a perfectly constant-second-difference pattern, the classic signature of a quadratic sequence (this one equals n&sup2;+2 for n=1,2,3,4,5, confirmed by checking every given term). We stress-tested an alternative "multiply and adjust" reading (a(n+1)=2&times;a(n) minus a perfect square) and it produces the exact same values and the same next term, 38 — it's just a different way of describing the same sequence, not a competing answer. A ratio-based reading (each term roughly &times;1.5 to &times;2) does not land on a clean integer (27&times;1.5=40.5), so it isn't a defensible alternative. 38 is the only value consistent with the clearly visible, constant +2 growth in the jumps.</p>
+  <div class="label">Source / fact used</div>
+  <p>Solved directly from the given sequence by hand (pure logical reasoning, no outside lookup required, as intended for this domain).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 06 &middot; Hard</div>
+  <h2>The Frozen World Clock</h2>
+  <div class="answer">Answer: 8:00 AM</div>
+  <div class="label">How to get there</div>
+  <p>Japan Standard Time is UTC+9 year-round (Japan does not observe daylight saving time). On August 15, 2026, Amsterdam is on Central European Summer Time (CEST), UTC+2 (the Netherlands' clocks move forward on the last Sunday of March and back on the last Sunday of October — 2026's summer-time period runs March 29 to October 25, so August 15 falls inside it). The difference between the two offsets is 9&minus;2 = 7 hours, with Tokyo ahead. 3:00 PM in Tokyo is 6:00 AM UTC (15:00&minus;9), and 6:00 AM UTC + 2 hours = 8:00 AM in Amsterdam, same day.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Both UTC offsets are real, fixed, and unambiguous for the stated calendar date (Japan never shifts; Amsterdam's CEST window for 2026 is fixed and confirmed), so the 7-hour gap and resulting 8:00 AM are the only correct conversion. The puzzle names a specific date precisely so the DST-dependent Amsterdam offset isn't ambiguous.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search: Japan Standard Time is UTC+9 with no DST (Wikipedia, "Japan Standard Time"); Netherlands 2026 DST dates are March 29 (start) and October 25 (end), CEST = UTC+2 (timeanddate.com, "Daylight Saving Time Changes 2026 in Amsterdam, Netherlands").</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 07 &middot; Big Aha</div>
+  <h2>The Era-Counter's Missing Number</h2>
+  <div class="answer">Answer: 299</div>
+  <div class="label">How to get there</div>
+  <p>Christiaan Huygens built and successfully tested his first working pendulum clock in 1656 (he patented the design the following year, 1657 — the puzzle steers the child toward the "built" year to avoid that mix-up). The world's first accurate atomic clock, a caesium atomic clock, was built in 1955 by Louis Essen and Jack Parry at the National Physical Laboratory in the UK. 1955 &minus; 1656 = 299 years.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Both years are well-documented and consistently reported across reputable sources when searched with the puzzle's exact wording ("built," not "patented"). The only realistic source of ambiguity — 1656 (built) versus 1657 (patented) — is explicitly flagged in the puzzle text so the child lands on 1656, keeping the subtraction unique at 299.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search: Christiaan Huygens completed his first pendulum clock in 1656 and patented it in 1657 (American Physical Society, "Christiaan Huygens Patents the First Pendulum Clock"; multiple encyclopedic sources agree on 1656 as the build year). First atomic clock: 1955, Louis Essen and J.V.L. Parry, National Physical Laboratory (Science Museum Group Collection, "Caesium Atomic Clock, 1955"; NPL "Louis Essen" history page).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Grand Finale</div>
+  <h2>Dr. Vintner's Last Nameplate</h2>
+  <div class="answer">Answer: curiosity</div>
+  <div class="label">How to get there</div>
+  <p>The full quote is: "I have no special talent. I am only passionately curious." It's attributed to Albert Einstein. The puzzle asks for the noun form of "curious," which is "curiosity" — the same word as the mission's final reward value.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>The quote is widely and consistently attributed to Einstein (documented in Walter Isaacson's biography "Einstein: His Life and Universe," p. 548, and repeated across major quotation sources). The puzzle explicitly requests the "-ity" noun form rather than the "-ous" adjective from the quote itself, so "curious" alone would not match — only "curiosity" satisfies the stated instruction.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search: quote attributed to Albert Einstein, sourced to Walter Isaacson's "Einstein: His Life and Universe" (2007), p. 548; corroborated by Goodreads and BrainyQuote quotation listings.</p>
+  <div class="label">Reward revealed</div>
+  <p>Curiosity — the whole mission (researching real facts, checking real dates, reading real dials) is framed as an act of curiosity, and the final quote makes that explicit: the very trait the child used to solve every mission is the one the machine reveals at the end.</p>
+</div>
+
+</body>
+</html>
