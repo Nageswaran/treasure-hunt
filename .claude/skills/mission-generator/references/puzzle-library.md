@@ -39,6 +39,18 @@ Mix and match across the mission set — avoid leaning on the same mechanic for 
 - Multi-step reasoning chains (clue A unlocks clue B unlocks the answer)
 - Measurement puzzles from a drawn diagram (a shape you draw yourself to the exact stated dimensions — area, perimeter, a missing side length, or comparing two composite/combined regions; see "Diagrams" in SKILL.md)
 - Logic grids and knights-and-knaves (deduce the answer from a small set of clues, purely by elimination)
+- Pen-and-paper calculation (a problem gnarly enough — multi-digit arithmetic, tallying several clues into a table, a multi-step word problem — that it's genuinely easier worked out by hand than in your head; say so outright, "grab a pencil for this one")
+- Multi-stage mission (2-3 sequential stages inside one mission, each stage's result feeding the next, each with its own answer box — see "Multi-stage puzzles" in SKILL.md)
+- Delayed recall (plant a memorable detail early — a number, name, or code, flagged in-story as worth remembering — then require it again in a *non-adjacent* later mission without restating it or saying where it came from; tests attentiveness and retrieval, not just the puzzle in front of them)
+
+## Story-planted memory checklist
+
+For a delayed-recall pair, use this pattern so the callback is fair to the child, not a trivia trap:
+
+- Frame the plant clearly in the story voice so a child notices it's important (e.g. an in-story "Agent's Notebook" aside: "This part is worth remembering..."), but don't over-signal ("this will be needed 4 missions from now").
+- The gap should be non-adjacent — at least 2-3 missions later, not the very next one, so it's genuinely a recall rather than a continuation.
+- The later mission should not name or link back to the mission where the detail was planted; the child re-recognizing its relevance is part of the puzzle.
+- The static page is scrollable, so a child *can* physically scroll back and find it — that's fine and not a bug to design around. The skill being tested is noticing that an earlier detail is relevant and applying it, not literal unaided memorization.
 
 ## "Did you know?" facts — examples of the right shape
 

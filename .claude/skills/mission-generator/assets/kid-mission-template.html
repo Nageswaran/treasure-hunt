@@ -281,6 +281,44 @@
   </div>
 -->
 
+<!--
+  Example of a MULTI-STAGE mission (see "Multi-stage puzzles" in SKILL.md) —
+  two sequential answer-boxes in one mission-body, Stage 2 genuinely needs
+  Stage 1's result. No new CSS/JS: it's the same .answer-box/checkAnswer
+  pattern used everywhere else, just repeated with unique ids/hashes.
+
+  <div class="mission">
+    <div class="tab">MISSION 07</div>
+    <div class="mission-body">
+      <span class="stamp hard">HARD</span>
+      <h2>{{title}}</h2>
+      <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:0 0 0.6rem;">Stage 1 of 2</p>
+      <div class="puzzle"><p>{{Stage 1 puzzle text — its answer is a number/word Stage 2 will need}}</p></div>
+      <details class="hint"><summary>Hint 1</summary><p>{{gentle nudge for stage 1}}</p></details>
+      <div class="answer-box" data-answer-hash="{{hashAnswer('stage 1 answer')}}">
+        <label for="m7-stage1">Your answer:</label>
+        <div class="answer-row">
+          <input id="m7-stage1" type="text" placeholder="Type what you discovered...">
+          <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+        </div>
+        <p class="check-result" aria-live="polite"></p>
+      </div>
+
+      <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:1.3rem 0 0.6rem;">Stage 2 of 2</p>
+      <div class="puzzle"><p>{{Stage 2 puzzle text that explicitly uses Stage 1's answer, e.g. "Now take that number and..."}}</p></div>
+      <details class="hint"><summary>Hint 1</summary><p>{{gentle nudge for stage 2}}</p></details>
+      <div class="answer-box" data-answer-hash="{{hashAnswer('stage 2 (final) answer')}}">
+        <label for="m7-stage2">Your final answer:</label>
+        <div class="answer-row">
+          <input id="m7-stage2" type="text" placeholder="Type what you discovered...">
+          <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+        </div>
+        <p class="check-result" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+-->
+
 <!-- The LAST mission always uses class="mission finale" and tab text "GRAND FINALE": -->
 <div class="mission finale">
   <div class="tab">GRAND FINALE</div>
