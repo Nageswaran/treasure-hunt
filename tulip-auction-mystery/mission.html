@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Case of the Missing Trophy Tulip — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #B23A6B;
+    --accent-dark: #7A2548;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .notebook {
+    max-width: 100%;
+    margin: 0.9rem 0 0;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.6rem 0.8rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Case of the Missing Trophy Tulip</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 55-70 minutes</div>
+</div>
+
+<div class="intro">
+  Every year, growers from all over the Netherlands bring their finest new tulips to Royal FloraHolland in Aalsmeer — the biggest flower auction on Earth — hoping to win the Golden Trophy Tulip. But an hour before today's winner is announced, the trophy crate has vanished from its usual spot, and nobody can find the grower who was supposed to be standing beside it. You've been called in to follow the trail through the auction halls before the winner's bell rings.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Past the Gate</h2>
+    <div class="puzzle">
+      <p>Before the guard at the gate lets you in, she wants to know you understand just how enormous this place really is. Search online: how many football fields could fit inside the whole Royal FloraHolland auction building in Aalsmeer? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Royal FloraHolland Aalsmeer football fields size" and look for the number on a couple of trustworthy travel or news sites.</p></details>
+    <div class="answer-box" data-answer-hash="c3e7575d">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Tulips didn't start out in the Netherlands at all. They first grew wild high in the mountains of Central Asia, and only reached Dutch gardens a few hundred years ago.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Grower's Ledger</h2>
+    <div class="puzzle">
+      <p>You find grower Els Bakker's planting ledger open on a crate. It shows how many tulip bulbs she planted each year: Year 1: 3, Year 2: 6, Year 3: 12, Year 4: 24. If the pattern continues exactly, how many bulbs did she plant in Year 5?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at what happens to each year's number to turn it into the next year's number — it's the same simple move every time.</p></details>
+    <div class="answer-box" data-answer-hash="91e39541">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <p class="notebook">🗒️ Agent's Notebook: Clipped to the crate right behind the ledger is a shipping tag, stamped <strong>LOT K-247</strong>. You don't know why yet, but it feels like something worth remembering.</p>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Sorting the Crates</h2>
+    <div class="puzzle">
+      <p>The crates in the loading bay are labeled with Dutch words: <strong>tulp</strong>, <strong>bloembol</strong>, <strong>veiling</strong>, <strong>geld</strong>. In Dutch, most nouns use the word "de" in front of them. But one special word on this list uses "het" instead. Which word is the odd one out?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try saying "de" in front of each word out loud, one at a time — three of them will sound completely normal.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The odd word out isn't about flowers at all — it's about what the winning grower takes home along with the trophy.</p></details>
+    <div class="answer-box" data-answer-hash="72fea3d1">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Race the Clock</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. At Aalsmeer, the auction clock doesn't count UP like a normal auction — it counts DOWN, and the first buyer to slam the button wins the flowers at whatever price is showing.</p>
+      <p>A cart of prize roses starts at 80 cents per stem. Every few seconds, the price drops by 5 cents. A florist finally stops the clock on the 9th price shown (so the price has already dropped 8 times). What is the final price, in cents, per stem?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The 1st price shown is 80 cents, with zero drops yet. The 2nd price shown is after 1 drop. So how many drops have happened by the 9th price shown?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply the number of drops by 5 cents, then subtract that from 80.</p></details>
+    <div class="answer-box" data-answer-hash="89e388a9">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the number of cents...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? In the 1630s, one rare Dutch tulip variety called the Semper Augustus was so prized that a single bulb sold for about as much as a fine house in Amsterdam. People still call that wild time "Tulip Mania."</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Greenhouse Floor Plan</h2>
+    <div class="puzzle">
+      <p>The trophy was last seen in Greenhouse 6, which is L-shaped because of a loading-dock cut-out in one corner. Using the measurements marked on the floor plan, find the total floor area in square meters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 250 190" width="250" height="190"
+         role="img" aria-label="An L-shaped greenhouse floor: a large rectangle with a smaller rectangular notch cut from the top-right corner">
+      <polygon points="20,20 160,20 160,70 220,70 220,160 20,160"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="90" y="12" text-anchor="middle" font-size="12">14 m</text>
+      <text x="190" y="64" text-anchor="middle" font-size="12">6 m</text>
+      <text x="176" y="48" text-anchor="middle" font-size="12" transform="rotate(-90 176 48)">5 m</text>
+      <text x="236" y="118" text-anchor="middle" font-size="12" transform="rotate(-90 236 118)">9 m</text>
+      <text x="120" y="174" text-anchor="middle" font-size="12">20 m</text>
+      <text x="8" y="93" text-anchor="middle" font-size="12" transform="rotate(-90 8 93)">14 m</text>
+    </svg>
+    <div class="clue-caption">Try splitting the L-shape into two ordinary rectangles before you add anything up.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Draw one straight line to turn the L-shape into two plain rectangles.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>One rectangle is 14 m × 14 m. The other is 6 m × 9 m. Find each area, then add them together.</p></details>
+    <div class="answer-box" data-answer-hash="25db25b0">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the area in square meters...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Growers, Four Colors</h2>
+    <div class="puzzle">
+      <p>Four growers each brought exactly one tulip color to today's auction: <strong>Jansen</strong>, <strong>De Vries</strong>, <strong>Bakker</strong>, and <strong>Visser</strong> grew <strong>Red</strong>, <strong>Yellow</strong>, <strong>Purple</strong>, and <strong>White</strong> tulips — one color per grower, but the auction sheet got smudged. Use these clues to work out who grew what:</p>
+    </div>
+    <div class="clue-list">
+      <p>1. The Red tulip came from Jansen.</p>
+      <p>2. Visser's tulip is not Purple and not Yellow.</p>
+      <p>3. The Yellow tulip did not come from Jansen or Bakker.</p>
+      <p>4. De Vries's tulip is not White.</p>
+    </div>
+    <div class="puzzle">
+      <p>This year's Golden Trophy always goes to the finest Purple bloom. Which grower's tulip is the Purple one — the trophy winner?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Make a table: growers across the top, colors down the side. Clue 1 gives you one match immediately — cross that box off first.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once Jansen's color is settled, clue 2 tells you Visser's color must be White. That leaves only Yellow and Purple for De Vries and Bakker — clue 3 picks between them.</p></details>
+    <div class="answer-box" data-answer-hash="4230a35d">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the grower's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Crate Code</h2>
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:0 0 0.6rem;">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Bakker's trophy crate is missing from Greenhouse 6 — but you remember a shipping tag you spotted earlier, stamped with a lot code. Take the number from that code, and subtract the number of football fields you found could fit inside the whole building (your Mission 1 answer). What number do you get?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Flip back through your notes — what number was stamped on that crate tag in Mission 2? What was your Mission 1 answer?</p></details>
+    <div class="answer-box" data-answer-hash="8ae38a3c">
+      <label for="m7-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:1.3rem 0 0.6rem;">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>That number is too big to be a real aisle number here — aisles only go up to 40. Take your Stage 1 answer, subtract 7, then divide what's left by 2. Which aisle number do you get?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Subtract 7 from your Stage 1 answer first. Then divide whatever is left by 2.</p></details>
+    <div class="answer-box" data-answer-hash="8df2997f">
+      <label for="m7-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage2" type="text" placeholder="Type the aisle number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>What Was Really Written on the Crate</h2>
+    <div class="puzzle">
+      <p>In the aisle you found, Bakker's trophy crate sits safe and sound — it was only ever mislabeled in the rush of auction morning. Wedged under the lid is a strip of paper with numbers on it. Use A=1, B=2, C=3, all the way to Z=26, to turn each number into a letter and spell out one word.</p>
+      <p style="font-family:'Special Elite',monospace; letter-spacing:0.1em; font-size:1.1rem;">20 - 5 - 1 - 13 - 23 - 15 - 18 - 11</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write the alphabet out with a number under each letter, A=1 through Z=26, then match each number to its letter.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first number, 20, is the letter T. The word has 8 letters in total.</p></details>
+    <div class="answer-box" data-answer-hash="b33bad79">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The trophy was never stolen at all — just mislabeled and rushed to the wrong aisle in the morning chaos. It took a ledger, a Dutch word, a race against the clock, a floor plan, and a crate code to bring it back — no single clue solved it alone. That's <strong>TEAMWORK</strong>. Well done, Agent — the Golden Trophy Tulip makes it to the winner's spotlight just in time.</p>
+</div>
+
+
+<script>
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

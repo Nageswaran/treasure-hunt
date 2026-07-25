@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Cartographer's Lost Map — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #3B4C7A;
+    --accent-dark: #28355A;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .notebook {
+    max-width: 100%;
+    margin: 0.9rem 0 0;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.6rem 0.8rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Cartographer's Lost Map</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 55-70 minutes</div>
+</div>
+
+<div class="intro">
+  A Dutch maritime museum is about to auction off a battered 17th-century sea chart linked to the explorer Abel Tasman. But the museum's old conservator — before she retired — quietly hid the chart's final torn corner as a private puzzle trail, believing only a truly curious detective should ever piece it back together. The auction is tomorrow morning. You have until then to follow her trail and find the missing corner.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Explorer's Year</h2>
+    <div class="puzzle">
+      <p>A plaque beside the chart names the Dutch explorer Abel Tasman, but the year has worn away. Search online: in what year did Abel Tasman become the first European known to reach both Tasmania and New Zealand? Type just the year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Abel Tasman Tasmania New Zealand year discovered" and check it against more than one trustworthy history site.</p></details>
+    <div class="answer-box" data-answer-hash="4a712a44">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the year...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Tasman's two ships were called the Heemskerck and the Zeehaen. The Zeehaen was a "fluyt" — a Dutch cargo ship built to carry lots of goods with only a small crew.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Torn Compass Rose</h2>
+    <div class="puzzle">
+      <p>The chart's compass rose is torn, but North is still clearly marked at the top. Beside it, a captain's note reads: "We sailed from the cove in the direction opposite of Southwest." Which compass direction did they actually sail?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Picture a compass: N, NE, E, SE, S, SW, W, NW, all the way around in a circle. The "opposite" direction is exactly halfway around from Southwest.</p></details>
+    <div class="answer-box" data-answer-hash="88c6e51">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the direction...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <p class="notebook">🗒️ Agent's Notebook: Squeezed into the corner of the torn compass rose is a faint scrawled number: <strong>36</strong>. You don't know what it means yet, but it feels like something worth remembering.</p>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Reading the Chart's Scale</h2>
+    <div class="puzzle">
+      <p>This part of the chart still has its scale marked: each grid square stands for 40 nautical miles. Count the squares in a straight line from the Cove to Tasman's ship, then work out the real distance.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="A grid strip of 8 squares. A dot marked Cove sits in the 2nd square, and a dot marked Ship sits in the 8th square, 6 squares away. A scale bar below shows one square equals 40 nautical miles.">
+      <rect x="20" y="30" width="240" height="40" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="50" y1="30" x2="50" y2="70" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="80" y1="30" x2="80" y2="70" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="110" y1="30" x2="110" y2="70" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="140" y1="30" x2="140" y2="70" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="170" y1="30" x2="170" y2="70" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="200" y1="30" x2="200" y2="70" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="230" y1="30" x2="230" y2="70" stroke="#2B2A24" stroke-width="1"/>
+      <circle cx="65" cy="50" r="6" fill="#3B4C7A"/>
+      <text x="65" y="22" text-anchor="middle" font-size="12">Cove</text>
+      <circle cx="245" cy="50" r="6" fill="#28355A"/>
+      <text x="245" y="22" text-anchor="middle" font-size="12">Ship</text>
+      <line x1="20" y1="95" x2="50" y2="95" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="20" y1="90" x2="20" y2="100" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="50" y1="90" x2="50" y2="100" stroke="#2B2A24" stroke-width="2"/>
+      <text x="35" y="114" text-anchor="middle" font-size="11">1 square = 40 nautical miles</text>
+    </svg>
+    <div class="clue-caption">Count only whole squares between the two dots — they sit on the same row.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Count the squares between the Cove dot and the Ship dot, moving straight across.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>There are 6 squares between them. Multiply that by 40 nautical miles.</p></details>
+    <div class="answer-box" data-answer-hash="2bdd6db9">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the distance in nautical miles...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Conservator's Note</h2>
+    <div class="puzzle">
+      <p>Tucked behind the chart's frame is a note in a simple code: every letter has been shifted forward by 3 places in the alphabet. Shift each letter of this message BACK by 3 to read the real word:</p>
+      <p style="font-family:'Special Elite',monospace; letter-spacing:0.1em; font-size:1.1rem;">EHDFRQ</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write the alphabet out. To undo a "shift forward by 3," move each letter 3 places earlier (back) instead.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first letter, E, shifted back 3 is B. The word describes a signal fire sailors watched for along the coast.</p></details>
+    <div class="answer-box" data-answer-hash="5d826019">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Dutch East India Company (VOC), founded in 1602, is often called the world's first true multinational company — it was also one of the first companies ever to sell shares of stock to ordinary investors.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Shape of the Island</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one — it takes two separate calculations added together. The chart shows an island shaped like a rectangle with a triangular point jutting into the sea. Using the marked measurements, find the island's total area in square kilometers.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 220 130" width="220" height="130" role="img" aria-label="An island shaped like a rectangle with a triangular point extending from its right side">
+      <polygon points="20,20 140,20 190,60 140,100 20,100" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="140" y1="20" x2="140" y2="100" stroke="#2B2A24" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="140" y1="60" x2="190" y2="60" stroke="#2B2A24" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="80" y="12" text-anchor="middle" font-size="12">12 km</text>
+      <text x="8" y="63" text-anchor="middle" font-size="12" transform="rotate(-90 8 63)">8 km</text>
+      <text x="165" y="52" text-anchor="middle" font-size="12">5 km</text>
+    </svg>
+    <div class="clue-caption">The dashed line down the middle is the rectangle's own right edge — it's also the triangle's base.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Split the island into a rectangle and a triangle at the dashed line.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Rectangle area = 12 km × 8 km. Triangle area = ½ × base × height, using the same 8 km edge as the base and the 5 km point as the height. Add both areas together.</p></details>
+    <div class="answer-box" data-answer-hash="67361333">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the area in square kilometers...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Map Room Drawers</h2>
+    <div class="puzzle">
+      <p>The museum's map room has four drawers — A, B, C, and D. Each holds a chart of a different place: <strong>Tasmania</strong>, <strong>New Zealand</strong>, <strong>Java</strong>, and <strong>Mauritius</strong> — one chart per drawer. Use these clues to work out which drawer holds which chart:</p>
+    </div>
+    <div class="clue-list">
+      <p>1. Drawer D holds the New Zealand chart.</p>
+      <p>2. The Tasmania chart is not in Drawer A, and not in Drawer C.</p>
+      <p>3. The Java chart is in a drawer that comes alphabetically before the Mauritius chart's drawer.</p>
+      <p>4. The Mauritius chart is not in Drawer B.</p>
+    </div>
+    <div class="puzzle">
+      <p>Which drawer holds the Tasmania chart? Type your answer like "Drawer A", "Drawer B", "Drawer C", or "Drawer D".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Clue 1 gives you Drawer D right away. Cross that whole drawer off your other guesses.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Clue 2 leaves only one drawer free for Tasmania once Drawer D is already taken. Clues 3 and 4 then settle Java and Mauritius between the two remaining drawers.</p></details>
+    <div class="answer-box" data-answer-hash="3cd391f6">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Drawer A, B, C, or D...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Depth Mark</h2>
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:0 0 0.6rem;">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Recall the faint number scrawled in the corner of the torn compass rose, back in Mission 2. Subtract it from the real distance you worked out between the Cove and the ship in Mission 3. What number do you get?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Your Mission 2 notebook had a number in it. Your Mission 3 answer was a distance in nautical miles. Subtract the smaller from the larger.</p></details>
+    <div class="answer-box" data-answer-hash="bfe75111">
+      <label for="m7-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:1.3rem 0 0.6rem;">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>That number is a faint depth mark on the chart, right where an old X was inked over a cabinet number in the museum's back room. Divide it by 4, then subtract 3. Which cabinet number does the X mark?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Take your Stage 1 answer, divide it by 4 first, then subtract 3 from what's left.</p></details>
+    <div class="answer-box" data-answer-hash="91e39541">
+      <label for="m7-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage2" type="text" placeholder="Type the cabinet number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Chart's Last Corner</h2>
+    <div class="puzzle">
+      <p>Inside Cabinet 48, wrapped in oilcloth, is the chart's missing corner — and one last note from the conservator. Every letter in it has been swapped for its mirror opposite in the alphabet (A becomes Z, B becomes Y, C becomes X, and so on, all the way to the middle). Swap each letter back to read her final word:</p>
+      <p style="font-family:'Special Elite',monospace; letter-spacing:0.1em; font-size:1.1rem;">XLFIZTV</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Line up the alphabet forwards and backwards side by side: A pairs with Z, B pairs with Y, C pairs with X... keep going until every letter has a partner.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first letter, X, pairs with C. The whole word is something every explorer needs before setting sail into the unknown.</p></details>
+    <div class="answer-box" data-answer-hash="dae0e2f">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The conservator never wanted the chart's corner found by just anyone — only by someone willing to sail into the unknown, one puzzle at a time, without knowing what came next. That's exactly what Abel Tasman needed to cross uncharted seas 400 years ago, and it's exactly what you needed tonight: <strong>COURAGE</strong>. The chart goes back on display whole, corner and all.</p>
+</div>
+
+
+<script>
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
