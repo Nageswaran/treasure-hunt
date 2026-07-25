@@ -25,7 +25,7 @@ A 10-year-old playing this should feel like a real investigator who cracked the 
    - **8** (default): Easy, Easy, Medium, Medium, Hard, Hard, Big "Aha!" moment, Grand Finale.
    - **10** (longer session): Easy, Easy, Medium, Medium, Medium, Hard, Hard, Hard, Big "Aha!" moment, Grand Finale.
 4. **Check the full set covers:**
-   - At least 1 dedicated logical-reasoning puzzle for a 6- or 8-mission set, **at least 2** for a 10-mission set (sequence, elimination, logic grid, truth/lies, deduction, spatial reasoning — see the Logical Reasoning domain). These must be solvable purely by reasoning from the clues given, never by looking anything up.
+   - At least 1 dedicated logical-reasoning puzzle for a 6-mission set, **at least 2** (from different tiers or mechanics) for an 8-mission set, **at least 3** (spanning at least 2 of the Foundational/Intermediate/Advanced tiers) for a 10-mission set. See the Logical Reasoning domain for the full tiered list — these must be solvable purely by reasoning from the clues given, never by looking anything up, with the single carved-out exception noted there (self-referential paradoxes are a no-answer-box aside, never a numbered mission).
    - If Mathematics is one of the chosen domains, consider at least one geometry/measurement puzzle: a shape (or combination of shapes) you draw yourself as a labeled diagram, where the child finds the area, perimeter, or a missing measurement (see "Diagrams" below).
    - At least 3 missions requiring active internet use (search, read an article, compare two sites, Google Maps/Street View, a museum site, Wikipedia)
    - At least 1 mission solved mainly by close observation of a real image
@@ -68,9 +68,9 @@ For a 6- or 8-mission set:
 - 1 challenge from geography, science, history, or technology
 - 1 creative "aha" challenge
 
-For a 10-mission set, double up the two most important categories instead of just adding filler:
+For a 10-mission set, weight it toward logic and math instead of just adding filler:
 - 2 mathematics challenges (if Mathematics is a chosen domain, make at least one of these a geometry/measurement diagram puzzle)
-- 2 logical-reasoning challenges (different mechanics from each other — e.g. one logic grid, one sequence/pattern)
+- 3 logical-reasoning challenges, spanning at least 2 tiers (e.g. one Foundational sequence puzzle, one Intermediate logic grid, one Advanced working-backward or multi-constraint grid) — this is deliberately the largest category for a 10-mission set
 - 1 language challenge
 - 1 internet-research challenge
 - 1 challenge from geography, science, history, or technology
