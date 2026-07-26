@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Case of the Silent Reef — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #1E7F72;
+    --accent-dark: #14554D;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Case of the Silent Reef</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-75 minutes</div>
+</div>
+
+<div class="intro">
+  Dr. Reyes runs a small research station that watches over a coral nursery, checking every day that the reef nearby is healthy. Last night, her sensors sent one garbled signal — then went completely silent. She needs a sharp-eyed detective to retrace her steps, work out what happened, and get the sensors talking again before the next research boat arrives this afternoon.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Dr. Reyes's Map</h2>
+    <div class="puzzle">
+      <p>Pinned above Dr. Reyes's desk is a map of the coral reef she studies, with a note: <em>"Part of the biggest coral reef system on Earth — you can even see it from space."</em></p>
+      <p>Search online to find the name of the world's largest coral reef system, located off the coast of Australia. What is it called?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "world's largest coral reef system Australia."</p></details>
+    <div class="answer-box" data-answer-hash="377af319">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Logbook's Ocean Words</h2>
+    <div class="puzzle">
+      <p>Dr. Reyes's logbook lists ocean words with the little word "de" or "het" missing: <strong>vis</strong> (fish), <strong>zee</strong> (sea), <strong>oceaan</strong> (ocean), and <strong>rif</strong> (reef).</p>
+      <p>Three of these words take "de." One is the odd one out and takes "het" instead. Which word is the odd one out?</p>
+    </div>
+    <p style="background: var(--paper-dark); border-radius: 3px; padding: 0.6rem 0.9rem; font-size: 0.9rem; margin: 0.6rem 0;">📓 <strong>Field Notebook:</strong> A sticky note on the page reads: "Backup sensor buoy always goes down to exactly 14 meters — deep enough that boat propellers can't reach it." Worth remembering!</p>
+    <details class="hint"><summary>Hint 1</summary><p>Say "het" in front of each word out loud. Only one of the four will sound right.</p></details>
+    <div class="answer-box" data-answer-hash="43129916">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the odd one out...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Coral reefs cover less than 1% of the ocean floor, but they're home to an enormous share of all known marine species — far more than their tiny size would suggest.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Warning Thermometer</h2>
+    <div class="puzzle">
+      <p>Marine biologists have found that on many reefs around the world, coral starts to turn white and struggle once the water passes about 30°C and stays that warm for two weeks or more.</p>
+      <p>Dr. Reyes's old thermometer only shows Fahrenheit. Grab a pencil — convert 30°C to Fahrenheit using the formula F = C × 9 ÷ 5 + 32.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First multiply 30 by 9, then divide that answer by 5.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>30 × 9 = 270, and 270 ÷ 5 = 54. Now add 32 to finish the formula.</p></details>
+    <div class="answer-box" data-answer-hash="8c01a0e3">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the temperature in Fahrenheit...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Two Circles</h2>
+    <div class="puzzle">
+      <p>Dr. Reyes's field guide lists five reef animals with one fact each:</p>
+    </div>
+    <div class="clue-list">
+      <p>1. <strong>Shark</strong> — breathes using gills, never leaves the ocean.</p>
+      <p>2. <strong>Jellyfish</strong> — has no lungs or gills, never leaves the ocean.</p>
+      <p>3. <strong>Clownfish</strong> — breathes using gills, never leaves the ocean.</p>
+      <p>4. <strong>Sea turtle</strong> — breathes using lungs, but comes ashore on a beach to lay its eggs.</p>
+      <p>5. <strong>Dolphin</strong> — breathes using lungs, never leaves the ocean.</p>
+    </div>
+    <div class="puzzle">
+      <p>Picture two circles: one labeled "breathes using lungs," the other labeled "never leaves the ocean." Which single animal belongs inside <strong>both</strong> circles at once?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Cross off any animal that fails either circle. Gills, not lungs? Out of the lungs circle. Ever comes ashore? Out of the ocean circle.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Only one animal on the list both breathes with lungs and never sets a flipper or fin on land.</p></details>
+    <div class="answer-box" data-answer-hash="f93019f">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the animal's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? When coral gets too stressed by warm water, it pushes out the tiny colorful algae living inside it — that's what makes the coral turn ghostly white.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Which Buoy?</h2>
+    <div class="puzzle">
+      <p>Two lines are scrawled in the dive log:</p>
+    </div>
+    <div class="clue-list">
+      <p>1. "The damaged sensor is on Buoy 3 OR Buoy 5 — but not both."</p>
+      <p>2. "It is NOT Buoy 3."</p>
+    </div>
+    <div class="puzzle">
+      <p>Which buoy has the damaged sensor? Type just the number (for example: 3).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Line 1 tells you it's exactly one of the two buoys, never both. Line 2 rules one of them out completely.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If it's not Buoy 3, and it has to be exactly one of Buoy 3 or Buoy 5, there's only one buoy left it could be.</p></details>
+    <div class="answer-box" data-answer-hash="300ca0d0">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the buoy number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Sensor's Report</h2>
+    <div class="puzzle">
+      <p>Buoy 5's sensor finally reconnects and sends photos: the coral nearby has turned pale and ghostly white. Search online for the scientific name of this process — when coral turns white after pushing out the colorful algae living inside it, usually because the water got too warm. What is it called?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "coral turns white warm water term."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's a two-word term. The second word describes what happens to laundry left out in the sun too long.</p></details>
+    <div class="answer-box" data-answer-hash="7fb1bda7">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the two-word term...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Some scientists say the world's largest coral reef system is so big it can be picked out from photos taken in outer space.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Backup Sensor</h2>
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:0 0 0.6rem;">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>To fully understand the danger, Dr. Reyes wants one more number. Search online: about what percentage of all known marine species live on or near coral reefs, even though reefs cover less than 1% of the ocean floor? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "percentage of marine species live on coral reefs."</p></details>
+    <div class="answer-box" data-answer-hash="88f291a0">
+      <label for="m7-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage1" type="text" placeholder="Type the percentage...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:1.3rem 0 0.6rem;">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Add that percentage to the depth in meters only Dr. Reyes's field notebook would know. That total is the section number where the backup sensor is hidden.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think back to the sticky note in Mission 2 — how deep does the backup sensor buoy always go?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Add Stage 1's percentage to 14.</p></details>
+    <div class="answer-box" data-answer-hash="90f05fa1">
+      <label for="m7-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage2" type="text" placeholder="Type the section number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>What the Reef Taught You</h2>
+    <div class="puzzle">
+      <p>With the backup sensor back online, the whole reef map lights up on Dr. Reyes's screen. She smiles and says:</p>
+      <p><em>"Every great scientist chases the same feeling — learning something brand new about the world, something nobody told you, that you worked out for yourself. What's the one word for that feeling?"</em></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about what it feels like the very first time you figure something out that no one showed you.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's the word scientists use for finding out something new — like discovering a new species.</p></details>
+    <div class="answer-box" data-answer-hash="89fa7115">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every sensor on the reef map blinks back to life, and Dr. Reyes radios the research boat with good news. You didn't just fix the sensors — you experienced the thrill of real <strong>discovery</strong>. Well done, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

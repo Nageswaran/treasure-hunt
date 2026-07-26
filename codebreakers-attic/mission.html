@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Case of the Locked Attic Trunk — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #3E5C76;
+    --accent-dark: #263A4D;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Case of the Locked Attic Trunk</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-75 minutes</div>
+</div>
+
+<div class="intro">
+  Your great-aunt Elsie kept one big secret her whole life: during World War II, she worked as a codebreaker at a secret countryside estate in England, helping crack enemy messages. Now her old steamer trunk has turned up in the attic — locked tight, and covered in strange notes. The family is clearing the attic for an estate sale this weekend, so you have until then to follow Elsie's trail and discover what she hid inside, one clue at a time.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Elsie's Postcard</h2>
+    <div class="puzzle">
+      <p>Taped inside the trunk's lid is an old postcard. On the back, in Elsie's handwriting: <em>"Worked here, 1943. Told everyone it was just a boring old country house. It wasn't."</em></p>
+      <p>Search online to find the name of the real English countryside estate where WWII codebreakers secretly worked cracking enemy messages. What was it called?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching for "WWII secret codebreakers England country estate." One name comes up again and again.</p></details>
+    <div class="answer-box" data-answer-hash="c521c9cb">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Codebreaker's Word List</h2>
+    <div class="puzzle">
+      <p>Under the postcard is a list of Dutch words Elsie must have used to practice, each with a blank where the little word "de" or "het" should go: <strong>geheim</strong> (secret), <strong>wachtwoord</strong> (password), <strong>bericht</strong> (message), and <strong>sleutel</strong> (key).</p>
+      <p>Three of these words take "het." One of them is the odd one out and takes "de" instead. Which word is the odd one out?</p>
+    </div>
+    <p style="background: var(--paper-dark); border-radius: 3px; padding: 0.6rem 0.9rem; font-size: 0.9rem; margin: 0.6rem 0;">📓 <strong>Agent's Notebook:</strong> Tucked between the pages is a torn photo of a cat. On the back, Elsie wrote: <em>"Vier keeps my secrets."</em> Worth remembering!</p>
+    <details class="hint"><summary>Hint 1</summary><p>Try saying "het" in front of each word out loud — three of them will sound right straight away.</p></details>
+    <div class="answer-box" data-answer-hash="762aa6ed">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the odd one out...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Enigma machine, used to scramble WWII enemy messages, looked a lot like a typewriter — except instead of printing letters onto paper, it lit up one of 26 little lamps to show the scrambled letter.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Locker Ticket</h2>
+    <div class="puzzle">
+      <p>A cloakroom ticket falls out of the trunk. Instead of a normal number, Elsie wrote the locker number in binary — the code of 1s and 0s that computers use: <strong>101101</strong>.</p>
+      <p>Each position in a binary number stands for a power of 2, and you read it from right to left: 1, 2, 4, 8, 16, 32. Add up the positions that have a 1 in them. What ordinary number is locker <strong>101101</strong>?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write the six place values above the digits, left to right: 32, 16, 8, 4, 2, 1. Then only add up the ones sitting under a "1".</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The digits are 1-0-1-1-0-1, sitting under 32-16-8-4-2-1. That means you add 32 + 8 + 4 + 1.</p></details>
+    <div class="answer-box" data-answer-hash="8ce38d62">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the locker number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Mathematician's Machine</h2>
+    <div class="puzzle">
+      <p>Inside locker 45 is a photo of a serious-looking young man next to a wardrobe-sized machine full of wheels and wires. A caption underneath reads: <em>"He designed the machine that finally beat the enemy's fastest code — years before computers like ours existed."</em></p>
+      <p>Search online for the mathematician who designed this code-cracking machine at the same estate you found in Mission 1, and find the machine's name. What was it called?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The mathematician's name is Alan Turing. Search for "Alan Turing machine that cracked Enigma."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The answer is a short, ordinary English word — not a person's name. Type just that one word.</p></details>
+    <div class="answer-box" data-answer-hash="e2fd8f1c">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the machine's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? By 1944, almost 9,000 people worked at that secret English estate cracking codes around the clock — and about three out of every four of them were women.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Clerks, Three Huts</h2>
+    <div class="puzzle">
+      <p>A staff list names three codebreakers — <strong>Fox</strong>, <strong>Hart</strong>, and <strong>Wren</strong> — each working in a different hut (Hut 3, Hut 6, or Hut 8) on a different kind of enemy code (Army, Navy, or Air Force). Water damage smudged most of the sheet, but four lines are still readable:</p>
+    </div>
+    <div class="clue-list">
+      <p>1. The clerk in Hut 6 worked on the Army code.</p>
+      <p>2. Fox did not work in Hut 8.</p>
+      <p>3. Wren worked on the Navy code.</p>
+      <p>4. Hart worked in Hut 3.</p>
+    </div>
+    <div class="puzzle">
+      <p>Work out who worked where, on what — then tell me which code Hart worked on.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 4 — it pins one clerk to one hut right away. Then use clue 2 to place Fox.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Fox is in Hut 6, clue 1 tells you Fox's code directly. Wren's code is given in clue 3. Whatever's left over belongs to Hart.</p></details>
+    <div class="answer-box" data-answer-hash="2ae84e14">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the code Hart worked on...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Elsie's Own Cipher</h2>
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:0 0 0.6rem;">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Folded under the staff list is a strip of paper in Elsie's own handwriting: <strong>ORRVH IORRUERDUG</strong>. A note beside it says: <em>"Shift every letter back 3 places in the alphabet."</em> (So a shifted "D" would really be an "A".)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Go letter by letter. For "O," count back 3 places: O, N, M, L — so "O" decodes to "L."</p></details>
+    <div class="answer-box" data-answer-hash="ff56f21d">
+      <label for="m6-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-stage1" type="text" placeholder="Type the decoded message...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:1.3rem 0 0.6rem;">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>You did it — there's a second, shorter strip hidden in the spot Stage 1 pointed you to: <strong>XVYRO OIC</strong>. This time Elsie left no shift number. Instead, her note says: <em>"Use the number only my cat would know."</em></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think back to an earlier page in this case file — did any of the Dutch words you sorted have anything to do with a number?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>"Vier" is Dutch for a number. Use that number as your shift, the same way you did in Stage 1.</p></details>
+    <div class="answer-box" data-answer-hash="4073adde">
+      <label for="m6-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m6-stage2" type="text" placeholder="Type the decoded message...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Some historians believe that cracking enemy codes at that secret English estate helped end World War II about two years sooner than it otherwise would have.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Rotor Puzzle</h2>
+    <div class="puzzle">
+      <p>Inside the trunk key's hiding spot is one last note: <em>"The enemy's Enigma machine held 3 rotors at a time, slotted in side by side — and the order you put them in changed the whole code. Search to find out: how many different rotors could an operator choose from in total?"</em> (Grab a pencil for this one.)</p>
+      <p>Once you know that number, work out how many different ways 3 rotors could be chosen from that set and arranged in order in the machine. Remember: once a rotor is used in one slot, it can't be used again in another slot.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First figure out how many choices you have for the very first slot. Then figure out how many rotors are left for the second slot, and the third.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply your three numbers of choices together: (choices for slot 1) × (choices for slot 2) × (choices for slot 3).</p></details>
+    <div class="answer-box" data-answer-hash="15e8e23b">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type the number of arrangements...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>What Elsie Left You</h2>
+    <div class="puzzle">
+      <p>The trunk key finally turns. Inside is a small wooden box and one last note in Elsie's handwriting:</p>
+      <p><em>"It took us years — trying, failing, and trying again — to crack a code everyone said was impossible. We didn't give up, even when it felt hopeless. What's the one word for never giving up, no matter how many times you fail?"</em></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think of a word that describes someone who keeps trying after failing again and again, instead of quitting.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It starts with "per" and ends the same way "endurance" and "patience" both feel.</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Inside the wooden box is Elsie's own medal and a note: "Codebreaking wasn't magic — it was <strong>perseverance</strong>, one wrong guess at a time." You cracked her whole trail. Well done, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
