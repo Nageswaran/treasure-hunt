@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Vikings' Lost Silver — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E5C6E;
+    --accent-dark: #1E404E;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .rune-key {
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    margin: 0.8rem 0;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+  }
+  .rune-key div { margin: 0.15rem 0; }
+  .rune-message {
+    font-size: 1.8rem;
+    letter-spacing: 0.4rem;
+    text-align: center;
+    margin: 0.9rem 0;
+    background: #FFFDF7;
+    border: 1px dashed rgba(0,0,0,0.25);
+    border-radius: 3px;
+    padding: 0.7rem;
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 0 0 0.6rem; }
+  .stage-label.second { margin-top: 1.3rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .notebook {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.9rem 1.2rem;
+    text-align: center;
+  }
+  .notebook strong { color: var(--accent-dark); }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Vikings' Lost Silver</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 90–120 minutes (this is a big case — take breaks!)</div>
+</div>
+
+<div class="intro">
+  A metal detectorist just pulled a corroded silver disc from a riverbank near Wijk bij Duurstede in the Netherlands — and it's over a thousand years old. Wrapped around it was a torn, soggy scrap of a Viking captain's log. The Internet Detective Academy has been called in to reconstruct the last voyage of the longship <em>Sea Serpent</em>: where she raided, what she carried, and the port she was racing to reach. Ten clues remain. Follow every one, Agent — the river doesn't give up its secrets easily.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Wonder of the Age</h2>
+    <div class="puzzle">
+      <p>The log's first readable line says: <em>"Year 834. We struck the great trading town again — richest port on the river, they call it the wonder of the age."</em> Historians know this town well. It stood on a branch of the Rhine, and today the Dutch town of Wijk bij Duurstede stands near its ruins.</p>
+      <p>Search to find the old name of this trading town — the name the Vikings actually used for it.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Wijk bij Duurstede Viking trading town old name."</p></details>
+    <div class="answer-box" data-answer-hash="26a2d157">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Vikings first raided this town in the year 834 — and kept coming back for decades, because it was one of the wealthiest trading ports in northern Europe.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Quartermaster's List</h2>
+    <div class="puzzle">
+      <p>Sea Serpent's quartermaster scratched a list of everything in the ship's hold. But something's wrong — one item on this list could not possibly have been there in the year 834. It hadn't been invented yet!</p>
+      <p>Which item doesn't belong?</p>
+      <ul>
+        <li>A) A folding bronze balance scale, for weighing silver</li>
+        <li>B) A bundle of walrus ivory tusks</li>
+        <li>C) A small glass jar of honey</li>
+        <li>D) A wind-up mechanical pocket watch</li>
+        <li>E) A coil of rope made from walrus hide</li>
+      </ul>
+      <p>Type just the odd item out (for example: "the scale").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Vikings lived over a thousand years ago. Think about which item needs tiny gears and springs to work at all.</p></details>
+    <div class="answer-box" data-answer-hash="cfc094d1">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>A River With Two Names</h2>
+    <div class="puzzle">
+      <p>Dorestad stood beside a mighty river that still flows through the Netherlands today. In Dutch, rivers always get a little word in front of their name.</p>
+      <p>Is it <strong>"de Rijn"</strong> or <strong>"het Rijn"</strong>? Type your answer as two words.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Nearly every Dutch river uses the same little word before its name — think of "de Maas" or "de Waal."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's the same little word you'd use for "de kat" or "de auto" — not "het."</p></details>
+    <div class="answer-box" data-answer-hash="cc183983">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Scratched Into the Tiller</h2>
+    <div class="puzzle">
+      <p>The captain scratched a word into the ship's tiller using runes — real letters Vikings carved over a thousand years ago. Use the key below to decode it.</p>
+      <div class="rune-key">
+        <div>ᚱ = R (reið)</div>
+        <div>ᛅ = A (ár)</div>
+        <div>ᛏ = T (týr)</div>
+        <div>ᛋ = S (sól)</div>
+      </div>
+      <div class="rune-message">ᛋ ᛏ ᛅ ᚱ</div>
+      <p>Match each symbol to its letter, in order, to read the captain's word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Match each rune shape to its letter in the key, one at a time — don't skip any.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you have all four letters in order, they spell something you'd look for in the night sky.</p></details>
+    <div class="answer-box" data-answer-hash="d13b2f71">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="notebook">
+  📓 <strong>Agent's Notebook:</strong> Right next to the captain's rune-carving is a tally of hash-marks — the crew roster. <em>Sea Serpent</em> sailed with <strong>32 crew</strong>. This is worth remembering...
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Shipwright's Plan</h2>
+    <div class="puzzle">
+      <p>A page from the shipwright's plans shows the deck of <em>Sea Serpent</em> — a long deck with a small notch cut out of one corner for the raised prow platform. Every measurement is marked on the drawing.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 250 100" width="250" height="100"
+         role="img" aria-label="A longship deck plan: a long rectangle with a small rectangular notch cut from the top-right corner for the raised prow platform">
+      <polygon points="20,20 180,20 180,40 220,40 220,70 20,70" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="100" y="14" text-anchor="middle" font-size="11">16 m</text>
+      <text x="172" y="33" text-anchor="end" font-size="11">2 m</text>
+      <text x="200" y="36" text-anchor="middle" font-size="11">4 m</text>
+      <text x="230" y="58" text-anchor="middle" font-size="11" transform="rotate(-90 230 58)">3 m</text>
+      <text x="120" y="82" text-anchor="middle" font-size="11">20 m</text>
+      <text x="10" y="48" text-anchor="middle" font-size="11" transform="rotate(-90 10 48)">5 m</text>
+    </svg>
+    <div class="clue-caption">Find the total area of the usable deck, in square meters. Type just the number.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try splitting the deck into two rectangles — the notch cuts one small rectangle out of a corner.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Find the area of the big rectangle first, as if there were no notch at all. Then subtract the missing piece.</p></details>
+    <div class="answer-box" data-answer-hash="dfe9bf2">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Real Viking traders carried their own small, folding weighing scales, so they could check on the spot that silver they were paid was really solid silver, and not a fake.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Traders, Four Ports</h2>
+    <div class="puzzle">
+      <p>A torn trade ledger names four traders — Ingrid, Bjorn, Astrid, and Leif — each sailing from a different port (Birka, Hedeby, Dublin, Kaupang) and each selling a different good (amber, walrus ivory, honey, wool). Water damage destroyed most of the ledger, but six clues survived:</p>
+      <ul>
+        <li>1. The amber trader did not sail from Birka or Dublin.</li>
+        <li>2. Bjorn sailed from Hedeby.</li>
+        <li>3. Astrid did not sell wool or honey.</li>
+        <li>4. The trader from Kaupang sold walrus ivory.</li>
+        <li>5. Ingrid sold honey.</li>
+        <li>6. Leif did not sail from Birka.</li>
+      </ul>
+      <p>Figure out which trader sold walrus ivory — then tell us which port they sailed from.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clues that name a trader directly — Bjorn and Ingrid are pinned down right away.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Bjorn sells amber and the Kaupang trader sells ivory, clue 3 tells you exactly what Astrid sells.</p></details>
+    <div class="answer-box" data-answer-hash="f97c9b9c">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Trade Offers</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Vikings didn't use coins the way we do — they paid with "hacksilver," pieces of silver weighed on a scale. Two traders offer silver for the same haul of walrus ivory:</p>
+      <p><strong>Trader A</strong> offers three broken arm-ring pieces (18 g, 25 g, and 14 g) plus two silver coins (6 g each).</p>
+      <p><strong>Trader B</strong> offers one silver bar (71 g) plus one coin (9 g).</p>
+      <p>How many more grams of silver does Trader B's offer weigh than Trader A's?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add up all of Trader A's pieces first, then all of Trader B's pieces, before comparing them.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Trader A: 18 + 25 + 14 + 6 + 6. Trader B: 71 + 9. Then subtract the smaller total from the bigger one.</p></details>
+    <div class="answer-box" data-answer-hash="1ceb2bd7">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Working Backward From the Dock</h2>
+    <div class="puzzle">
+      <p>By the time <em>Sea Serpent</em> reached port, her silver had passed through three stops. Work backward from the end to find where it started.</p>
+      <ul>
+        <li>At the last stop, the crew paid a 12-gram river toll — leaving exactly 45 grams.</li>
+        <li>Before that toll, they had paid a shipwright 18 grams for a mast repair.</li>
+        <li>Before that repair, they had split their silver exactly in half with a rival crew, as agreed.</li>
+      </ul>
+      <p>How many grams of silver did they have at the very start, before any of this happened?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try working from the end backward — undo each step one at a time, starting with the very last one.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Undo the river toll first (add 12), then undo the shipwright's payment (add 18), then undo the halving (multiply by 2).</p></details>
+    <div class="answer-box" data-answer-hash="f52c6561">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Real Viking sailors found their way across open water without a magnetic compass — using the sun, and maybe even sunlight-splitting crystals called sunstones, to figure out direction on cloudy days.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Sun Compass</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Vikings crossing open water still found their way, even on cloudy days. In 1948, archaeologists found a mysterious wooden disc under the ruins of a monastery in Greenland. Today, many believe Norse sailors used it as a sun compass.</p>
+      <p>Search to find the one-word place-name this disc is called after (it's known as the "___ disc"). Type just that one word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This disc was found in Greenland, in the ruins of a Benedictine convent, by an archaeologist named Christen Vebæk. Try searching "Viking sun compass disc Greenland 1948."</p></details>
+    <div class="answer-box" data-answer-hash="13882a4c">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label second">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Count the letters in your Stage 1 answer. Multiply that by the number of crew you noted in your Agent's Notebook earlier in the case. That total is how many silver pennies the harbor toll-keeper demands before <em>Sea Serpent</em> can dock.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First count every letter in your Stage 1 word carefully — don't forget repeated letters count twice.</p></details>
+    <div class="answer-box" data-answer-hash="2bdb2f22">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Port at the End of the Log</h2>
+    <div class="puzzle">
+      <p>Case file complete. <em>Sea Serpent</em> paid her toll and sailed on. Every clue points to one legendary port: a Viking Age trading town on a small island in a Swedish lake, now a UNESCO World Heritage Site.</p>
+      <p>Search to find its name — the final entry in your case file.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The island is called Björkö, about 30 km from Stockholm.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The lake is called Mälaren. Try searching "Viking trading town Lake Mälaren UNESCO."</p></details>
+    <div class="answer-box" data-answer-hash="2a29e6be">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>From a soggy scrap of log to a lost port on a Swedish island — you followed runes, ledgers, silver, and the sun itself to bring a thousand-year-old voyage back to light. That's real <strong>discovery</strong>, Agent: the thrill of turning scattered clues into something true.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
