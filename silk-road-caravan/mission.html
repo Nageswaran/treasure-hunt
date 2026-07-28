@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Silk Road Caravan Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #BA5A34;
+    --accent-dark: #8B4126;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 0 0 0.6rem; }
+  .stage-label.second { margin-top: 1.3rem; }
+  .notebook {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent-dark);
+    padding: 0.7rem 1rem;
+    border-radius: 2px;
+    font-size: 0.92rem;
+    margin: 0.9rem 0;
+  }
+  .notebook strong { color: var(--accent-dark); }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Silk Road Caravan Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes (10 missions — grab a notebook and a pencil)</div>
+</div>
+
+<div class="intro">
+  <p>Grandpa Daan Jansen once walked part of the ancient Silk Road, the ancient trade road that once linked China to Europe. He kept a field journal of everything he found along the way.</p>
+  <p>Last week, his old computer scrambled the scanned pages into a jumble of clues. Grandpa needs a sharp detective to rebuild his journey, mission by mission.</p>
+  <p>Solve all ten missions, and you'll find what he hid at the very end: an old bronze caravan bell, engraved with one word that says exactly what it took to walk that road.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The City Where the Road Begins</h2>
+    <div class="puzzle">
+      <p>Grandpa's first journal page describes an incredible discovery. In 1974, farmers in China were digging a well. They found thousands of life-sized clay soldiers, buried underground for over 2,000 years, guarding an emperor's tomb.</p>
+      <p>These clay soldiers stand near the Chinese city where the ancient Silk Road began. Search to find that city's name.</p>
+      <p>Type the city's name as one plain word, with no apostrophe — for example: <em>xian</em>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "terracotta army city China." The buried soldiers and the start of the Silk Road are in the very same city.</p></details>
+    <div class="answer-box" data-answer-hash="6d58946d">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Those clay soldiers are called the Terracotta Army. Archaeologists think there are close to 8,000 of them, and each one has a slightly different face.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Rope of Knots</h2>
+    <div class="puzzle">
+      <p>Camel drivers on the Silk Road tied knots in a rope to count their rest stops. Grandpa copied down the knot pattern from one driver's rope:</p>
+      <p style="font-size:1.3rem; text-align:center; letter-spacing:0.15em;"><strong>1, 1, 2, 3, 5, 8, ?</strong></p>
+      <p>Each number is made from the two knots before it. What is the next knot count in the pattern?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at how each number connects to the two numbers right before it. What do you get if you add them together?</p></details>
+    <div class="answer-box" data-answer-hash="1eeb2efd">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Loading the Caravan</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one — it's easier on paper than in your head.</p>
+      <p>Grandpa's caravan is carrying <strong>72 bales of silk</strong> and <strong>33 sacks of spice</strong>. Each camel can carry either 2 bales of silk, or 3 sacks of spice — never a mix of both.</p>
+      <p>How many camels in total does the whole caravan need?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out the silk camels and the spice camels separately, then add the two totals together.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>72 bales of silk, 2 bales per camel. 33 sacks of spice, 3 sacks per camel. Divide each, then add.</p></details>
+    <div class="answer-box" data-answer-hash="8ae38a3c">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <div class="notebook"><strong>Agent's Notebook:</strong> Write down the total number of camels somewhere safe. This isn't the last time you'll need it.</div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Grandpa's Dutch Footnote</h2>
+    <div class="puzzle">
+      <p>Grandpa scribbled a footnote in Dutch, listing the goods his caravan traded. Three of these words use <strong>"de"</strong>, and one uses <strong>"het"</strong>.</p>
+      <p style="text-align:center; font-size:1.15rem;"><strong>zijde &nbsp; koffie &nbsp; thee &nbsp; papier</strong></p>
+      <p><em>(zijde = silk, koffie = coffee, thee = tea, papier = paper)</em></p>
+      <p>Find the odd one out: which word takes "het" instead of "de"?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>If you're not sure, try each word in a sentence: "de ___ is mooi" or "het ___ is mooi." One will sound wrong for the other three.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Materials you write or draw on in Dutch are very often "het" words — think of "het potlood" (the pencil).</p></details>
+    <div class="answer-box" data-answer-hash="da8896b6">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the odd word out...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Caravanserai Courtyard</h2>
+    <div class="puzzle">
+      <p>A caravanserai is a walled inn where caravans slept safely at night. Grandpa sketched the shape of one courtyard, where the camels rested, with every side measured.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 260 190" width="260" height="190"
+         role="img" aria-label="An L-shaped courtyard: a large rectangle with a smaller rectangular notch cut from the top-right corner">
+      <polygon points="20,20 146,20 146,76 230,76 230,160 20,160"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="83" y="12" text-anchor="middle" font-size="12">9 m</text>
+      <text x="134" y="48" text-anchor="middle" font-size="12" transform="rotate(-90 134 48)">4 m</text>
+      <text x="188" y="68" text-anchor="middle" font-size="12">6 m</text>
+      <text x="246" y="118" text-anchor="middle" font-size="12" transform="rotate(-90 246 118)">6 m</text>
+      <text x="125" y="178" text-anchor="middle" font-size="12">15 m</text>
+      <text x="8" y="90" text-anchor="middle" font-size="12" transform="rotate(-90 8 90)">10 m</text>
+    </svg>
+    <div class="clue-caption">The caravan master needs to know how far the wall stretches all the way around, to order enough rope fencing.</div>
+    <div class="puzzle">
+      <p>What is the total distance around the outside of this courtyard, in meters?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add up every labeled side of the shape, going all the way around once.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>There are six labeled sides in total: 9, 4, 6, 6, 15, and 10 meters.</p></details>
+    <div class="answer-box" data-answer-hash="83e140a0">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type just the number, no units...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A single silkworm cocoon is made from one continuous thread. Unwound, it can stretch several hundred meters long — sometimes over 900 meters, longer than nine football fields!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Merchants, Three Roads</h2>
+    <div class="puzzle">
+      <p>Three merchants — Aisha, Bram, and Chen — are each carrying one good, to one city: Samarkand, Kashgar, or Baghdad. Grandpa's notes give four clues. Use them to work out where Chen is heading.</p>
+      <ol>
+        <li>Aisha sells silk.</li>
+        <li>Whoever is heading to Kashgar sells jade.</li>
+        <li>Chen is not heading to Samarkand.</li>
+        <li>Bram does not sell spice.</li>
+      </ol>
+      <p>Which city is Chen traveling to?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 1 and clue 4. If Aisha already sells silk, and Bram doesn't sell spice, what must Bram sell instead?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Bram sells jade, clue 2 tells you exactly which city Bram is heading to. That leaves only one good for Chen, and clue 3 rules out one of the two remaining cities.</p></details>
+    <div class="answer-box" data-answer-hash="ba1d4600">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the city name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Name on the Map</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>For most of history, this trade road had no single name. Then a German geographer studying old trade maps gave it the name we still use today.</p>
+      <p>Search to find the year this geographer first used that name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "who coined the term Silk Road." Look for a German geographer's name and a year in the 1800s.</p></details>
+    <div class="answer-box" data-answer-hash="a9c15602">
+      <label for="m7-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage1" type="text" placeholder="Type the year...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label second">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>A locked crate in the journal needs a number code. Add together all four digits of the year from Stage 1. Then double that total. That doubled number is the code.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add the digits one at a time first, then multiply the sum by 2.</p></details>
+    <div class="answer-box" data-answer-hash="8be38bcf">
+      <label for="m7-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage2" type="text" placeholder="Type the code...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Water for the Desert Crossing</h2>
+    <div class="puzzle">
+      <p>Bactrian camels — the two-humped kind used on the Silk Road — have a hidden body part that shields their eyes from blowing desert sand.</p>
+      <p>Search to find how many eyelids a camel has.</p>
+      <p>Now multiply that number by the total camels from your notebook. Then multiply the result by 10. That's how many liters of water the caravan must pack for the rest of the crossing.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "how many eyelids does a camel have." It's more than the usual two.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Eyelid count × your camel total from your notebook × 10. Grab your pencil for the multiplication.</p></details>
+    <div class="answer-box" data-answer-hash="ec115e41">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type just the number, no units...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A camel's extra eyelid is thin and see-through. It works like a windshield wiper, closing sideways to clear away sand while the camel can still see where it's walking.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Gatekeeper's Riddle</h2>
+    <div class="puzzle">
+      <p>The caravan must pass through 3 toll gates before reaching the last city. At every gate, the guard takes exactly half of the caravan's coins, then 1 extra coin on top.</p>
+      <p>After paying all 3 gates, in order, the caravan has exactly <strong>12 coins</strong> left.</p>
+      <p>This one only works backward: start from 12 coins at the end, and undo each gate one at a time, working your way back to Gate 1. How many coins did the caravan start with, before Gate 1?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>To undo a gate, reverse what it did. If a gate took half your coins plus 1, then before that gate you had: add 1 to what's left, then double it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Undo Gate 3 first (starting from 12), then use that result to undo Gate 2, then undo Gate 1 last.</p></details>
+    <div class="answer-box" data-answer-hash="6d361ca5">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Grandpa's Last Page</h2>
+    <div class="puzzle">
+      <p>The very last journal page is written in a simple code. Every letter has been shifted forward by 4 places in the alphabet (A becomes E, B becomes F, and so on).</p>
+      <p>Decode Grandpa's final word, shifting every letter back by 4 to find it:</p>
+      <p style="font-size:1.3rem; text-align:center; letter-spacing:0.2em;"><strong>TIVWIZIVERGI</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Shift every letter backward by 4. T becomes P, I becomes E. Try the rest the same way.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Write the alphabet out on paper, then count back 4 letters from each coded letter, one at a time.</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Knots, camels, coins, and codes — you rebuilt Grandpa's whole journey, one scrambled page at a time. That's real <strong>perseverance</strong>, Agent: the Silk Road took months to cross on foot, and you crossed it too, one stubborn puzzle after another.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
