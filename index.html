@@ -102,6 +102,45 @@
     .button:hover {
       filter: brightness(0.96);
     }
+
+    .button.toggle-complete {
+      background: transparent;
+      border: 1px solid #2d6a4f;
+      color: #2d6a4f;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .mission-card.completed .button.toggle-complete {
+      background: #2d6a4f;
+      color: #fff;
+      border-color: #2d6a4f;
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #e8dec4;
+      color: #6b6254;
+      margin: 0 0 10px;
+    }
+
+    .status-badge.done {
+      background: #2d6a4f;
+      color: #fff;
+    }
+
+    .mission-card.completed {
+      border-color: #2d6a4f;
+      background: #eaf6ee;
+      box-shadow: 0 6px 18px rgba(45,106,79,0.18);
+    }
   </style>
 </head>
 <body>
@@ -109,186 +148,272 @@
     <header>
       <div class="eyebrow">Internet Detective Academy</div>
       <h1>Mission Library</h1>
-      <p class="intro">Choose a case file to start the kid-facing mission. Parent answer keys are listed second so the mission link always comes first.</p>
+      <p class="intro">Choose a case file to start the kid-facing mission. Parent answer keys are listed second so the mission link always comes first. Use "Mark complete" to track finished cases in this browser.</p>
     </header>
     <section class="mission-grid">
-<article class="mission-card">
+<article class="mission-card" data-mission="broken-bicycle">
+<span class="status-badge">Not started</span>
 <h2>broken bicycle</h2>
 <p>Case folder: broken-bicycle</p>
 <div class="actions">
 <a class="button primary" href="broken-bicycle/mission.html">Start mission</a>
 <a class="button secondary" href="broken-bicycle/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="museum-heist">
+<span class="status-badge">Not started</span>
 <h2>museum heist</h2>
 <p>Case folder: museum-heist</p>
 <div class="actions">
 <a class="button primary" href="museum-heist/mission.html">Start mission</a>
 <a class="button secondary" href="museum-heist/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="lighthouse-keeper">
+<span class="status-badge">Not started</span>
 <h2>lighthouse keeper</h2>
 <p>Case folder: lighthouse-keeper</p>
 <div class="actions">
 <a class="button primary" href="lighthouse-keeper/mission.html">Start mission</a>
 <a class="button secondary" href="lighthouse-keeper/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="red-panda-rescue">
+<span class="status-badge">Not started</span>
 <h2>red panda rescue</h2>
 <p>Case folder: red-panda-rescue</p>
 <div class="actions">
 <a class="button primary" href="red-panda-rescue/mission.html">Start mission</a>
 <a class="button secondary" href="red-panda-rescue/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="stargazer-signal">
+<span class="status-badge">Not started</span>
 <h2>stargazer signal</h2>
 <p>Case folder: stargazer-signal</p>
 <div class="actions">
 <a class="button primary" href="stargazer-signal/mission.html">Start mission</a>
 <a class="button secondary" href="stargazer-signal/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="mummys-warning">
+<span class="status-badge">Not started</span>
 <h2>mummys warning</h2>
 <p>Case folder: mummys-warning</p>
 <div class="actions">
 <a class="button primary" href="mummys-warning/mission.html">Start mission</a>
 <a class="button secondary" href="mummys-warning/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="golden-windmill-cipher">
+<span class="status-badge">Not started</span>
 <h2>golden windmill cipher</h2>
 <p>Case folder: golden-windmill-cipher</p>
 <div class="actions">
 <a class="button primary" href="golden-windmill-cipher/mission.html">Start mission</a>
 <a class="button secondary" href="golden-windmill-cipher/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="sunken-shipwreck">
+<span class="status-badge">Not started</span>
 <h2>sunken shipwreck</h2>
 <p>Case folder: sunken-shipwreck</p>
 <div class="actions">
 <a class="button primary" href="sunken-shipwreck/mission.html">Start mission</a>
 <a class="button secondary" href="sunken-shipwreck/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="vanishing-beehive">
+<span class="status-badge">Not started</span>
 <h2>vanishing beehive</h2>
 <p>Case folder: vanishing-beehive</p>
 <div class="actions">
 <a class="button primary" href="vanishing-beehive/mission.html">Start mission</a>
 <a class="button secondary" href="vanishing-beehive/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="chocolate-factory-inspector">
+<span class="status-badge">Not started</span>
 <h2>chocolate factory inspector</h2>
 <p>Case folder: chocolate-factory-inspector</p>
 <div class="actions">
 <a class="button primary" href="chocolate-factory-inspector/mission.html">Start mission</a>
 <a class="button secondary" href="chocolate-factory-inspector/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="northern-lights-expedition">
+<span class="status-badge">Not started</span>
 <h2>northern lights expedition</h2>
 <p>Case folder: northern-lights-expedition</p>
 <div class="actions">
 <a class="button primary" href="northern-lights-expedition/mission.html">Start mission</a>
 <a class="button secondary" href="northern-lights-expedition/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="runaway-weather-balloon">
+<span class="status-badge">Not started</span>
 <h2>runaway weather balloon</h2>
 <p>Case folder: runaway-weather-balloon</p>
 <div class="actions">
 <a class="button primary" href="runaway-weather-balloon/mission.html">Start mission</a>
 <a class="button secondary" href="runaway-weather-balloon/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="forgotten-castle">
+<span class="status-badge">Not started</span>
 <h2>forgotten castle</h2>
 <p>Case folder: forgotten-castle</p>
 <div class="actions">
 <a class="button primary" href="forgotten-castle/mission.html">Start mission</a>
 <a class="button secondary" href="forgotten-castle/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="runaway-robot">
+<span class="status-badge">Not started</span>
 <h2>runaway robot</h2>
 <p>Case folder: runaway-robot</p>
 <div class="actions">
 <a class="button primary" href="runaway-robot/mission.html">Start mission</a>
 <a class="button secondary" href="runaway-robot/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="secret-time-machine">
+<span class="status-badge">Not started</span>
 <h2>secret time machine</h2>
 <p>Case folder: secret-time-machine</p>
 <div class="actions">
 <a class="button primary" href="secret-time-machine/mission.html">Start mission</a>
 <a class="button secondary" href="secret-time-machine/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="cartographers-lost-map">
+<span class="status-badge">Not started</span>
 <h2>cartographers lost map</h2>
 <p>Case folder: cartographers-lost-map</p>
 <div class="actions">
 <a class="button primary" href="cartographers-lost-map/mission.html">Start mission</a>
 <a class="button secondary" href="cartographers-lost-map/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="circus-ringmasters-riddle">
+<span class="status-badge">Not started</span>
 <h2>circus ringmasters riddle</h2>
 <p>Case folder: circus-ringmasters-riddle</p>
 <div class="actions">
 <a class="button primary" href="circus-ringmasters-riddle/mission.html">Start mission</a>
 <a class="button secondary" href="circus-ringmasters-riddle/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="codebreakers-attic">
+<span class="status-badge">Not started</span>
 <h2>codebreakers attic</h2>
 <p>Case folder: codebreakers-attic</p>
 <div class="actions">
 <a class="button primary" href="codebreakers-attic/mission.html">Start mission</a>
 <a class="button secondary" href="codebreakers-attic/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="coral-reef-rescue">
+<span class="status-badge">Not started</span>
 <h2>coral reef rescue</h2>
 <p>Case folder: coral-reef-rescue</p>
 <div class="actions">
 <a class="button primary" href="coral-reef-rescue/mission.html">Start mission</a>
 <a class="button secondary" href="coral-reef-rescue/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="tulip-auction-mystery">
+<span class="status-badge">Not started</span>
 <h2>tulip auction mystery</h2>
 <p>Case folder: tulip-auction-mystery</p>
 <div class="actions">
 <a class="button primary" href="tulip-auction-mystery/mission.html">Start mission</a>
 <a class="button secondary" href="tulip-auction-mystery/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="cheese-market-mystery">
+<span class="status-badge">Not started</span>
 <h2>cheese market mystery</h2>
 <p>Case folder: cheese-market-mystery</p>
 <div class="actions">
 <a class="button primary" href="cheese-market-mystery/mission.html">Start mission</a>
 <a class="button secondary" href="cheese-market-mystery/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
-<article class="mission-card">
+<article class="mission-card" data-mission="vikings-lost-silver">
+<span class="status-badge">Not started</span>
 <h2>vikings lost silver</h2>
 <p>Case folder: vikings-lost-silver</p>
 <div class="actions">
 <a class="button primary" href="vikings-lost-silver/mission.html">Start mission</a>
 <a class="button secondary" href="vikings-lost-silver/answer.html">Parent answer key</a>
+<button type="button" class="button toggle-complete">Mark complete</button>
 </div>
 </article>
     </section>
   </main>
+  <script>
+    (function () {
+      var STORAGE_KEY = 'treasureHuntCompleted';
+
+      function loadCompleted() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function saveCompleted(completed) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
+      }
+
+      function applyState(card, isDone) {
+        var badge = card.querySelector('.status-badge');
+        var toggle = card.querySelector('.toggle-complete');
+        card.classList.toggle('completed', isDone);
+        badge.textContent = isDone ? 'Completed' : 'Not started';
+        badge.classList.toggle('done', isDone);
+        toggle.textContent = isDone ? 'Mark incomplete' : 'Mark complete';
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var completed = loadCompleted();
+        document.querySelectorAll('.mission-card').forEach(function (card) {
+          var mission = card.dataset.mission;
+          applyState(card, !!completed[mission]);
+          card.querySelector('.toggle-complete').addEventListener('click', function () {
+            completed[mission] = !completed[mission];
+            if (!completed[mission]) {
+              delete completed[mission];
+            }
+            saveCompleted(completed);
+            applyState(card, !!completed[mission]);
+          });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

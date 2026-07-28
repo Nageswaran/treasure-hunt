@@ -108,6 +108,45 @@ cat > index.html <<'EOF'
     .button:hover {
       filter: brightness(0.96);
     }
+
+    .button.toggle-complete {
+      background: transparent;
+      border: 1px solid #2d6a4f;
+      color: #2d6a4f;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .mission-card.completed .button.toggle-complete {
+      background: #2d6a4f;
+      color: #fff;
+      border-color: #2d6a4f;
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #e8dec4;
+      color: #6b6254;
+      margin: 0 0 10px;
+    }
+
+    .status-badge.done {
+      background: #2d6a4f;
+      color: #fff;
+    }
+
+    .mission-card.completed {
+      border-color: #2d6a4f;
+      background: #eaf6ee;
+      box-shadow: 0 6px 18px rgba(45,106,79,0.18);
+    }
   </style>
 </head>
 <body>
@@ -115,7 +154,7 @@ cat > index.html <<'EOF'
     <header>
       <div class="eyebrow">Internet Detective Academy</div>
       <h1>Mission Library</h1>
-      <p class="intro">Choose a case file to start the kid-facing mission. Parent answer keys are listed second so the mission link always comes first.</p>
+      <p class="intro">Choose a case file to start the kid-facing mission. Parent answer keys are listed second so the mission link always comes first. Use "Mark complete" to track finished cases in this browser.</p>
     </header>
     <section class="mission-grid">
 EOF
@@ -125,7 +164,8 @@ while IFS= read -r dir; do
   mission_path="$dir/mission.html"
   answer_path="$dir/answer.html"
 
-  echo "<article class=\"mission-card\">" >> index.html
+  echo "<article class=\"mission-card\" data-mission=\"$dir\">" >> index.html
+  echo "<span class=\"status-badge\">Not started</span>" >> index.html
   echo "<h2>$display</h2>" >> index.html
   echo "<p>Case folder: $dir</p>" >> index.html
   echo "<div class=\"actions\">" >> index.html
@@ -137,6 +177,8 @@ while IFS= read -r dir; do
   if [ -f "$answer_path" ]; then
     echo "<a class=\"button secondary\" href=\"$answer_path\">Parent answer key</a>" >> index.html
   fi
+
+  echo "<button type=\"button\" class=\"button toggle-complete\">Mark complete</button>" >> index.html
 
   while IFS= read -r file; do
     filename=$(basename "$file")
@@ -176,6 +218,48 @@ done < <(
 cat >> index.html <<'EOF'
     </section>
   </main>
+  <script>
+    (function () {
+      var STORAGE_KEY = 'treasureHuntCompleted';
+
+      function loadCompleted() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function saveCompleted(completed) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(completed));
+      }
+
+      function applyState(card, isDone) {
+        var badge = card.querySelector('.status-badge');
+        var toggle = card.querySelector('.toggle-complete');
+        card.classList.toggle('completed', isDone);
+        badge.textContent = isDone ? 'Completed' : 'Not started';
+        badge.classList.toggle('done', isDone);
+        toggle.textContent = isDone ? 'Mark incomplete' : 'Mark complete';
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var completed = loadCompleted();
+        document.querySelectorAll('.mission-card').forEach(function (card) {
+          var mission = card.dataset.mission;
+          applyState(card, !!completed[mission]);
+          card.querySelector('.toggle-complete').addEventListener('click', function () {
+            completed[mission] = !completed[mission];
+            if (!completed[mission]) {
+              delete completed[mission];
+            }
+            saveCompleted(completed);
+            applyState(card, !!completed[mission]);
+          });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
 EOF
