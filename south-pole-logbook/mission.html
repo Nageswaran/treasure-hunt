@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The South Pole Logbook — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E6E8C;
+    --accent-dark: #1F4D63;
+    --easy: #4C7A52;
+    --medium: #2E6E8C;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 0 0 0.6rem; }
+  .stage-label.second { margin-top: 1.3rem; }
+  .notebook {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent-dark);
+    padding: 0.7rem 1rem;
+    border-radius: 2px;
+    font-size: 0.92rem;
+    margin: 0.9rem 0;
+  }
+  .notebook strong { color: var(--accent-dark); }
+  .morse-key {
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.6rem 1rem;
+    margin: 0.8rem 0;
+    font-size: 0.95rem;
+  }
+  .morse-key div { margin: 0.15rem 0; }
+  .morse-message {
+    font-size: 1.4rem;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin: 0.8rem 0;
+    font-family: monospace;
+  }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .acrostic { margin: 0.8rem 0; padding-left: 1.1rem; }
+  .acrostic li { margin: 0.35rem 0; }
+  .acrostic strong { color: var(--finale); font-size: 1.1em; }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The South Pole Logbook</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-90 minutes</div>
+</div>
+
+<div class="intro">
+  A maritime museum just found a sealed metal tube wedged inside an old ship's storage crate. Inside: a torn logbook page from a polar expedition in 1911, the ink barely holding on. The Internet Detective Academy has been called in to piece together exactly what happened out on the ice, clue by clue, before the page crumbles for good. Crack all ten entries, Agent, and the logbook will reveal the one quality that got the explorers through it alive.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Empty Place on the Map</h2>
+    <div class="puzzle">
+      <p>In December 1911, a small team of explorers stood somewhere on Earth that no human had ever reached before. To mark the moment, they planted a flag and named the icy, flat land around them after their king.</p>
+      <p>Search to find which country's flag they planted. Type just the country's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "first explorers to reach the South Pole 1911." One name comes up again and again — search where he was from.</p></details>
+    <div class="answer-box" data-answer-hash="6a2363d7">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A rival British team, led by Robert Falcon Scott, reached the South Pole too — but not until January 17, 1912, just over a month after the first team got there.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Sledging Log</h2>
+    <div class="puzzle">
+      <p>The logbook's next page is a table of daily distances the sledges covered, in kilometers:</p>
+      <p style="font-size:1.3rem; text-align:center; letter-spacing:0.1em;"><strong>Day 1: 15 &nbsp; Day 2: 19 &nbsp; Day 3: 23 &nbsp; Day 4: 27 &nbsp; Day 5: ?</strong></p>
+      <p>Each day's distance grows by the exact same amount. How far did they travel on Day 5?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at how much the distance grows from one day to the next. Is it always the same jump?</p></details>
+    <div class="answer-box" data-answer-hash="88f05309">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Dutch Curator's Sticky Note</h2>
+    <div class="puzzle">
+      <p>The museum's Dutch curator left a note listing expedition words. Three of these words use <strong>"de"</strong>, and one uses <strong>"het"</strong> instead.</p>
+      <p style="text-align:center; font-size:1.15rem;"><strong>slee &nbsp; vlag &nbsp; tent &nbsp; kompas</strong></p>
+      <p><em>(slee = sled, vlag = flag, tent = tent, kompas = compass)</em></p>
+      <p>Find the odd one out: which word takes "het" instead of "de"?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try each word in a sentence: "de ___ ligt op tafel" or "het ___ ligt op tafel." One will sound wrong for the other three.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Three of these words are things you'd carry or pitch. One is an instrument you'd read — that one often takes "het."</p></details>
+    <div class="answer-box" data-answer-hash="e1b523ae">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the odd word out...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Hut With a Missing Wall</h2>
+    <div class="puzzle">
+      <p>The expedition's base hut had an L-shaped floor. A builder's plan shows five of its six walls, and the note beside it says the <strong>total distance all the way around the hut is exactly 50 meters</strong>. One wall's length is missing — marked with a "?".</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 270 170" width="270" height="170"
+         role="img" aria-label="An L-shaped hut floor: a large rectangle with a smaller rectangular notch cut from the top-right corner, one side length unlabeled">
+      <polygon points="20,20 174,20 174,76 244,76 244,146 20,146"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="97" y="12" text-anchor="middle" font-size="12">11 m</text>
+      <text x="184" y="48" text-anchor="middle" font-size="12" transform="rotate(-90 184 48)">4 m</text>
+      <text x="209" y="68" text-anchor="middle" font-size="12">5 m</text>
+      <text x="254" y="111" text-anchor="middle" font-size="12" transform="rotate(-90 254 111)">5 m</text>
+      <text x="132" y="164" text-anchor="middle" font-size="12">16 m</text>
+      <text x="8" y="83" text-anchor="middle" font-size="12" transform="rotate(-90 8 83)">?</text>
+    </svg>
+    <div class="clue-caption">Grab a pencil: add up the five walls you know, then use the total distance to find the missing one.</div>
+    <div class="puzzle">
+      <p>How many meters long is the missing wall?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add together the five labeled walls first. Then think about what's left over from the total of 50 meters.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>11 + 4 + 5 + 5 + 16 = 41 meters. The full trip around is 50 meters. What's the difference?</p></details>
+    <div class="answer-box" data-answer-hash="3c0cb3b4">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type just the number, no units...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <div class="notebook">📓 <strong>Agent's Notebook:</strong> The missing wall measured this many meters. Something tells you this number will matter again before the case is closed.</div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The coldest temperature ever directly measured on Earth's surface is -89.2°C, recorded at Antarctica's Vostok Station in 1983 — cold enough to freeze exhaled breath into a crackling fog.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Bird That Loves Winter</h2>
+    <div class="puzzle">
+      <p>Most animals near the South Pole flee before the brutal Antarctic winter sets in. One bird does the opposite — it stays, and a single egg is balanced on its feet through the very worst of the cold and wind.</p>
+      <p>Search to find which penguin species does this. Type your answer as two words: the size or rank word, then "penguin" (for example, a made-up guess like <em>giant penguin</em> — but that's not the real one).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "only penguin that breeds in Antarctic winter." It's also the tallest and heaviest penguin species alive.</p></details>
+    <div class="answer-box" data-answer-hash="7a17b9db">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Signal Lamp</h2>
+    <div class="puzzle">
+      <p>Ships in this era often signaled to each other across open water using a flashing lamp, blinking out letters in Morse code. The logbook says one word was flashed over and over, to any ship close enough to see it. Use the key to decode it.</p>
+    </div>
+    <div class="morse-key">
+      <div>R = &middot;&#8211;&middot;</div>
+      <div>M = &#8211;&#8211;</div>
+      <div>F = &middot;&middot;&#8211;&middot;</div>
+      <div>A = &middot;&#8211;</div>
+    </div>
+    <div class="morse-message">&middot;&middot;&#8211;&middot; &nbsp; &middot;&#8211;&middot; &nbsp; &middot;&#8211; &nbsp; &#8211;&#8211;</div>
+    <div class="puzzle">
+      <p>Match each group of dots and dashes to its letter in the key, in order, to read the flashed word. (It's the name the expedition gave their own ship.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Match the first group to the key first: it's four symbols long, dot-dot-dash-dot. Only one letter in the key fits that.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The four letters, once matched in order, spell a short Norwegian word meaning "forward."</p></details>
+    <div class="answer-box" data-answer-hash="91aae7e7">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The expedition brought around 97 Greenland dogs, a breed built for pulling heavy sledges through Arctic and Antarctic cold for centuries.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Navigators, Three Readings</h2>
+    <div class="puzzle">
+      <p>Three navigators — Erling, Torvald, and Sigrid — each used a different instrument that freezing morning (a sextant, a chronometer, or a theodolite), and each recorded a different temperature (-28°C, -34°C, or -41°C). Use the four clues to work out which instrument Sigrid used.</p>
+      <ol>
+        <li>The person using the chronometer recorded a warmer temperature than Torvald.</li>
+        <li>Sigrid did not use the sextant.</li>
+        <li>Erling recorded -41°C.</li>
+        <li>The theodolite user recorded the coldest temperature of the three.</li>
+      </ol>
+      <p>Which instrument did Sigrid use?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clues 3 and 4 together. If Erling recorded the coldest reading, and the theodolite user recorded the coldest reading, what does that tell you about Erling?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Erling used the theodolite, clue 2 leaves Sigrid only one instrument to choose from.</p></details>
+    <div class="answer-box" data-answer-hash="342dbadf">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type the instrument...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Depot Ledger</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Search to find the exact date the expedition reached the South Pole (the same event from Mission 1). Type just the day-of-the-month number (a number from 1 to 31).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "date Amundsen reached the South Pole 1911." It happened in December.</p></details>
+    <div class="answer-box" data-answer-hash="17eb23f8">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type just the day number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label second">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Grab a pencil. Two supply depots sell paraffin fuel for the return journey:</p>
+      <ul>
+        <li><strong>Depot Alpha:</strong> charges, per liter, as many kroner as the day-of-month number from Stage 1.</li>
+        <li><strong>Depot Beta:</strong> charges a flat total price for a batch of 10 liters — that total is your notebook number (the hut's missing wall, from Mission 4) multiplied by 20 kroner.</li>
+      </ul>
+      <p>Work out the price per liter at each depot. How many kroner per liter cheaper is the less expensive depot?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Depot Alpha's price per liter is just the Stage 1 number. For Depot Beta, first find the total price for 10 liters, then divide by 10 to get the price for one liter.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Notebook number &times; 20 = Depot Beta's total for 10 liters. Divide that by 10. Then compare both depots' per-liter prices.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>Harnessing the Team</h2>
+    <div class="puzzle">
+      <p>Four sled dogs need to be harnessed in a single-file line for tomorrow's push: Lucky, Frost, Storm, and Compass. Only Lucky can be harnessed as the lead dog — she's the only one who reliably obeys voice commands in a whiteout. The other three dogs (Frost, Storm, and Compass) can be arranged in <em>any</em> order for the remaining three positions in the line.</p>
+      <p>How many different valid sled line-ups are possible in total?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Lucky's spot is already fixed, so only think about arranging the other three dogs in the three spots behind her.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>For the first spot behind Lucky, you have 3 choices of dog. For the next spot, only 2 dogs are left to choose from. For the last spot, only 1 is left. Multiply those choices together.</p></details>
+    <div class="answer-box" data-answer-hash="330ca589">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Entry</h2>
+    <div class="puzzle">
+      <p>The logbook's final page is torn and water-stained, but seven short lines are still readable. Look only at the very <strong>first letter of each line</strong>, top to bottom, and write those letters together to spell one word.</p>
+    </div>
+    <ol class="acrostic">
+      <li><strong>C</strong>old bit through every layer of wool and fur that final morning.</li>
+      <li><strong>O</strong>nward the last few sledges pushed, lighter than ever before.</li>
+      <li><strong>U</strong>nder a flag that snapped hard in the wind, they finally stopped.</li>
+      <li><strong>R</strong>eaching this point had cost many long weeks of frozen marching.</li>
+      <li><strong>A</strong> small tent, one flag, and a single victorious photograph — that was all.</li>
+      <li><strong>G</strong>oing home again would prove just as dangerous as arriving.</li>
+      <li><strong>E</strong>very explorer who reads this page should remember what it took.</li>
+    </ol>
+    <details class="hint"><summary>Hint 1</summary><p>Ignore every word except the very first letter of each of the seven lines.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Write the seven letters down in order, top to bottom, then read them together as one word.</p></details>
+    <div class="answer-box" data-answer-hash="dae0e2f">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Flags, frozen walls, signal lamps, and one hidden word — you rebuilt the whole expedition from a single torn page. That's real <strong>courage</strong>, Agent: the same thing it took to keep walking when the ice never seemed to end.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
