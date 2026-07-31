@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Clockmaker's Vanishing Workshop — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C08A2E;
+    --accent-dark: #8F6420;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .notebook {
+    background: rgba(255,255,255,0.5);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook strong { color: var(--accent-dark); }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Clockmaker's Vanishing Workshop</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  Master clockmaker Joost Verhoeven has vanished from his canal-side workshop in Gouda, the night before he was set to unveil his masterpiece: a clock said to never lose a second in a hundred years. His apprentice found the workshop door unlocked, gears scattered across the workbench, and one note pinned to the door: <em>"Follow the time, and you'll follow me."</em> The Internet Detective Academy has been called in. Follow every tick, tock, and clue — and find him before the Grand Unveiling.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Telegram on the Workbench</h2>
+    <div class="notebook">📓 <strong>Agent's Notebook:</strong> A brass plaque by the workshop door reads <strong>"Ticking Since 1847."</strong> Jot this down — case-file numbers like this have a way of mattering later.</div>
+    <div class="puzzle">
+      <p>On the workbench sits an unfinished telegram. It was sent from the Royal Observatory in Greenwich, England — home of the Prime Meridian, the invisible line where the world's clocks are set from. The telegram is stamped <strong>13:00</strong>, Greenwich time.</p>
+      <p>Search to find out: is Amsterdam ever in the exact same time zone as Greenwich? If the telegram left Greenwich at 13:00, what time would it be, at that very same moment, on the workshop's clock in Amsterdam? Type the time in 24-hour format, like <code>09:00</code>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for "time difference Amsterdam London." The Netherlands and the United Kingdom are close neighbours on the map — but are they ever on the same clock?</p></details>
+    <div class="answer-box" data-answer-hash="18086016">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Apprentice's Dutch Notes</h2>
+    <div class="puzzle">
+      <p>Taped inside a drawer is a torn sentence from Meneer Verhoeven's notebook, with two words rubbed away:</p>
+      <p style="text-align:center; font-size:1.1rem;"><em>"Achter het glas hangt ___ slinger, die ___ rad in beweging houdt."</em><br><span style="font-size:0.85rem; color:rgba(0,0,0,0.6);">(Behind the glass hangs the ___ pendulum, which keeps the ___ wheel moving.)</span></p>
+      <p>Each blank needs either <strong>"de"</strong> or <strong>"het"</strong> — Dutch has two little words for "the," and every noun only ever takes one of them. Figure out which word fits "slinger" (pendulum) and which fits "rad" (wheel), then type both, in order, separated by a space (for example: <code>het de</code>).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>"Rad" behaves like its cousin "het wiel" — most words for wheel-like machine parts in Dutch take "het." "Slinger" behaves more like an ordinary object, the way most Dutch nouns do.</p></details>
+    <div class="answer-box" data-answer-hash="b0dc18ab">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The world's oldest working clock has been ticking at Salisbury Cathedral in England since before the year 1386 — over 600 years! It doesn't even have a face, because it was only ever built to strike the hours, not show the time.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Missing Backing Board</h2>
+    <div class="puzzle">
+      <p>Behind the workshop's tall case clock is a wooden backing board. Its outer edge measures <strong>18 cm wide</strong> and <strong>24 cm tall</strong> — but a rectangular slot has been cut from the bottom edge so the pendulum can swing freely through it: <strong>6 cm wide</strong> and <strong>8 cm tall</strong>, cut straight up from the middle of the bottom edge.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 184 232" width="184" height="232" role="img" aria-label="A tall rectangle representing a wooden backing board, with a smaller rectangular notch cut upward from the middle of its bottom edge">
+      <polygon points="20,20 164,20 164,212 116,212 116,148 68,148 68,212 20,212" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="92" y="13" text-anchor="middle" font-size="12">18 cm</text>
+      <text x="177" y="116" text-anchor="middle" font-size="12" transform="rotate(-90 177 116)">24 cm</text>
+      <text x="92" y="141" text-anchor="middle" font-size="12">6 cm</text>
+      <text x="56" y="180" text-anchor="middle" font-size="12" transform="rotate(-90 56 180)">8 cm</text>
+    </svg>
+    <div class="clue-caption">The wood is everything inside the outline — except the notch cut out at the bottom.</div>
+    <div class="puzzle">
+      <p>What is the area of the remaining wood, in square centimeters? Grab a pencil for this one. Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try splitting the shape into simpler rectangles, the way a real carpenter would plan the cut.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>One way: find the area of the full outer rectangle first (18 × 24). Then subtract the area of the missing notch (6 × 8).</p></details>
+    <div class="answer-box" data-answer-hash="d164554e">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Five Timekeepers on a Shelf</h2>
+    <div class="puzzle">
+      <p>On a dusty shelf, the team finds five timekeeping devices: a <strong>grandfather clock</strong>, a <strong>cuckoo clock</strong>, a <strong>digital wristwatch</strong>, a <strong>battery-powered quartz wall clock</strong>, and a <strong>sundial</strong>.</p>
+      <p>Picture two overlapping circles: one labeled <strong>"Has a swinging pendulum,"</strong> the other labeled <strong>"Hangs on a wall."</strong> Exactly one of the five devices belongs in <em>both</em> circles at once — in the overlap in the middle. Which one?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Where would a grandfather clock go — it definitely has a pendulum, but does it hang on a wall, or stand on the floor?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A grandfather clock has a pendulum but stands on the floor. A quartz wall clock hangs on the wall but has no pendulum. Which single object has BOTH features?</p></details>
+    <div class="answer-box" data-answer-hash="3c62c3cf">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Journal Entry</h2>
+    <div class="puzzle">
+      <p>A page in Meneer Verhoeven's journal reads:</p>
+      <p style="font-style:italic;">"I never met the man, but every pendulum clock I've ever built owes its steady heartbeat to him. He was Dutch, like me — a mathematician, astronomer, and clockmaker who built the first working pendulum clock in 1656 and patented it a year later. Strangely, he's just as famous for pointing a telescope at the sky: he discovered Saturn's largest moon. Who is he?"</p>
+      <p>Search to find this scientist's name, then type his <strong>last name</strong>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "first pendulum clock inventor 1656." He was Dutch, just like Meneer Verhoeven.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Double-check your answer by searching his name together with "Titan moon Saturn" — the same scientist should come up both times.</p></details>
+    <div class="answer-box" data-answer-hash="8946fb0a">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? "Big Ben" is actually just the nickname of the giant bell inside London's famous clock tower. The tower itself is officially called the Elizabeth Tower — it was renamed in 2012 in honour of Queen Elizabeth II.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Wilted Garden Vines</h2>
+    <div class="puzzle">
+      <p>Behind the workshop is a small garden with two wilted flower vines and a note: <em>"I planted these so I'd never need a clock in the garden — flowers can tell time too, if you know how to read them."</em></p>
+      <p>The two vines are <strong>morning glory</strong> and <strong>moonflower</strong> — close plant relatives that keep exactly opposite hours. Search to find out each flower's daily schedule: when does it open, and when does it close?</p>
+      <p>Then answer this: if the detective team found a patch of these flowers wide open and glowing white at <strong>11 PM</strong>, which vine were they looking at?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "morning glory opening time" and "moonflower opening time" separately — write down both schedules before you decide.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>One flower loves sunrise and naps all afternoon. The other only wakes up after dark, like an owl. Which one would still be open at 11 PM?</p></details>
+    <div class="answer-box" data-answer-hash="834859ff">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Apprentices, Four Rooms</h2>
+    <div class="puzzle">
+      <p>On the night Meneer Verhoeven vanished, his four apprentices — Anna, Bram, Cato, and Daan — were each somewhere in the building: the <strong>Workshop</strong>, the <strong>Cellar</strong>, the <strong>Attic</strong>, or the <strong>Shop-front</strong>. Each apprentice was in a different room. Here's what the team found out:</p>
+      <ul>
+        <li>Anna was not in the Workshop and not in the Shop-front.</li>
+        <li>Bram swears he never went upstairs the entire evening (so he wasn't in the Attic).</li>
+        <li>Cato spent the whole night polishing gears — a job that only ever happens in the Workshop.</li>
+        <li>Daan was counting the day's coins — a job that only ever happens in the Shop-front.</li>
+      </ul>
+      <p>Who was in the <strong>Attic</strong> when the church bells struck — and might have seen Meneer Verhoeven slip out the top window?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clues that give a direct, certain answer — which apprentices have a job that only happens in one exact room?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once Cato and Daan's rooms are locked in, only the Cellar and the Attic are left — for only Anna and Bram. One clue rules Bram out of the Attic. Where does that leave him, and where does that leave Anna?</p></details>
+    <div class="answer-box" data-answer-hash="c9cce27b">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Coded Drawer</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Inside a locked desk drawer is a scrap of paper with one word on it:</p>
+      <p style="text-align:center; font-size:1.3rem; letter-spacing:0.2em;"><strong>JSVJRDVYR</strong></p>
+      <p>A note beneath it explains: <em>"Every letter here has been shifted 7 places FORWARD in the alphabet. Shift each one back 7 places to read my word."</em> (For example, if a letter had shifted to H, it started as A.) Grab a pencil and write the alphabet out to help you count.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write the alphabet in a row, A to Z. For each letter in JSVJRDVYR, count back 7 letters (wrapping around from A back to Z if you run past the start).</p></details>
+    <div class="answer-box" data-answer-hash="a7d918f8">
+      <label for="m8-stage1">Your decoded word:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Count the letters in the word you just decoded. That's exactly how many identical gear-clusters fill the workshop's tall case clock. Each cluster holds 3 gears, with <strong>24</strong>, <strong>36</strong>, and <strong>48</strong> teeth.</p>
+      <p>First add the teeth in <em>one</em> cluster. Then multiply that total by the number of clusters, to find the TOTAL number of teeth in the whole clock. Grab a pencil — this one's worth doing on paper!</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>24 + 36 + 48 = the teeth in one cluster. Then multiply that number by however many clusters you counted in Stage 1.</p></details>
+    <div class="answer-box" data-answer-hash="59c7c651">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Clocks turn "clockwise" because that's the direction shadows move on a sundial in the Northern Hemisphere. If mechanical clocks had first been invented south of the equator, they might spin the opposite way today!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Two Repair Shops, One Decision</h2>
+    <div class="puzzle">
+      <p>The masterpiece clock's glass face cracked in the chaos. Two repair shops in town can fix it before the unveiling:</p>
+      <ul>
+        <li><strong>Shop A:</strong> a flat fee of €180, plus a €15 delivery charge.</li>
+        <li><strong>Shop B:</strong> "20% off our usual €250 price!" — but with a €10 rush fee added on top, since it's urgent.</li>
+      </ul>
+      <p>Work out the TOTAL price at each shop, including every fee. Which shop actually costs less — and what is that lower total, in euros? Type just the number (for example: <code>199</code>).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out each shop's total separately, and don't stop at the discount percentage — keep going until every single fee has been added in.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>20% off €250 is not Shop B's final price — there's still one more fee to add after the discount.</p></details>
+    <div class="answer-box" data-answer-hash="f821dcbe">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Vault Behind the Grandfather Clock</h2>
+    <div class="puzzle">
+      <p>Behind the tallest grandfather clock, the team finds a small vault with a four-digit dial and one final card from Meneer Verhoeven:</p>
+      <p style="font-style:italic;">"My vault's code has two parts, added together. Part one: the year carved into my workshop's brass plaque — the one you noted the day you arrived. Part two: the exact number of seconds from the very start of the first chime to the very end of the last chime, when the tower clock strikes its 12-chime noon salute — where each chime itself lasts 2 seconds, and each silence between chimes lasts 3 seconds. Add the two parts together for my vault's code."</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First work out the total time, in seconds, for all 12 chimes and the silences between them. Then add a year you noted down earlier in this case.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>There are 12 chimes, but only 11 silent gaps between them — it's easy to accidentally count 12 gaps instead of 11. Work out the seconds first, then add the year.</p></details>
+    <div class="answer-box" data-answer-hash="255af60b">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The vault holds no gold — only a small card in Meneer Verhoeven's handwriting: <em>"Every gear, every flower, every chime rewards the detective who looks closer before leaping to an answer. That patient, careful way of seeing the world has a name: WISDOM. Well done, Agent — the workshop, and its clockmaker, are found."</em></p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
