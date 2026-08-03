@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Delta Barrier Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2D6E8E;
+    --accent-dark: #1E4A5F;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .notebook {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook .eyebrow { display: block; margin-bottom: 0.3rem; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.2rem 0 0.6rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Delta Barrier Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-95 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Last night, the storm alarm at the giant Oosterscheldekering barrier went silent — hours before the biggest storm of the year. The barrier's oldest keeper, Engineer Dekker, has vanished from the control building, leaving only strange notes behind. The Zeeland Water Authority needs a sharp detective to find out what happened before the next high tide hits. Solve every clue Dekker left, and you'll uncover the value that has protected this land for generations.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Flooded Province</h2>
+    <div class="puzzle">
+      <p>Before you can find Engineer Dekker, you need to know where his control room is. It stands behind a huge storm barrier, in a province (a big region of the Netherlands, like a state) that was hit hardest by a terrible flood on the night of 31 January 1953.</p>
+      <p>Search online to find which Dutch province suffered the worst damage and the most lives lost in that flood. Type the name of the province.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "1953 North Sea flood Netherlands" and look for the province that is named as the hardest-hit, again and again.</p></details>
+    <div class="answer-box" data-answer-hash="29e7053a">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? About 26% of the Netherlands lies below sea level. That's one big reason storm barriers like the Oosterscheldekering matter so much.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Caesar's Note</h2>
+    <div class="puzzle">
+      <p>Taped to the control room door, you find a note in code, next to a torn staff badge. Dekker always uses a "Caesar cipher" — a secret code where every letter is shifted forward through the alphabet by the same number of steps.</p>
+      <p>Dekker's shift is always 4. Shift each letter of this code <strong>backward</strong> by 4 to read his message:</p>
+      <p style="font-size:1.2rem; letter-spacing:0.15em; font-weight:700; text-align:center;">TMPPEVW</p>
+      <p>Type the decoded word — it's the thing you should look at closely next.</p>
+    </div>
+    <div class="notebook">
+      <span class="eyebrow">Agent's Notebook</span>
+      Tucked beside the note is Dekker's torn staff badge. Only one number survived the tear: <strong>7</strong>. This feels like something worth remembering...
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>For each letter, count backward 4 letters in the alphabet. If you go past A, wrap around to the end (Z, Y, ...).</p></details>
+    <div class="answer-box" data-answer-hash="bd15e346">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Control Room's Missing Floor Space</h2>
+    <div class="puzzle">
+      <p>The control room floor is shaped like an L, with a smaller room cut out of one corner for equipment. Look at the marked measurements below and find the <strong>total floor area</strong>, in square meters, of the whole L-shaped room.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 200 155" width="320" height="248"
+         role="img" aria-label="An L-shaped control room floor: a large rectangle with a smaller rectangular notch cut from the top-right corner">
+      <polygon points="20,20 116,20 116,68 180,68 180,132 20,132"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="68" y="12" text-anchor="middle" font-size="12">6 m</text>
+      <text x="148" y="62" text-anchor="middle" font-size="12">4 m</text>
+      <text x="128" y="46" text-anchor="middle" font-size="12" transform="rotate(-90 128 46)">3 m</text>
+      <text x="192" y="102" text-anchor="middle" font-size="12" transform="rotate(-90 192 102)">4 m</text>
+      <text x="100" y="148" text-anchor="middle" font-size="12">10 m</text>
+      <text x="8" y="78" text-anchor="middle" font-size="12" transform="rotate(-90 8 78)">7 m</text>
+    </svg>
+    <div class="clue-caption">Split the L-shape into two simple rectangles, find each area, then add them together.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Draw one straight line across the shape to turn it into two rectangles.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The whole outer rectangle would be 10 m by 7 m. Now subtract the small notch that's missing (4 m by 3 m).</p></details>
+    <div class="answer-box" data-answer-hash="8be14d38">
+      <label for="m3-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Which Control Room?</h2>
+    <div class="puzzle">
+      <p>The silent alarm sensor is hiding in one of four rooms: Room A, B, C, or D. Use these clues to cross off the wrong rooms, one by one, until only one is left.</p>
+      <p>
+        1. The sensor is not in Room A — that room sits closest to the water and is too damp for electronics.<br>
+        2. Rooms B and D both face west. The sensor's room faces east.<br>
+        3. Room B is used only for storing tools, never sensors.
+      </p>
+      <p>Which room is it? Type just the letter.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start by crossing off the room closest to the water — clue 1 rules it out completely.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Of the rooms still left, cross off the ones that face the wrong direction.</p></details>
+    <div class="answer-box" data-answer-hash="e60c2c52">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Barrier's Trigger Point</h2>
+    <div class="puzzle">
+      <p>The barrier's gates don't stay closed all the time — they only close when the sea gets dangerously high. Search for how the Oosterscheldekering decides when to close its gates. Use a trustworthy source, like Rijkswaterstaat (the government water agency) or the Watersnoodmuseum (flood museum).</p>
+      <p>Find out: at how many meters above NAP (the Netherlands' official sea-level reference height) does the barrier's computer decide the gates must close? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Oosterscheldekering closes water level NAP" and look for the automatic closing rule.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The trigger height is a single small whole number of meters — not a decimal, not a big number.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m5-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Each of the barrier's 65 concrete pillars weighs about 18,000 tonnes — roughly as much as 3,000 elephants standing on top of each other!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Inspectors, One Missing Notebook</h2>
+    <div class="puzzle">
+      <p>Four inspectors checked the barrier's gates last night: Anke, Bram, Cor, and Dana. Each one checked a different gate section (1, 2, 3, or 4) and carried a different tool (flashlight, clipboard, radio, or key ring).</p>
+      <p><strong>Grab a pencil for this one</strong> — draw a small grid with the four names down the side, and "gate" and "tool" across the top. Use these clues to fill it in:</p>
+      <p>
+        1. Bram carried the flashlight.<br>
+        2. The inspector with the flashlight checked Gate Section 1.<br>
+        3. Dana did not carry the radio or the key ring.<br>
+        4. The inspector with the clipboard checked Gate Section 2.<br>
+        5. Anke did not check Gate Section 4.<br>
+        6. Cor carried the key ring.
+      </p>
+      <p>Which inspector checked Gate Section 2 — the section nearest the silent alarm?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the flashlight clues — they pin down one full match right away (name, tool, and gate).</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know who's left without the radio or key ring, one clue tells you their gate directly.</p></details>
+    <div class="answer-box" data-answer-hash="dca902eb">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Soggy Logbook Page</h2>
+    <div class="puzzle">
+      <p>Dekker's logbook fell in a puddle. Most of the ink smudged away, but four Dutch words survived: <strong>dijk, sluis, storm, water</strong>.</p>
+      <p>Three of these words use "de" (like "de dijk"). One of them is different — it uses "het" instead. Find the odd one out and type it (in Dutch).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>In Dutch, most nouns use "de" — only a smaller group uses "het". Say "de" and "het" out loud before each word.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Three of the four words name things you can build or things that happen (a wall, a gate, a weather event). The fourth names something natural that flows — that one is different.</p></details>
+    <div class="answer-box" data-answer-hash="49c69a10">
+      <label for="m7-answer">Your answer (in Dutch):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Forty-Some Years of Struggle</h2>
+    <div class="puzzle">
+      <p>After the 1953 flood, the Netherlands built a huge system of barriers and dams to make sure it never happened again — the Delta Works. Search online to find the year the Delta Works were officially declared finished, when the very last piece (the Maeslantkering, near Rotterdam) was completed.</p>
+      <p>Now calculate: how many years passed between the 1953 flood and the year the Delta Works were finished? Type just the number of years.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Delta Works completed year Maeslantkering" to find the finishing year.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Subtract 1953 from the finishing year you found. Grab a pencil if the subtraction feels tricky.</p></details>
+    <div class="answer-box" data-answer-hash="8de38ef5">
+      <label for="m8-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Two Claims and a Vanishing Hour</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>While searching, you find two websites about a different, even bigger barrier near Rotterdam, called the Maeslantkering.</p>
+      <p><strong>Website A</strong> says: "Each giant arm of the Maeslantkering is as long as the Eiffel Tower is tall."<br>
+      <strong>Website B</strong> says: "Each arm's steel truss measures 237 meters."</p>
+      <p>The real Eiffel Tower stands 330 meters tall. Search to check both claims for yourself. One of them doesn't hold up once you compare the real numbers — but it does contain one true number hiding inside it. Type that true number (just the number of meters).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Maeslantkering truss length meters" to find the real measurement, then compare it to the Eiffel Tower's real height.</p></details>
+    <div class="answer-box" data-answer-hash="2cea3b3f">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 (final)</p>
+    <div class="puzzle">
+      <p>That number turns out to matter more than you thought. The control room's backup system automatically reboots itself exactly that many minutes after any power loss.</p>
+      <p>Investigators found the system rebooted, and the log shows the exact time: <strong>23:41</strong>. They also know the storm warning was first issued at <strong>19:24</strong>.</p>
+      <p>Work backward from the reboot time — using the number from Stage 1 as the number of minutes — to find the exact time the power actually went out. Then figure out: how many minutes after the storm warning did the power go out? Type just the number of minutes.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the power-loss time: count backward from 23:41 by the number of minutes you found in Stage 1 (that's a few hours and some minutes).</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you have the power-loss time, compare it to when the storm warning went out at 19:24 — the gap between them, in minutes, is your answer.</p></details>
+    <div class="answer-box" data-answer-hash="8df2997f">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Zeeland's official motto is "Luctor et Emergo" — Latin for "I struggle and emerge." It's been part of the province's coat of arms since 1602.</p>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Vault of Forty Years</h2>
+    <div class="puzzle">
+      <p>You've traced everything. Dekker never vanished — he was in the deepest server room the whole time, chasing the real fault, and the barrier closed just in time.</p>
+      <p>Before he reappears, he leaves one last coded message, meant only for the detective sharp enough to finish the case:</p>
+      <p style="font-size:1.2rem; letter-spacing:0.15em; font-weight:700; text-align:center;">WLYZLCLYHUJL</p>
+      <p>Shift every letter <strong>backward</strong> using the one number you should have written down back when you first read his torn badge. Decode the message to reveal the value this whole case was really about.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This is another Caesar cipher. You already found the shift number earlier — it was on Dekker's badge.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Shift each letter backward by that number. If you go past A, wrap around to the end of the alphabet (Z, Y, ...).</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Just like the engineers who spent over 40 years building the Delta Works after 1953, and just like Zeeland's old motto promises, this land survives every storm through <strong>perseverance</strong> — struggling on, and always emerging. Case closed, Detective.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
