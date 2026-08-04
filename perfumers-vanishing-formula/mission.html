@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Perfumer's Vanishing Formula — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #A8527A;
+    --accent-dark: #7A3A5A;
+    --easy: #4C7A52;
+    --medium: #A8527A;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .scent-wheel-key { display: flex; flex-wrap: wrap; gap: 0.6rem 1.1rem; margin: 0.8rem 0 1rem; padding: 0.8rem; background: var(--paper-dark); border-radius: 4px; }
+  .scent-wheel-key .key-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.92rem; }
+  .scent-dot { display: inline-block; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--ink); flex-shrink: 0; }
+  .scent-code { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.9rem 0; padding: 0.9rem; background: #FFFDF7; border: 1px dashed var(--accent-dark); border-radius: 4px; }
+  .scent-code .scent-dot { width: 34px; height: 34px; }
+  .cite-card { background: var(--paper-dark); border-radius: 4px; padding: 0.9rem 1rem; margin: 0.8rem 0; font-size: 0.96rem; }
+  .cite-card .cite-label { font-weight: 700; color: var(--accent-dark); display: block; margin-bottom: 0.3rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 0 0 0.6rem; font-weight: 700; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Perfumer's Vanishing Formula</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  Maison Belrose, a historic perfume house tucked into the hills above Grasse, France, is in a full-blown panic. Right before the town's Grand Concours des Nez — the yearly contest where the region's best perfumers show off their newest scent — master perfumer Odette Belrose's private notebook has vanished, formula and all. You've been called in, Detective, to follow the scent through her workshop, the town's records, and the local museum before the judges arrive. Solve every clue, and you'll not only recover the formula — you'll uncover the real secret behind it.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Where in the World Is Grasse?</h2>
+    <div class="puzzle">
+      <p>Before you even open the workshop door, you should know exactly where you are. Maison Belrose sits in a small hillside town whose name keeps turning up on old perfume bottles: <strong>Grasse</strong>. Search online to find out which country Grasse is in. While you're searching, see if you can also confirm that Grasse is genuinely known as a real capital of perfume-making — not just a nickname the town gave itself.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Grasse perfume capital" and notice which country's name keeps coming up in the results.</p></details>
+    <div class="answer-box" data-answer-hash="661579a">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Odette's Dutch Notebook Habit</h2>
+    <div class="puzzle">
+      <p>Odette picked up a habit from her Belgian grandmother: she sometimes jots quick notes in Dutch. In her workshop diary you find five words: <em>geur</em> (scent), <em>bloem</em> (flower), <em>jasmijn</em> (jasmine), <em>roos</em> (rose), and <em>flesje</em> (little bottle). In Dutch, every noun uses either "de" or "het" in front of it. Four of these five words use "de." One of them breaks the pattern and uses "het" instead. Type just that one odd word (in Dutch).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search each word one at a time, like "flesje de of het," and see which article a Dutch dictionary gives it.</p></details>
+    <div class="answer-box" data-answer-hash="cf2106e6">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A perfumer is sometimes nicknamed a "nose" (nez in French). A trained nose can recognize thousands of different smells — but there are fewer than 600 professional perfumers working anywhere in the world.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Four Flowers, One Fake Ingredient</h2>
+    <div class="puzzle">
+      <p>In Odette's greenhouse notebook, four flowers are described on torn cards. Three of them are real, famous ingredients that perfumers in Grasse have used for centuries. One of them smells lovely growing in a garden, but perfumers can barely pull any real scent oil out of it at all — so it's almost never used to make a classic perfume. Read the four cards and find the one that doesn't belong.</p>
+    </div>
+    <div class="cite-card">
+      <span class="cite-label">Card 1 — Jasmine (Jasminum grandiflorum)</span>
+      A white climbing flower. Its oil is a heart note in many world-famous perfumes — one legendary 1930s bottle used more than ten thousand of these blossoms in a single ounce.
+    </div>
+    <div class="cite-card">
+      <span class="cite-label">Card 2 — Rose (Rosa centifolia, the "May Rose")</span>
+      Grown right on the hillsides around Grasse. Many perfumers consider its delicate oil among the finest rose scents on Earth.
+    </div>
+    <div class="cite-card">
+      <span class="cite-label">Card 3 — Lavender (Lavandula angustifolia)</span>
+      Its purple fields cover the hills of Provence. Perfumers have used its clean, calming oil in colognes and soaps for centuries.
+    </div>
+    <div class="cite-card">
+      <span class="cite-label">Card 4 — Tulip</span>
+      A colorful spring flower, famous in bulb-growing regions. Its scent is so faint that almost no real oil can be pulled from it — most "tulip" perfumes are actually built from other ingredients that just smell similar.
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Three of these flowers are grown specifically because perfumers can pull strong-smelling oil out of them for real bottles. Which one barely gives up any oil at all?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Look closely at what Card 4 says about how much real oil the flower produces.</p></details>
+    <div class="answer-box" data-answer-hash="e8f9338b">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Flask Ratio</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one! On a torn page from the notebook, you find these instructions:</p>
+      <p>"Fill the flask to <strong>150 ml</strong> total. First, pour in <strong>30 ml</strong> of plain alcohol base — that part is never counted in the scent ratio. Whatever is left, mix jasmine oil and rose oil together in a ratio of <strong>2 parts jasmine to 3 parts rose</strong>."</p>
+      <p>How many milliliters (ml) of rose oil go into the flask? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First figure out how many ml are left over after the 30 ml of alcohol base is poured in.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Split that leftover amount into 5 equal parts — 2 parts go to jasmine, 3 parts go to rose.</p></details>
+    <div class="answer-box" data-answer-hash="8de5cd8c">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Odette's Scent-Wheel Code</h2>
+    <div class="puzzle">
+      <p>Deep in a drawer, you find Odette's private scent-wheel — a color code she invented so nobody else could read her secret notes. Use the color key below to decode the five-color message she left. It spells out one important scent.</p>
+    </div>
+    <div class="scent-wheel-key">
+      <span class="key-item"><span class="scent-dot" style="background:#E8A0BF"></span> Rose Pink = A</span>
+      <span class="key-item"><span class="scent-dot" style="background:#D4A017"></span> Golden Amber = M</span>
+      <span class="key-item"><span class="scent-dot" style="background:#8B5FBF"></span> Deep Violet = B</span>
+      <span class="key-item"><span class="scent-dot" style="background:#4C7A52"></span> Leaf Green = E</span>
+      <span class="key-item"><span class="scent-dot" style="background:#A33B2D"></span> Ruby Red = R</span>
+      <span class="key-item"><span class="scent-dot" style="background:#4A90A4"></span> Sky Blue = J</span>
+      <span class="key-item"><span class="scent-dot" style="background:#B497D6"></span> Soft Lavender = L</span>
+      <span class="key-item"><span class="scent-dot" style="background:#C4A484"></span> Sandy Beige = S</span>
+    </div>
+    <div class="scent-code">
+      <span class="scent-dot" style="background:#E8A0BF"></span>
+      <span class="scent-dot" style="background:#D4A017"></span>
+      <span class="scent-dot" style="background:#8B5FBF"></span>
+      <span class="scent-dot" style="background:#4C7A52"></span>
+      <span class="scent-dot" style="background:#A33B2D"></span>
+    </div>
+    <div class="clue-caption">Match each colored dot, left to right, to its letter in the key above.</div>
+    <p style="font-size:0.92rem; color:rgba(0,0,0,0.7);">Scrawled in the margin next to the code, in Odette's own handwriting: <em>"The base accord always waits in Bottle No. 12 — my lucky number. Agents, jot this down: some numbers matter more than once."</em></p>
+    <details class="hint"><summary>Hint 1</summary><p>Go dot by dot, left to right, and write down the matching letter from the key underneath each one.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The five letters spell a warm, cozy scent that's often used as a base note in perfumes.</p></details>
+    <div class="answer-box" data-answer-hash="6fd4bec0">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A single ounce of the legendary 1930s perfume Joy is said to have used about 10,600 jasmine flowers and 28 dozen (336) roses — one of the most flower-hungry recipes in perfume history.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Suppliers, One Better Deal</h2>
+    <div class="puzzle">
+      <p>Grab your pencil again. Maison Belrose needs exactly <strong>150 ml</strong> of rare rose oil before the competition, and there are two suppliers to choose from:</p>
+      <p><strong>Supplier Lumina</strong> sells rose oil in 50 ml bottles for €38 each. Order 3 bottles or more, and the whole order gets a 10% discount.</p>
+      <p><strong>Supplier Solaire</strong> sells rose oil loose, by the milliliter, for €0.86 per ml — but charges a flat €12 handling fee no matter how much you order, and offers no discount.</p>
+      <p>Work out the total cost of buying exactly 150 ml from each supplier, then type the name of whichever one is cheaper.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>150 ml from Lumina means exactly 3 bottles. Find that total first, then apply the discount.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Don't forget Solaire's flat €12 fee gets added on top of the per-ml cost, every single order.</p></details>
+    <div class="answer-box" data-answer-hash="c159885d">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Rival Perfumers' Logic Grid</h2>
+    <div class="puzzle">
+      <p>Four rival perfumers from nearby towns are competing for the same prize this year — and workshop gossip says one of them might know something about the missing notebook. Read the four clues, work out a chart of Perfumer &times; Scent &times; Year, and find out who created "Nuit Dorée."</p>
+      <p><strong>Perfumers:</strong> Antoine, Camille, Théo, Margot<br>
+      <strong>Scents:</strong> Rose Noire, Jardin Secret, Fleur Sauvage, Nuit Dorée<br>
+      <strong>Years:</strong> 1998, 2004, 2011, 2019</p>
+      <p><strong>Clues:</strong></p>
+      <p>1. Antoine's fragrance was Jardin Secret, and he entered the competition sometime before the year 2000.<br>
+      2. Neither Théo nor Margot created Rose Noire. Margot's fragrance debuted exactly eight years after Théo's.<br>
+      3. Fleur Sauvage hit the shelves before Nuit Dorée did.<br>
+      4. Camille's fragrance came out before 2010.</p>
+      <p>Who created Nuit Dorée?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 1 — it pins down one whole row (perfumer, scent, and year) all by itself.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know everyone's year, clue 2's "eight years after" only fits one possible pair of years.</p></details>
+    <div class="answer-box" data-answer-hash="bd6b035f">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Checking the Museum's Story</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>All this gossip about rival perfumers reminds you that Grasse's perfume houses go back centuries. Search to find: in what year was <strong>Galimard</strong> — one of the oldest perfume houses in Grasse, founded by Jean de Galimard — established?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search the exact phrase "Galimard founded" and check the perfume house's own website for the year.</p></details>
+    <div class="answer-box" data-answer-hash="33cd0eb8">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label" style="margin-top:1.4rem;">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Now you want to check the real museum in town — the Musée International de la Parfumerie — to see if Maison Belrose ever loaned it any old bottles. Two pages both claim to be the museum's own official website. Read both, then use what you just found in Stage 1 to spot the fake.</p>
+    </div>
+    <div class="cite-card">
+      <span class="cite-label">Site A — "Musées de Grasse"</span>
+      "The City of Grasse's official museum network. Visit the Musée International de la Parfumerie, home to centuries of scent-making history, including pieces from Galimard, the historic house founded in 1747."
+    </div>
+    <div class="cite-card">
+      <span class="cite-label">Site B — "GrasseScentWorld.com"</span>
+      "Welcome to the World-Famous Grasse Perfume Museum! See rare bottles from Galimard, founded way back in 1847, plus grab a gift shop discount code just for you!"
+    </div>
+    <div class="puzzle">
+      <p>Only one of these is the real, official museum page. Type A or B.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Check both pages' founding year for Galimard against the exact year you just found in Stage 1.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A page trying to hand you a gift shop discount code is a clue about what it actually cares about.</p></details>
+    <div class="answer-box" data-answer-hash="e40c292c">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Grasse's own rose, the Rosa centifolia (nicknamed the "May Rose"), is considered by many perfumers among the finest rose oils in the world — even though most of the world's rose oil today actually comes from Bulgaria, not France.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Big "Aha!" — Cracking the Real Formula</h2>
+    <div class="puzzle">
+      <p>In a hidden drawer, you find a torn notebook page listing five candidate scent notes for the stolen formula: <strong>Jasmine, Rose, Lavender, Bergamot, Vetiver</strong>. A shaky note at the top says the finished formula uses <strong>exactly three</strong> of these five. Four more half-smudged scribbles give you the rules:</p>
+      <p>1. Jasmine and Bergamot are always used together in this formula — either both are in it, or neither is.<br>
+      2. The formula uses Rose OR Lavender, but never both.<br>
+      3. Vetiver is not used in this formula at all.<br>
+      4. If Jasmine is used, then Rose is NOT.</p>
+      <p>Figure out the exact three ingredients. Type them in alphabetical order, separated by a comma and a space, like this: <em>Name, Name, Name</em>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue about Vetiver — cross it off the list completely, right away.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Try assuming Jasmine and Bergamot are BOTH in the formula, then see what that forces for Rose and Lavender using the other two rules.</p></details>
+    <div class="answer-box" data-answer-hash="eacce370">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Locked Case</h2>
+    <div class="puzzle">
+      <p>You find one last page in Odette's own hand — the true competition formula — sitting on top of a locked case beneath the workbench. The case has a two-digit dial.</p>
+      <p>The page reads: <em>"18 ml rose absolute + 24 ml jasmine absolute together fill exactly three-quarters of the flask. What size is the whole flask?"</em></p>
+      <p>Work that out first. Then: the old ledger says to set the dial to that flask size, minus the number of the one bottle that always holds the base accord — you already know which one.</p>
+      <p>Type the two-digit number that opens the case.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the flask's full size: if three-quarters of it equals 42 ml, what is the whole flask?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Then subtract the number of that one special bottle you were told to remember earlier in the case.</p></details>
+    <div class="answer-box" data-answer-hash="8de38ef5">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Inside the case is a single card, in Odette's neat handwriting: "A great scent — and a great detective — never comes from just one thing. A rose, some math, an old ledger, a lucky number: mixing what doesn't obviously belong together is the whole secret." You didn't just find a formula, Agent — you proved that <strong>creativity</strong> is what turns separate clues into something whole. Case closed.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

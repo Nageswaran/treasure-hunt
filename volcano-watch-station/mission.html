@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Volcano Watch Station Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #D9531E;
+    --accent-dark: #A33B10;
+    --easy: #4C7A52;
+    --medium: #D9531E;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+  .stage-label {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.55);
+    margin: 0 0 0.6rem;
+  }
+  .stage-label.second { margin: 1.3rem 0 0.6rem; }
+  .swatch-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0.9rem 0;
+  }
+  .swatch-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--paper-dark);
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+  }
+  .swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.3);
+    display: inline-block;
+  }
+  .layer-strip {
+    display: flex;
+    margin: 0.9rem 0;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    max-width: 420px;
+  }
+  .layer {
+    flex: 1;
+    height: 46px;
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Volcano Watch Station Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>On the slopes of Mount Etna, in Sicily, a research station keeps watch over the volcano day and night. Two nights ago, the lead volcanologist, Dr. Rossi, vanished — and so did her field notebook. Sensors are picking up strange activity, and a nearby village is waiting to hear whether they need to evacuate.</p>
+  <p>Dr. Rossi's international team, including her Dutch colleague, needs the numbers from that notebook fast. They believe she left a trail of clues behind before she disappeared. You've been called in to follow that trail, mission by mission, and crack the notebook's final lock before it's too late.</p>
+</div>
+
+<!-- MISSION 1 — Easy — Science & Nature + Logical Reasoning (classification) -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Four Rocks on the Windowsill</h2>
+    <div class="puzzle">
+      <p>On Dr. Rossi's desk, you find four labeled rock samples she must have picked up near the crater's rim: <strong>Basalt</strong>, <strong>Andesite</strong>, <strong>Obsidian</strong>, and <strong>Limestone</strong>.</p>
+      <p>A sticky note in her handwriting says: "Three of these formed from cooling lava or magma — true children of the volcano. One of them is a total impostor. It didn't come from a volcano at all!"</p>
+      <p>Search online to find out which rock is NOT formed by volcanic activity.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching how each rock forms. Three of them are described as "igneous" or "volcanic" rock. Look for the one that's described differently.</p></details>
+    <div class="answer-box" data-answer-hash="f632b79">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the rock's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Mount Etna is the most active volcano in all of Europe — it produces new eruptions almost every year, sometimes several in a single month.</p>
+
+<!-- MISSION 2 — Easy — Dutch Language -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Dutch Colleague's Notebook Page</h2>
+    <div class="puzzle">
+      <p>Dr. Rossi's Dutch colleague, Dr. Van der Berg, keeps a station logbook in Dutch. Today you find a torn page where he sorted volcano words into two jars — but one word ended up in the wrong jar!</p>
+      <p><strong>DE-jar (de-woorden):</strong> vulkaan, lava, aardbeving, gesteente</p>
+      <p><strong>HET-jar (het-woorden):</strong> magma, gas</p>
+      <p>In real Dutch, is it "de gesteente" or "het gesteente"? One word above is sitting in the wrong jar. Which word is it? (Type just that one Dutch word, without "de" or "het".)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You can search "de of het [woord]" for any word you're unsure about — a good Dutch dictionary website will tell you.</p></details>
+    <div class="answer-box" data-answer-hash="16c20e9">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the misplaced word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 3 — Medium — Geography & World Knowledge -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Where in the World Is This Volcano?</h2>
+    <div class="puzzle">
+      <p>The station's mailbox is addressed to a specific place, but half the address got smudged by ash. All you can read is: "...Watch Station, Mount Etna, ______."</p>
+      <p>Search online to find out: which island is Mount Etna on? (Type just the name of the island.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This island is famous, shaped a bit like a triangle, and sits just off the "toe" of another country's "boot."</p></details>
+    <div class="answer-box" data-answer-hash="19163b9e">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the island's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Mount Etna is a UNESCO World Heritage Site, and locals often call it "Mongibello" instead of Etna — a nickname built from old Arabic and Latin words that both mean "mountain."</p>
+
+<!-- MISSION 4 — Medium — Mathematics (number pattern) -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Seismometer's Strange Count</h2>
+    <div class="puzzle">
+      <p>The station's seismometer (the machine that counts ground tremors) logged this at the start of the night:</p>
+      <p><strong>1:00 = 2 tremors &nbsp;·&nbsp; 2:00 = 4 tremors &nbsp;·&nbsp; 3:00 = 8 tremors &nbsp;·&nbsp; 4:00 = 16 tremors &nbsp;·&nbsp; 5:00 = 32 tremors</strong></p>
+      <p>If the pattern keeps going exactly the same way, how many tremors will the seismometer log at 6:00?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at what happens to the number each time the hour changes. Is it adding the same amount, or doing something else?</p></details>
+    <div class="answer-box" data-answer-hash="19e8e887">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 — Medium — Cryptography (rock-layer color code) + delayed recall plant -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Rock-Layer Code</h2>
+    <div class="puzzle">
+      <p>Taped inside Dr. Rossi's notebook is a color key she used to label rock layers in a cliff wall near the station, plus a strip showing the actual layers she found, top to bottom.</p>
+    </div>
+    <p><strong>Color key:</strong></p>
+    <div class="swatch-legend">
+      <div class="swatch-item"><span class="swatch" style="background:#1C1C1C;"></span> Black = C</div>
+      <div class="swatch-item"><span class="swatch" style="background:#B0261E;"></span> Red = A</div>
+      <div class="swatch-item"><span class="swatch" style="background:#9A9A9A;"></span> Gray = V</div>
+      <div class="swatch-item"><span class="swatch" style="background:#6B4226;"></span> Brown = E</div>
+      <div class="swatch-item"><span class="swatch" style="background:#E07B1A;"></span> Orange = R</div>
+      <div class="swatch-item"><span class="swatch" style="background:#E8D23C;"></span> Yellow = N</div>
+    </div>
+    <p><strong>The layer strip (top to bottom):</strong></p>
+    <div class="layer-strip" role="img" aria-label="Six colored rock layers, top to bottom: black, red, gray, brown, orange, yellow">
+      <div class="layer" style="background:#1C1C1C;"></div>
+      <div class="layer" style="background:#B0261E;"></div>
+      <div class="layer" style="background:#9A9A9A;"></div>
+      <div class="layer" style="background:#6B4226;"></div>
+      <div class="layer" style="background:#E07B1A;"></div>
+      <div class="layer" style="background:#E8D23C;"></div>
+    </div>
+    <div class="clue-caption">Use the color key to turn each layer into a letter, top to bottom, to spell out one word.</div>
+    <p style="background: var(--paper-dark); padding: 0.7rem 0.9rem; border-radius: 3px; font-size: 0.95rem;"><strong>Agent's note:</strong> tucked next to the color key is a torn corner of paper that just says "Locker 17 — spare oxygen mask." Jot that number down, Agent. You never know when a locker number might matter later in this case.</p>
+    <details class="hint"><summary>Hint 1</summary><p>Match each colored layer to its letter from the key, one at a time, and write the letters down in order.</p></details>
+    <div class="answer-box" data-answer-hash="60f5c450">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 — Hard — Financial Literacy (pen and paper) -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Evacuation-Kit Order</h2>
+    <div class="puzzle">
+      <p>The village near the station needs 15 emergency evacuation kits, just in case. Two suppliers sent price lists. Grab a pencil for this one — it's a multi-step problem.</p>
+      <p><strong>Etna SicurEzza:</strong> €24 per kit. If you order 12 kits or more, you get 20% off the <em>whole</em> order.</p>
+      <p><strong>Vulcano Forniture:</strong> €19 per kit, but they charge a flat €45 delivery fee no matter how many kits you order. No bulk discount.</p>
+      <p>Work out the total cost from each supplier for 15 kits. How many euros would the station save by choosing the cheaper supplier instead of the more expensive one? (Type just the number, no € sign.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out each supplier's total separately first — price per kit, times 15 — then apply the discount or the delivery fee.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>15 kits qualifies for Etna SicurEzza's bulk discount, since it kicks in at 12 or more. Don't forget to take 20% off their total before comparing.</p></details>
+    <div class="answer-box" data-answer-hash="87e38583">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the amount saved...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 — Hard — Logical Reasoning (Intermediate: logic grid) -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Who Was Watching the Crater?</h2>
+    <div class="puzzle">
+      <p>Four scientists — Amara, Bram, Kenji, and Sofia — were each stationed at one of four crater-side spots (North Rim, South Rim, East Slope, West Slope), each carrying one instrument (seismometer, thermal camera, gas sensor, drone).</p>
+      <p>From the station's shift log, you find these four clues:</p>
+      <ol>
+        <li>Bram was not using the seismometer, and he was not at the North Rim.</li>
+        <li>Whoever was using the thermal camera was standing at the East Slope.</li>
+        <li>Kenji was using the gas sensor, and Sofia was at the West Slope.</li>
+        <li>Whoever had the drone was at the North Rim.</li>
+      </ol>
+      <p>Work out who was standing at the North Rim, and which instrument they were carrying. Type your answer as: Name, Instrument</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 3 — it tells you two facts for certain. Then figure out what's left for Amara and Bram.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Since Kenji has the gas sensor, he can't be the thermal-camera person from clue 2, and he can't be the drone person from clue 4 either — so where can Kenji actually be?</p></details>
+    <div class="answer-box" data-answer-hash="6fc1cf">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Name, Instrument">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Pumice, another volcanic rock, has so many trapped air bubbles that it can actually float on water — sometimes for years before it finally soaks through and sinks.</p>
+
+<!-- MISSION 8 — Hard — MULTI-STAGE: History+Math, then Critical Thinking & Media Literacy -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Eruptions, One Viral Post</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Dr. Rossi's notebook mentions two real eruptions of Mount Etna that changed history: one that reached the city of Catania in the 1600s, and one that buried a whole village in the 1920s.</p>
+      <p>Search online to find the exact year of each of these two eruptions. Then calculate: how many years passed between them? Grab a pencil if the subtraction is tricky.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Etna eruption 1669 Catania" and "Etna eruption Mascali village" to find both years.</p></details>
+    <div class="answer-box" data-answer-hash="2edb33db">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type the number of years...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label second">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>A viral post about Etna says: "This volcano is basically asleep — it only erupts once every [the number of years you just calculated] years, so next time will be a total disaster!"</p>
+      <p>Visit the real INGV website (Istituto Nazionale di Geofisica e Vulcanologia — Italy's official volcano-monitoring institute, at ct.ingv.it) or search for how often Etna actually erupts. Is the true, real-life gap between Etna's eruptions <strong>smaller</strong> or <strong>bigger</strong> than the number from the viral post?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "how often does Mount Etna erupt INGV" and compare that real number to the one from Stage 1.</p></details>
+    <div class="answer-box" data-answer-hash="d51613b">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type smaller or bigger...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 9 — Big Aha — Logical Reasoning (Advanced: three-way truth-tellers/liars/sometimes) -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>Who Saw Dr. Rossi Last?</h2>
+    <div class="puzzle">
+      <p>Three rescue-team members were the last people at the station before Dr. Rossi vanished: Officer Bianchi, Officer Colombo, and Officer Russo.</p>
+      <p>Command's records are clear about their reputations: Officer Bianchi has never once given false information in ten years of service — she always tells the truth. Officer Colombo was caught lying about his lunch break yesterday, and colleagues say he lies about absolutely everything. Officer Russo is unpredictable — sometimes he tells the truth, sometimes he doesn't, and there's no way to know which.</p>
+      <p>Here's what each of them said about who saw Dr. Rossi last:</p>
+      <ul>
+        <li><strong>Bianchi:</strong> "I did not see Dr. Rossi last."</li>
+        <li><strong>Colombo:</strong> "Russo saw her last."</li>
+        <li><strong>Russo:</strong> "I saw her last."</li>
+      </ul>
+      <p>Exactly one of the three saw Dr. Rossi last. Who was it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the two officers whose truthfulness you actually know for certain. What does each of their statements really tell you?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Bianchi always tells the truth, so trust her statement completely. Colombo always lies, so the opposite of what he says must be true. You don't need Russo's statement at all — once you've ruled out two people, who's left?</p></details>
+    <div class="answer-box" data-answer-hash="28000f2e">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type the officer's last name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Since around 1500 BC, Etna has had at least 186 recorded eruptions — but in recent decades it has erupted far more often than its long-term average, sometimes many times in a single year.</p>
+
+<!-- GRAND FINALE — Mathematics/geometry + delayed-recall payoff -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Notebook's Last Lock</h2>
+    <div class="puzzle">
+      <p>You've found Dr. Rossi's notebook at last, hidden behind a supply shelf. Its final lock needs a combination made of two numbers.</p>
+      <p>The first number is the total area of the cross-section sketched on the cover — a triangular peak sitting on top of a rectangular base, drawn to scale below. Add the rectangle's area and the triangle's area together to get it, in square meters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 210 170" width="210" height="170" role="img" aria-label="A cross-section drawing: a triangle sitting on top of a rectangle, like a mountain peak above its base">
+      <rect x="30" y="70" width="144" height="60" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="30,70 174,70 102,16" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="102" y1="16" x2="102" y2="70" stroke="#2B2A24" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="102" y="150" text-anchor="middle" font-size="12">24 m</text>
+      <text x="14" y="100" text-anchor="middle" font-size="12" transform="rotate(-90 14 100)">10 m</text>
+      <text x="118" y="42" text-anchor="middle" font-size="12">9 m</text>
+    </svg>
+    <div class="clue-caption">The rectangle is 24 m wide and 10 m tall. The triangle sits on top, sharing the same 24 m width, and rises 9 m above it.</div>
+    <div class="puzzle">
+      <p>The second number is one you were told to remember earlier in this case — a number worth jotting down, back when you weren't even sure why.</p>
+      <p>Type the combination as AREA-NUMBER, with a dash and no spaces (for example, if the area were 100 and the number were 5, you'd type 100-5).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Split the shape into two simple pieces: a rectangle and a triangle. Find each area separately, then add them.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Rectangle area = width × height. Triangle area = (base × height) ÷ 2. The triangle's base is the same as the rectangle's width.</p></details>
+    <div class="answer-box" data-answer-hash="e9a5fe5d">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type the combination...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The lock clicks open. Inside, Dr. Rossi's final page reads: she climbed down to double-check one last sensor herself, lost track of time, and waited out a shaky night in a safe cavern until rescue arrived. The team never stopped watching, never stopped checking, and never gave up on the numbers — and that's exactly what cracked the case. The value stamped across this file is <strong>PERSEVERANCE</strong>.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Drone Pilot's Missing Footage — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #7A6B33;
+    --accent-dark: #544A22;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle code {
+    display: block;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.6rem 0.8rem;
+    margin: 0.5rem 0;
+    font-family: 'Atkinson Hyperlegible', monospace;
+    font-size: 0.95rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .notebook {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook .eyebrow { display: block; margin-bottom: 0.3rem; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.2rem 0 0.6rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Drone Pilot's Missing Footage</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-95 minutes</div>
+</div>
+
+<div class="intro">
+  <p>At Chitwan National Park in Nepal, a team of wildlife rangers flies a small survey drone named Sky-Eye to watch over one of the world's rarest animals. Two mornings ago, Sky-Eye's camera locked onto something extraordinary near the Rapti River — and minutes later, its memory card and paper flight log both vanished from the ranger station. The chief ranger needs a sharp young detective to retrace Sky-Eye's last flight before the trail, and the animal's exact location, is lost for good. That detective is you.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sky-Eye's Silent Signal</h2>
+    <div class="puzzle">
+      <p>Before you can retrace anything, you need to understand how Sky-Eye even knows where it is in the sky. Every survey drone carries a GPS receiver, which listens to signals from satellites far above Earth.</p>
+      <p>Search online to find out: at the very minimum, how many GPS satellites does a receiver need to lock onto at the same time to work out a full 3D position — its exact spot on the ground <strong>and</strong> its height above it? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>A flat, 2D fix (just north-south and east-west) needs fewer satellites than a full 3D fix that also includes height. Search for the difference between a "2D fix" and a "3D fix."</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sorting the Ranger Station's Word Cards</h2>
+    <div class="puzzle">
+      <p>While you wait for the chief ranger, you notice six Dutch word cards pinned to a corkboard, each naming something at the drone station: <em>drone</em>, <em>geheugenkaartje</em> (memory card), <em>camera</em>, <em>dier</em> (animal), <em>vleugel</em> (wing), and <em>signaal</em> (signal).</p>
+      <p>Every Dutch noun takes either "de" or "het." Look up the correct lidwoord for each of these six words. How many of the six use "het"? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Diminutives — words ending in "-je" — are always het-words, no matter what the plain word normally takes. That's a free shortcut for one of these six.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? GPS satellites orbit about 20,200 kilometers above Earth and zoom around the planet twice a day — one full loop every 11 hours and 58 minutes.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Whose Eyes Did Sky-Eye Catch?</h2>
+    <div class="puzzle">
+      <p>Sky-Eye's very last clip shows a large animal standing in tall grass near the river, just before the signal cut out. The chief ranger's notes list three true facts about it:</p>
+      <p>1. It has only <strong>one</strong> horn on its nose — unlike some other rhino species, which have two.<br>
+      2. Its thick grey skin has deep folds, making it look like it's wearing armor plates.<br>
+      3. It's a plant-eater, and a full-grown male can weigh over 2,000 kilograms — nearly as heavy as an Asian elephant.</p>
+      <p>Four animals live in Chitwan National Park: the Bengal tiger, the Asian elephant, the gharial (a river crocodile), and the greater one-horned rhinoceros. Which one matches all three facts? Type its short, one-word nickname.</p>
+    </div>
+    <div class="notebook">
+      <span class="eyebrow">Agent's notebook</span>
+      Zooming in on the clip, you spot a battered metal collar around the animal's neck. Stamped on it: <strong>GPS COLLAR #418</strong>. Jot this down, Agent — a good detective never knows which detail will matter later.
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Cross off any animal that doesn't match fact 1 first — that alone rules out two of the four right away.</p></details>
+    <div class="answer-box" data-answer-hash="545ff999">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A rhino's horn isn't made of bone at all — it's built from keratin, the very same protein that makes up your own hair and fingernails.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Battery's Last Words</h2>
+    <div class="puzzle">
+      <p>Right before it lost signal, Sky-Eye's onboard computer logged one final status word — in binary. Each block of 8 digits (called a "byte") stands for one letter, using the standard code computers use for text. Here's a decoder key for the letters you'll need:</p>
+      <code>A = 01000001
+E = 01000101
+L = 01001100
+O = 01001111
+S = 01010011
+T = 01010100
+W = 01010111</code>
+      <p>Now decode Sky-Eye's final message:</p>
+      <code>01001100  01001111  01010111</code>
+      <p>What was the drone's last battery status? Type the word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Match each 8-digit block to the exact same 8 digits in the key above, one block at a time — there's no shortcut, just careful matching.</p></details>
+    <div class="answer-box" data-answer-hash="4f516a81">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Retracing the Flight Path</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. According to the launch log, Sky-Eye flew at a steady 42 kilometers per hour along the Rapti River for exactly 25 minutes before its signal disappeared.</p>
+      <p>How many kilometers did it travel in that time? Type just the number (decimals are fine, like 12.5).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First turn 25 minutes into a fraction of an hour (there are 60 minutes in an hour). Then multiply that fraction by the speed.</p></details>
+    <div class="answer-box" data-answer-hash="320db2e8">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Pinpointing the Last Known Signal</h2>
+    <div class="puzzle">
+      <p>The ranger station's radio log recorded the last coordinates Sky-Eye pinged before it dropped off the map: <strong>27.5747&deg; N, 84.4936&deg; E</strong>.</p>
+      <p>Type those numbers into Google Maps (or a similar real map site). What is the name of the village you land in — the main gateway town where jungle safaris into Chitwan National Park begin? Type just that village's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This village sits right on the Rapti River, on the eastern edge of the national park.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's the same town most tourism websites about Chitwan mention first, as the starting point for elephant-back and jeep safaris.</p></details>
+    <div class="answer-box" data-answer-hash="7f0ee66">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The very first drones used to help protect rhinos from poachers in Nepal were tested right here in Chitwan National Park, back in June 2012.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>A Suspicious Message in the Inbox</h2>
+    <div class="puzzle">
+      <p>While you're at it, the head ranger shows you an email that landed in the drone team's inbox this morning:</p>
+      <code>From: chitwan-support@techsupp0rt-nepal.net
+Subject: URGENT: Your Sky-Eye Drone Account Will Be Deleted in 1 Hour!
+
+Dear Ranger, we detected unusual activity on your
+Sky-Eye Drone Portal account. To avoid permanent
+deletion of your flight logs, reply with your username
+and password within 60 minutes, or click here to
+verify now.</code>
+      <p>Look closely at the sender's email address. One word in it has had a letter secretly swapped for a number, hoping nobody would notice. Type just that one word, exactly as it's written (letters and the number together, no spaces).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Real companies don't usually spell their own name with a number standing in for a letter. Read the part of the address right before "-nepal.net," one character at a time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The word is meant to look like a common English word about helping customers — but a zero has taken the place of one letter.</p></details>
+    <div class="answer-box" data-answer-hash="3ba4505">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Pilots, One Missing Flight</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Four rangers took turns piloting drones that morning: Anjali, Bikash, Chandra, and Deepak. Each flew a different drone — Falcon, Heron, Kite, or Osprey — and each launched at a different time: 06:00, 07:15, 08:30, or 09:45. Use these four clues to work out who flew what, and when:</p>
+      <p>1. Anjali flew the Falcon, and took off first, before all the other pilots.<br>
+      2. Bikash took off last of all four pilots — right after Deepak.<br>
+      3. Chandra did not fly the Heron, and took off before Deepak.<br>
+      4. The Osprey lifted off exactly one time-slot after the Kite, and neither of those two drones was flown by Bikash.</p>
+      <p>Every pilot's ID badge has a number: Anjali = 14, Bikash = 53, Chandra = 28, Deepak = 39. The Heron was the drone that recorded Sky-Eye's final clip. What is the badge number of the pilot who flew the Heron? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clues 1 and 2 — together they pin down every pilot's exact take-off time, with no guessing needed.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know all four times, clue 4 tells you which two drones flew in neighboring time-slots. Only one arrangement of the remaining drones fits every time slot without breaking clue 2.</p></details>
+    <div class="answer-box" data-answer-hash="86e14559">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 (final)</p>
+    <div class="puzzle">
+      <p>The memory card wasn't in anyone's pocket — it was locked inside one of 100 numbered supply lockers at the ranger station. A note taped to the cabinet explains how to find the right one: take the badge number you just found, subtract 19, then multiply what's left by 2.</p>
+      <p>Which locker number holds the memory card? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Do the subtraction first, then the multiplication — the order matters here.</p></details>
+    <div class="answer-box" data-answer-hash="de8d5a3">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Cracking the Autopilot's Rulebook</h2>
+    <div class="puzzle">
+      <p>Inside the locker, next to the memory card, you find a torn page from Sky-Eye's autopilot manual. It explains that every automatic flight-path code is exactly 3 direction symbols long, chosen from N (North), S (South), E (East), and W (West). Three rules apply to every single code:</p>
+      <p>1. The FIRST symbol must be N or E — Sky-Eye always launches away from the ranger station, never south or west.<br>
+      2. No direction can repeat immediately — the same letter can never appear twice in a row.<br>
+      3. The LAST symbol can never be W — that would send the drone straight back over the river at the very end, which is against the rules.</p>
+      <p>How many different valid 3-symbol flight-path codes are possible, following all three rules at once? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>List every code starting with N in an organized way, then do the same for every code starting with E. Two separate lists are easier to check than one big jumble.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>For a code starting with N, there are 3 legal choices for the middle symbol. But the number of legal endings isn't the same for every one of those choices — check each branch on its own instead of assuming they match.</p></details>
+    <div class="answer-box" data-answer-hash="17eb23f8">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Flight Log's Final Hiding Place</h2>
+    <div class="puzzle">
+      <p>The memory card is safe — but Sky-Eye's paper flight log, with the coordinates of every rhino sighting that season, is still missing. One last note, tucked inside the locker, reads:</p>
+      <p><em>"Add the locker number to the last two digits of the number stamped on the animal you found. That total is the shelf where I stashed the log for safekeeping."</em></p>
+      <p>Add those two numbers together. Which shelf number holds the flight log? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You already worked out the locker number in an earlier mission. The other number is still sitting in your notebook from a few missions back — nobody restated it for you on purpose.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>From that earlier number, you only need its last two digits, not the whole thing.</p></details>
+    <div class="answer-box" data-answer-hash="8c01a0e3">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Shelf found, log recovered — every rhino sighting that season is safe again, all because you kept following the trail even when the signal went quiet. The value that cracked this case is <strong>discovery</strong>: the thrill of finding what everyone else thought was lost for good.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
