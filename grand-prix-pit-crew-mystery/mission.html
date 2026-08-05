@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Grand Prix Pit Crew Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C1272D;
+    --accent-dark: #8C1D1F;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .radio-log {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .radio-log .eyebrow { display: block; margin-bottom: 0.3rem; }
+  .part-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.2rem 0 0.6rem; }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.8rem 0;
+    font-size: 0.92rem;
+  }
+  .data-table th, .data-table td {
+    border: 1px solid rgba(0,0,0,0.18);
+    padding: 0.35rem 0.6rem;
+    text-align: center;
+  }
+  .data-table th { background: var(--paper-dark); }
+  .key-table th, .key-table td { text-align: left; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Grand Prix Pit Crew Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-95 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Vesper Motorsport is one hour from qualifying, and the strategist's notebook — every lap time, every tire plan, every pit-stop code — has vanished from the garage. Worse, today's flag signals and radio calls have gotten tangled together, and nobody can tell which message belongs to which car.</p>
+  <p>The Chief Mechanic has called in the Internet Detective Academy. Rebuild the strategy, untangle the signals, and get the right car back on track before the five-minute warning light comes on.</p>
+</div>
+
+<!-- MISSION 01 - Easy - Foundational Logical Reasoning (sequencing) + Dutch language -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Pit Stop Choreography</h2>
+    <div class="puzzle">
+      <p>Before anything else, the crew chief wants to know you understand how a real pit stop works. A mechanic scribbled the five steps on a whiteboard, but knocked them out of order.</p>
+    </div>
+
+    <p class="part-label">Part A</p>
+    <div class="puzzle">
+      <p>Here are the five steps, each given a letter, all mixed up:</p>
+      <p><strong>W</strong> — Wheel nuts are loosened, old tires come off, new tires go on and are tightened.<br>
+      <strong>X</strong> — The light or "lollipop" signal shows go, and the car accelerates away.<br>
+      <strong>Y</strong> — The car enters the pit lane and slows to the pit lane speed limit.<br>
+      <strong>Z</strong> — Front and rear jacks lift the car off the ground.<br>
+      <strong>V</strong> — The car is lowered back down off the jacks.</p>
+      <p>Type the five letters in the correct order, with no spaces (for example, "ABCDE").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about what has to be true before the next step can happen — the car can't be lowered before it's even been lifted, and it can't be lifted before it has even arrived.</p></details>
+    <div class="answer-box" data-answer-hash="d9fa8741">
+      <label for="m1a-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1a-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="part-label">Part B</p>
+    <div class="puzzle">
+      <p>Chalked on the pit wall in Dutch is today's word of the day: <strong><em>circuit</em></strong> (the racetrack itself). Is it "<strong>de circuit</strong>" or "<strong>het circuit</strong>"?</p>
+      <p>Type the correct lidwoord (article) together with the word, like "de circuit" or "het circuit".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Most Dutch words borrowed from other languages that end in "-uit" or describe a place or system often take "het," but not always — this one's worth double-checking in a Dutch dictionary.</p></details>
+    <div class="answer-box" data-answer-hash="9e2642bd">
+      <label for="m1b-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1b-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 02 - Easy - History / Internet research + delayed-recall PLANT -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Notebook's Watermark</h2>
+    <div class="puzzle">
+      <p>A torn cover page turns up in a toolbox — maybe part of the missing notebook. It's printed with the logo of the circuit that hosted a very famous "first": the very first World Championship Formula 1 race, held at a British airfield turned racetrack.</p>
+      <p>Search to find out: in what year did the Silverstone Circuit open, on the site of a former World War II bomber airfield?</p>
+      <p>Type the year as a four-digit number.</p>
+    </div>
+    <div class="radio-log">
+      <span class="eyebrow">Team Radio Log</span>
+      While you search, the pit wall radio crackles: <em>"Copy that — box this lap, garage 6."</em> Worth remembering: which garage number the crew just called out.
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for "Silverstone Circuit history" and look for a reputable source like Wikipedia — the year it opened is usually in the first paragraph.</p></details>
+    <div class="answer-box" data-answer-hash="99511f4b">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The first-ever Formula 1 World Championship was won in 1950 by Giuseppe Farina, driving for Alfa Romeo — that very first season had only seven races.</p>
+
+<!-- MISSION 03 - Medium - Mathematics: geometry/measurement (self-drawn SVG diagram) -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Pit Lane Blueprint</h2>
+    <div class="puzzle">
+      <p>A hand-drawn sketch of today's pit lane turns up, taped inside a toolbox lid. A car drives down the straight section, then curves along a quarter-circle bend to merge back onto the main straight.</p>
+      <p>The straight section is <strong>60 m</strong> long. The curved bend is a quarter circle with a <strong>radius of 14 m</strong>.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 170" width="300" height="170"
+         role="img" aria-label="A pit lane path: a straight section of 60 meters leading into a quarter-circle curve with a 14 meter radius, merging back onto the main straight">
+      <path d="M 20 130 L 200 130" stroke="#2B2A24" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M 200 130 A 42 42 0 0 1 242 88" stroke="#2B2A24" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M 242 88 L 280 60" stroke="#2B2A24" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="4 4"/>
+      <text x="110" y="150" text-anchor="middle" font-size="13">60 m (straight pit lane)</text>
+      <text x="268" y="70" text-anchor="middle" font-size="13">radius 14 m</text>
+      <text x="20" y="118" font-size="11">Pit Entry</text>
+      <text x="205" y="105" font-size="11">Pit Exit</text>
+    </svg>
+    <div class="clue-caption">Find the total distance a car drives, from pit entry to pit exit, along the straight plus the curve. Use π ≈ 22/7.</div>
+    <p class="puzzle">Type the total distance in meters (just the number).</p>
+    <details class="hint"><summary>Hint 1</summary><p>The length of a full circle's edge (its circumference) is 2 × π × radius. A quarter circle is exactly one quarter of that.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>First find the length of just the curved quarter, then add it to the 60 m straight section.</p></details>
+    <div class="answer-box" data-answer-hash="9001a72f">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 04 - Medium - Technology (pit-stop tech, verified) + internet research -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Whispers on the Radio</h2>
+    <div class="puzzle">
+      <p>Right now, hidden sensors inside the car are streaming live data — tire temperature, brake heat, fuel level — back to the pit wall over radio waves, faster than anyone could shout it. Engineers call this <strong>telemetry</strong>.</p>
+      <p>But one older piece of pit-stop technology is what you need to find. Before the 1970s, mechanics loosened a car's single wheel nut by swinging a heavy hammer, and a pit stop could take over 40 seconds. Then a new pneumatic (compressed-air-powered) tool started replacing the hammer, and pit stops got dramatically faster.</p>
+      <p>Search to find: what two-word tool name (it's still used in every F1 pit stop today) does this tool go by?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for "F1 pit stop wheel tool history" or "how do F1 pit crews change tires so fast."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The tool is named after what it does (spins a wheel nut loose) and how it works (with a sudden burst of force, like a small firearm).</p></details>
+    <div class="answer-box" data-answer-hash="d2335cee">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 05 - Medium - Navigation/spatial reasoning using a real circuit's layout + internet research -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Hairpin's Old Name</h2>
+    <div class="puzzle">
+      <p>The Circuit de Monaco has hosted a Grand Prix since 1929, winding through the streets of Monte Carlo. It has one corner so tight and so slow that drivers brake down to a walking-pace crawl — by far the slowest corner in the whole Formula 1 calendar.</p>
+      <p>That corner has been renamed several times over the decades, after whichever hotel stood beside it. But it has one original name from long before any hotel was ever built there — back when a real train station stood on that exact spot.</p>
+      <p>Search to find: what was this hairpin corner ORIGINALLY called, named after the train station that used to be right there?</p>
+      <p>Type the two-word name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for "Monaco Grand Prix corner names history" and look for a reputable motorsport history source.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The name has nothing to do with racing at all — it's named after a building that used to sit right beside the track.</p></details>
+    <div class="answer-box" data-answer-hash="97d9ddcc">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Scuderia Ferrari was founded on 16 November 1929 in Modena, Italy — eighteen years before Ferrari built its very first car in 1947.</p>
+
+<!-- MISSION 06 - Hard - Logical Reasoning: Intermediate tier (logic grid) -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Cars, Four Tires</h2>
+    <div class="puzzle">
+      <p>Four drivers — Voss, Marchetti, Okafor, and Lindqvist — finished a practice session 1st, 2nd, 3rd, and 4th. Each one used a different tire compound: Soft, Medium, Hard, or Wet. Use these clues to work out the full picture:</p>
+      <ol>
+        <li>Marchetti finished 1st.</li>
+        <li>The driver on Hard tires finished immediately after Marchetti.</li>
+        <li>Voss did not use Soft or Hard tires, and did not finish 2nd or 3rd.</li>
+        <li>Lindqvist used Medium tires, and finished ahead of Voss (a lower position number).</li>
+        <li>The driver on Wet tires finished last.</li>
+      </ol>
+      <p>Which tire compound did Marchetti use?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 3 — it rules out three positions for Voss at once, leaving only one place Voss could possibly be.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Voss's position, clue 5 tells you Voss's tire. Then clue 2 tells you who's 2nd, and clue 4 tells you Lindqvist's tire and rules out where Lindqvist can't be. Marchetti's tire is whatever's left over.</p></details>
+    <div class="answer-box" data-answer-hash="f449c4b5">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 07 - Hard - Critical Thinking & Media Literacy + delayed-recall PAYOFF -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Mechanics, One Story</h2>
+    <div class="puzzle">
+      <p>A spare gearbox has gone missing from its shelf, and two mechanics tell you two different stories about where it came from.</p>
+      <p><strong>Mechanic Petrov</strong> says: "It came from garage 6 — I'm sure, because that's what I heard called out over the radio earlier today."</p>
+      <p><strong>Mechanic Alvarez</strong> says: "No, it was garage 9 — I just checked the shelf label myself, five minutes ago."</p>
+      <p>Only one of them can be right. Using what you already know, which mechanic is correct?</p>
+      <p>Type the mechanic's last name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Neither claim comes with proof you can check right now — but one of these garage numbers should already sound familiar from earlier today.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Scroll back through today's case file. A radio call earlier mentioned a specific garage number.</p></details>
+    <div class="answer-box" data-answer-hash="389304e5">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Nürburgring opened on 18 June 1927. Its Nordschleife loop was so long and twisty that champion driver Jackie Stewart nicknamed it "The Green Hell" after racing there in dense fog and rain in 1968.</p>
+
+<!-- MISSION 08 - Hard - MULTI-STAGE: Mathematics (percentages, pen-and-paper) then Cryptography (real flag-code decode) -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Fuel, Flags, and a Hidden Number</h2>
+
+    <p class="part-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. The car's fuel tank holds exactly 100 liters at the start of the day.</p>
+      <ul>
+        <li>During Q1, the car used 18% of the tank.</li>
+        <li>During Q2, it used another 24% of the tank.</li>
+        <li>During Q3, it used another 21% of the tank.</li>
+      </ul>
+      <p>How many liters are left in the tank after Q3? (Each percentage is of the original full 100-liter tank.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add up all three percentages used first, then subtract that total from 100.</p></details>
+    <div class="answer-box" data-answer-hash="8af0562f">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="part-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>That leftover-liters number looks familiar. Flip back through today's radio log — it's also a car number, and only that car's flags matter for this next part.</p>
+      <p>Here is the pit board's flag key for today:</p>
+      <table class="data-table key-table">
+        <tr><th>Flag</th><th>Real meaning</th><th>Code word</th></tr>
+        <tr><td>🟡 Yellow</td><td>Caution — danger ahead, slow down</td><td>caution</td></tr>
+        <tr><td>🔵 Blue</td><td>A faster car is coming to overtake you — move aside</td><td>overtake</td></tr>
+        <tr><td>⚪ White</td><td>A slow-moving vehicle is on the track ahead</td><td>hazard</td></tr>
+        <tr><td>⚫ Black</td><td>Disqualified — return to the pits immediately</td><td>pits</td></tr>
+        <tr><td>🔴 Red</td><td>The session has been stopped</td><td>stop</td></tr>
+        <tr><td>🟢 Green</td><td>Track is clear — go</td><td>clear</td></tr>
+        <tr><td>🏁 Checkered</td><td>The race has finished</td><td>finish</td></tr>
+      </table>
+      <p>And here is today's full flag log, for every car:</p>
+      <table class="data-table">
+        <tr><th>Lap</th><th>Car #</th><th>Flag shown</th></tr>
+        <tr><td>12</td><td>44</td><td>🟡 Yellow</td></tr>
+        <tr><td>13</td><td>37</td><td>🔵 Blue</td></tr>
+        <tr><td>14</td><td>12</td><td>⚪ White</td></tr>
+        <tr><td>15</td><td>37</td><td>🟡 Yellow</td></tr>
+        <tr><td>16</td><td>9</td><td>⚫ Black</td></tr>
+        <tr><td>17</td><td>37</td><td>⚫ Black</td></tr>
+        <tr><td>18</td><td>3</td><td>🏁 Checkered</td></tr>
+        <tr><td>19</td><td>37</td><td>🏁 Checkered</td></tr>
+      </table>
+      <p>Using your Stage 1 answer as the car number, find only that car's rows, in lap order, and decode each flag into its code word. Type the code words in order, separated by single spaces.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Ignore every row whose car number doesn't match your Stage 1 answer.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>There should be exactly four matching rows. Read them top to bottom (lowest lap number first) and translate each flag with the key.</p></details>
+    <div class="answer-box" data-answer-hash="79dd285c">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 09 - Big Aha - Logical Reasoning: Advanced tier (working backward) -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Widening Gap</h2>
+    <div class="puzzle">
+      <p>At the checkered flag, Car 7 finished 14.6 seconds behind Car 3.</p>
+      <p>On the very last lap, Car 3 made a small mistake, and Car 7 clawed back 3.2 seconds — that's what set the final 14.6-second gap.</p>
+      <p>Before that last lap, the gap had been climbing steadily: it grew by exactly 2.5 seconds on each of the five laps just before the final lap.</p>
+      <p>What was the gap between the two cars at the exact moment those five climbing laps began?</p>
+      <p>Type the number of seconds (for example, "12.5").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work backward from the finish. First undo the last lap's change to find the gap right before the final lap started.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you have the gap right before the final lap, undo all five laps of steady climbing, 2.5 seconds at a time, to find where the climb began.</p></details>
+    <div class="answer-box" data-answer-hash="bee32bcb">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE - Financial Literacy + reward reveal -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Final Call</h2>
+
+    <p class="part-label">Part A</p>
+    <div class="puzzle">
+      <p>The strategy is rebuilt and the signals are clear — but there's one last decision. Vesper Motorsport needs to pay for a last-minute upgrade, and two sponsors have made offers. The team wants to spend the least money possible.</p>
+      <ul>
+        <li><strong>Ignition Energy Drinks</strong> offers a flat €12,000, no matter what.</li>
+        <li><strong>Apex Watches</strong> offers €7,000 flat, plus €50 for every lap the car completes in today's race. Today's race is 60 laps, and the car is expected to finish all of them.</li>
+      </ul>
+      <p>Work out the total cost of each offer. Which sponsor is the better deal?</p>
+      <p>Type the sponsor's name (one word).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>For Apex Watches, multiply the per-lap fee by the number of laps first, then add the flat fee.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Compare the two total costs directly — the lower total is the better deal.</p></details>
+    <div class="answer-box" data-answer-hash="c6cd0dc1">
+      <label for="m10a-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m10a-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="part-label">Part B</p>
+    <div class="puzzle">
+      <p>The strategist crunched the numbers. The mechanics fixed every sensor. The driver trusted every signal from the pit wall, lap after lap. None of it would have worked alone.</p>
+      <p>Type the one word for what really won the race today.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about what it's called when very different people all pull together toward one shared goal.</p></details>
+    <div class="answer-box" data-answer-hash="b33bad79">
+      <label for="m10b-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m10b-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Car #37 rolls out of the garage right on time, strategy notebook rebuilt page by page. The strategist's math, the mechanics' hands, and the driver's trust all had to work together — the pit crew calls that <strong>teamwork</strong>. Case closed, Detective.</p>
+</div>
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

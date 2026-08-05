@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Deep-Sea Glow Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E7D8C;
+    --accent-dark: #1F5965;
+    --easy: #4C7A52;
+    --medium: #2E7D8C;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .notebook {
+    background: var(--paper-dark);
+    border: 1px dashed rgba(0,0,0,0.3);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.8rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook b { color: var(--accent-dark); }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Deep-Sea Glow Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-95 minutes</div>
+</div>
+
+<div class="intro">
+  <p>You've been called aboard the research submersible <em>Nautilus Wells</em>. Its crew studies creatures that glow in the deep, dark ocean. But something is wrong: their light-signal logs — records of every flash and glow the sub's cameras catch — have strange gaps in them, as if something keeps interrupting the recordings.</p>
+  <p>The crew needs a sharp-eyed detective to study the data, decode the signals, and figure out what's really happening down in the dark. Solve every case file below, and the final clue will reveal the one quality every great ocean explorer needs most.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Glowing Fishing Rod</h2>
+    <div class="puzzle">
+      <p>The crew shows you footage of an anglerfish. It hunts by dangling a glowing lure in front of its mouth, like a fishing rod with a light on the end. Fish swim up to the light — and straight into its jaws.</p>
+      <p>Search online to find out: what is the special one-word name for the glowing tip at the very end of the anglerfish's lure — the part that actually makes the light?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "anglerfish lure glowing tip name." The light comes from tiny glowing bacteria living inside that one part.</p></details>
+    <div class="answer-box" data-answer-hash="cfe1b10d">
+      <label for="m1-answer">Your answer (one word):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? About 80% of the animals living between 200 and 1,000 meters deep make their own light. Down there, glowing — not sunlight — is the normal way to see and be seen.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Real Glow or Just a Reflection?</h2>
+    <div class="puzzle">
+      <p>Not everything that looks like it's glowing actually makes its own light. Some things just bounce light that's already there — that's called reflecting. Only true bioluminescence means an animal <em>makes</em> its own light, usually with a chemical reaction inside its body.</p>
+      <p>Look at these five things the crew logged tonight:</p>
+      <ol>
+        <li>A vampire squid's arm-tips flashing blue light in the pitch-black water.</li>
+        <li>Moonlight bouncing off the surface of the sea.</li>
+        <li>A comb jelly's rainbow-colored ripples when sunlight hits its rows of tiny swimming combs.</li>
+        <li>An anglerfish's lure glowing on its own in the dark, far below any sunlight.</li>
+        <li>A diver's flashlight beam bouncing off a fish's shiny silver scales.</li>
+      </ol>
+      <p>How many of these five things truly <strong>make their own light</strong> (real bioluminescence), instead of just reflecting light that's already there?</p>
+    </div>
+    <div class="notebook">📓 <b>Dive Log — worth remembering:</b> tonight's readout shows the vampire squid was spotted at <b>712 meters</b> down. Jot that down, Agent — it might matter later.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Ask yourself for each one: would it still glow if every light in the world switched off? Only true light-makers would.</p></details>
+    <div class="answer-box" data-answer-hash="370cabd5">
+      <label for="m2-answer">Your answer (a number):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>How Low Can You Go?</h2>
+    <div class="puzzle">
+      <p>The crew jokes that their sub has only scratched the surface of how deep the ocean really goes. To prove their point, they want you to look up the deepest spot ever measured in any ocean on Earth.</p>
+      <p>Search online for <strong>Challenger Deep</strong>, the deepest known point in the Mariana Trench. Find its depth in meters, then round it to the nearest whole <strong>kilometer</strong>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Challenger Deep depth meters." Most reliable sources agree on a number just under 11,000 meters. Remember: 1 kilometer = 1,000 meters.</p></details>
+    <div class="answer-box" data-answer-hash="1ceb2bd7">
+      <label for="m3-answer">Your answer (kilometers):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Diver's Depth Chart</h2>
+    <div class="puzzle">
+      <p>The crew keeps a chart of the ocean's four main depth zones, from the sunny surface down to the deep, cold bottom. Some numbers on their chart got smudged by seawater. Use the ones that are still readable to work out the missing measurement.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 320 340" width="320" height="340"
+         role="img" aria-label="A stacked diagram of four ocean depth zones: Sunlight zone from 0 to 200 meters, Twilight zone from 200 to 1000 meters, Midnight zone starting at 1000 meters and 3000 meters thick, and Abyssal zone ending at 6000 meters">
+      <rect x="20" y="20" width="90" height="10" fill="#BFE3E8" stroke="#2B2A24" stroke-width="1.5"/>
+      <rect x="20" y="30" width="90" height="40" fill="#6FB6C4" stroke="#2B2A24" stroke-width="1.5"/>
+      <rect x="20" y="70" width="90" height="150" fill="#2E7D8C" stroke="#2B2A24" stroke-width="1.5"/>
+      <rect x="20" y="220" width="90" height="100" fill="#173C46" stroke="#2B2A24" stroke-width="1.5"/>
+
+      <line x1="110" y1="20" x2="130" y2="20" stroke="#2B2A24" stroke-width="1"/>
+      <text x="134" y="24" font-size="11">0 m — surface</text>
+
+      <line x1="110" y1="30" x2="130" y2="30" stroke="#2B2A24" stroke-width="1"/>
+      <text x="134" y="34" font-size="11">200 m</text>
+
+      <line x1="110" y1="70" x2="130" y2="70" stroke="#2B2A24" stroke-width="1"/>
+      <text x="134" y="74" font-size="11">1,000 m</text>
+
+      <line x1="110" y1="320" x2="130" y2="320" stroke="#2B2A24" stroke-width="1"/>
+      <text x="134" y="324" font-size="11">6,000 m — bottom</text>
+
+      <text x="65" y="17" text-anchor="middle" font-size="10">Sunlight zone</text>
+      <text x="230" y="52" text-anchor="middle" font-size="11" font-weight="700">Twilight zone</text>
+      <text x="230" y="147" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Midnight zone</text>
+      <text x="230" y="200" text-anchor="middle" font-size="10" fill="#fff">(3,000 m thick)</text>
+      <text x="230" y="272" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Abyssal zone</text>
+    </svg>
+    <div class="clue-caption">Use the depths marked on the left and the Midnight zone's thickness to find how thick the Abyssal zone is.</div>
+    <details class="hint"><summary>Hint 1</summary><p>The Midnight zone starts at 1,000 m and is 3,000 m thick — so where does it end? The Abyssal zone runs from there down to 6,000 m.</p></details>
+    <div class="answer-box" data-answer-hash="d22ea097">
+      <label for="m4-answer">Your answer (meters):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? More than 80% of Earth's ocean has never been mapped, observed, or explored by humans. There's a whole world of glowing creatures we haven't even met yet.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Crew's Dutch Notebook</h2>
+    <div class="puzzle">
+      <p>One of the sub's crew members keeps her dive notes in Dutch. Tonight she wrote:</p>
+      <p style="font-style: italic;">"___ licht van de inktvis was blauw-groen."<br>(In English: "The squid's light was blue-green.")</p>
+      <p>Which word belongs in the blank — <strong>"De"</strong> or <strong>"Het"</strong>?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think of another Dutch word for something you can't touch, like weather: "het weer." "Licht" follows the same pattern.</p></details>
+    <div class="answer-box" data-answer-hash="f2b48a66">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="De or Het?">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Whose Report Can You Trust?</h2>
+    <div class="puzzle">
+      <p>For one second, a glowing creature drifted past the porthole. Two crew members saw it — but they don't agree on what it was.</p>
+      <p><strong>Mia says:</strong> "It had a long glowing lure, like a fishing rod. It must have been the anglerfish!"</p>
+      <p><strong>Sam says:</strong> "It had eight long arms, all webbed together. It must have been the vampire squid!"</p>
+      <p>The sub's camera caught one clear detail: the creature had <strong>arms</strong>, not fins.</p>
+      <p>On this crew, one person always reports exactly what they saw. The other one guesses, and guessed wrong tonight. Which creature did the crew actually see?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>An anglerfish is a fish. Think about what body parts a fish has — and doesn't have.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Whichever crew member named the creature that matches the camera's "arms" detail is the one telling the truth.</p></details>
+    <div class="answer-box" data-answer-hash="d6bc114b">
+      <label for="m6-answer">Your answer (creature name):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Eyes in the Dark</h2>
+    <div class="puzzle">
+      <p>No sunlight reaches the Midnight zone, so how does a submersible "see" anything at all down there? Crews use sonar — sound waves that bounce off objects and echo back, letting the sub build a picture of what's around it, even in total darkness.</p>
+      <p>Search online for the famous real research submersible <strong>Alvin</strong>, built and run by the Woods Hole Oceanographic Institution (WHOI). What is the maximum depth, in meters, that Alvin is rated to dive to?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Alvin submersible depth rating meters WHOI." The WHOI website states the exact number.</p></details>
+    <div class="answer-box" data-answer-hash="4b0859f4">
+      <label for="m7-answer">Your answer (meters):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Almost no deep-sea creature can see red light — it disappears within the first few meters of water. But one fish, the dragonfish, can make <em>and</em> see red light, using it like a secret flashlight its prey can't detect.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Racing the Clock to the Surface</h2>
+    <div class="puzzle">
+      <p>The sub must be back at the dock by <strong>17:45</strong> today. Work backward from that time to find out when the ascent must begin.</p>
+      <p>Every ascent follows these fixed steps, in order:</p>
+      <ul>
+        <li>Walk from the sub to the dock building: 10 minutes</li>
+        <li>Surface procedures once the sub is topside: 15 minutes</li>
+        <li>Ascent from the safety-stop depth to the surface: 20 minutes</li>
+        <li>Safety-stop pause: 30 minutes</li>
+        <li>Ascent time up to the safety-stop, which depends on which zone the sub starts from tonight:
+          <br>Twilight zone: 25 minutes &middot; Midnight zone: 55 minutes &middot; Abyssal zone: 80 minutes</li>
+      </ul>
+      <p>Tonight's ascent starts from whichever zone the vampire squid sighting depth falls into — grab a pencil and work backward from 17:45 through every step above to find the exact clock time (24-hour format, like 16:05) the pilot must begin the ascent.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start at 17:45 and subtract each listed step one at a time, working backward toward the start of the dive.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Before you can pick the right ascent-time number, you'll need to know which zone matches the depth from your earlier notes — check the depth chart from Mission 04.</p></details>
+    <div class="answer-box" data-answer-hash="93731173">
+      <label for="m8-answer">Your answer (24-hour time):</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="e.g. 16:05">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Signal Behind the Gaps</h2>
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:0 0 0.6rem;">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Water pressure builds up fast the deeper you go: for every 10 meters down, the pressure grows by 1 more atmosphere (atm) — on top of the 1 atm already pressing down at the surface.</p>
+      <p>Tonight's dive log recorded five readings. Work out the pressure, in atm, for each one using the rule <strong>pressure = 1 + (depth ÷ 10)</strong>, then find the <strong>average</strong> pressure across all five dives.</p>
+      <table style="border-collapse: collapse; margin: 0.6rem 0;">
+        <tr><th style="text-align:left; padding-right:1.2rem; border-bottom:1px solid rgba(0,0,0,0.2);">Dive</th><th style="text-align:left; border-bottom:1px solid rgba(0,0,0,0.2);">Depth (m)</th></tr>
+        <tr><td style="padding-right:1.2rem;">Dive 1</td><td>20</td></tr>
+        <tr><td style="padding-right:1.2rem;">Dive 2</td><td>60</td></tr>
+        <tr><td style="padding-right:1.2rem;">Dive 3</td><td>80</td></tr>
+        <tr><td style="padding-right:1.2rem;">Dive 4</td><td>100</td></tr>
+        <tr><td style="padding-right:1.2rem;">Dive 5</td><td>140</td></tr>
+      </table>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out each dive's pressure one at a time, add all five together, then divide the total by 5.</p></details>
+    <div class="answer-box" data-answer-hash="3c0cb3b4">
+      <label for="m9-stage1">Your answer (average pressure in atm):</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.55); margin:1.3rem 0 0.6rem;">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>The gaps in the light-signal log finally make sense — something was crawling right in front of the sensor. Count the average pressure number you just found as a letter's position in the alphabet (A=1, B=2, C=3...). That letter is the FIRST letter of the culprit's name.</p>
+      <p>Decode the rest of the name using this light-flash (Morse code) signal, one group of dots and dashes per letter:</p>
+      <p style="font-family: monospace; font-size: 1.2rem; letter-spacing: 0.15em;">... &nbsp; --- &nbsp; .--. &nbsp; --- &nbsp; -..</p>
+      <p>Put your alphabet letter in front of the decoded letters to reveal the culprit's full name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Use a Morse code chart. Each group separated by a space is one letter — decode them in order.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Counting A=1, B=2, C=3... which letter sits at your Stage 1 number?</p></details>
+    <div class="answer-box" data-answer-hash="889aaf51">
+      <label for="m9-stage2">Your final answer (creature name):</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Truth About the Kraken</h2>
+    <div class="puzzle">
+      <p>Case closed on the signal gaps — but now the dock crew is buzzing with rumors. One sailor swears giant squid can grow up to 60 feet (18 meters) long, a real-life "Kraken." Another crew member says that number is wildly exaggerated.</p>
+      <p>Search for what a trustworthy, science-based source — like the Smithsonian — actually confirms: what is the longest giant squid <strong>ever measured and recorded</strong>, in feet?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Smithsonian giant squid longest recorded length feet" — trustworthy sources report a real measured number, not an internet legend.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The "60 feet" myth mixes up the giant squid's very long feeding tentacles with wild exaggeration. The true record is smaller.</p></details>
+    <div class="answer-box" data-answer-hash="86e383f0">
+      <label for="finale-answer">Your answer (feet):</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>You never just believed the rumor — you checked it against a real source before deciding what was true. That habit has a name: <strong>curiosity</strong>. It's what turned you from a passenger on this sub into a real deep-sea detective. Case file closed.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
