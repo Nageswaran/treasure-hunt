@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Silent Sensor of Baron 1898 — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E6B8A;
+    --accent-dark: #1F4D63;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .key-table {
+    width: 100%;
+    max-width: 420px;
+    margin: 0.9rem auto;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  .key-table th, .key-table td {
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 0.35rem 0.6rem;
+    text-align: center;
+  }
+  .key-table th { background: var(--paper-dark); }
+  .pencil-note {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    margin-bottom: 0.4rem;
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.1rem 0 0.5rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Silent Sensor of Baron 1898</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 80-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Tomorrow, Efteling reopens its real roller coaster <strong>Baron 1898</strong> after routine maintenance — but tonight, the safety sensor line along the track has gone completely silent. You've been called in as a Junior Ride-Safety Apprentice to work through the maintenance logs before the morning test-run. Solve all ten logs, and you'll uncover the quality that turned this stressful night into the engineering team's finest work.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Control Panel Light</h2>
+    <div class="puzzle">
+      <p>Before every safe launch, the control panel's warning light blinks a countdown pattern: 2, 4, 8, 16, __. What number comes next?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at what's happening between each number and the next one — it's the same operation every time.</p></details>
+    <div class="answer-box" data-answer-hash="85f04e50">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Efteling opened in 1952 in Kaatsheuvel, Netherlands — making it Europe's oldest theme park, opening three full years before Disneyland.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Bram's Dutch Maintenance Note</h2>
+    <div class="puzzle">
+      <p>Head engineer Bram left a note in Dutch: "Controleer ___ trein voor vertrek" (Check the train before departure). Is it <strong>"de trein"</strong> or <strong>"het trein"</strong> in Dutch? Type just the correct little word: de or het.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search a Dutch dictionary or translator for "trein" and check which little word comes before it.</p></details>
+    <div class="answer-box" data-answer-hash="5c1ccea2">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="de or het">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Measuring the Loop</h2>
+    <div class="puzzle">
+      <p>One of the track's loop-shaped inversions is drawn on the blueprint below as a near-perfect circle. Using the diameter marked on the diagram, calculate the loop's circumference in meters, rounded to the nearest whole number. Use &pi; &asymp; 3.14.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 200 160" width="200" height="160" role="img" aria-label="A circle representing the loop, with a diameter of 18 meters marked across the middle">
+      <circle cx="100" cy="80" r="60" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="40" y1="80" x2="160" y2="80" stroke="#2B2A24" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="100" y="140" text-anchor="middle" font-size="12">diameter = 18 m</text>
+    </svg>
+    <div class="clue-caption" style="font-size:0.85rem;color:rgba(0,0,0,0.55);margin-top:-0.5rem;margin-bottom:0.9rem;text-align:center;">Circumference of a circle = &pi; &times; diameter.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Circumference is just &pi; times the diameter — no need to find the radius first.</p></details>
+    <div class="answer-box" data-answer-hash="8ae14ba5">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Two Conflicting Logs</h2>
+    <div class="puzzle">
+      <p>Two maintenance logs about last night can't BOTH be true. <strong>Bram's log</strong> says: "I ran the full sensor diagnostic alone from 9:00 PM to 9:45 PM, then locked the control room and went straight home — nobody else had a key." <strong>Els's log</strong> says: "I saw Bram leave the park at 8:30 PM. I used my spare key and ran a diagnostic myself from 9:00 to 9:45 PM."</p>
+      <p>The park's exit-gate scanner confirms Bram's badge scanned OUT at 8:32 PM. Whose log actually matches what happened — Bram's or Els's?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Compare the gate-scanner time to the time Bram's log claims he was still inside running the diagnostic.</p></details>
+    <div class="answer-box" data-answer-hash="6d886a35">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? After the lift hill, roller coasters don't use an engine to move — gravity and stored energy do all the work for the rest of the ride.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Diagnostic Password</h2>
+    <div class="puzzle">
+      <p>Els's diagnostic session is locked behind an old-fashioned code: the Polybius square. Each letter is written as its (row, column) position in the grid below. Use the grid to decode the password: <strong>44 42 11 13 25</strong></p>
+    </div>
+    <table class="key-table">
+      <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+      <tr><th>1</th><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
+      <tr><th>2</th><td>F</td><td>G</td><td>H</td><td>I/J</td><td>K</td></tr>
+      <tr><th>3</th><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td></tr>
+      <tr><th>4</th><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td></tr>
+      <tr><th>5</th><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td></tr>
+    </table>
+    <div class="clue-caption" style="font-size:0.85rem;color:rgba(0,0,0,0.55);text-align:center;">Each code is (row, column) — for example, "23" means row 2, column 3.</div>
+    <details class="hint"><summary>Hint 1</summary><p>For "44," go to row 4, column 4. Repeat for each pair of digits.</p></details>
+    <div class="answer-box" data-answer-hash="7b3d6c3c">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.6); font-style:italic; margin-top:0.8rem;">📓 Agent's Notebook: Bram notes this password in the logbook margin as tonight's session code. Jot it down, you'll need it again later.</p>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Racing the Safety Zone</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p><span class="pencil-note">✏️ Grab a pencil for this one.</span> Search the internet: what is Baron 1898's real top speed, in km/h? Convert that speed into meters per second. (Tip: divide km/h by 3.6.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Baron 1898 top speed km/h." Once you have the number, divide it by 3.6 to get meters per second.</p></details>
+    <div class="answer-box" data-answer-hash="88f291a0">
+      <label for="m6-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>The new sensor needs to detect the train crossing a 100-meter safety zone. Using your speed in meters per second from Stage 1, how many SECONDS does the train take to cross the full 100-meter zone?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Time = distance &divide; speed.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m6-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m6-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Gift Shop Model Train</h2>
+    <div class="puzzle">
+      <p>The gift shop sells a model of the Baron 1898 train for &euro;25, currently marked 20% off. An online toy store sells the exact same model for &euro;22, with no discount. After applying the gift shop's discount, how many EUROS cheaper is the gift shop's price compared to the online store? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find 20% of &euro;25 and subtract it from &euro;25 to get the gift shop's real price. Then compare that to &euro;22.</p></details>
+    <div class="answer-box" data-answer-hash="370cabd5">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Working Backward From the Last Log</h2>
+    <div class="puzzle">
+      <p>Search the internet: how many SECONDS does a full ride on Baron 1898 really last? The sensor's final log shows the train EXITED the ride at exactly 9:47:15 PM, having spent that many seconds on the full ride, start to finish. Working backward, what time did the train LEAVE the station at the very start of the ride? Type your answer in this exact format: <strong>9:45 PM</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Baron 1898 ride duration seconds." Convert that number of seconds into minutes and seconds, then subtract from the exit time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>60 seconds = 1 minute. However many whole minutes fit into the ride time, subtract that many minutes (and any leftover seconds) from 9:47:15 PM.</p></details>
+    <div class="answer-box" data-answer-hash="62bdf408">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="e.g. 9:45 PM">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Aha! Moment — Below Ground Level</h2>
+    <div class="puzzle">
+      <p>Search the internet: what is Baron 1898's real height (its highest point above the ground, in meters) AND its real first-drop height (in meters)? A drop can't be longer than the height it starts from... unless part of the track dips BELOW ground level, into a trench! Using the two real numbers you found, how many meters below ground does the track dip?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Baron 1898 height" and "Baron 1898 first drop." Subtract the height from the drop.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If the drop is bigger than the height, the extra distance has to go somewhere — straight down, past ground level.</p></details>
+    <div class="answer-box" data-answer-hash="19f47707">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Restarting the Sensor Line</h2>
+    <div class="puzzle">
+      <p>The control room's final lock needs tonight's session password from Mission 5 — but typed BACKWARD, letter by letter.</p>
+      <p>Take the password you decoded earlier, reverse the order of its letters, and type the result.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Scroll back to Mission 5's Agent's Notebook if you need the password again.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Write the password out, then read it from the last letter to the first.</p></details>
+    <div class="answer-box" data-answer-hash="b51a2730">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every sensor light on the panel glows green — Baron 1898 is ready for tomorrow's guests. It took real <strong>creativity</strong> to piece together clues from blueprints, logs, and old ciphers into one working answer. Well done, Agent.</p>
+</div>
+
+
+<script>
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

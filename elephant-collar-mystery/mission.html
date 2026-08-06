@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Matriarch's Missing Signal — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #A67C2E;
+    --accent-dark: #7A5A1F;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .key-table {
+    width: 100%;
+    max-width: 460px;
+    margin: 0.9rem auto;
+    border-collapse: collapse;
+    font-size: 1.4rem;
+  }
+  .key-table th, .key-table td {
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 0.4rem 0.5rem;
+    text-align: center;
+  }
+  .key-table th { background: var(--paper-dark); font-size: 0.75rem; }
+  .key-table td.letter { font-size: 0.95rem; font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .pencil-note {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    margin-bottom: 0.4rem;
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.1rem 0 0.5rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Matriarch's Missing Signal</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 80-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>You've just joined a real research park in Kenya as a Junior Wildlife Ranger. The research team tracks a wise old elephant matriarch nicknamed <strong>Nyota</strong> — but her GPS collar has stopped transmitting, and nobody knows if she's simply out of range or truly in trouble. Follow the clues her rangers left behind, solve all ten field logs, and you'll find out what quality kept the whole ranger team searching until they found her.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sorting the Savanna</h2>
+    <div class="puzzle">
+      <p>The ranger station keeps a whiteboard listing six animals seen this week: Lion, Zebra, Elephant, Cheetah, Wildebeest, Crocodile. How many of these six animals are BOTH plant-eaters (herbivores) AND live together in herds?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Lion, Cheetah, and Crocodile are meat-eaters, so they're out. Check which of the rest actually travel in herds.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? An elephant's pregnancy lasts about 22 months — the longest of any land mammal on Earth.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sanne's Dutch Field Note</h2>
+    <div class="puzzle">
+      <p>A Dutch volunteer ranger named Sanne left a note: "Nyota loopt door de ___" (Nyota is walking through the savanna). Is it <strong>"de savanne"</strong> or <strong>"het savanne"</strong> in Dutch? Type just the correct little word: de or het.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search a Dutch dictionary for "savanne" and check which article it lists.</p></details>
+    <div class="answer-box" data-answer-hash="5c1ccea2">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="de or het">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Nyota's Home Range</h2>
+    <div class="puzzle">
+      <p>Researchers mapped Nyota's family group's protected home range as a trapezoid shape between the river and the hills. Using the measurements marked on the diagram, calculate its total area in km&sup2;.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 220 120" width="220" height="120" role="img" aria-label="A trapezoid: top parallel side 8 kilometers, bottom parallel side 4 kilometers, height between them 5 kilometers">
+      <polygon points="10,20 106,20 82,80 34,80" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="58" y="12" text-anchor="middle" font-size="12">8 km (river edge)</text>
+      <text x="58" y="98" text-anchor="middle" font-size="12">4 km (hill edge)</text>
+      <text x="20" y="52" text-anchor="middle" font-size="12" transform="rotate(-90 20 52)">5 km</text>
+    </svg>
+    <div class="clue-caption" style="font-size:0.85rem;color:rgba(0,0,0,0.55);margin-top:-0.5rem;margin-bottom:0.9rem;text-align:center;">Area of a trapezoid = (sum of the two parallel sides &divide; 2) &times; height.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Add the two parallel sides together first, then divide by 2, then multiply by the height.</p></details>
+    <div class="answer-box" data-answer-hash="87f05176">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Three Rangers, Three Waterholes</h2>
+    <div class="puzzle">
+      <p>Three rangers — Kofi, Aisha, and Juma — each radioed in from a different waterhole this morning: Elephant Pool, Observation Spring, and Thorn Tree Well. Use these clues to figure out which waterhole Aisha was at:</p>
+      <p>Clue 1: Kofi was not at Elephant Pool.<br>
+      Clue 2: The ranger at Thorn Tree Well photographed a rhino — but neither Aisha nor Kofi saw a rhino today.<br>
+      Clue 3: Juma was not at Observation Spring.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with Clue 2 — it tells you exactly who was at Thorn Tree Well.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know who was at Thorn Tree Well, Clue 1 pins down Kofi's location — and Aisha gets whichever waterhole is left.</p></details>
+    <div class="answer-box" data-answer-hash="6027b512">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Elephants can't jump. Their leg muscles and tendons don't give them the springy "bounce" needed to lift all four feet off the ground at once.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Trail-Marker Code</h2>
+    <div class="puzzle">
+      <p>Rangers carve secret animal-emoji codes into marker posts along the trails. Each emoji stands for the FIRST letter of that animal's name. Use the key to decode the message carved on Nyota's trail post:</p>
+    </div>
+    <table class="key-table">
+      <tr><th>🐍</th><th>🐢</th><th>🐜</th><th>🦏</th><th>🦒</th><th>🦁</th></tr>
+      <tr><td class="letter">Snake</td><td class="letter">Turtle</td><td class="letter">Ant</td><td class="letter">Rhino</td><td class="letter">Giraffe</td><td class="letter">Lion</td></tr>
+    </table>
+    <p style="text-align:center; font-size:1.8rem;">🐍 🐢 🐜 🦏</p>
+    <details class="hint"><summary>Hint 1</summary><p>Take the first letter of each animal's name, in order, to spell a 4-letter word.</p></details>
+    <div class="answer-box" data-answer-hash="d13b2f71">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.6); font-style:italic; margin-top:0.8rem;">📓 Agent's Notebook: "Nyota" is Swahili for star — and the word you just decoded is her official trail codename. Jot it down, you'll need it again later.</p>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Counting the Family Group</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p><span class="pencil-note">✏️ Grab a pencil for this one.</span> Last year, Nyota's family group had 40 elephants. This year, the group grew by 15% thanks to several new calves. How many elephants are in the group now?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Find 15% of 40 first, then add that to the original 40.</p></details>
+    <div class="answer-box" data-answer-hash="8be38bcf">
+      <label for="m6-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Rangers set up 1 water station for every 8 elephants in a group. Using your new total from Stage 1, how many water stations are needed? (If there's a partial group left over, that still needs one more full station.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Divide the new total by 8. If it doesn't divide evenly, round UP — you can't build half a water station.</p></details>
+    <div class="answer-box" data-answer-hash="330ca589">
+      <label for="m6-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m6-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Plotting the Last Signal</h2>
+    <div class="puzzle">
+      <p>Nyota's collar sent one last weak ping before going quiet. Starting from the ranger station, the signal came from 3 km EAST, then 4 km NORTH. Using the Pythagorean theorem, how far away (in a straight line) is that final signal from the ranger station, in km?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The east and north legs form a right angle. The straight-line distance is the hypotenuse: a&sup2; + b&sup2; = c&sup2;.</p></details>
+    <div class="answer-box" data-answer-hash="300ca0d0">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Amboseli National Park in Kenya sits right in the shadow of Mount Kilimanjaro, Africa's tallest mountain.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Choosing a Data Plan</h2>
+    <div class="puzzle">
+      <p>The ranger team needs GPS collar data for exactly 9 more months while they search for Nyota. Two conservation groups offer data access: Group A charges a flat €60 for 12 months (any amount of that time). Group B charges €8 per month, with no long commitment. For exactly 9 months of data, which group is the better value?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Group A's price doesn't change no matter how many of the 12 months you actually use. Work out Group B's total cost for 9 months and compare.</p></details>
+    <div class="answer-box" data-answer-hash="21e35bbf">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Aha! Moment — Night Patrol Roster</h2>
+    <div class="puzzle">
+      <p>Four rangers — Kofi, Aisha, Juma, and you, the newest recruit — need to cover night patrol, one ranger per night, over 4 nights. Every ranger patrols exactly once, and the order matters (patrolling Night 1 vs. Night 4 is different). How many different possible patrol-order arrangements are there for the 4 rangers across the 4 nights?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about it step by step: how many choices for Night 1? Then how many are left for Night 2? Keep going.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply your choices together: 4 &times; 3 &times; 2 &times; 1.</p></details>
+    <div class="answer-box" data-answer-hash="89f29333">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Nyota Comes Home</h2>
+    <div class="puzzle">
+      <p>Nyota's collar reactivates! To confirm it's really her, the tracking app asks for her trail codename from Mission 5 — but shift every letter FORWARD by 2 places in the alphabet first (A becomes C, B becomes D, and so on).</p>
+      <p>Take her codename, shift each letter forward by 2, and type the result to unlock her final location.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Scroll back to Mission 5's Agent's Notebook if you need her codename again.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>S+2=U. Shift each of the four letters the same way.</p></details>
+    <div class="answer-box" data-answer-hash="a85ff935">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Nyota is safe, grazing peacefully with her family group by the river. It was the ranger team's <strong>kindness</strong> — patient, careful, never giving up on one old elephant — that brought her home. Well done, Agent.</p>
+</div>
+
+
+<script>
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

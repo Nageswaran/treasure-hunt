@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Silent Rover Signal — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #B5502E;
+    --accent-dark: #8A3B20;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .key-table {
+    width: 100%;
+    max-width: 420px;
+    margin: 0.9rem auto;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  .key-table th, .key-table td {
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 0.35rem 0.6rem;
+    text-align: center;
+  }
+  .key-table th { background: var(--paper-dark); }
+  .pencil-note {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    margin-bottom: 0.4rem;
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.1rem 0 0.5rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Silent Rover Signal</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 80-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Mission Control has a problem. The Mars rover <strong>Wanderer</strong> was exploring Jezero Crater when a dust storm rolled in — and now her signal has gone quiet, except for one garbled burst of static. You've just been sworn in as Junior Mission Specialist. Every clue Wanderer left behind is real science waiting to be decoded. Solve all ten mission logs, bring her signal home, and you'll uncover the one quality that got the whole team through this crisis.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The First Wheels on Mars</h2>
+    <div class="puzzle">
+      <p>Wanderer was named to honor NASA's three most famous Mars rovers: Sojourner, Curiosity, and Perseverance. Search to verify these two facts, then use them to reason out the answer:</p>
+      <p>Fact 1: Two of the three rovers are nuclear-powered and were lowered onto Mars by a "sky crane." <br>
+      Fact 2: Only ONE of the three rovers was solar-powered and landed bouncing inside airbags instead.</p>
+      <p>That one solar-powered, airbag-landing rover is also the OLDEST of the three — it landed first. Which rover is it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Sojourner rover solar powered airbag landing" to confirm which rover these two facts describe.</p></details>
+    <div class="answer-box" data-answer-hash="e0328240">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A day on Mars (called a "sol") lasts about 24 hours and 39 minutes — just 39 minutes longer than a day on Earth.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>A Note From Mission Control's Dutch Engineer</h2>
+    <div class="puzzle">
+      <p>Before the storm hit, Dutch engineer Femke scribbled a note in her own language: "Wanderer heeft geen contact met de ___ gemaakt" (Wanderer has made no contact with space). Is it <strong>"de ruimte"</strong> or <strong>"het ruimte"</strong> in Dutch? Type just the correct little word: de or het.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Most Dutch words for big, open, abstract things (like "de wereld," the world) use this same little word.</p></details>
+    <div class="answer-box" data-answer-hash="5c1ccea2">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="de or het">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Choosing a Rescue Landing Zone</h2>
+    <div class="puzzle">
+      <p>A backup lander may need to touch down near Wanderer. Engineers marked two possible zones. Zone A is a circular crater floor. Zone B is a rectangular flat plain. Mission Control wants the BIGGER zone, for extra safety margin. Calculate both areas (use &pi; &asymp; 3.14). Which zone is bigger — type that zone's area in km&sup2;, rounded to the nearest whole number.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 140" width="300" height="140" role="img" aria-label="Zone A is a circle with diameter 8 kilometers. Zone B is a rectangle 9 kilometers by 5 kilometers.">
+      <circle cx="70" cy="70" r="40" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="30" y1="70" x2="110" y2="70" stroke="#2B2A24" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="70" y="65" text-anchor="middle" font-size="11" font-weight="bold">Zone A</text>
+      <text x="70" y="120" text-anchor="middle" font-size="12">diameter = 8 km</text>
+      <rect x="165" y="45" width="90" height="50" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="210" y="65" text-anchor="middle" font-size="11" font-weight="bold">Zone B</text>
+      <text x="210" y="35" text-anchor="middle" font-size="12">9 km</text>
+      <text x="270" y="70" text-anchor="middle" font-size="12" transform="rotate(-90 270 70)">5 km</text>
+    </svg>
+    <div class="clue-caption" style="font-size:0.85rem;color:rgba(0,0,0,0.55);margin-top:-0.5rem;margin-bottom:0.9rem;text-align:center;">Area of a circle = &pi; &times; radius&sup2;. Area of a rectangle = length &times; width.</div>
+    <details class="hint"><summary>Hint 1</summary><p>The diameter is the full width across the circle — the radius is half of that.</p></details>
+    <div class="answer-box" data-answer-hash="83e140a0">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Who Touched the Antenna?</h2>
+    <div class="puzzle">
+      <p>Someone adjusted Wanderer's antenna dish right before the storm hit — and it may have caused the glitch. Three engineers were on shift. <strong>Two of them always tell the truth, and one always lies</strong> (you don't know which is which). Exactly one of them touched the antenna.</p>
+      <p><strong>Priya</strong> says: "Marco touched the antenna."<br>
+      <strong>Marco</strong> says: "I did not touch the antenna."<br>
+      <strong>Sam</strong> says: "I touched the antenna."</p>
+      <p>Who actually touched the antenna?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try assuming each person touched it, one at a time. Count how many liars that would create — only one setup gives exactly one liar.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If Marco touched it, both Marco AND Sam would end up lying — that's two liars, which breaks the rule. Rule that option out first.</p></details>
+    <div class="answer-box" data-answer-hash="dd1c9ddc">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Mars has two tiny, potato-shaped moons named Phobos and Deimos. Phobos zips around Mars so fast it orbits three times a day!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Garbled Radio Burst</h2>
+    <div class="puzzle">
+      <p>Through the static, Wanderer's radio sent one clear burst using the NATO phonetic alphabet — the system pilots and astronauts use to spell out words letter by letter over crackly radios. Search online for a NATO phonetic alphabet chart, then decode this burst into a single word:</p>
+      <p style="font-family:'Special Elite',monospace; letter-spacing:0.08em; font-size:1.1rem;">DELTA — UNIFORM — NOVEMBER — ECHO</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Each NATO code word stands for one letter — the FIRST letter of that code word. Find a chart and take the first letter of each.</p></details>
+    <div class="answer-box" data-answer-hash="d54e32e3">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <p style="font-size:0.85rem; color:rgba(0,0,0,0.6); font-style:italic; margin-top:0.8rem;">📓 Agent's Notebook: Mission Control logs this decoded word as Wanderer's official callsign. Jot it down — you'll need it again later in this case.</p>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Powering Wanderer Back Up</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p><span class="pencil-note">✏️ Grab a pencil for this one.</span> Wanderer's solar panels normally generate 2,800 watts of power. During the dust storm, dust blocked most of the sunlight, so the panels are only working at 35% of normal power. How many watts is Wanderer collecting right now?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>35% means 35 out of every 100. Try converting 35% to a decimal (0.35) and multiplying.</p></details>
+    <div class="answer-box" data-answer-hash="cdde433c">
+      <label for="m6-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Wanderer needs 4,900 watts stored up before she can safely reboot her main computer. Using the wattage she's collecting per sol (day) from Stage 1, how many FULL sols will it take to store enough power?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Divide the total watts needed by the watts collected per sol.</p></details>
+    <div class="answer-box" data-answer-hash="300ca0d0">
+      <label for="m6-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m6-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Which Website Do You Trust?</h2>
+    <div class="puzzle">
+      <p>Two "urgent updates" about Wanderer just showed up online. Only ONE is a real, official NASA web address. Which website address below is the genuine, official site for NASA's Mars missions? Search to check before you answer.</p>
+      <p>A) mars.nasa.gov<br>
+      B) nasa-mars-live-updates.net<br>
+      C) nasa.mars-tracker.info</p>
+      <p>Type the correct website address exactly as shown above.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Official NASA pages live on NASA's own domain. Search for "NASA Mars mission official website" and compare what you find to the three choices.</p></details>
+    <div class="answer-box" data-answer-hash="12a4526d">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Olympus Mons on Mars is the tallest known volcano in the entire solar system — over 21 kilometers tall, at least two and a half times taller than Mount Everest!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Backup-Cell Standoff</h2>
+    <div class="puzzle">
+      <p>Wanderer has 7 backup power cells left to keep her heater running through the freezing Martian night. To test the safest shutdown order, Mission Control and a rival simulation AI take turns "using" the cells. On each turn, a player must use exactly 1, 2, or 3 cells. Whoever uses the LAST cell wins the simulation. Mission Control goes first.</p>
+      <p>If both sides play perfectly, how many cells should Mission Control use on the very FIRST turn to guarantee a win?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about what total you want to leave your opponent facing. If you can always leave a multiple of 4 cells for the other player, they can never win.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>7 cells minus what number leaves exactly 4 cells behind?</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Aha! Moment — Confirming the Callsign</h2>
+    <div class="puzzle">
+      <p>Wanderer's console will only accept her callsign (the word you decoded back in Mission 5) if it's scrambled first: shift EVERY letter forward by 3 places in the alphabet (A becomes D, B becomes E, and so on).</p>
+      <p>Take the callsign you noted earlier, shift each letter forward by 3, and type the scrambled result.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Scroll back up to Mission 5's Agent's Notebook if you need to find the callsign again.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>D+3=G, and so on for each letter. Shift all four letters the same way.</p></details>
+    <div class="answer-box" data-answer-hash="ff39269b">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Wanderer's Final Transmission</h2>
+    <div class="puzzle">
+      <p>Wanderer is finally back online! Her last data packet lists seven single words, in this exact order:</p>
+      <p style="font-weight:700;">Comet — Orbit — Umbra — Rover — Asteroid — Gravity — Eclipse</p>
+      <p>Take the FIRST letter of each word, in order, to spell out the one quality that got Mission Control through this whole crisis. What word do the letters spell?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write down just the first letter of each of the seven words, in the order given.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>You should end up with a 7-letter word describing bravery under pressure.</p></details>
+    <div class="answer-box" data-answer-hash="dae0e2f">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Wanderer's wheels are rolling again, and every reading is green. It took real <strong>courage</strong> to keep working the problem when the signal went quiet — just like Mission Control did, 140 million miles from home. Well done, Agent.</p>
+</div>
+
+
+<script>
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
