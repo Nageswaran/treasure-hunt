@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Forger's Signature — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #7A2E3B;
+    --accent-dark: #55202A;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul, .puzzle ol { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle li { margin: 0.35rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; font-weight: 700; }
+  .stage-label:first-of-type { margin-top: 0; }
+  .certificate {
+    background: var(--paper-dark);
+    border: 1px dashed rgba(0,0,0,0.25);
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    margin: 0.7rem 0;
+    font-size: 0.95rem;
+  }
+  .certificate .cert-label { font-weight: 700; color: var(--accent-dark); display: block; margin-bottom: 0.3rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .category-box {
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    margin: 0.7rem 0;
+    font-size: 0.92rem;
+  }
+  .category-box p { margin: 0.25rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .cipher-key { max-width: 100%; overflow-x: auto; }
+  .cipher-key svg { display: block; margin: 0 auto; }
+  .cipher-key-caption { text-align: center; font-size: 0.8rem; color: rgba(0,0,0,0.55); margin: 0.3rem 0 1rem; }
+  .cipher-message {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 1rem;
+    margin: 0.9rem 0;
+  }
+  .cipher-message svg { background: #FFFDF7; border: 1px solid rgba(0,0,0,0.15); border-radius: 3px; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Forger's Signature</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-75 minutes</div>
+</div>
+
+<div class="intro">
+  For one special week, the small Gouden Lijst Gallery in Delft has borrowed a world-famous painting from the Mauritshuis museum for a big exhibition. Tomorrow is the grand opening. Tonight, the night guard noticed something strange near the frame, and now nobody is sure the painting on the wall is really the original. You've been called in as a junior art detective. Examine every clue and prove whether it's the true masterpiece, or a forger's clever copy.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Confirming the Masterpiece</h2>
+    <div class="puzzle">
+      <p>Before you inspect anything else, make sure you know exactly what you're protecting. Search online for this painting's full title and the artist who painted it — it's one of the most famous paintings in the world.</p>
+      <p>Once you're sure, study the real reference photo below very closely. It's an actual photograph of the genuine painting, kept on file for comparison. The gallery's paperwork claims her headscarf is gold from top to bottom. Look at the part wrapped snugly around her head — not the long piece hanging down over her shoulder. In one word, what color is it really?</p>
+    </div>
+    <img class="clue-img" src="images/girl-with-a-pearl-earring.jpg" alt="Johannes Vermeer's Girl with a Pearl Earring: a young woman in a headscarf looking back over her shoulder, wearing a single pearl earring, against a plain dark background.">
+    <div class="clue-caption">Reference photo, filed for comparison. Zoom in on the headscarf.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Compare the front of the headscarf to the long piece trailing down the back — they are not the same color.</p></details>
+    <div class="answer-box" data-answer-hash="82fbf5cd">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Vermeer's paint contained real ultramarine, made from crushed lapis lazuli stone. In the 1600s, this deep blue pigment cost more than gold — but Vermeer used it anyway, even hidden in shadows nobody would really notice.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Forger's Portfolio</h2>
+    <div class="puzzle">
+      <p>In the workshop's storage room, you find a torn page from a portfolio. It lists four painters whose "style" the forger claims to have studied: Johannes Vermeer, Rembrandt van Rijn, Frans Hals, and Claude Monet.</p>
+      <p>Search online to check each painter's era. Three of them worked side by side during the Dutch Golden Age, in the 1600s. One of them lived and painted almost two centuries later, in a totally different country and a totally different style.</p>
+      <p>Which painter does not belong on this list? Type only his last name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search each name plus the word "painter" and look at the birth and death years next to it.</p></details>
+    <div class="answer-box" data-answer-hash="e450ce08">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Two Quotes for the Glass Case</h2>
+    <div class="puzzle">
+      <p>The gallery needs a secure display case for the whole exhibition — fast. Two companies send in quotes covering the entire 6-month exhibition:</p>
+      <ul>
+        <li><strong>SafeGlass NL:</strong> €900, one single payment, covers everything for all 6 months.</li>
+        <li><strong>Crystal Case Co.:</strong> €600 to install the case, PLUS a €60 "protective coating" fee every month, for all 6 months.</li>
+      </ul>
+      <p>Grab a pencil for this one. Add up the TOTAL cost for each company across the full 6 months. How many more euros, in total, would Crystal Case Co. end up costing compared to SafeGlass NL? Type just the number of euros.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Don't just compare the two starting numbers — one of these deals keeps adding a fee every single month.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Crystal Case Co.'s total = €600 + (€60 × 6 months). Work that out, then compare it to SafeGlass NL's flat €900.</p></details>
+    <div class="answer-box" data-answer-hash="15e8e23b">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Art historians nicknamed this painting the "Mona Lisa of the North." Nobody knows for sure who the girl really was — just like nobody is completely certain why the Mona Lisa is smiling.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Canvas Ratio</h2>
+    <div class="puzzle">
+      <p>Case file: the real canvas measures 445 mm wide by 390 mm tall (that's 44.5 cm by 39 cm) — copied straight from the museum's own records. The gallery gift shop wants to sell a mini print that keeps the painting's EXACT proportions, just shrunk down to fit a postcard rack.</p>
+      <p>If the mini print is 100 mm tall, how wide should it be to keep the exact same shape as the original? Grab a pencil for this one. Round your answer to the nearest whole millimeter, and type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Set up a fraction: the real width over the real height should equal the mini width over the mini height.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Try: mini width = 445 × (100 ÷ 390). Work that out, then round to the nearest whole millimeter.</p></details>
+    <div class="answer-box" data-answer-hash="69361659">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Coded Lab Note</h2>
+    <div class="puzzle">
+      <p>Behind a loose floorboard in the gallery's old workshop, you find a torn note written in a strange code — dots, boxes, and angled lines instead of letters. It looks like the forger's own private notes from a paint test.</p>
+      <p>This kind of code is called a pigpen cipher. Every letter of the alphabet is drawn as the outline of a little box, or one arm of an X-shape — some with a dot added, some without. Use the key below to decode the message.</p>
+      <p><strong>Agent's notebook:</strong> whatever word you decode, jot it down somewhere safe. You'll need to remember it later in the case — without anyone reminding you where it came from.</p>
+    </div>
+    <div class="cipher-key">
+      <svg viewBox="0 0 385 115" width="385" height="115" role="img" aria-label="Pigpen cipher key: three grids showing which line-and-dot symbol stands for each letter of the alphabet">
+        <!-- Grid 1: A-I, no dots -->
+        <g transform="translate(10,6)">
+          <rect x="0" y="0" width="72" height="72" fill="none" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="24" y1="0" x2="24" y2="72" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="48" y1="0" x2="48" y2="72" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="0" y1="24" x2="72" y2="24" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="0" y1="48" x2="72" y2="48" stroke="#2B2A24" stroke-width="1.5"/>
+          <text x="12" y="17" text-anchor="middle" font-size="12">A</text>
+          <text x="36" y="17" text-anchor="middle" font-size="12">B</text>
+          <text x="60" y="17" text-anchor="middle" font-size="12">C</text>
+          <text x="12" y="41" text-anchor="middle" font-size="12">D</text>
+          <text x="36" y="41" text-anchor="middle" font-size="12">E</text>
+          <text x="60" y="41" text-anchor="middle" font-size="12">F</text>
+          <text x="12" y="65" text-anchor="middle" font-size="12">G</text>
+          <text x="36" y="65" text-anchor="middle" font-size="12">H</text>
+          <text x="60" y="65" text-anchor="middle" font-size="12">I</text>
+          <text x="36" y="90" text-anchor="middle" font-size="11" font-style="italic">Grid 1</text>
+        </g>
+        <!-- Grid 2: J-R, with dots -->
+        <g transform="translate(100,6)">
+          <rect x="0" y="0" width="72" height="72" fill="none" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="24" y1="0" x2="24" y2="72" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="48" y1="0" x2="48" y2="72" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="0" y1="24" x2="72" y2="24" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="0" y1="48" x2="72" y2="48" stroke="#2B2A24" stroke-width="1.5"/>
+          <text x="12" y="17" text-anchor="middle" font-size="12">J</text>
+          <text x="36" y="17" text-anchor="middle" font-size="12">K</text>
+          <text x="60" y="17" text-anchor="middle" font-size="12">L</text>
+          <text x="12" y="41" text-anchor="middle" font-size="12">M</text>
+          <text x="36" y="41" text-anchor="middle" font-size="12">N</text>
+          <text x="60" y="41" text-anchor="middle" font-size="12">O</text>
+          <text x="12" y="65" text-anchor="middle" font-size="12">P</text>
+          <text x="36" y="65" text-anchor="middle" font-size="12">Q</text>
+          <text x="60" y="65" text-anchor="middle" font-size="12">R</text>
+          <circle cx="19" cy="8" r="2.2" fill="#2B2A24"/>
+          <circle cx="43" cy="8" r="2.2" fill="#2B2A24"/>
+          <circle cx="67" cy="8" r="2.2" fill="#2B2A24"/>
+          <circle cx="19" cy="32" r="2.2" fill="#2B2A24"/>
+          <circle cx="43" cy="32" r="2.2" fill="#2B2A24"/>
+          <circle cx="67" cy="32" r="2.2" fill="#2B2A24"/>
+          <circle cx="19" cy="56" r="2.2" fill="#2B2A24"/>
+          <circle cx="43" cy="56" r="2.2" fill="#2B2A24"/>
+          <circle cx="67" cy="56" r="2.2" fill="#2B2A24"/>
+          <text x="36" y="90" text-anchor="middle" font-size="11" font-style="italic">Grid 2 (add a dot)</text>
+        </g>
+        <!-- X-shape 1: S,T,U,V no dots -->
+        <g transform="translate(200,6)">
+          <line x1="0" y1="0" x2="72" y2="72" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="72" y1="0" x2="0" y2="72" stroke="#2B2A24" stroke-width="1.5"/>
+          <text x="36" y="22" text-anchor="middle" font-size="12">S</text>
+          <text x="58" y="40" text-anchor="middle" font-size="12">T</text>
+          <text x="14" y="40" text-anchor="middle" font-size="12">U</text>
+          <text x="36" y="56" text-anchor="middle" font-size="12">V</text>
+          <text x="36" y="90" text-anchor="middle" font-size="11" font-style="italic">S T U V</text>
+        </g>
+        <!-- X-shape 2: W,X,Y,Z with dots -->
+        <g transform="translate(290,6)">
+          <line x1="0" y1="0" x2="72" y2="72" stroke="#2B2A24" stroke-width="1.5"/>
+          <line x1="72" y1="0" x2="0" y2="72" stroke="#2B2A24" stroke-width="1.5"/>
+          <text x="36" y="22" text-anchor="middle" font-size="12">W</text>
+          <text x="58" y="40" text-anchor="middle" font-size="12">X</text>
+          <text x="14" y="40" text-anchor="middle" font-size="12">Y</text>
+          <text x="36" y="56" text-anchor="middle" font-size="12">Z</text>
+          <circle cx="36" cy="12" r="2.2" fill="#2B2A24"/>
+          <circle cx="65" cy="36" r="2.2" fill="#2B2A24"/>
+          <circle cx="7" cy="36" r="2.2" fill="#2B2A24"/>
+          <circle cx="36" cy="63" r="2.2" fill="#2B2A24"/>
+          <text x="36" y="90" text-anchor="middle" font-size="11" font-style="italic">W X Y Z</text>
+        </g>
+      </svg>
+      <p class="cipher-key-caption">Each letter's code is just the lines that box it in, plus a dot for grid 2 / W-Z.</p>
+    </div>
+    <div class="cipher-message">
+      <!-- V: X-shape bottom triangle, no dot -->
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="cipher symbol 1"><line x1="4" y1="36" x2="20" y2="20" stroke="#2B2A24" stroke-width="3"/><line x1="36" y1="36" x2="20" y2="20" stroke="#2B2A24" stroke-width="3"/></svg>
+      <!-- I: top+left, no dot -->
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="cipher symbol 2"><line x1="8" y1="8" x2="32" y2="8" stroke="#2B2A24" stroke-width="3"/><line x1="8" y1="8" x2="8" y2="32" stroke="#2B2A24" stroke-width="3"/></svg>
+      <!-- R: top+left, with dot -->
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="cipher symbol 3"><line x1="8" y1="8" x2="32" y2="8" stroke="#2B2A24" stroke-width="3"/><line x1="8" y1="8" x2="8" y2="32" stroke="#2B2A24" stroke-width="3"/><circle cx="20" cy="20" r="3" fill="#2B2A24"/></svg>
+      <!-- I -->
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="cipher symbol 4"><line x1="8" y1="8" x2="32" y2="8" stroke="#2B2A24" stroke-width="3"/><line x1="8" y1="8" x2="8" y2="32" stroke="#2B2A24" stroke-width="3"/></svg>
+      <!-- D: top+bottom+right, no dot -->
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="cipher symbol 5"><line x1="8" y1="8" x2="32" y2="8" stroke="#2B2A24" stroke-width="3"/><line x1="8" y1="32" x2="32" y2="32" stroke="#2B2A24" stroke-width="3"/><line x1="32" y1="8" x2="32" y2="32" stroke="#2B2A24" stroke-width="3"/></svg>
+      <!-- I -->
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="cipher symbol 6"><line x1="8" y1="8" x2="32" y2="8" stroke="#2B2A24" stroke-width="3"/><line x1="8" y1="8" x2="8" y2="32" stroke="#2B2A24" stroke-width="3"/></svg>
+      <!-- A: right+bottom, no dot -->
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="cipher symbol 7"><line x1="32" y1="8" x2="32" y2="32" stroke="#2B2A24" stroke-width="3"/><line x1="8" y1="32" x2="32" y2="32" stroke="#2B2A24" stroke-width="3"/></svg>
+      <!-- N: full box, with dot -->
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="cipher symbol 8"><rect x="8" y="8" width="24" height="24" fill="none" stroke="#2B2A24" stroke-width="3"/><circle cx="20" cy="20" r="3" fill="#2B2A24"/></svg>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Match each symbol's outline to the matching box in the key — count how many sides it has, and check for a dot.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Symbols 2, 4, and 6 all look identical — that letter repeats three times in this word. The whole word names a color.</p></details>
+    <div class="answer-box" data-answer-hash="32acd731">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? In 2018, scientists studied the real painting non-stop for two straight weeks using special scanning equipment. They discovered Vermeer had painted tiny eyelashes around the girl's eyes — so small that nobody could ever spot them with just their own eyes, not even art experts standing right in front of the canvas.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Five Suspects, One Gallery</h2>
+    <div class="puzzle">
+      <p>Five visitors signed the gallery's guest log the night before the swap: Ava, Ben, Cora, Diego, and Elin. Match each one to their arrival time, the item they were carrying, their favorite color, and the room where they lingered. Read every clue carefully — several of them only make sense once you combine them with another.</p>
+    </div>
+    <div class="category-box">
+      <p><strong>Arrival times:</strong> 6:00, 6:15, 6:30, 6:45, 7:00 pm</p>
+      <p><strong>Items carried:</strong> paintbrush, palette knife, magnifying glass, cotton gloves, UV flashlight</p>
+      <p><strong>Favorite colors:</strong> red, blue, green, yellow, purple</p>
+      <p><strong>Rooms:</strong> Dutch Room, Sculpture Hall, Print Gallery, Modern Wing, Entrance Lobby</p>
+    </div>
+    <div class="puzzle">
+      <ol>
+        <li>Ava was the first of the five visitors to sign the guestbook.</li>
+        <li>Ben was the second to sign in, right after Ava.</li>
+        <li>The visitor holding the magnifying glass arrived exactly 30 minutes after Ava.</li>
+        <li>Elin was the last of the five to arrive.</li>
+        <li>Cora was the one carrying the magnifying glass.</li>
+        <li>Ben had the palette knife in his hand the whole time.</li>
+        <li>Diego signed in holding a pair of cotton gloves.</li>
+        <li>The last visitor to arrive was still holding the UV flashlight from the security desk.</li>
+        <li>Whoever carried the paintbrush spent the whole evening in the Dutch Room.</li>
+        <li>The palette-knife holder was seen crossing into the Sculpture Hall.</li>
+        <li>Cora never left the Print Gallery all evening.</li>
+        <li>The cotton-gloves visitor was last seen heading into the Modern Wing.</li>
+        <li>The Dutch Room visitor picked red as a favorite color.</li>
+        <li>Whoever loves blue was standing right beside the palette knife when questioned.</li>
+        <li>Green is Cora's favorite color — she says it matches the ivy painted on the Print Gallery mural.</li>
+        <li>The Modern Wing visitor's favorite color is yellow, to match the wing's freshly painted walls.</li>
+      </ol>
+      <p>Security just found a fresh smudge of oil paint on the alarm switch inside the Modern Wing. Whoever was in there, wearing gloves, is your prime suspect. Name them.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the two visitors whose arrival time is stated directly — everything else builds outward from there.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know who held the cotton gloves, one clue tells you exactly which room to focus on.</p></details>
+    <div class="answer-box" data-answer-hash="58af3517">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Two Certificates, One Truth</h2>
+    <div class="puzzle">
+      <p>The gallery's paperwork folder holds two "Certificates of Provenance" for the painting — official-looking documents about its history. They can't both be right.</p>
+    </div>
+    <div class="certificate">
+      <span class="cert-label">Certificate A</span>
+      This painting has always belonged to the Mauritshuis museum in The Hague. It was treated by conservators in 1994, and studied for two straight weeks in 2018 by an international team using advanced scanning equipment.
+    </div>
+    <div class="certificate">
+      <span class="cert-label">Certificate B</span>
+      This painting was fully restored in 2005 at a famous museum in Amsterdam, and has not been examined since.
+    </div>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Search online to check: which real museum has always owned and displayed this painting? Then decide — which certificate matches reality? Type A or B.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search the exact name of the painting plus the word "museum."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The correct museum's name starts with "M," and it's in The Hague — not Amsterdam.</p></details>
+    <div class="answer-box" data-answer-hash="e40c292c">
+      <label for="m7-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage1" type="text" placeholder="Type A or B...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>The certificate you decided to trust also mentions a big scientific research project. Look again at what it says. In what year did that research project happen? Type just the year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>It's written right there in the certificate you trusted — read it again carefully.</p></details>
+    <div class="answer-box" data-answer-hash="c42c4bf6">
+      <label for="m7-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Verdict</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>The chief inspector needs one last detail before the case can close: the exact name of that pigment from the coded note in the workshop safe — the one you were told not to forget. Type it below.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>It wasn't a person's name or a place — it was a color.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>You cracked it using a grid of dots and lines, hidden behind a floorboard.</p></details>
+    <div class="answer-box" data-answer-hash="32acd731">
+      <label for="finale-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Whatever that pigment proves, one thing is certain: you just solved a case using photographs, math, secret codes, logic, and careful research — all at once. There's a word for combining very different ideas to crack one big problem. Unscramble these letters to find it:</p>
+      <p style="font-size:1.3rem; letter-spacing:0.3em; text-align:center; font-family:'Special Elite',monospace;">Y T I V A E R C T I</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>It starts with the same letter as "create."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It rhymes with "activity."</p></details>
+    <div class="answer-box" data-answer-hash="4964abd3">
+      <label for="finale-answer">Your final answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The real masterpiece goes back to its museum, and the forger's copy becomes Exhibit A. It took creativity — mixing photographs, ciphers, math, and careful research into one case — to catch what the grown-ups missed. Well done, Detective.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

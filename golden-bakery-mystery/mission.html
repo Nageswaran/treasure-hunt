@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Golden Bakery Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C97C2B;
+    --accent-dark: #96591C;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, h3, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; font-weight: 700; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .table-wrap { overflow-x: auto; margin: 0.9rem 0; }
+  table.data-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; min-width: 320px; }
+  table.data-table caption { text-align: left; font-weight: 700; padding-bottom: 0.4rem; font-family: 'Special Elite', monospace; color: var(--accent-dark); }
+  table.data-table th, table.data-table td { border: 1px solid rgba(0,0,0,0.15); padding: 0.45rem 0.65rem; text-align: left; vertical-align: top; }
+  table.data-table th { background: var(--paper-dark); }
+  .flyer {
+    border: 2px dashed var(--accent);
+    border-radius: 4px;
+    padding: 0.8rem 1.1rem;
+    margin: 0.8rem 0;
+    background: var(--paper-dark);
+  }
+  .flyer h3 { margin: 0 0 0.4rem; font-size: 0.98rem; color: var(--accent-dark); }
+  .flyer p { margin: 0.25rem 0; }
+  .recipe-card {
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.85rem 1.1rem;
+    margin: 0.8rem 0;
+  }
+  .recipe-card h3 { margin: 0 0 0.4rem; font-size: 0.98rem; }
+  .recipe-card ul { margin: 0.4rem 0 0; padding-left: 1.3rem; }
+  .email-card {
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+    background: #fff;
+    padding: 0.9rem 1.1rem;
+    margin: 0.9rem 0;
+    font-size: 0.93rem;
+  }
+  .email-card .email-meta { font-size: 0.85rem; color: rgba(0,0,0,0.6); margin: 0.15rem 0; }
+  .email-card .email-meta strong { color: var(--ink); }
+  .email-card .email-subject { font-weight: 700; margin: 0.5rem 0; color: var(--ink); }
+  .email-card hr { border: none; border-top: 1px solid rgba(0,0,0,0.12); margin: 0.6rem 0; }
+  .email-card p { margin: 0.5rem 0; }
+  .flag-list { margin: 0.6rem 0; padding-left: 1.3rem; }
+  .flag-list li { margin: 0.3rem 0; }
+  .notebook-page {
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 3px;
+    padding: 0.9rem 1.1rem;
+    margin: 0.8rem 0;
+  }
+  .notebook-page h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--accent-dark); }
+  .notebook-page ol { margin: 0; padding-left: 1.4rem; }
+  .notebook-page li { margin: 0.35rem 0; }
+  .note-callout {
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    font-style: italic;
+    margin: 0.6rem 0 0.9rem;
+  }
+  .code-note {
+    font-family: 'Special Elite', monospace;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    letter-spacing: 0.03em;
+    text-align: center;
+    margin: 0.8rem 0;
+    font-size: 1rem;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Golden Bakery Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-95 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Golden Crust Bakery, in the little town of Willowbrook, is famous for one thing: a prize-winning Golden Victoria Sponge, baked from a secret recipe in Grandma Rosa's old notebook. Two days before the Willowbrook Grand Baking Fair, the notebook has gone missing — and a strange email claiming the bakery just "won" a $5,000 sponsorship deal has landed in the inbox. Something isn't right. Owner Elena has called in a junior food-safety-and-recipe detective to find the notebook, protect the bakery from getting scammed, and get a real Golden Victoria Sponge onto the judges' table in time. That detective is you.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Muffin Label Mix-Up</h2>
+    <div class="puzzle">
+      <p>While you wait for Elena to unlock the storeroom, you look over two nutrition labels from the display case. Bakeries print these so customers know exactly what's inside every treat.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <caption>Golden Honey Oat Muffin — Nutrition Facts</caption>
+        <tr><th>Serving Size</th><td>1 muffin (70 g)</td></tr>
+        <tr><th>Calories</th><td>210</td></tr>
+        <tr><th>Total Fat</th><td>7 g</td></tr>
+        <tr><th>Sugars</th><td>12 g</td></tr>
+        <tr><th>Protein</th><td>4 g</td></tr>
+        <tr><th>Ingredients</th><td>Oats, wheat flour, honey, eggs, butter, baking powder, salt, cinnamon</td></tr>
+        <tr><th>Contains</th><td>Wheat, egg, milk</td></tr>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <caption>Double Chocolate Muffin — Nutrition Facts</caption>
+        <tr><th>Serving Size</th><td>1 muffin (75 g)</td></tr>
+        <tr><th>Calories</th><td>290</td></tr>
+        <tr><th>Total Fat</th><td>14 g</td></tr>
+        <tr><th>Sugars</th><td>22 g</td></tr>
+        <tr><th>Protein</th><td>4 g</td></tr>
+        <tr><th>Ingredients</th><td>Wheat flour, sugar, cocoa powder, chocolate chips, eggs, butter, milk, baking powder, salt, almonds</td></tr>
+        <tr><th>Contains</th><td>Wheat, egg, milk, almonds</td></tr>
+      </table>
+    </div>
+    <div class="clue-caption">Psst — bakeries always list anything that could trigger an allergy, like the almonds above. Handy to notice, but not what this question asks.</div>
+    <div class="puzzle">
+      <p>Elena is double-checking her case labels before the judges arrive. Look at the <strong>Sugars</strong> row on both labels. How many more grams of sugar are in one Double Chocolate Muffin than in one Golden Honey Oat Muffin? Type just the number of grams, like <em>5</em>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Find the "Sugars" row on each label and look at the number right after it — then subtract the smaller one from the bigger one.</p></details>
+    <div class="answer-box" data-answer-hash="1beb2a44">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sort the Safe Treats</h2>
+    <div class="puzzle">
+      <p>A customer named Mr. Delgado calls ahead: his daughter is coming to the fair, and she can't eat anything with <strong>nuts</strong> in it, and she also can't eat anything with <strong>dairy</strong> in it (that means no butter, milk, cream, or cheese). Elena hands you the ingredient list for five treats in the case.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <caption>Today's Treats</caption>
+        <tr><th>Treat</th><th>Ingredients</th></tr>
+        <tr><td>Oat Raisin Cookies</td><td>Oats, raisins, brown sugar, vegetable oil, baking soda, cinnamon, salt</td></tr>
+        <tr><td>Almond Croissants</td><td>Flour, butter, almonds, sugar, eggs, almond paste</td></tr>
+        <tr><td>Lemon Poppy Seed Loaf</td><td>Flour, sugar, eggs, milk, lemon zest, poppy seeds, baking powder</td></tr>
+        <tr><td>Pecan Maple Bars</td><td>Flour, pecans, maple syrup, vegetable oil, eggs, baking soda</td></tr>
+        <tr><td>Ginger Snap Cookies</td><td>Flour, butter, brown sugar, molasses, ginger, cinnamon, baking soda, salt</td></tr>
+      </table>
+    </div>
+    <div class="puzzle">
+      <p>Only ONE treat on the list is completely nut-free <strong>AND</strong> completely dairy-free. Which one is safe for Mr. Delgado's daughter? Type the treat's name exactly as written above.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Check every treat against BOTH rules at once — it only counts if it passes the nut check AND the dairy check.</p></details>
+    <div class="answer-box" data-answer-hash="235dfd6c">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A sealed jar of honey never spoils. Archaeologists have found 3,000-year-old honey in Egyptian tombs that was still safe to eat, because honey has so little water in it — and it's naturally acidic — that bacteria simply can't grow in it.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Flour Deal Dilemma</h2>
+    <div class="puzzle">
+      <p>With the fair so close, Golden Crust Bakery needs to order 100 kg of baking flour, right away. Flour only comes in 25 kg bags, and Elena has two supplier flyers pinned to the corkboard.</p>
+    </div>
+    <div class="flyer">
+      <h3>Golden Fields Milling Co.</h3>
+      <p>25 kg bag of baking flour — just €18.00 per bag!</p>
+      <p>(Delivery fee: €4.00 per order, added at checkout)</p>
+    </div>
+    <div class="flyer">
+      <h3>Miller &amp; Sons Wholesale</h3>
+      <p>25 kg bag of baking flour — €19.50 per bag.</p>
+      <p>FREE delivery on every order!</p>
+    </div>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Work out the TOTAL cost for 100 kg of flour from each supplier — bags plus any delivery fee. How many euros cheaper is the better deal? Type just the number of euros, like <em>5</em>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out one supplier's total first, remembering to add the delivery fee if there is one, before you try the other.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>100 kg means exactly 4 bags of 25 kg from either supplier — multiply the bag price by 4, then add the delivery fee if that supplier charges one.</p></details>
+    <div class="answer-box" data-answer-hash="370cabd5">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Scaling Up for Thirty</h2>
+    <div class="puzzle">
+      <p>A local school just ordered enough Golden Crust Everyday Sponge to serve 30 people at their spring assembly. Elena hands you the regular recipe card, which only serves 8.</p>
+    </div>
+    <div class="recipe-card">
+      <h3>Golden Crust Everyday Sponge (Serves 8)</h3>
+      <ul>
+        <li>200 g butter, softened</li>
+        <li>200 g caster sugar</li>
+        <li>4 eggs</li>
+        <li>200 g self-raising flour</li>
+        <li>4 tablespoons milk</li>
+      </ul>
+    </div>
+    <div class="puzzle">
+      <p>Grab a pencil for this one — every ingredient has to grow by the exact same amount, or the sponge won't rise right. If 8 servings need 200 g of butter, how many grams of butter are needed for 30 servings? Type just the number of grams.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Figure out first how many times bigger 30 servings is than 8 servings — it isn't a whole number, so keep that pencil handy.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>30 divided by 8 is 3.75. Multiply the butter amount by 3.75 to scale it up.</p></details>
+    <div class="answer-box" data-answer-hash="96bfcd6b">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Victoria sponge cake is named after Queen Victoria, who loved eating a slice with her afternoon tea. Traditionally it's filled with jam and just dusted with sugar on top — no icing at all!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Suspicious Sponsorship Email</h2>
+    <div class="puzzle">
+      <p>Elena shows you the message that's had her worried all week. Golden Crust Bakery has ordered wholesale cocoa and sugar from TastyCorp Foods before — their real order confirmations always come from <strong>orders@tastycorpfoods.com</strong>. Here's what arrived in the inbox two days ago:</p>
+    </div>
+    <div class="email-card">
+      <div class="email-meta"><strong>From:</strong> TastyCorp Rewards Team &lt;rewards@tastycorp-bonus-mail.net&gt;</div>
+      <div class="email-subject">🎉 YOU'RE A WINNER! $5,000 Golden Sponsorship — CLAIM WITHIN 24 HOURS!!</div>
+      <hr>
+      <p>Dear Lucky Bakery Owner,</p>
+      <p>Golden Crust Bakery has been RANDOMLY SELECTED out of thousands of bakeries to win an exclusive $5,000 sponsorship deal from TastyCorp Foods! This incredible, once-in-a-lifetime opportunity will make your small bakery famous overnight!</p>
+      <p>To claim your prize TODAY, simply reply with your bakery's bank account number and the owner's date of birth so our accounting team can transfer the funds immediately.</p>
+      <p>This amazing offer expires in 24 hours — don't let it slip away! Click below now!</p>
+      <p><strong>[ CLAIM MY $5,000 PRIZE ]</strong></p>
+      <p>Warmly,<br>The TastyCorp Rewards Team</p>
+    </div>
+    <div class="puzzle">
+      <p>Real detectives check every suspicious message against four warning signs of a scam:</p>
+      <ol class="flag-list">
+        <li>It creates urgency ("act fast or you'll lose it")</li>
+        <li>It's sent from an address that doesn't match the real company's website</li>
+        <li>It asks for private information like bank details or a birthdate</li>
+        <li>It promises something way too good to be true</li>
+      </ol>
+      <p>Read the message above carefully. How many of these four warning signs actually appear in it? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Real companies always send mail from their real website's address. Compare the sender's email address above to the bakery's usual TastyCorp address.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Go through the four warning-sign categories one at a time, and check off each one you can actually find written in the message.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Grandma Rosa's Coded Notebook</h2>
+    <div class="puzzle">
+      <p>The notebook wasn't stolen after all — Elena finds it tucked inside an old flour bin. But paperclipped to the front is a strange note, just a string of number groups, in Grandma Rosa's handwriting. Here are the two pages the note seems to point to.</p>
+    </div>
+    <div class="notebook-page">
+      <h3>Page 1</h3>
+      <ol>
+        <li>Every good baker starts the morning by warming the old brick oven slowly.</li>
+        <li>Sift the flour twice so the golden sponge rises light and tall and even.</li>
+        <li>Cream the butter with sugar until the mixture turns pale and fluffy soft.</li>
+        <li>Add the eggs one at a time and beat them in very gently now.</li>
+        <li>Fold in the flour with a wooden spoon never rushing never stirring hard.</li>
+        <li>The secret truly is patience plus one spoonful of honey stirred in last.</li>
+      </ol>
+    </div>
+    <div class="notebook-page">
+      <h3>Page 2</h3>
+      <ol>
+        <li>Bake the golden sponge at one hundred and seventy five degrees Celsius exactly.</li>
+        <li>Jot this down agent the oven must always stay at exactly that same temperature.</li>
+        <li>Watch the cake through the little glass door but never open it early.</li>
+        <li>When it springs back gently to a light touch the sponge is ready.</li>
+        <li>Cool it fully on a wire rack before spreading the strawberry jam inside.</li>
+        <li>Then dust the top with sugar and share it with someone you love.</li>
+      </ol>
+    </div>
+    <p class="note-callout">📝 Some lines in a notebook matter more than others. Worth keeping in mind.</p>
+    <div class="puzzle">
+      <p>Grandma Rosa's note reads:</p>
+      <div class="code-note">1-6-2 &middot; 1-6-4 &middot; 1-4-11 &middot; 1-1-9 &middot; 2-2-6 &middot; 2-3-8</div>
+      <p>Each group of numbers means <strong>Page-Line-Word</strong>. Find the exact word in that spot on that page (count from word 1 at the start of each line) to decode her message, one word at a time. Type the six words in order, separated by spaces.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Book ciphers use three numbers: which page, then which line on that page, then which word in that line — start counting from word 1 at the start of each line.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Write out each of the six words you find, in order, on scratch paper — read them together as one short sentence when you're done.</p></details>
+    <div class="answer-box" data-answer-hash="eb8df14f">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The golden-brown color on baked bread and cakes comes from something called the Maillard reaction. It happens when heat makes sugars and proteins react together, creating hundreds of new toasty, caramel-like flavors — and that golden color bakers love.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Flavor Combination Count</h2>
+    <div class="puzzle">
+      <p>The fair's "Best Combo" contest lets Golden Crust Bakery enter exactly ONE flavor combination: one frosting plus one topping.</p>
+      <p><strong>Frostings (4):</strong> Vanilla, Chocolate, Lemon, Caramel</p>
+      <p><strong>Toppings (5):</strong> Sprinkles, Fresh Berries, Almond Flakes, Coconut Shavings, Sugar Pearls</p>
+      <p>Two contest rules ban specific pairings:</p>
+      <ol class="flag-list">
+        <li>Chocolate frosting can NOT be paired with Almond Flakes (another baker already entered that exact combo)</li>
+        <li>Lemon frosting can NOT be paired with Coconut Shavings (the judges banned that combo after complaints last year)</li>
+      </ol>
+      <p>Grab a pencil for this one. A grid with frostings across the top and toppings down the side makes it easy to count every pair systematically. How many different frosting-and-topping combinations could Golden Crust Bakery still choose from?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First count ALL possible frosting-and-topping pairs, completely ignoring the two banned combos — how many pairs is that in total?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Draw a grid: 4 frostings across the top, 5 toppings down the side, giving 20 boxes. Cross out the two banned boxes, then count every box that's left.</p></details>
+    <div class="answer-box" data-answer-hash="13eb1dac">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Golden Sponge Showdown</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>It's contest morning! Elena found one more line scrawled in the margin of Grandma Rosa's notebook: <em>"Always fill the tin with batter until it stands as many centimeters tall as my favorite oven temperature, divided by 25."</em> You noted that favorite temperature earlier in this very case — now's the moment it matters.</p>
+      <p>The round cake tin is drawn below. A cylinder's volume is found with: <strong>volume = π &times; radius &times; radius &times; height</strong>. Use π ≈ 3.14, and give your answer in whole cubic centimeters (round to the nearest whole number if needed).</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 220 170" width="220" height="170" role="img" aria-label="A round cake tin, drawn as a cylinder, with its top diameter labeled and its height marked but not given a number">
+      <ellipse cx="110" cy="45" rx="50" ry="16" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="60" y1="45" x2="60" y2="80" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="160" y1="45" x2="160" y2="80" stroke="#2B2A24" stroke-width="2"/>
+      <path d="M60,80 A50,16 0 0,0 160,80" fill="none" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="60" y1="45" x2="160" y2="45" stroke="#96591C" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="110" y="30" text-anchor="middle" font-size="12" fill="#2B2A24">diameter = 20 cm</text>
+      <line x1="185" y1="45" x2="185" y2="80" stroke="#96591C" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="205" y="65" text-anchor="middle" font-size="12" fill="#2B2A24" transform="rotate(-90 205 65)">height = ? cm</text>
+    </svg>
+    <div class="clue-caption">Radius is half the diameter. Height comes from Grandma's rule above, not from the drawing.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Radius is HALF of the diameter shown in the drawing — and remember, the height comes from Grandma's rule, not from the picture.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Height = (the temperature you remembered) &divide; 25. Once you have the radius and the height, multiply: 3.14 &times; radius &times; radius &times; height.</p></details>
+    <div class="answer-box" data-answer-hash="61860755">
+      <label for="m8-stage1">Your answer (cm³):</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 — The Final Word</p>
+    <div class="puzzle">
+      <p>Add together every digit in your Stage 1 answer. If the result has two digits, add those digits together too, and keep going until only ONE digit is left — that's your shift number.</p>
+      <p>Now decode this note Elena taped to the display case, by shifting every letter BACKWARD through the alphabet by your shift number (so if your shift number were 1, B would become A, C would become B, and so on):</p>
+      <div class="code-note">MKPFPGUU</div>
+      <p>Type the decoded word — it's the real prize this whole case was about.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Example: if your Stage 1 answer were 1234, you'd add 1+2+3+4 = 10, then 1+0 = 1 — keep adding digits until only one is left.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Shifting backward means each letter moves a few steps earlier in the alphabet. Try shifting just the first letter first, to check you've got the right number of steps.</p></details>
+    <div class="answer-box" data-answer-hash="ae84d384">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Golden Crust Bakery didn't fall for the fake sponsorship, and the Golden Victoria Sponge made it to the judges' table after all. But the biggest win came after: Elena shared Grandma Rosa's recipe, and a table of warm samples, with the whole neighborhood. The final word you decoded is exactly what made that possible.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

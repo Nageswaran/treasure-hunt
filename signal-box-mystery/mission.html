@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Signal Box Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /*
+    THEMING: railway signal box — deep signal-red accent with an iron-dark shade.
+  */
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #A8342A;
+    --accent-dark: #6E1F18;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .table-wrap { overflow-x: auto; margin: 0.9rem 0; }
+  .case-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; min-width: 460px; }
+  .case-table th, .case-table td { border: 1px solid rgba(0,0,0,0.15); padding: 0.45rem 0.6rem; text-align: left; }
+  .case-table th { background: var(--paper-dark); font-family: 'Special Elite', monospace; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .case-table td.steam { font-weight: 700; color: var(--accent-dark); }
+  .map-link {
+    display: inline-block;
+    margin: 0.6rem 0 0.2rem;
+    padding: 0.55rem 0.9rem;
+    background: var(--accent);
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .map-link:hover { background: var(--accent-dark); }
+  .notebook {
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent-dark);
+    padding: 0.7rem 1rem;
+    margin: 0.7rem 0;
+    font-style: italic;
+  }
+  .notebook p { margin: 0.35rem 0; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0; }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Signal Box Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  <p style="margin:0 0 0.7rem;">Alfred Hooper has kept the Millbrook Junction signal box for thirty-one years. Tonight is the biggest night of his career: a heritage steam special is due to run its anniversary route, and every signal, platform, and timetable has to be exactly right.</p>
+  <p style="margin:0;">But this morning, Alfred didn't open the box. His lamp is still lit. His notebook is still on the desk, half-written. You've been called in as a junior railway detective to follow his notes, timetables, and signal logs — find out what happened to Alfred, and get that train running safely tonight.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Departures Board</h2>
+    <div class="puzzle">
+      <p>Alfred's notebook is open to today's page. In shaky handwriting, it says:</p>
+      <div class="notebook"><p>"Whatever else happens — make sure the ANNIVERSARY SPECIAL leaves from the right platform today. She's not the only steam engine getting fired up this afternoon, mind. Don't mix her up with the other one."</p></div>
+      <p>Here's today's departures board from Sheffield Park, the station hosting tonight's celebration. Read it carefully — there are two steam services today, not one.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="case-table">
+        <thead>
+          <tr><th>Time</th><th>Service</th><th>Platform</th><th>Calls at</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>09:05</td><td>Local (diesel)</td><td>1</td><td>Horsted Keynes, Kingscote, East Grinstead</td></tr>
+          <tr><td>09:45</td><td>Local (diesel)</td><td>2</td><td>Kingscote only</td></tr>
+          <tr><td>10:30</td><td class="steam">ANNIVERSARY SPECIAL (steam)</td><td>3</td><td>Horsted Keynes, Kingscote, East Grinstead</td></tr>
+          <tr><td>11:15</td><td>Local (diesel)</td><td>1</td><td>Horsted Keynes, Kingscote, East Grinstead</td></tr>
+          <tr><td>13:00</td><td>Local (diesel)</td><td>2</td><td>Kingscote only</td></tr>
+          <tr><td>16:00</td><td class="steam">EVENING GALA SPECIAL (steam)</td><td>2</td><td>Horsted Keynes, East Grinstead</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="clue-caption">Find the row for the ANNIVERSARY SPECIAL — not the Evening Gala Special. Which platform number is written next to it?</div>
+    <details class="hint"><summary>Hint 1</summary><p>Two rows mention a steam engine. Read the "Service" column word by word — only one row says ANNIVERSARY.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Meridian at Sheffield Park</h2>
+    <div class="puzzle">
+      <p>Tucked in the notebook is a scrap of paper with coordinates on it, and nothing else:</p>
+      <div class="notebook"><p>50.9956417° N, 0.0010722° W — the real station where tonight's special begins.</p></div>
+      <p>Open the map link below. If you can, switch it to satellite view so you can see the station and the river next to it clearly.</p>
+      <p>This station sits almost exactly on top of one very famous invisible line. That line runs from the North Pole all the way to the South Pole. It passes straight through Greenwich, London — and every time zone on Earth is measured starting from it.</p>
+      <p>That line has two names: a local one (named after the London area it passes through) and a global one used the world over. Type the <strong>global</strong> name here — two words, starting with "P".</p>
+    </div>
+    <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=50.9956417,-0.0010722" target="_blank" rel="noopener">📍 Open the coordinates in Google Maps</a>
+    <div class="clue-caption">Tip: searching the station's name plus the word "line" will also turn up plenty about it.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Sheffield Park station meridian" if the map alone doesn't spell it out for you.</p></details>
+    <div class="answer-box" data-answer-hash="8b31e44f">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The heritage line hosting tonight's special was the first standard-gauge steam railway in the world to be brought back from closure and reopened for the public — its very first train ran on 7 August 1960.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The First Steam Whistle</h2>
+    <div class="puzzle">
+      <p>A newspaper clipping falls out of the notebook. Alfred had underlined one sentence: "Every steam railway owes something to the very first one."</p>
+      <p>Search to find out: in 1825, one small steam locomotive pulled the world's very first passenger train on the world's first public railway to use steam engines. That locomotive is still famous today, and it's usually known by one short name.</p>
+      <p>What is that locomotive's short, well-known name? (One word is enough — you don't need to add "No. 1".)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "world's first public railway 1825" and look for the name of the locomotive built by George Stephenson.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Its short name describes exactly what it did that day: it got things moving.</p></details>
+    <div class="answer-box" data-answer-hash="eb956914">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? On that very first passenger run in 1825, a man on horseback rode ahead of the train, waving a flag to warn people it was coming — trains were so new that nobody quite knew what to expect yet.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Full Length of the Line</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one! Tonight, the Anniversary Special will run the <strong>entire length</strong> of the real heritage line hosting the celebration, from end to end.</p>
+      <p>Search to find out how many miles long that whole line is, from Sheffield Park to East Grinstead.</p>
+      <p>She leaves Sheffield Park at 10:30, moving at a steady 22 miles per hour the whole time she's running. Partway along, she stops for exactly 12 minutes to take on water. Counting the water stop, what time does she reach East Grinstead? Answer in 24-hour time, like 13:05.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First work out how long the moving part of the journey takes: distance ÷ speed. Then add the water stop on top.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The line's real length divides evenly by 22 — that's not an accident.</p></details>
+    <div class="answer-box" data-answer-hash="dafd7a0">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Flags in the Fog</h2>
+    <div class="puzzle">
+      <p>Under a loose floorboard, you find one more page from Alfred's notebook. Instead of words, it's covered in little drawings — pairs of flags, each pointing a different way. Signalmen used to send whole messages like this, one letter at a time, long before radios and phones.</p>
+      <p><strong>Agent's Notebook — worth remembering:</strong> whatever this message says, it's clearly something Alfred wanted nobody to forget.</p>
+      <p>Each drawing below shows a signalman holding a dark-red flag in his RIGHT hand and a brass-yellow flag in his LEFT hand. Every letter is a different pair of clock positions. Use the key to work out each letter, then read the message.</p>
+    </div>
+
+    <p style="font-size:0.85rem; font-weight:700; margin:1rem 0 0.3rem;">🔑 Flag key</p>
+    <svg class="clue-diagram" viewBox="0 0 560 155" width="560" height="155" role="img" aria-label="Flag semaphore key showing seven letters, each as a pair of flag positions">
+      <!-- S: right 3, left 6 -->
+      <g>
+        <line x1="40" y1="55" x2="66" y2="55" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/>
+        <rect x="62" y="51" width="8" height="8" fill="#A8342A"/>
+        <line x1="40" y1="55" x2="40" y2="81" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/>
+        <rect x="36" y="77" width="8" height="8" fill="#B5792B"/>
+        <circle cx="40" cy="55" r="4" fill="#2B2A24"/>
+        <text x="40" y="115" text-anchor="middle" font-size="16" font-weight="700">S</text>
+        <text x="40" y="132" text-anchor="middle" font-size="10">R:3 L:6</text>
+      </g>
+      <!-- I: right 1:30, left 9 -->
+      <g>
+        <line x1="120" y1="55" x2="138" y2="37" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/>
+        <rect x="134" y="33" width="8" height="8" fill="#A8342A"/>
+        <line x1="120" y1="55" x2="94" y2="55" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/>
+        <rect x="90" y="51" width="8" height="8" fill="#B5792B"/>
+        <circle cx="120" cy="55" r="4" fill="#2B2A24"/>
+        <text x="120" y="115" text-anchor="middle" font-size="16" font-weight="700">I</text>
+        <text x="120" y="132" text-anchor="middle" font-size="10">R:1:30 L:9</text>
+      </g>
+      <!-- G: right 4:30, left 12 -->
+      <g>
+        <line x1="200" y1="55" x2="218" y2="73" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/>
+        <rect x="214" y="69" width="8" height="8" fill="#A8342A"/>
+        <line x1="200" y1="55" x2="200" y2="29" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/>
+        <rect x="196" y="25" width="8" height="8" fill="#B5792B"/>
+        <circle cx="200" cy="55" r="4" fill="#2B2A24"/>
+        <text x="200" y="115" text-anchor="middle" font-size="16" font-weight="700">G</text>
+        <text x="200" y="132" text-anchor="middle" font-size="10">R:4:30 L:12</text>
+      </g>
+      <!-- N: right 6, left 3 -->
+      <g>
+        <line x1="280" y1="55" x2="280" y2="81" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/>
+        <rect x="276" y="77" width="8" height="8" fill="#A8342A"/>
+        <line x1="280" y1="55" x2="306" y2="55" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/>
+        <rect x="302" y="51" width="8" height="8" fill="#B5792B"/>
+        <circle cx="280" cy="55" r="4" fill="#2B2A24"/>
+        <text x="280" y="115" text-anchor="middle" font-size="16" font-weight="700">N</text>
+        <text x="280" y="132" text-anchor="middle" font-size="10">R:6 L:3</text>
+      </g>
+      <!-- A: right 12, left 7:30 -->
+      <g>
+        <line x1="360" y1="55" x2="360" y2="29" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/>
+        <rect x="356" y="25" width="8" height="8" fill="#A8342A"/>
+        <line x1="360" y1="55" x2="342" y2="73" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/>
+        <rect x="338" y="69" width="8" height="8" fill="#B5792B"/>
+        <circle cx="360" cy="55" r="4" fill="#2B2A24"/>
+        <text x="360" y="115" text-anchor="middle" font-size="16" font-weight="700">A</text>
+        <text x="360" y="132" text-anchor="middle" font-size="10">R:12 L:7:30</text>
+      </g>
+      <!-- L: right 9, left 10:30 -->
+      <g>
+        <line x1="440" y1="55" x2="414" y2="55" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/>
+        <rect x="410" y="51" width="8" height="8" fill="#A8342A"/>
+        <line x1="440" y1="55" x2="422" y2="37" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/>
+        <rect x="418" y="33" width="8" height="8" fill="#B5792B"/>
+        <circle cx="440" cy="55" r="4" fill="#2B2A24"/>
+        <text x="440" y="115" text-anchor="middle" font-size="16" font-weight="700">L</text>
+        <text x="440" y="132" text-anchor="middle" font-size="10">R:9 L:10:30</text>
+      </g>
+      <!-- E: right 7:30, left 1:30 -->
+      <g>
+        <line x1="520" y1="55" x2="502" y2="73" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/>
+        <rect x="498" y="69" width="8" height="8" fill="#A8342A"/>
+        <line x1="520" y1="55" x2="538" y2="37" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/>
+        <rect x="534" y="33" width="8" height="8" fill="#B5792B"/>
+        <circle cx="520" cy="55" r="4" fill="#2B2A24"/>
+        <text x="520" y="115" text-anchor="middle" font-size="16" font-weight="700">E</text>
+        <text x="520" y="132" text-anchor="middle" font-size="10">R:7:30 L:1:30</text>
+      </g>
+    </svg>
+    <div class="clue-caption">Dark red = right-hand flag. Brass yellow = left-hand flag. Positions are given as clock times (12 = straight up, 6 = straight down, 3 = out to that side, and so on).</div>
+
+    <p style="font-size:0.85rem; font-weight:700; margin:1.2rem 0 0.3rem;">📩 The coded message</p>
+    <svg class="clue-diagram" viewBox="0 0 640 130" width="640" height="130" role="img" aria-label="Ten flag-position icons in a row, spelling a coded message using the key above">
+      <!-- 1: S -->
+      <g><line x1="30" y1="55" x2="56" y2="55" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="52" y="51" width="8" height="8" fill="#A8342A"/><line x1="30" y1="55" x2="30" y2="81" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="26" y="77" width="8" height="8" fill="#B5792B"/><circle cx="30" cy="55" r="4" fill="#2B2A24"/><text x="30" y="110" text-anchor="middle" font-size="12">1</text></g>
+      <!-- 2: I -->
+      <g><line x1="86" y1="55" x2="104" y2="37" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="100" y="33" width="8" height="8" fill="#A8342A"/><line x1="86" y1="55" x2="60" y2="55" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="56" y="51" width="8" height="8" fill="#B5792B"/><circle cx="86" cy="55" r="4" fill="#2B2A24"/><text x="86" y="110" text-anchor="middle" font-size="12">2</text></g>
+      <!-- 3: G -->
+      <g><line x1="142" y1="55" x2="160" y2="73" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="156" y="69" width="8" height="8" fill="#A8342A"/><line x1="142" y1="55" x2="142" y2="29" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="138" y="25" width="8" height="8" fill="#B5792B"/><circle cx="142" cy="55" r="4" fill="#2B2A24"/><text x="142" y="110" text-anchor="middle" font-size="12">3</text></g>
+      <!-- 4: N -->
+      <g><line x1="198" y1="55" x2="198" y2="81" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="194" y="77" width="8" height="8" fill="#A8342A"/><line x1="198" y1="55" x2="224" y2="55" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="220" y="51" width="8" height="8" fill="#B5792B"/><circle cx="198" cy="55" r="4" fill="#2B2A24"/><text x="198" y="110" text-anchor="middle" font-size="12">4</text></g>
+      <!-- 5: A -->
+      <g><line x1="254" y1="55" x2="254" y2="29" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="250" y="25" width="8" height="8" fill="#A8342A"/><line x1="254" y1="55" x2="236" y2="73" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="232" y="69" width="8" height="8" fill="#B5792B"/><circle cx="254" cy="55" r="4" fill="#2B2A24"/><text x="254" y="110" text-anchor="middle" font-size="12">5</text></g>
+      <!-- 6: L -->
+      <g><line x1="310" y1="55" x2="284" y2="55" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="280" y="51" width="8" height="8" fill="#A8342A"/><line x1="310" y1="55" x2="292" y2="37" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="288" y="33" width="8" height="8" fill="#B5792B"/><circle cx="310" cy="55" r="4" fill="#2B2A24"/><text x="310" y="110" text-anchor="middle" font-size="12">6</text></g>
+      <!-- gap divider -->
+      <line x1="352" y1="30" x2="352" y2="90" stroke="#2B2A24" stroke-width="2" stroke-dasharray="3,4" opacity="0.4"/>
+      <!-- 7: N -->
+      <g><line x1="400" y1="55" x2="400" y2="81" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="396" y="77" width="8" height="8" fill="#A8342A"/><line x1="400" y1="55" x2="426" y2="55" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="422" y="51" width="8" height="8" fill="#B5792B"/><circle cx="400" cy="55" r="4" fill="#2B2A24"/><text x="400" y="110" text-anchor="middle" font-size="12">7</text></g>
+      <!-- 8: I -->
+      <g><line x1="456" y1="55" x2="474" y2="37" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="470" y="33" width="8" height="8" fill="#A8342A"/><line x1="456" y1="55" x2="430" y2="55" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="426" y="51" width="8" height="8" fill="#B5792B"/><circle cx="456" cy="55" r="4" fill="#2B2A24"/><text x="456" y="110" text-anchor="middle" font-size="12">8</text></g>
+      <!-- 9: N -->
+      <g><line x1="512" y1="55" x2="512" y2="81" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="508" y="77" width="8" height="8" fill="#A8342A"/><line x1="512" y1="55" x2="538" y2="55" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="534" y="51" width="8" height="8" fill="#B5792B"/><circle cx="512" cy="55" r="4" fill="#2B2A24"/><text x="512" y="110" text-anchor="middle" font-size="12">9</text></g>
+      <!-- 10: E -->
+      <g><line x1="588" y1="55" x2="570" y2="73" stroke="#A8342A" stroke-width="4" stroke-linecap="round"/><rect x="566" y="69" width="8" height="8" fill="#A8342A"/><line x1="588" y1="55" x2="606" y2="37" stroke="#B5792B" stroke-width="4" stroke-linecap="round"/><rect x="602" y="33" width="8" height="8" fill="#B5792B"/><circle cx="588" cy="55" r="4" fill="#2B2A24"/><text x="588" y="110" text-anchor="middle" font-size="12">10</text></g>
+    </svg>
+    <div class="clue-caption">Decode all ten flag-pairs using the key above. The dashed line marks a gap between two words. Type the full message below, both words, with a space between them.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Go icon by icon. For each one, find the matching (right, left) pair in the key above — that pair only ever means one letter.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The second word isn't a digit — it's a number spelled out in letters.</p></details>
+    <div class="answer-box" data-answer-hash="8f61153">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? On old railway signals, the "all clear" position didn't show a green light like you might expect — at night it showed a plain white light. Green originally meant "caution," not "go"!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Ticket Clerk's Dilemma</h2>
+    <div class="puzzle">
+      <p>At the ticket window, a family of four is stuck. They need help deciding what to buy for today's trip: two adults and two children, riding out to the celebration and straight back — one round trip, no more.</p>
+      <p>The clerk lays out two options:</p>
+    </div>
+    <div class="table-wrap">
+      <table class="case-table">
+        <thead><tr><th>Option</th><th>What it costs</th><th>What it covers</th></tr></thead>
+        <tbody>
+          <tr><td>Individual tickets</td><td>£9 per adult, £5 per child</td><td>One round trip only</td></tr>
+          <tr><td>Family Day Rover</td><td>£32 flat, whole family</td><td>Unlimited rides, all day long</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notebook"><p>The clerk grins: "The Rover sounds brilliant, doesn't it — unlimited rides! But work out the sums the old-fashioned way before you decide what this family should buy."</p></div>
+    <div class="puzzle">
+      <p>This family is only taking one round trip today. Work out the cost of individual tickets for all four of them, and compare it to the Family Day Rover. How many pounds would they save by picking the cheaper option? Type just the number (no £ sign).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add up 2 adult tickets and 2 child tickets first. Then compare that total to £32.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>"Unlimited rides" is only worth paying extra for if you're actually going to ride more than once.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG "AHA!"</span>
+    <h2>The Vanished Departure</h2>
+    <div class="puzzle">
+      <p>The very first page of Alfred's logbook is torn out — the page that should show this morning's original departure time from Oakford. But the later pages survived, all in a jumble. Nobody wrote down any other clock time except the very last one.</p>
+      <p>Read all five scraps below. Work <strong>backward</strong> from the one time you know, undoing each step, until you reach the missing departure time. (Working forward won't help — you don't have a starting time to work forward from!)</p>
+    </div>
+    <div class="notebook">
+      <p>"Millbrook Junction, 4:15 pm — she rolled in right on the nose, whistle blowing, crowds cheering."</p>
+      <p>"Before the final approach, there's always a compulsory 10-minute signal check just outside the junction. Happens every single run, rain or shine."</p>
+      <p>"The last stretch of track, from Ferndale Halt to the junction, takes exactly 25 minutes at running speed."</p>
+      <p>"And the very first leg, from Oakford, always takes 45 minutes when everything runs to plan — which, my note says, it did today."</p>
+      <p>"At Ferndale Halt, the fireman always takes on water — a fixed 15-minute stop, timetabled to the minute."</p>
+    </div>
+    <div class="puzzle">
+      <p>What time did the Anniversary Special originally leave Oakford this morning? Answer in 24-hour time, like 09:15.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start from 4:15 pm and undo the LAST thing that happened before arrival first. Which scrap describes that?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Order of events, earliest to latest: leave Oakford → arrive Ferndale Halt → water stop → leave Ferndale Halt → signal check → arrive Millbrook Junction. Subtract each time, one at a time, from the end.</p></details>
+    <div class="answer-box" data-answer-hash="9ffea8d2">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Signal Shed</h2>
+    <div class="puzzle">
+      <p>Following the last of Alfred's clues, you find him — safe, if a little cold and very glad to see you. He'd climbed out to check a stuck signal lever last night, slipped in the dark, and twisted his ankle. He's been sheltering in the old signal shed ever since, unable to walk back, keeping himself busy the only way he could: with his notebook and his flags.</p>
+      <p>There's just one thing left to do before the Anniversary Special can run: unlock the signal shed's old parts cabinet, where the spare lamp oil is kept, so tonight's train has light in every lantern.</p>
+    </div>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>The cabinet has an old combination lock. Alfred calls out the rule: "It's the number of the signal from my coded notebook page — multiply it by the six carriages on tonight's Anniversary Special."</p>
+      <p>What two-digit code unlocks the cabinet?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Somewhere earlier in your case notes, a coded message spelled out a signal's number. Scroll back and find it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The code is that signal number, multiplied by 6.</p></details>
+    <div class="answer-box" data-answer-hash="87e146ec">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>The cabinet swings open. Taped inside the lid is a numbered list, worn soft from years of Alfred's thumb running over it — words he says every good signalman needs:</p>
+      <div class="notebook">
+        <p>1. Curiosity &nbsp; 2. Patience &nbsp; 3. Courage &nbsp; 4. Honesty &nbsp; 5. Discovery &nbsp; 6. Focus<br>
+        7. Creativity &nbsp; 8. Bravery &nbsp; 9. Perseverance &nbsp; 10. Teamwork &nbsp; 11. Kindness &nbsp; 12. Wisdom</p>
+      </div>
+      <p>Take your two-digit code from Stage 1. Add its two digits together to get a single number. Find the word at that number on Alfred's list. That word is your final answer.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>If your Stage 1 code was, say, 26, you'd add 2 + 6 = 8.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Add the digits of your actual Stage 1 code, then count down the list to that number.</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Alfred never once gave up on that stuck signal, even alone in the cold and the dark — and you never gave up following his trail. Tonight, the Anniversary Special runs exactly on time, lanterns lit, whistle blowing. That's what <strong>perseverance</strong> looks like. Case closed, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
