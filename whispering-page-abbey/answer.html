@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Answer Key — The Abbey's Whispering Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #7A2338;
+    --stamp-red: #A33B2D;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+  }
+  h1, .banner, .label-eyebrow { font-family: 'Special Elite', monospace; }
+  .banner {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    border: 3px solid var(--stamp-red);
+    color: var(--stamp-red);
+    padding: 0.9rem 1rem;
+    transform: rotate(-1deg);
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2rem; }
+  .case-header h1 { font-size: clamp(1.5rem, 4.5vw, 2.1rem); margin: 0; }
+  .case-header .subtitle { color: rgba(0,0,0,0.55); font-size: 0.9rem; margin-top: 0.4rem; }
+  .answer-card {
+    max-width: 700px;
+    margin: 0 auto 1.6rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    padding: 1.5rem 1.6rem;
+  }
+  .answer-card .eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+  .answer-card h2 { margin: 0.2rem 0 0.9rem; font-size: 1.15rem; }
+  .answer {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+    background: var(--paper-dark);
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 3px;
+  }
+  .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(0,0,0,0.5); margin-top: 1rem; }
+  .answer-card p { margin: 0.35rem 0 0; }
+  .answer-card a { color: var(--accent); }
+  .stage-divider { border-top: 1px dashed rgba(0,0,0,0.15); margin-top: 1.2rem; padding-top: 0.9rem; }
+</style>
+</head>
+<body>
+
+<div class="banner">🔒 CONFIDENTIAL — PARENT / GUARDIAN ANSWER KEY — DO NOT SHOW TO THE CHILD</div>
+
+<div class="case-header">
+  <h1>The Abbey's Whispering Page — Answer Key</h1>
+  <div class="subtitle">Keep this closed until your agent is stuck or finished. Matches mission.html in this same folder.</div>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 01 &middot; Easy</div>
+  <h2>The Manuscript That Inspired It All</h2>
+  <div class="answer">Answer: Book of Kells</div>
+  <div class="label">How to get there</div>
+  <p>Search terms like "famous illuminated Irish gospel manuscript Dublin" or "800 AD Celtic knotwork gospel book Dublin university" lead directly to the Book of Kells: a lavishly decorated copy of the four Gospels, created around 800 AD, on permanent display at Trinity College Dublin.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>No other manuscript matches all four clues at once (four Gospels + c. 800 AD + Celtic knotwork + kept in Dublin). The child only needs to type the name; minor variants like "the Book of Kells" won't match the stored hash, so the puzzle text explicitly asks for just "Book of Kells."</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search against Trinity College Dublin's own library pages (tcd.ie/library) and Wikipedia's Book of Kells article: created c. 800 AD, four Gospels, Celtic knotwork decoration, held at Trinity College Dublin since 1661.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 02 &middot; Easy</div>
+  <h2>The Four Faces of the Gospels</h2>
+  <div class="answer">Answer: lion</div>
+  <div class="label">How to get there</div>
+  <p>Searching "four evangelist symbols Mark" (or "Book of Kells evangelist symbols") shows the traditional pairing used across medieval Christian art and in the Book of Kells itself: Matthew = winged man/angel, Mark = lion, Luke = ox/calf, John = eagle.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>This symbolic scheme (traced to St. Jerome, c. 347-420 AD) is the one that "prevailed in later manuscripts and in Western Art," including the Book of Kells, so any reasonably careful search converges on lion for Mark specifically.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search: multiple sources (Visit Trinity's Book of Kells blog, Wikipedia's "Four Evangelists" article) confirm Mark = lion under the standard Jerome scheme used in the Book of Kells' evangelist portraits.</p>
+  <p><strong>Note:</strong> this mission originally called for a downloaded manuscript photo, but this environment's network sandbox blocks all outbound image/file downloads (curl and WebFetch both returned policy-blocked "EGRESS_BLOCKED" / 403 errors for every external host tested, including Wikimedia Commons, Wikipedia, and Trinity's own digital collections). Per the mission-generator skill's own fallback rule ("if you can't get a confident, unambiguous detail from a real image, drop the image and use a non-image puzzle instead"), this slot was replaced with a text-based research puzzle instead. No images/ folder was created.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 03 &middot; Medium (Foundational logic — classification / odd-one-out)</div>
+  <h2>Brother Anselm's Workbench</h2>
+  <div class="answer">Answer: printing press</div>
+  <div class="label">How to get there</div>
+  <p>Quill pens, iron-gall ink, gold leaf, and vellum were all standard tools of an early medieval scriptorium. The printing press is anachronistic for the year 800 — it does not belong with the other four.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Every other item is independently verifiable as period-correct scriptorium material; the printing press is the sole item whose invention postdates the year 800 by roughly six and a half centuries, giving one clean, checkable odd-one-out.</p>
+  <div class="label">Source / fact used</div>
+  <p>General history knowledge, cross-checked via web search: the movable-type printing press is credited to Johannes Gutenberg, c. 1440s, roughly 640 years after the c. 800 AD scriptorium setting of this puzzle.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 04 &middot; Medium (Mathematics — geometry / composite-shape area)</div>
+  <h2>The Vellum Page, Measured</h2>
+  <div class="answer">Answer: 908 (square centimeters)</div>
+  <div class="label">How to get there</div>
+  <p>Outer rectangle area = 34 cm x 50 cm = 1700 cm². Inner rectangle (text block) area = 22 cm x 36 cm = 792 cm². Border area = outer area minus inner area = 1700 - 792 = <strong>908 cm²</strong>. (For reference, the margins work out to a uniform 6 cm on the left/right sides and 7 cm on the top/bottom, so the diagram is fully self-consistent with the given labels.)</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Both rectangles' dimensions are given directly on the diagram, so there is exactly one way to compute outer area, inner area, and their difference. The puzzle explicitly asks for the border area (not perimeter or the text-block area), so no other reading of "find the area of the border" produces a different single number.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained arithmetic — outer area 34x50=1700, inner area 22x36=792, difference 1700-792=908 — verified by direct recomputation. These exact outer dimensions (34 cm x 50 cm) are reused later in the Grand Finale, Stage 2.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 05 &middot; Medium (Dutch language — synonyms/antonyms)</div>
+  <h2>A Note in the Guestbook</h2>
+  <div class="answer">Answer: nieuw</div>
+  <div class="label">How to get there</div>
+  <p>"Oud" (old), "eeuwenoud" (centuries old / age-old), and "antiek" (antique) all describe something old. "Nieuw" means "new" — the opposite of the other three.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>This is basic, well-established Dutch vocabulary (no web search needed to verify): three synonyms for "old" and one clear antonym. There is no other word in the list that could be read as the odd one out.</p>
+  <div class="label">Source / fact used</div>
+  <p>Standard Dutch vocabulary: oud = old, eeuwenoud = age-old/centuries old, antiek = antique, nieuw = new.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 06 &middot; Hard (Cryptography + Mathematics — Ogham cipher with a computed shift)</div>
+  <h2>The Monk's Secret Notch-Code</h2>
+  <div class="answer">Answer: Folio 19</div>
+  <div class="label">How to get there</div>
+  <p><strong>Step 1 — find the shift:</strong> 1150 - 1146 = 4.</p>
+  <p><strong>Step 2 — decode the raw Ogham notches</strong> using the key (Family 1 = above line = B,L,F,S,N; Family 2 = below line = H,D,T,C,Q; Family 3 = through line = M,G,NG,Z,R; Family 4 = diagonal = A,O,U,E,I). Reading the diagram left to right gives the scrambled letters: <strong>D B H S B &nbsp; C S C F G F F C</strong>.</p>
+  <p><strong>Step 3 — shift each letter backward by 4</strong> through the 20-letter Ogham order (B-L-F-S-N-H-D-T-C-Q-M-G-NG-Z-R-A-O-U-E-I, wrapping around):<br>
+  D&rarr;F, B&rarr;O, H&rarr;L, S&rarr;I, B&rarr;O &nbsp;|&nbsp; C&rarr;N, S&rarr;I, C&rarr;N, F&rarr;E, G&rarr;T, F&rarr;E, F&rarr;E, C&rarr;N<br>
+  Result: <strong>F O L I O &nbsp; N I N E T E E N</strong> = "FOLIO NINETEEN," i.e. Folio 19.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>The shift is a single forced number from real subtraction (1150-1146=4), the Ogham decoder key is a fixed real alphabet with no ambiguity between letters (each stroke count/position maps to exactly one letter), and shifting backward by exactly 4 through the 20-letter order is a deterministic, reversible operation — there is exactly one plaintext this cipher decodes to. Verified end-to-end: encoding "FOLIO NINETEEN" forward by 4 through the same order reproduces the exact cipher sequence shown in the diagram.</p>
+  <div class="label">Source / fact used</div>
+  <p>The real Ogham alphabet's structure (20 letters, 4 families/"aicme" of 5, each letter a cluster of 1-5 strokes along a stem line, traditional order B-L-F-S-N / H-D-T-C-Q / M-G-Ng-Z-R / A-O-U-E-I) was verified via web search (Omniglot's Ogham page and Wikipedia's Ogham article, cross-referenced). The Caesar-style shift-by-a-computed-number is an invented puzzle mechanic layered on top of the real alphabet, not a claim about historical Ogham usage.</p>
+  <p><strong>Delayed recall:</strong> "Folio 19" is the detail planted here for later use, unprompted, in the Grand Finale (Stage 1).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 07 &middot; Hard (Logical Reasoning — Intermediate: knights and knaves)</div>
+  <h2>Three Monks, One Truth</h2>
+  <div class="answer">Answer: Brendan</div>
+  <div class="label">How to get there</div>
+  <p>Let H = who last held the page. Aidan's statement is true iff H=Brendan. Brendan's statement is true iff H&ne;Brendan (so Aidan and Brendan's truth-values are always exact opposites of each other, whichever holder is real). Ciaran's statement is true iff Aidan is lying.</p>
+  <p>Test all three possible holders under the rule "exactly one of the three tells the truth":</p>
+  <p>&bull; If H=Aidan: Aidan lies, Brendan tells truth, and Ciaran (true iff Aidan lies) also tells truth &rarr; 2 truth-tellers. Rejected.<br>
+  &bull; If H=Brendan: Aidan tells truth, Brendan lies, Ciaran (true iff Aidan lies) is false &rarr; exactly 1 truth-teller (Aidan). <strong>Fits.</strong><br>
+  &bull; If H=Ciaran: Aidan lies, Brendan tells truth, Ciaran also tells truth &rarr; 2 truth-tellers. Rejected.</p>
+  <p>Only H=Brendan produces exactly one truth-teller, so Brendan last held the page.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>All three candidate holders were tested exhaustively; only one satisfies the given "exactly one truth-teller" constraint, so the solution is forced, not guessed.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained logic puzzle, solved by exhaustive case-check as shown above (no outside lookup required, per the skill's logical-reasoning rules).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 08 &middot; Hard (Critical Thinking &amp; Media Literacy + 2nd internet research)</div>
+  <h2>Two "Expert" Blurbs</h2>
+  <div class="answer">Answer: Trinity College Dublin</div>
+  <div class="label">How to get there</div>
+  <p>Blurb A is accurate: the Book of Kells was likely begun c. 800 AD by monks of the Columban community, probably starting on Iona before Viking raids (from 795 AD onward) pushed the community to Kells, and it has been kept at Trinity College Dublin since Bishop Henry Jones presented it there in 1661. Blurb B's single planted error is its claimed current location: the British Library in London. The real Book of Kells has never been housed at the British Library (that institution holds other treasures, such as the Lindisfarne Gospels — a different, though sometimes confused-with, manuscript). A quick search for "where is the Book of Kells kept today" resolves this immediately and unambiguously.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Where a specific, named physical object is currently held is a plain fact, not a matter of interpretation, and it is trivially confirmed by any reputable source (Trinity College Dublin's own site, Wikipedia, major news coverage of the exhibit). Blurb B is otherwise phrased very plausibly, which is exactly why the child must actually check rather than assume.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search: Trinity College Dublin's official library pages (tcd.ie/library/research-collections/book-of-kells.php) and Wikipedia both confirm the Book of Kells is held and displayed at Trinity College Dublin, Ireland, and has been since 1661 — not the British Library.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 09 &middot; Big "Aha!" (Logical Reasoning — Advanced: 4-category multi-constraint grid)</div>
+  <h2>The Night-Watch Grid</h2>
+  <div class="answer">Answer: Ciaran</div>
+  <div class="label">How to get there</div>
+  <p>Categories: monk, cell (Gate/Nave/Tower/Garden), pigment (gold leaf/red madder/blue lapis/green verdigris), day (Monday-Thursday).</p>
+  <p><strong>Clue 3</strong> fixes one row completely: Garden cell = green verdigris = the last of the four days = Thursday.</p>
+  <p><strong>Clue 1</strong> ("gold leaf's day + 2 = Tower cell's day") has two candidate day-pairs within Monday-Thursday: (Mon,Wed) or (Tue,Thu). The (Tue,Thu) option would put the Tower cell on Thursday — but Thursday is already taken by the Garden cell (clue 3), which is impossible since cells are distinct. So gold leaf = Monday and Tower cell = Wednesday.</p>
+  <p><strong>Clue 4</strong> ("red madder's day = gold leaf's day + 1") gives red madder = Tuesday. With Monday=gold, Tuesday=red, Thursday=green already placed, the only day left, Wednesday, must be blue lapis — matching the Tower cell (Wednesday) found above.</p>
+  <p>So far: Monday=gold/?cell, Tuesday=red/?cell, Wednesday=blue/Tower, Thursday=green/Garden. Only Gate and Nave remain, for Monday and Tuesday in some order.</p>
+  <p><strong>Clues 5 and 6 together</strong>: Aidan = gold leaf (clue 5), and the Gate cell = gold leaf (clue 6), so Aidan = Gate cell = Monday.</p>
+  <p>That leaves Nave cell = Tuesday = red madder, for whichever monk is not yet placed.</p>
+  <p><strong>Clue 2</strong>: Brendan is not Tower or Garden, so Brendan must be Gate or Nave — Gate is taken by Aidan, so Brendan = Nave = Tuesday = red madder.</p>
+  <p>Only Ciaran and Declan remain, for Tower (Wednesday, blue lapis) and Garden (Thursday, green verdigris). <strong>Clue 7</strong>: Ciaran did not tend the garden, so Ciaran = Tower = Wednesday, and Declan = Garden = Thursday.</p>
+  <p>Full solution: Aidan-Gate-gold leaf-Monday; Brendan-Nave-red madder-Tuesday; <strong>Ciaran-Tower-blue lapis-Wednesday</strong>; Declan-Garden-green verdigris-Thursday.</p>
+  <p>Since the page vanished during Wednesday night, the Wednesday watch-keeper, <strong>Ciaran</strong>, is the culprit.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Solved by hand from only the seven given clues (no branching guesses needed): clue 3 anchors one full row, clue 1 is disambiguated by the pigeonhole conflict with clue 3, clues 4-6 chain forward from there, and clues 2 and 7 resolve the final two-way splits. Every one of the 4x4=16 monk/cell/pigment/day assignments is pinned down, leaving exactly one consistent grid.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained multi-constraint logic grid, solved by hand as shown above (no outside lookup required, per the skill's logical-reasoning rules). Ciaran's cell (Tower) and day (Wednesday) both carry forward into the Grand Finale, Stage 1.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Grand Finale &middot; Multi-Stage</div>
+  <h2>The Whispering Page, Found</h2>
+  <div class="answer">Stage 1 answer: 22</div>
+  <div class="label">How to get there</div>
+  <p>Culprit Ciaran's watch-night was Wednesday = day-of-week number 3 (Monday=1, Tuesday=2, Wednesday=3, Thursday=4). Folio number from Mission 6 = 19. Cabinet number = 3 + 19 = <strong>22</strong>.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Both inputs (Wednesday=3, from Mission 9's forced solution; folio 19, from Mission 6's forced decode) are uniquely determined earlier in the case, and the addition rule stated in the puzzle text leaves only one possible total.</p>
+  <div class="label">Source / fact used</div>
+  <p>Depends directly on Mission 6 (folio number) and Mission 9 (culprit's watch-night) — this is the mission set's delayed-recall payoff, requiring both non-adjacent earlier missions.</p>
+
+  <div class="stage-divider">
+    <div class="answer">Stage 2 (final) answer: A</div>
+    <div class="label">How to get there</div>
+    <p>Mission 4 established the real Whispering Page's exact outer dimensions as 34 cm wide by 50 cm tall. Page A (34 cm x 50 cm) matches exactly. Page B (36 cm x 48 cm) does not match either dimension, even though both pages happen to share the same perimeter (2x(34+50)=168 cm = 2x(36+48)=168 cm) — a deliberate detail to make sure the child compares the actual width/height, not just a derived total, against their Mission 4 case notes.</p>
+    <div class="label">Why this is the only answer</div>
+    <p>Only Page A's stated width and height both match Mission 4's established outer rectangle exactly; Page B differs in both dimensions. This is a consistency check across two earlier missions' numbers, not a cipher or guess.</p>
+    <div class="label">Source / fact used</div>
+    <p>Depends directly on Mission 4's outer rectangle (34 cm x 50 cm), re-verified by direct comparison against the two candidate pages given in this stage.</p>
+    <div class="label">Reward revealed</div>
+    <p>The recovered page (Page A) bears an illuminated capital "S" — the first letter of the Latin word <em>Sapientia</em>, meaning "wisdom" (verified via web search: sapientia is the standard Latin word for wisdom, long personified in Latin scriptural and manuscript tradition, e.g. Proverbs 9). The closing text ties this directly to the case's reward value: <strong>wisdom</strong> — the patient, careful, clue-by-clue thinking the child used to crack the whole case.</p>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Abbey's Whispering Page — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #7A2338;
+    --accent-dark: #4F1622;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul { margin: 0.4rem 0 0.7rem; padding-left: 1.3rem; }
+  .puzzle li { margin: 0.25rem 0; }
+  .puzzle .key-box {
+    background: var(--paper-dark);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    margin: 0.7rem 0;
+    font-size: 0.95rem;
+  }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+  .stage-note { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-note:first-of-type { margin-top: 0; }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Abbey's Whispering Page</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 80-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p><strong>A quick note before you start:</strong> St. Brigid's Abbey, its little manuscript museum, and the "Whispering Page" itself are all made up for this case — they aren't real places or objects. But the tradition that inspired them is very real, and this case will send you looking up genuine facts about it more than once.</p>
+  <p>St. Brigid's Abbey has one prized treasure: an illuminated (richly decorated) page nicknamed the "Whispering Page," because faint handwritten notes in its margins only appear when raking, low light hits the vellum just right. Three days before the abbey's biggest public exhibition ever, the page has vanished from its display case. Archivist Niamh has asked you and your grown-up to help find it before the doors open. Read every clue closely — nothing here is wasted.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Manuscript That Inspired It All</h2>
+    <div class="puzzle">
+      <p>Before you search the abbey itself, Archivist Niamh wants you to understand what all the fuss is about. St. Brigid's own manuscript tradition was inspired by one real, very famous medieval book. Search the internet for a manuscript that matches every one of these real clues:</p>
+      <ul>
+        <li>It is a hand-written copy of the four Gospels.</li>
+        <li>It was made around the year 800 AD.</li>
+        <li>It is world-famous for its intricate, colorful Celtic knotwork illustrations.</li>
+        <li>Today, it is kept and displayed at a university in Dublin, Ireland.</li>
+      </ul>
+      <p>What is this real manuscript called? Type just its name, skipping extra words like "the" — for instance, you'd type "Mona Lisa," not "the famous Mona Lisa painting."</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "famous illuminated Irish gospel manuscript Dublin." The manuscript's name includes the small Irish town it's linked to.</p></details>
+    <div class="answer-box" data-answer-hash="bac1eab4">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Four Faces of the Gospels</h2>
+    <div class="puzzle">
+      <p>Archivist Niamh opens an old exhibition catalogue. In the real manuscript from Mission 1, each of the four Gospels opens with a full-page portrait of the writer who wrote it. Next to each writer sits a symbolic creature — a tradition used across medieval Christian art, not only in Ireland.</p>
+      <p>Search to find out: which single animal is the traditional symbol for the Evangelist Mark? Type just the animal's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This comes from a very old set of four symbols, one per Gospel writer. Try searching "four evangelist symbols Mark."</p></details>
+    <div class="answer-box" data-answer-hash="f2dead7f">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The real Book of Kells has 340 surviving pages, called folios (that's 680 pages if you count front and back), and is nearly 1,200 years old.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Brother Anselm's Workbench</h2>
+    <div class="puzzle">
+      <p>On the scriptorium workbench, Archivist Niamh has laid out five items: a quill pen, iron-gall ink, gold leaf, vellum (the animal-skin "paper" monks wrote on), and a printing press.</p>
+      <p>Four of these are things a real scriptorium monk, working around the year 800, would truly have used. One of them absolutely could not have been there yet. Which item doesn't belong? Type just that item's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Printing wasn't always done by machine. Think about when the printing press was actually invented — long before or long after the year 800?</p></details>
+    <div class="answer-box" data-answer-hash="ee51e077">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The brilliant blue in many old manuscripts came from a stone called lapis lazuli, mined in what is now Afghanistan and shipped a very long way to European monasteries. It sometimes cost more than gold, so illustrators saved it for only their most special pictures.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Vellum Page, Measured</h2>
+    <div class="puzzle">
+      <p>Archivist Niamh keeps careful records of every page's exact size. Right before it vanished, she had just finished measuring the Whispering Page. Its whole vellum sheet forms a rectangle. Inside that sheet, a smaller rectangle marks off the block of written text, leaving a decorated border all the way around it — just like the diagram below.</p>
+      <p><strong>Grab a pencil for this one.</strong> Find the area of the decorated border only (the gold-and-ink margin around the text), not the text block itself. Give your answer in square centimeters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 240 320" width="240" height="320"
+         role="img" aria-label="A rectangle representing the outer vellum page, 34 centimeters wide and 50 centimeters tall, with a smaller rectangle centered inside it representing the text block, 22 centimeters wide and 36 centimeters tall, leaving a decorated border between the two rectangles">
+      <rect x="35" y="30" width="170" height="250" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <rect x="65" y="65" width="110" height="180" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="120" y="20" text-anchor="middle" font-size="12">34 cm</text>
+      <text x="18" y="155" text-anchor="middle" font-size="12" transform="rotate(-90 18 155)">50 cm</text>
+      <text x="120" y="58" text-anchor="middle" font-size="11">22 cm</text>
+      <text x="52" y="155" text-anchor="middle" font-size="11" transform="rotate(-90 52 155)">36 cm</text>
+    </svg>
+    <div class="clue-caption">The outer rectangle is the whole vellum sheet. The dashed inner rectangle is the text block. The border is everything between the two.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Find the area of the whole outer rectangle first. Then find the area of the inner rectangle. What's left over is the border.</p></details>
+    <div class="answer-box" data-answer-hash="d5cac81c">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>A Note in the Guestbook</h2>
+    <div class="puzzle">
+      <p>While Archivist Niamh checks the visitors' log, you spot a note left last spring by a Dutch tourist named Sanne. She wrote four Dutch words to describe how old the manuscripts looked:</p>
+      <p class="key-box"><em>oud, eeuwenoud, antiek, nieuw</em></p>
+      <p>Three of these Dutch words mean roughly the same thing. One of them means the opposite. Which Dutch word does not belong? Type just that one Dutch word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>"Oud" means "old" in Dutch. Which of the four words means something different from "old"?</p></details>
+    <div class="answer-box" data-answer-hash="fa8f9a23">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Monk's Secret Notch-Code</h2>
+    <div class="puzzle">
+      <p>Tucked inside an old ledger, Archivist Niamh finds a strip of vellum scratched with strange notches — short lines cut along a straight stem-line, grouped in little clusters. She recognizes it at once: <strong>Ogham</strong>, the real ancient Irish alphabet, once used across Ireland many centuries ago. Its twenty letters are grouped into four families of five, and every letter is simply drawn as one to five short strokes.</p>
+      <p class="key-box">
+        <strong>The real Ogham decoder key:</strong><br>
+        Family 1 — strokes ABOVE the line: 1=B, 2=L, 3=F, 4=S, 5=N<br>
+        Family 2 — strokes BELOW the line: 1=H, 2=D, 3=T, 4=C, 5=Q<br>
+        Family 3 — strokes THROUGH the line: 1=M, 2=G, 3=NG, 4=Z, 5=R<br>
+        Family 4 — slanted strokes ACROSS the line (the vowels): 1=A, 2=O, 3=U, 4=E, 5=I
+      </p>
+      <p>But whoever scratched this note didn't write it in plain Ogham. They also shifted every letter forward along the full Ogham letter order — <strong>B, L, F, S, N, H, D, T, C, Q, M, G, NG, Z, R, A, O, U, E, I</strong> (and then wrapping back around to B again) — by a secret number of places.</p>
+      <p>To find that secret number: the abbey's foundation stone reads <strong>1146</strong>. A line scratched underneath it, added later, reads <strong>1150</strong>. Subtract to find the shift.</p>
+      <svg class="clue-diagram" viewBox="0 0 550 110" width="550" height="110" role="img" aria-label="A horizontal stem line with thirteen clusters of short notches drawn as ticks above, below, or through the line, in two groups separated by a gap">
+        <line x1="20" y1="60" x2="525" y2="60" stroke="#2B2A24" stroke-width="2"/>
+        <line x1="44.0" y1="60" x2="44.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="50.0" y1="60" x2="50.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="81.0" y1="45.0" x2="81.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="115.0" y1="60" x2="115.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="140.0" y1="45.0" x2="140.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="146.0" y1="45.0" x2="146.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="152.0" y1="45.0" x2="152.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="158.0" y1="45.0" x2="158.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="183.0" y1="45.0" x2="183.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="234.0" y1="60" x2="234.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="240.0" y1="60" x2="240.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="246.0" y1="60" x2="246.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="252.0" y1="60" x2="252.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="268.0" y1="45.0" x2="268.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="274.0" y1="45.0" x2="274.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="280.0" y1="45.0" x2="280.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="286.0" y1="45.0" x2="286.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="302.0" y1="60" x2="302.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="308.0" y1="60" x2="308.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="314.0" y1="60" x2="314.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="320.0" y1="60" x2="320.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="339.0" y1="45.0" x2="339.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="345.0" y1="45.0" x2="345.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="351.0" y1="45.0" x2="351.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="376.0" y1="45.0" x2="376.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="382.0" y1="45.0" x2="382.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="407.0" y1="45.0" x2="407.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="413.0" y1="45.0" x2="413.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="419.0" y1="45.0" x2="419.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="441.0" y1="45.0" x2="441.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="447.0" y1="45.0" x2="447.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="453.0" y1="45.0" x2="453.0" y2="60" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="472.0" y1="60" x2="472.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="478.0" y1="60" x2="478.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="484.0" y1="60" x2="484.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+        <line x1="490.0" y1="60" x2="490.0" y2="75.0" stroke="#2B2A24" stroke-width="2.4"/>
+      </svg>
+      <div class="clue-caption">Read left to right. There are two words, with a gap between them. First decode the raw notches into letters. Then shift each letter backward by your secret number, through the same 20-letter order, to reveal the true message — a folio number worth remembering.</div>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First just decode the raw notches into letters using the key — don't worry about the shift yet. Write down the scrambled letters, cluster by cluster.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you have the scrambled letters, shift each one backward by your secret number through the order B-L-F-S-N-H-D-T-C-Q-M-G-NG-Z-R-A-O-U-E-I. If you go past the start of the list, wrap around to the end.</p></details>
+    <div class="answer-box" data-answer-hash="e8f7a624">
+      <label for="m6-answer">Your final answer (format: "Folio " followed by the number in digits):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The real Ogham alphabet is nicknamed the "tree alphabet," because each of its 20 letters is named after a tree or shrub. The oldest surviving Ogham inscriptions, carved into standing stones, date back around 1,600 years.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Monks, One Truth</h2>
+    <div class="puzzle">
+      <p>Archivist Niamh gathers the three monks who work closest to the manuscript case: Brother Aidan, Brother Brendan, and Brother Ciaran. She already knows one important thing: exactly one of these three monks is telling the truth right now. The other two are lying.</p>
+      <p><strong>Brother Aidan says:</strong> "Brother Brendan was the last one holding the Whispering Page."<br>
+      <strong>Brother Brendan says:</strong> "I was not the last one holding the Whispering Page."<br>
+      <strong>Brother Ciaran says:</strong> "Brother Aidan is lying."</p>
+      <p>Using only these three statements and the fact that exactly one monk is telling the truth, work out: which monk last held the Whispering Page? Type just that monk's first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try assuming Brother Aidan is the one truth-teller. Does that make exactly one of the three statements true?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If Aidan tells the truth, then Brendan held the page — which makes Brendan's own statement false, as it should be. Now check what that means for Ciaran's statement about Aidan.</p></details>
+    <div class="answer-box" data-answer-hash="32f6ddbd">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two "Expert" Blurbs</h2>
+    <div class="puzzle">
+      <p>For the exhibition programme, two volunteer writers each submitted a short blurb about the real Book of Kells (the manuscript from Mission 1). Archivist Niamh isn't sure which one to print — only one is fully accurate.</p>
+      <p class="key-box"><strong>Blurb A:</strong> "The Book of Kells was likely begun around 800 AD by monks connected to the community founded by Saint Columba, possibly starting on the island of Iona before Viking raids pushed the monks to Kells, Ireland. It has been kept and displayed at Trinity College Dublin since the 1600s."</p>
+      <p class="key-box"><strong>Blurb B:</strong> "The Book of Kells was created around 800 AD by Irish monks, and is one of the world's most famous illuminated manuscripts. Today, it is kept and displayed at the British Library in London, alongside other treasures of medieval Britain."</p>
+      <p>Use a real, quick web search to check both blurbs. One of them gets a single fact wrong — a fact a fair search settles completely, not a matter of opinion. Where does the real Book of Kells actually live today? Type just the name of the place, skipping extra words — for instance, you'd type "Louvre Museum," not "the famous Louvre Museum in Paris."</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Both blurbs agree on when the manuscript was made. Search specifically for where it is kept and displayed right now, today.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Search "Book of Kells today where is it kept." A well-known university library in Ireland is the answer — not a museum in England.</p></details>
+    <div class="answer-box" data-answer-hash="fae0012d">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Night-Watch Grid</h2>
+    <div class="puzzle">
+      <p>The Whispering Page was still safely in its case Tuesday evening — Archivist Niamh checked it herself. By Thursday morning, it was gone. That means it was moved sometime during Wednesday night, while only one monk stood alone on night-watch in the scriptorium.</p>
+      <p>Four monks — Brother Aidan, Brother Brendan, Brother Ciaran, and Brother Declan — each have one night-watch cell, one pigment they're trained to mix, and one watch-night, Monday through Thursday, no two monks sharing any of these. Using only the clues below, work out who had watch on Wednesday night. That monk is your suspect.</p>
+      <ol>
+        <li>The monk who worked with gold leaf stood watch exactly two days before the monk assigned to the Tower cell.</li>
+        <li>Brother Brendan was not assigned the Tower cell or the Garden cell.</li>
+        <li>The monk in the Garden cell used green verdigris pigment, and had the very last watch-night of the four.</li>
+        <li>Whoever used red madder pigment stood watch the day right after the monk who used gold leaf.</li>
+        <li>Brother Aidan's pigment was gold leaf.</li>
+        <li>The monk in the Gate cell used gold leaf.</li>
+        <li>Brother Ciaran did not tend the garden.</li>
+      </ol>
+      <p>Which monk stood watch on Wednesday night? Type just that monk's first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 3 — it locks down one monk's cell, pigment, and day, all at once, for free.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Clues 1 and 4 only make sense once you know which day is "gold leaf's" day. Find that day first, then use clues 5 and 6 together to name that monk.</p></details>
+    <div class="answer-box" data-answer-hash="4513cec1">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Whispering Page, Found</h2>
+    <p class="stage-note">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Case file, almost complete. You know who secretly moved the Whispering Page overnight (Mission 9), and you know the folio number hidden in the monk's coded note (Mission 6) — if you jotted it down like a good detective would.</p>
+      <p>Now use both. The abbey's spare-vellum cabinets are numbered by a simple rule: take the day-of-week number of the culprit's watch-night (Monday = 1, Tuesday = 2, Wednesday = 3, Thursday = 4), and add it to the folio number you decoded earlier. That total is the cabinet number.</p>
+      <p>Which cabinet is it? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You already worked out which night the culprit stood watch, back in the logic grid. Turn that night into its number, then add your folio number to it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The culprit's watch-night was Wednesday. Monday=1, Tuesday=2, Wednesday=3, Thursday=4. Add that to the folio number.</p></details>
+    <div class="answer-box" data-answer-hash="8ff29ca5">
+      <label for="m10-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m10-stage1" type="text" placeholder="Type the cabinet number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-note">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>The cabinet isn't empty — it holds two illuminated vellum pages, side by side, each labeled "Whispering Page."</p>
+      <p><strong>Page A</strong> measures 34 cm wide and 50 cm tall.<br>
+      <strong>Page B</strong> measures 36 cm wide and 48 cm tall.</p>
+      <p>Only one of these matches, exactly, the outer measurements you carefully measured earlier in the case. Which page is the true Whispering Page — A or B?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Go back to the diagram you measured earlier in the case. What were the exact outer width and height of the real vellum page?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Check both numbers for each page, not just one. A page that matches only the width, or only the height, is not a true match.</p></details>
+    <div class="answer-box" data-answer-hash="e40c292c">
+      <label for="m10-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m10-stage2" type="text" placeholder="Type A or B...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>You lift Page A into the light. Faint marginal notes shimmer into view under a raking lamp — the whisper that gives the page its name. In the corner glows a beautifully illuminated capital letter, painted in red, blue, and gold: a graceful "S," the first letter of an old Latin word medieval scribes loved to paint in gold — <em>SAPIENTIA</em>, meaning wisdom. Archivist Niamh smiles: the exhibition will open on time, and the abbey's oldest lesson is safe again — that patience, careful looking, and following every clue, however small, is its own kind of <strong>wisdom</strong>.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

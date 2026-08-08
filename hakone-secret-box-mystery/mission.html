@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Hakone Secret-Box Championship — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #8B5A2B;
+    --accent-dark: #5E3A1A;
+    --easy: #4C7A52;
+    --medium: #8B5A2B;
+    --hard: #A33B2D;
+    --finale: #3D4B8C;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .notebook {
+    max-width: 660px;
+    margin: 1rem auto 0;
+    background: #FBF3DE;
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    font-size: 0.92rem;
+  }
+  .notebook .eyebrow { display: block; margin-bottom: 0.3rem; }
+  .plaque-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .plaque-table th, .plaque-table td {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.4rem 0.6rem;
+    text-align: left;
+  }
+  .plaque-table th {
+    background: var(--paper-dark);
+    font-family: 'Special Elite', monospace;
+    font-weight: 400;
+  }
+  .stage-label {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.55);
+    margin: 1.3rem 0 0.6rem;
+    font-weight: 700;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Hakone Secret-Box Championship</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 80-110 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Your grandfather's old friend Kenji is an apprentice at a woodworking studio in Hakone, Japan — a hot-spring town famous for a very special kind of wooden puzzle box. Kenji just called, and he sounds panicked: sometime last night, someone crept into the workshop and swapped his master's finest handmade puzzle box for a cheap decoy, right before today's judging in the regional woodcraft competition.</p>
+  <p>Three finished boxes now sit in the judging hall, and the judges arrive in a few hours. Kenji needs you — the family's sharpest internet detective — to figure out which box is genuine, and exactly how to open it, before it's too late.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Where in the World Is Kenji's Workshop?</h2>
+    <div class="puzzle">
+      <p>Before he hung up, Kenji only had time to give you a few clues about the town where his workshop stands:</p>
+      <p>🏔️ It's a hot-spring resort town in Japan, famous for its views of Mt. Fuji.<br>
+      🌋 The town sits inside the caldera of an old volcano.<br>
+      📦 For nearly 200 years, its craftspeople have been famous worldwide for a style of wooden marquetry used to make "secret boxes."</p>
+      <p>Search the internet to find the name of this town.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching for "hot spring town near Mt Fuji famous for wooden puzzle boxes." One town name should come up again and again.</p></details>
+    <div class="answer-box" data-answer-hash="49b600b9">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the town's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The mountains around Hakone sit inside a real volcanic caldera. Its most recent eruption, roughly 3,000 years ago, blasted open the steaming valley called Owakudani — and that same underground heat still fuels Hakone's famous hot springs today.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Workshop Floor Pattern</h2>
+    <div class="puzzle">
+      <p>Kenji's workshop floor is tiled in a traditional yosegi marquetry pattern — the same wood-mosaic style used to decorate the puzzle boxes. The tiles repeat in a strict, unbreaking three-tile cycle:</p>
+      <p><strong>light square, medium triangle, dark diamond, light square, medium triangle, dark diamond, light square, medium triangle, ...</strong></p>
+      <p>One tile near the doorway is scuffed and hard to see. Using only the pattern above, what shape must that 9th tile be — square, triangle, or diamond?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 320 44" width="320" height="44" role="img" aria-label="A row of nine floor tiles: square, triangle, diamond, square, triangle, diamond, square, triangle, and a ninth tile marked with a question mark">
+      <rect x="0" y="0" width="320" height="44" fill="#FFFDF7"/>
+      <!-- tile 1: square -->
+      <g transform="translate(4,4)"><rect x="0" y="0" width="30" height="30" fill="#C9A66B" stroke="#2B2A24" stroke-width="1.5"/></g>
+      <!-- tile 2: triangle -->
+      <g transform="translate(38,4)"><polygon points="15,1 29,29 1,29" fill="#8B5A2B" stroke="#2B2A24" stroke-width="1.5"/></g>
+      <!-- tile 3: diamond -->
+      <g transform="translate(72,4)"><polygon points="15,1 29,15 15,29 1,15" fill="#5E3A1A" stroke="#2B2A24" stroke-width="1.5"/></g>
+      <!-- tile 4: square -->
+      <g transform="translate(106,4)"><rect x="0" y="0" width="30" height="30" fill="#C9A66B" stroke="#2B2A24" stroke-width="1.5"/></g>
+      <!-- tile 5: triangle -->
+      <g transform="translate(140,4)"><polygon points="15,1 29,29 1,29" fill="#8B5A2B" stroke="#2B2A24" stroke-width="1.5"/></g>
+      <!-- tile 6: diamond -->
+      <g transform="translate(174,4)"><polygon points="15,1 29,15 15,29 1,15" fill="#5E3A1A" stroke="#2B2A24" stroke-width="1.5"/></g>
+      <!-- tile 7: square -->
+      <g transform="translate(208,4)"><rect x="0" y="0" width="30" height="30" fill="#C9A66B" stroke="#2B2A24" stroke-width="1.5"/></g>
+      <!-- tile 8: triangle -->
+      <g transform="translate(242,4)"><polygon points="15,1 29,29 1,29" fill="#8B5A2B" stroke="#2B2A24" stroke-width="1.5"/></g>
+      <!-- tile 9: unknown -->
+      <g transform="translate(276,4)"><rect x="0" y="0" width="30" height="30" fill="none" stroke="#2B2A24" stroke-width="1.5" stroke-dasharray="3,2"/><text x="15" y="21" text-anchor="middle" font-size="16" font-weight="700">?</text></g>
+    </svg>
+    <div class="clue-caption">Nine tiles in a row, in the order they appear on the workshop floor. The 9th is scuffed — the picture just shows a blank outline for it.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Don't count the whole row at once — figure out which position in the 3-tile cycle (1st, 2nd, or 3rd) tile 9 lands on.</p></details>
+    <div class="answer-box" data-answer-hash="b16f10a7">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="square, triangle, or diamond">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Master's History Lesson</h2>
+    <div class="puzzle">
+      <p>While you wait for more news, Kenji's master shows you an old woodcut print hanging on the workshop wall. It shows a tiny, fan-shaped man-made island in a harbor, packed with warehouses and tall-masted ships.</p>
+      <p>"That island," the master says, "was the only place in all of Japan where one particular Western country was allowed to trade — for more than 200 years, while every other Western nation was shut out completely."</p>
+      <p>Search the internet to find out: which European country held that exclusive trading right?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching for "Dejima island Nagasaki only European country allowed to trade with Japan." Type just the country's name — no "the," no nationality word like "Dutch."</p></details>
+    <div class="answer-box" data-answer-hash="ba06fccb">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the country's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? From 1641 to 1854, Dutch traders were confined to Dejima — a fan-shaped artificial island in Nagasaki harbor about the size of two football pitches. It was Japan's only official window to the Western world for over two centuries.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Measuring the Display Case</h2>
+    <div class="puzzle">
+      <p>The competition officials need to order a velvet-lined display case sized to fit the winning box exactly. To order the right amount of velvet, they need the box's total surface area — all six faces added together, in square centimeters.</p>
+      <p>Kenji unfolded a spare practice box flat so you could measure it. Grab a pencil — you'll need to work out the area of all six rectangular faces and add them up. Remember: a box's opposite faces are always the same size.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 320 176" width="320" height="176" role="img" aria-label="An unfolded flat net of a rectangular box, made of six labeled rectangles: Top, Bottom, Front, Back, Left, and Right, arranged in a cross shape with dimensions 12 centimeters, 8 centimeters, and 6 centimeters marked">
+      <rect x="0" y="0" width="320" height="176" fill="#FFFDF7"/>
+      <!-- Top -->
+      <rect x="64" y="0" width="96" height="64" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="112" y="36" text-anchor="middle" font-size="13">Top</text>
+      <!-- Left -->
+      <rect x="0" y="64" width="64" height="48" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="32" y="92" text-anchor="middle" font-size="13">Left</text>
+      <!-- Front -->
+      <rect x="64" y="64" width="96" height="48" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="112" y="92" text-anchor="middle" font-size="13">Front</text>
+      <!-- Right -->
+      <rect x="160" y="64" width="64" height="48" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="192" y="92" text-anchor="middle" font-size="13">Right</text>
+      <!-- Back -->
+      <rect x="224" y="64" width="96" height="48" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="272" y="92" text-anchor="middle" font-size="13">Back</text>
+      <!-- Bottom -->
+      <rect x="64" y="112" width="96" height="64" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="112" y="148" text-anchor="middle" font-size="13">Bottom</text>
+      <!-- dimension labels -->
+      <text x="112" y="60" text-anchor="middle" font-size="12" font-weight="700">12 cm</text>
+      <text x="60" y="90" text-anchor="middle" font-size="12" font-weight="700" transform="rotate(-90 60 90)">6 cm</text>
+      <text x="32" y="60" text-anchor="middle" font-size="12" font-weight="700">8 cm</text>
+    </svg>
+    <div class="clue-caption">Front's top edge = 12 cm, Front's side edge = 6 cm, Left's top edge = 8 cm. Every other edge in the net matches one of these three numbers.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Find the area of just three faces first — Front, Left, and Top — then double each, since the opposite face is identical.</p></details>
+    <div class="answer-box" data-answer-hash="1a286a66">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Total surface area in cm²...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <div class="notebook">
+      <span class="eyebrow">📓 Agent's Notebook</span>
+      While you're measuring, Kenji mentions something offhand: the master's real masterpiece box takes exactly <strong>27</strong> careful moves to open, start to finish — a number the old master is so proud of that he once carved it into the corner of his own workbench. Might be worth remembering...
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Goods Off the Dejima Boats</h2>
+    <div class="puzzle">
+      <p>Kenji's master loves Dutch words — he picked a few up from an old trade-history book about Dejima. He shows you five Dutch words for goods that once passed through that trading post, and challenges you with a de/het puzzle.</p>
+      <p>Four of these five words use <strong>"het"</strong>. Only one uses <strong>"de"</strong> instead. Which word is the odd one out?</p>
+      <p><em>hout</em> (wood) &nbsp;•&nbsp; <em>koper</em> (copper) &nbsp;•&nbsp; <em>zout</em> (salt) &nbsp;•&nbsp; <em>specerij</em> (spice) &nbsp;•&nbsp; <em>zilver</em> (silver)</p>
+      <p>Type the Dutch word (not the English one) that takes "de".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Raw materials and metals ("het hout," "het koper," "het zout," "het zilver") almost always take "het" in Dutch. One word here isn't a raw material or metal at all.</p></details>
+    <div class="answer-box" data-answer-hash="73323a3e">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the Dutch word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Wood Doesn't Lie</h2>
+    <div class="puzzle">
+      <p>Kenji's master keeps an appraisal price list for the raw wood blocks his apprentices carve from, priced per gram:</p>
+      <p><strong>Keyaki (Japanese zelkova):</strong> ¥45 per gram &nbsp;|&nbsp; <strong>Matsu (Japanese pine):</strong> ¥6 per gram</p>
+      <p>The master weighed both blocks this morning. The block the real masterpiece box was carved from weighed <strong>380 grams</strong> of keyaki. The block the suspicious decoy was carved from weighed <strong>410 grams</strong> of matsu.</p>
+      <p>Grab a pencil. Work out the total appraisal value of each block separately, then find the difference: by how many yen is the keyaki block worth more than the matsu block? Type just the number — no ¥ sign, no comma.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Not sure which of these two woods is the pricier, harder wood prized for fine furniture? A quick internet search for "keyaki vs matsu wood" will confirm it — though the price list above already tells you everything the math needs.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply each block's weight by its own price-per-gram first, so you end up with two separate totals in yen. Only then subtract the smaller total from the bigger one.</p></details>
+    <div class="answer-box" data-answer-hash="43817dde">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Difference in yen...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Who Stayed Late?</h2>
+    <div class="puzzle">
+      <p>Three apprentices work alongside Kenji: Aiko, Ren, and Yuki. You learn that exactly one of the three stayed late in the workshop last night — after everyone else had gone home. You also learn that exactly one of the three apprentices <em>always</em> tells the truth, and the other two <em>always</em> lie.</p>
+      <p>Here's what each of them told you today:</p>
+      <p><strong>Aiko:</strong> "Ren stayed late last night."<br>
+      <strong>Ren:</strong> "I did not stay late last night."<br>
+      <strong>Yuki:</strong> "Aiko is lying."</p>
+      <p>Using only these three statements — and the fact that exactly one of the three always tells the truth — figure out who actually stayed late in the workshop overnight.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try each apprentice as "the one who stayed late," one at a time, and count how many of the three statements would be true in that case. Only one option gives you exactly one true statement.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Look closely at Ren's and Yuki's statements — they're actually claiming the exact same thing, just worded differently. That means they must both be true, or both be false, together.</p></details>
+    <div class="answer-box" data-answer-hash="4af4909a">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Name of the apprentice...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Yosegi-zaiku marquetry was developed in the Hatajuku area of Hakone in the early-to-mid 1800s by a local craftsman named Nihei Ishikawa. Even today, it takes a woodworker roughly ten years of training to fully master the technique.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Stories, One Problem</h2>
+    <div class="puzzle">
+      <p>The workshop installed a brand-new automatic light timer last month, just for the competition. Kenji shows you the timer's settings sheet: it switches the workshop lights off every single night at exactly <strong>9:15 PM</strong>, no exceptions, to save electricity before the big event.</p>
+      <p>Two apprentices gave you their account of last night. Read both carefully.</p>
+      <p><strong>Sora:</strong> "I stayed behind to polish the display shelves. I worked under the workshop lights until almost 10:30 PM, and I didn't see anyone else come or go the whole time."</p>
+      <p><strong>Yuki:</strong> "I only stopped by around 9:00 PM to grab my scarf, while it was still light enough to see in there. I left right away, well before the lights clicked off for the night."</p>
+      <p>One of these two statements cannot possibly be true, given the timer sheet. Whose statement is it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Compare each apprentice's claimed timeline against the one fact you know for certain: the exact time the lights switched off.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>One apprentice claims to have been working "under the workshop lights" at a time when, according to the timer, the workshop should already have been dark.</p></details>
+    <div class="answer-box" data-answer-hash="172be6ba">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Name of the apprentice...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Big Aha! Moment — Reading the Master's Notebook</h2>
+    <div class="puzzle">
+      <p>Kenji finds a page in his master's private notebook describing exactly how a practice box opens. It has four moving parts — the <strong>Front</strong> panel, the <strong>Left</strong> panel, the <strong>Right</strong> panel, and the <strong>Lid</strong> — and the notebook lists four rules for how they unlock, scribbled in no particular order:</p>
+      <p>
+      <strong>Rule A:</strong> The Lid can only lift once the Front, Left, and Right panels have all already been slid open.<br>
+      <strong>Rule B:</strong> The Right panel can only slide open after the Left panel has already been slid open — and only while the Front panel is still closed.<br>
+      <strong>Rule C:</strong> The Left panel can only slide open while the Front, Right, and Lid are all still in their very original, untouched, closed positions.<br>
+      <strong>Rule D:</strong> The Front panel can only slide open after both the Left panel and the Right panel have already been slid open.
+      </p>
+      <p>You know the box's final state: all four parts open, lid lifted free. Start from that finished picture and reason backward, one step at a time, to work out the <em>one and only</em> order these four moves could have happened in, from the very first slide to the very last.</p>
+      <p>Type the four names in order, separated by single spaces, all lowercase. (Example format only, not the real order: <em>lid front left right</em>)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start at the end, not the beginning. Which rule's condition depends on ALL three of the other parts already being open? That part has to be the very last move.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Now look at Rule C. It needs everything else to still be completely untouched — which can only be true before any move at all has happened. That tells you the very first move, too. The remaining two moves have to fit in the middle, in the only order Rule B allows.</p></details>
+    <div class="answer-box" data-answer-hash="287a1408">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="four names, space separated...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Judging Hall</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>You reach the judging hall. Three finished entries sit on velvet cushions, each with a small wooden plaque:</p>
+      <table class="plaque-table">
+        <tr><th>Entry name</th><th>Moves to open</th><th>Wood block</th><th>Next tile in panel pattern</th></tr>
+        <tr><td>Twelve Bridges</td><td>18</td><td>matsu (pine)</td><td>triangle</td></tr>
+        <tr><td>Cloud Gate</td><td>27</td><td>matsu (pine)</td><td>square</td></tr>
+        <tr><td>Mountain Mist</td><td>27</td><td>keyaki (zelkova)</td><td>diamond</td></tr>
+      </table>
+      <p>You already know three separate facts about the real masterpiece box: how many moves it takes to open it, which wood its block was carved from, and which shape comes next in its panel's tile pattern. Only one entry on this table matches <em>all three</em> facts at once. Which entry is the genuine box?</p>
+      <p>Type the entry's name exactly as it appears on its plaque.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You worked out three separate clues in three separate earlier missions — a move count, a wood type, and a pattern tile. Don't stop checking after just one of them matches.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Two of these three entries share the exact same move count, so that clue alone can't tell them apart. The wood block is what finally settles it.</p></details>
+    <div class="answer-box" data-answer-hash="acd736af">
+      <label for="finale-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage1" type="text" placeholder="Name of the genuine entry...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>With the judges only minutes away, you carry the genuine box to a quiet table. You slide its panels in the exact same order you worked out for the practice box — start to finish, no guessing.</p>
+      <p>As the lid lifts free, you notice something carved into the hidden base panel, worn smooth by years of the master's own thumb. It's a single word — the very thing the master hoped Ren would remember, instead of panicking and swapping the boxes the night before judging.</p>
+      <p>What's the word carved into the base?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The sliding order isn't a new puzzle — it's the exact same four-step sequence you already worked out for the practice box in an earlier mission.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Think about how the master is about to respond when he finds out what Ren did — not with anger, but by quietly making things right for him.</p></details>
+    <div class="answer-box" data-answer-hash="ae84d384">
+      <label for="finale-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage2" type="text" placeholder="The carved word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>You place Mountain Mist back on its cushion just as the judges walk in — safe, genuine, and open. Later, Kenji tells you the rest: his master already knew about the swap. Ren had panicked after his own box cracked during final sanding, terrified he'd be sent home in disgrace. Instead of reporting him, the master quietly repaired Ren's box overnight and entered them both — because the word carved inside every box he's ever made is <strong>kindness</strong>, and he meant it for apprentices, too.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

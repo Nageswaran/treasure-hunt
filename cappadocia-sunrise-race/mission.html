@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Cappadocia Sunrise Race Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #DB6B2E;
+    --accent-dark: #A84E1D;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .notebook {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook .eyebrow { display: block; margin-bottom: 0.3rem; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.2rem 0 0.6rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .note {
+    background: rgba(219,107,46,0.09);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 0.9rem;
+    margin: 0.8rem 0;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Cappadocia Sunrise Race Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 100-130 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Your aunt Mira flies hot-air balloons for a living. Every year, she enters a famous dawn balloon race held in a strange, beautiful part of Turkey — a place of stone spires and hundreds of balloons rising together at sunrise.</p>
+  <p>This morning, just before launch, two things vanished from the office tent: Aunt Mira's flight-path logbook and the engraved compass medallion trophy she's raced for all season. Race officials are stalling the start, but not for long.</p>
+  <p>You're the only one on the launch field with a detective's eye. Follow every clue, and you'll find the trophy — and uncover the value that got you here before sunrise in the first place.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Where in the World Is Aunt Mira?</h2>
+    <div class="puzzle">
+      <p>Before you can investigate, you need to know exactly where you are. Aunt Mira's postcards describe this place in riddles:</p>
+      <p>"Tall cone-shaped rock towers rise out of the ground here. Locals call them 'fairy chimneys.' Hundreds of hot-air balloons fill the sky at dawn, every single morning, drifting between the stone spires. This region sits in central Anatolia, in Turkey. Beneath its valleys, people once carved entire cities into the rock, far underground."</p>
+      <p>Search the internet using these clues. What is the name of this famous region? (Just the region's name is fine — you can leave off "Turkey.")</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "fairy chimneys" together with "hot air balloons Turkey" and see which region keeps coming up.</p></details>
+    <div class="answer-box" data-answer-hash="79bdc8dc">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Secret Ingredient of the Fairy Chimneys</h2>
+    <div class="puzzle">
+      <p>Aunt Mira's field notebook has a torn page about the stone towers beneath her balloon route:</p>
+      <div class="note">"...this rock is soft. Wind and rivers of rain carved it easily, over millions of years. It began as ash, spat out by volcanoes long, long ago. Each tower has a harder cap of rock balanced on top, like a stone hat — that cap protects the softer rock underneath it from wearing away too fast. That's why the towers keep their strange, pointy shape..."</p>
+      <p>Search the internet to find the one-word name of this soft, ash-based volcanic rock. (It's not the same word as "lava" or "ash" — it's a different, more specific rock name.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Cappadocia fairy chimney rock type" and look for a short word, starting with the letter T, used again and again.</p></details>
+    <div class="answer-box" data-answer-hash="792d979e">
+      <label for="m2-answer">Your answer (one word):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Cappadocia's cone-shaped rocks began forming millions of years ago, from ash spewed out by ancient volcanoes. Erosion here is incredibly slow — the rock wears away only about 2 to 3 centimeters every 1,000 years!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Five Balloons on the Field</h2>
+    <div class="puzzle">
+      <p>Five balloons are tied down on the launch field, each with its own striped pattern:</p>
+      <div class="note">
+        Balloon A — pink stripe, silver stripe, pink stripe, silver stripe<br>
+        Balloon B — blue stripe, green stripe, blue stripe, green stripe<br>
+        Balloon C — purple stripe, purple stripe, purple stripe, purple stripe<br>
+        Balloon D — orange stripe, white stripe, orange stripe, white stripe<br>
+        Balloon E — teal stripe, yellow stripe, teal stripe, yellow stripe
+      </div>
+      <p>Four of these five balloons follow the exact same kind of pattern. One balloon breaks that pattern. Which balloon is it? Type just the letter.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look closely at how many different colors each balloon actually uses, not just how many stripes it has.</p></details>
+    <div class="answer-box" data-answer-hash="e60c2c52">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Fence Around the Launch Paddock</h2>
+    <div class="puzzle">
+      <p><strong>Grab a pencil for this one.</strong> Balloons are tied down inside a fenced paddock, shaped like the four-sided field below. Three of its fence lengths are labeled. The fourth (marked "?") is a mystery.</p>
+      <p>Officials measured the <strong>total perimeter</strong> — all four fence sides added together — at exactly <strong>86 meters</strong>.</p>
+      <p>What is the length, in meters, of the missing "?" fence side?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 260 120" width="320" height="148"
+         role="img" aria-label="A four-sided fenced paddock: a wide bottom fence, a shorter top fence, a vertical left fence, and a slanted right fence marked with a question mark">
+      <polygon points="25,92 235,92 139,20 25,20"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="130" y="108" text-anchor="middle" font-size="12">35 m</text>
+      <text x="82" y="12" text-anchor="middle" font-size="12">19 m</text>
+      <text x="10" y="56" text-anchor="middle" font-size="12" transform="rotate(-90 10 56)">12 m</text>
+      <text x="195" y="56" text-anchor="middle" font-size="14" font-weight="700">?</text>
+    </svg>
+    <div class="clue-caption">Add up the three fence sides you know, then compare that total to the full perimeter.</div>
+    <details class="hint"><summary>Hint 1</summary><p>The perimeter is the sum of all four sides. If you add the three known sides and subtract from the total, what's left over?</p></details>
+    <div class="answer-box" data-answer-hash="8df2997f">
+      <label for="m4-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Aunt Mira's Checklist</h2>
+    <div class="puzzle">
+      <p>Pinned to the paddock fence is a note, written in Aunt Mira's own language, Dutch. It's her pre-flight checklist:</p>
+      <div class="note">"Checklist vóór de vlucht: de mand, de brander, het touw, de wind, de lucht. Alles is klaar voor de zonsopgang-race!"<br>
+      <em>(Roughly: "Checklist before the flight: the basket, the burner, the rope, the wind, the air. Everything is ready for the sunrise race!")</em></div>
+      <p>In Dutch, most nouns use the word "de." A smaller group uses "het" instead. Four of the five checklist words use "de." One uses "het." Find that one word and type it, in Dutch.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Say "de" and "het" out loud before each Dutch word on the list: mand, brander, touw, wind, lucht. Only one sounds right with "het."</p></details>
+    <div class="answer-box" data-answer-hash="3a83f51c">
+      <label for="m5-answer">Your answer (in Dutch):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Hot-air ballooning is over 240 years old! On 19 September 1783, a balloon built by the Montgolfier brothers carried the very first passengers ever to fly — a sheep, a duck, and a rooster — over the palace at Versailles, France.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Dawn Radio Silence</h2>
+    <div class="puzzle">
+      <p>Pilots keep their radios silent during the pre-dawn launch, so crews pass short notes using a mirror code instead: each letter swaps places with its mirror-partner in the alphabet. A swaps with Z, B swaps with Y, C swaps with X, and so on, all the way to M swapping with N.</p>
+      <p>A crew member hands you this note, found near the office tent:</p>
+      <p style="font-size:1.15rem; letter-spacing:0.12em; font-weight:700; text-align:center;">YZOOLLM HVEVM RH IVW ZMW TLOW</p>
+      <p>Decode it letter by letter using the mirror rule above. What two colors does the decoded message say the balloon is? Type the two colors, separated by "and" (for example: "blue and green").</p>
+    </div>
+    <div class="notebook">
+      <span class="eyebrow">Agent's Notebook</span>
+      This decoded message names a specific balloon and its colors. That's worth remembering, Detective — the case isn't done with it yet.
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write the alphabet forward on one line and backward underneath it. Match each ciphered letter to the letter below it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first decoded word is a balloon's call-sign: BALLOON. The next word is a number.</p></details>
+    <div class="answer-box" data-answer-hash="a28960ad">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Staff, One Missing Logbook</h2>
+    <div class="puzzle">
+      <p>Three launch-field staff were near the office tent this morning: Deniz, Elif, and Kerem. Everyone on the crew knows one true thing about them: exactly one of the three <strong>always</strong> tells the truth. The other two <strong>always</strong> lie. You don't know which is which — yet.</p>
+      <p>Here's what each one told you:</p>
+      <div class="note">
+        Deniz says: "I touched the logbook last."<br>
+        Elif says: "Deniz touched the logbook last."<br>
+        Kerem says: "I did not touch the logbook last."
+      </div>
+      <p>Test each person as the possible truth-teller, one at a time, and see which choice avoids any contradiction. Who touched the logbook last?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try assuming Deniz is the truth-teller first. Does that match what Elif says? Keep testing each person the same way.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Only one of the three people can be the truth-teller without any statement contradicting another. Once you find that person, use elimination on the remaining two suspects to find the logbook-toucher.</p></details>
+    <div class="answer-box" data-answer-hash="c0a5c8c3">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Beneath Cappadocia's valleys lies Derinkuyu, an ancient underground city carved deep into the soft rock. It could shelter as many as 20,000 people, along with their animals and food stores, when danger came from above.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Spectator Deals</h2>
+    <div class="puzzle">
+      <p><strong>Grab a pencil for this one.</strong> Spectators watching the race from the hillside can pick one of two ticket packages:</p>
+      <div class="note">
+        <strong>Package A:</strong> a flat rate of ₺450 for the whole morning, breakfast included.<br>
+        <strong>Package B:</strong> a base price of ₺150, plus ₺6 for every minute of balloon-watching time (no breakfast).
+      </div>
+      <p>Aunt Mira's flight — from launch until landing — takes exactly 75 minutes this morning. For a 75-minute morning, which package costs less, and by how many lira?</p>
+      <p>Type your answer exactly like this example: "b by 20" (the package letter, the word "by," then the number of lira saved).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First work out Package B's total cost for 75 minutes: the base price plus 75 lots of the per-minute fee.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Compare Package B's total to Package A's flat ₺450. Whichever is smaller is the cheaper package — subtract to find the difference.</p></details>
+    <div class="answer-box" data-answer-hash="c91fec8b">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>Working Backward From Landing</h2>
+    <div class="puzzle">
+      <p>Race officials just handed you three facts about this morning's flight:</p>
+      <div class="note">
+        1. Every balloon must touch down at exactly <strong>7:15 AM</strong> — that's the race rule.<br>
+        2. The race route is <strong>20 kilometers</strong> long.<br>
+        3. This morning's steady wind carries balloons at <strong>15 kilometers per hour</strong>.<br>
+        4. After finishing the route, every balloon must circle the landing field for a mandatory <strong>5-minute</strong> safety loop before touching down.
+      </div>
+      <p>Start from the 7:15 AM landing and work backward, step by step, to figure out: what time did Aunt Mira have to launch? Type your answer like this example: "6:05 AM".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find how long the 20-kilometer route itself takes at 15 kilometers per hour. Distance divided by speed gives you time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Add the 5-minute safety loop to the route time to get the total time in the air. Then count that total backward from 7:15 AM.</p></details>
+    <div class="answer-box" data-answer-hash="54311f4f">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Cappadocia's fairy chimneys began forming during a period called the Miocene to Pliocene, roughly 3 to 10 million years ago, when nearby volcanoes buried the region in thick layers of ash.</p>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Torn Pages of the Logbook</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>You find three torn logbook pages stuffed in a drawer, each with a different launch entry. Only one page is the real one — the rest are old pages from other days, left behind by mistake.</p>
+      <div class="note">
+        <strong>Page 12:</strong> "Balloon Three — blue and silver — launched 5:52 AM."<br>
+        <strong>Page 27:</strong> "Balloon Seven — teal and white — launched 5:58 AM."<br>
+        <strong>Page 31:</strong> "Balloon Seven — red and gold — launched 6:01 AM."
+      </div>
+      <p>Think back to the balloon and colors you decoded earlier in this case. Which page number matches, exactly, both the balloon number <em>and</em> the colors you already uncovered?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Two of these pages mention the same balloon number. Only one of those two also has the matching colors.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Scroll back to the decoded dawn radio message if you need to check the balloon number and colors again.</p></details>
+    <div class="answer-box" data-answer-hash="88f05309">
+      <label for="m10-stage1">Your answer (just the page number):</label>
+      <div class="answer-row">
+        <input id="m10-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 (final)</p>
+    <div class="puzzle">
+      <p>In the margin of that real page, Aunt Mira scribbled a tiny map and a compass note:</p>
+      <div class="note">"From the launch field's north gate: walk due EAST across two fields, until you reach the old stone dovecote tower. Turn and walk due NORTH from there. Keep going until the valley walls around you turn a deep rose-pink in the morning light, and you start passing little churches carved right into the cliffs."</div>
+      <p>Search the internet for the real Cappadocia valley known for rock walls that glow rose-pink at sunrise and sunset, with old churches carved into its cliffs. What is that valley called?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Cappadocia valley pink rocks sunset churches." One valley's name comes up again and again.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The valley's name is also the name of a flower — the same flower's color matches the rock walls at sunrise.</p></details>
+    <div class="answer-box" data-answer-hash="290e595d">
+      <label for="m10-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m10-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>You walked onto that launch field alone, before sunrise, with nothing but a hunch and a willingness to look closely. That's <strong>courage</strong> — not the loud kind, but the quiet kind that gets up early and follows the clues anyway. Aunt Mira's trophy is found. The balloons can finally launch. Case closed, Detective.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
