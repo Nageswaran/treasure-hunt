@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cub Reporter's Deadline — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2B4570;
+    --accent-dark: #1D3050;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .notebook {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook .eyebrow { display: block; margin-bottom: 0.3rem; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.2rem 0 0.6rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+  .email-box {
+    background: var(--paper-dark);
+    padding: 0.9rem 1.1rem;
+    border-radius: 3px;
+    font-size: 0.92rem;
+    border: 1px solid rgba(0,0,0,0.12);
+    margin: 0.8rem 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>Cub Reporter's Deadline</h1>
+  <div class="subtitle">Newsroom briefing — read carefully before deadline</div>
+  <div class="subtitle">⏱ Estimated case time: 80-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>BREAKING: A message is racing through every parent chat group in town — <em>"Starlight Space Academy trip CANCELLED! The school ran out of money!"</em> Sixth graders are panicking, parents are furious, and now a "re-registration" email is asking families to pay a fee before they lose their spot.</p>
+  <p>Mrs. Alvarez, your editor at <strong>The Birchwood Bugle</strong>, gives you until Friday's print deadline to find out what's actually true — and stop a false story (or a scam) from running as fact just because everyone shared it first.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Byline Rule #1</h2>
+    <div class="puzzle">
+      <p>Mrs. Alvarez waves you over to the newsroom corner of the library. "Before you write one single word," she says, "learn the newsroom's most important rule."</p>
+      <p>She slides over the official <strong>Birchwood Elementary Weekly Update</strong>, printed every Friday by the front office. Down in the small print at the bottom it reads: <em>"Questions about anything on this page? Call the front office at (415) 555-0142, extension 2, or visit our official website, birchwood.k12ourstate.us."</em></p>
+    </div>
+    <div class="notebook">
+      <span class="eyebrow">Agent's Notebook</span>
+      Boring contact info like this is easy to skip past — but a real one is worth saving. Jot it down; a good reporter's contacts list comes in handy later.
+    </div>
+    <div class="puzzle">
+      <p>Then Mrs. Alvarez explains: "A real reporter never prints a claim on just one person's word. There's a name for the rule that stops that from happening — a story can't run as fact until at least two separate, independent people confirm it. Search online to find its common name."</p>
+      <p>Try searching something like: <em>"journalism rule needing two sources before publishing."</em> Type the rule's name below — it's usually written as two words joined by a hyphen, all lowercase.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The two words both describe HOW MANY people need to confirm something before a reporter can call it a fact.</p></details>
+    <div class="answer-box" data-answer-hash="ca613f85">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Fact, Rumor, or Just an Opinion?</h2>
+    <div class="puzzle">
+      <p>Mrs. Alvarez gives you her golden rule for sorting messages: a <strong>FACT</strong> comes from a named, official, checkable source. A <strong>RUMOR</strong> has no confirmed source — watch for words like "apparently," "someone said," or "I heard." An <strong>OPINION</strong> is just what someone thinks or guesses, not a claim about what actually happened.</p>
+      <p>Here are five messages from the parent chat. Sort each one in your head, or jot F / R / O next to each on paper:</p>
+      <p><strong>A.</strong> "Apparently the whole trip got cancelled — my neighbor heard it from someone at pickup."<br>
+      <strong>B.</strong> "The Birchwood Elementary Weekly Update, printed every Friday and signed by Principal Torres, has never mentioned any cancellation."<br>
+      <strong>C.</strong> "I bet they cancelled it because of the budget — that's usually why stuff like this happens."<br>
+      <strong>D.</strong> "Someone posted a screenshot in the parent group, but nobody can find where it originally came from."<br>
+      <strong>E.</strong> "Mrs. Alvarez told me directly this morning that no cancellation notice has been sent to the office."</p>
+      <p>How many of these five messages are RUMORS — not something you could ever print as fact? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look for the messages with no named, checkable source behind them — just "someone" or "apparently."</p></details>
+    <div class="answer-box" data-answer-hash="370cabd5">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Many real newsrooms follow something very close to the "two-source rule" you just looked up — they won't report a claim as fact until at least two independent, named sources confirm it.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Weakest Link, Strongest Lock</h2>
+    <div class="puzzle">
+      <p>While you're fact-checking, three passwords from an old sign-up sheet for the school website's parent portal land on your desk. Before ranking them, look something up.</p>
+      <p>Search online for how experts say you should build a strong password today. (Hint: it's not really about throwing in more symbols.) You should find that ONE factor matters more than almost anything else for how hard a password is to crack.</p>
+      <p>Now rank these three real-looking passwords from <strong>weakest to strongest</strong>, using what you just learned:</p>
+      <p><strong>Option A:</strong> <code>Rex2015</code><br>
+      <strong>Option B:</strong> <code>TC7!</code><br>
+      <strong>Option C:</strong> <code>PurpleOctopusDancesOnTuesdays</code></p>
+      <p>Type the three letters together, weakest first, with no spaces or commas — like <code>XYZ</code>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Count the characters in each password. The factor you searched for is about how many characters long a password is.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The shortest password is weakest, no matter how many symbols it packs in. The longest one, even though it's just plain words strung together, is hardest to guess.</p></details>
+    <div class="answer-box" data-answer-hash="67b7657d">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The U.S. National Institute of Standards and Technology (a real government agency that writes cybersecurity guidelines) now tells websites to focus on password LENGTH over complexity — a long plain password is generally harder to crack than a short one stuffed with symbols.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Counting the Rumor</h2>
+    <div class="puzzle">
+      <p>Grab a pencil and paper for this one — you're going to build a table by hand, not in your head.</p>
+      <p>You surveyed three 6th-grade classrooms, asking: "Had you already heard the cancellation rumor before today?" Here's what's in your notebook:</p>
+      <p><strong>Room 6A:</strong> 32 students surveyed, 24 said yes.<br>
+      <strong>Room 6B:</strong> 30 students surveyed, 21 said yes.<br>
+      <strong>Room 6C:</strong> 38 students surveyed, 25 said yes.</p>
+      <p>Draw a table with a row for each classroom and columns for "surveyed," "heard the rumor," and "hadn't heard it." Fill it in, then add up the totals across all three rooms.</p>
+      <p>What PERCENT of all the students you surveyed had already heard the rumor before you'd confirmed a single fact? Type just the number — no percent sign needed.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First add up the total number of students surveyed across all three rooms. Then add up the total number who said yes.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Percent means "out of 100." Divide the total who'd heard it by the total surveyed, then multiply by 100.</p></details>
+    <div class="answer-box" data-answer-hash="8fe5d0b2">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Editor's Red Pen</h2>
+    <div class="puzzle">
+      <p>Mrs. Alvarez circles five words in your draft with her red pen and writes a note: "Four of these mean almost the same thing. One does NOT belong — it means the opposite. Find the odd one out."</p>
+      <p style="text-align:center; font-weight:700; letter-spacing:0.04em;">RELIABLE &nbsp; TRUSTWORTHY &nbsp; DEPENDABLE &nbsp; CREDIBLE (believable) &nbsp; SUSPICIOUS</p>
+      <p>Which word doesn't belong? Type it exactly as written above.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Four of these words all describe a source you CAN believe. One describes a source you should NOT believe.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Think about which word you'd use to describe the scam email you'll be reading a few missions from now — not a trustworthy teacher.</p></details>
+    <div class="answer-box" data-answer-hash="e57b8ac2">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Sources, One Truth</h2>
+    <div class="puzzle">
+      <p>Three people talked to you about the trip budget today. Here's the rule for sorting them out: each person is EITHER always straight with reporters (everything they say checks out) OR always gets it backwards (nothing they say holds up). Your job is to figure out which is which — and who you can actually quote.</p>
+      <p><strong>Mrs. Diallo</strong> (PTA Treasurer) told you: "Mr. Kowalski always gets his facts straight."<br>
+      <strong>Mr. Kowalski</strong> (6th-grade teacher) told you: "Priya always gets things backwards."<br>
+      <strong>Priya</strong> (Student Council President) told you: "Mrs. Diallo always gets things backwards."</p>
+      <p>One more clue: Mr. Kowalski also told you he overheard Mrs. Diallo discussing the budget in the teachers' lounge on Tuesday afternoon. But you checked the front-office sign-in log yourself — it proves Mr. Kowalski signed out sick that morning and wasn't in the building at all on Tuesday.</p>
+      <p>Who is the ONE source you can actually trust and quote in your story? Type their first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the sign-in log. It proves one specific thing Mr. Kowalski said was false — so what type must he be?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Mr. Kowalski always gets it backwards, use that to check whether Mrs. Diallo's statement about him is true or false — then follow the chain to Priya.</p></details>
+    <div class="answer-box" data-answer-hash="35c3d78">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Inbox Ambush</h2>
+    <div class="puzzle">
+      <p>An email lands in the Bugle's tip inbox, forwarded by a worried parent:</p>
+    </div>
+    <div class="email-box">
+      <strong>From:</strong> Birchwood Elementary &lt;office@birchwood-elementaryschool.net&gt;<br>
+      <strong>Subject:</strong> URGENT!!! Re-secure your Starlight spot TODAY or lose it!!<br><br>
+      Dear Parent,<br><br>
+      Due to high demand, all Starlight Space Academy spots must be RE-CONFIRMED within 24 hours. Click the link below and pay the $45 re-registration fee immediately to keep your child's seat.<br><br>
+      Fun fact: the trip bus route even passes near Mount Rainier, the tallest mountain in the United States! Don't miss out.<br><br>
+      [RE-CONFIRM MY SPOT NOW]<br><br>
+      Questions? Call our hotline at (415) 555-9981 or visit birchwood-elementaryschool.net.<br>
+      — Birchwood Elementary Front Office
+    </div>
+    <div class="puzzle">
+      <p>Time to check it against what you know. Run these three checks:</p>
+      <p>1. Does the phone number in this email match the one from your contacts notebook?<br>
+      2. Does the website in this email match the one from your contacts notebook?<br>
+      3. Search online: is Mount Rainier really the tallest mountain in the United States?</p>
+      <p>How many of those three checks come back FISHY (wrong or false)? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You wrote down the real phone number and website way back on your first day in the newsroom. Compare them carefully — even one digit off counts as a mismatch.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>For the mountain, search "tallest mountain in the United States" and compare the real answer to what the email claims.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The real tallest mountain in the United States is Denali, in Alaska, at 20,310 feet — almost 6,000 feet taller than Mount Rainier's 14,410 feet.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Show Me the Math</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Mrs. Alvarez hands you the real numbers: the treasurer's ledger and the bus company's invoice. Grab your pencil again.</p>
+      <p>Trip fee: <strong>$38</strong> per student. Number of 6th-graders signed up: <strong>84</strong>. The bus company's flat round-trip fee for both buses: <strong>$410</strong>.</p>
+      <p>What is the TOTAL cost of the whole trip — all students plus buses? Type just the number, in dollars (no dollar sign).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First multiply the per-student fee by the number of students. Then add the bus fee.</p></details>
+    <div class="answer-box" data-answer-hash="7f450142">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Now compare that total cost to what the school actually has. The Fall Fundraiser (bake sale + walk-a-thon) raised <strong>$2,850</strong>. The PTA also had <strong>$900</strong> already saved from last year's leftover budget.</p>
+      <p>Using the total cost you just found, is there a shortfall or a surplus — and by exactly how much? Type just the number, in dollars.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add the fundraiser total and the leftover budget together first — that's the total money available.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Subtract the total cost from Stage 1 from the total money available. If the result is positive, that's a surplus, not a shortfall.</p></details>
+    <div class="answer-box" data-answer-hash="67294740">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The Bugle's Fact-Check Bot</h2>
+    <div class="puzzle">
+      <p>The Bugle's website has a simple check-list program some 8th graders built last year. It tags every submitted story using two rules, written in plain AND/OR logic — exactly like a computer program deciding TRUE or FALSE:</p>
+      <p><strong>RULE 1:</strong> Tag a story CONFIRMED only if (at least two independent named sources agree with the claim) AND (no scam or safety concern was found).<br>
+      <strong>RULE 2:</strong> Tag a story HOAX ALERT if (a scam attempt was involved) OR (the math proves the original claim false) — even if only one of those two things is true.</p>
+      <p>Here's what you know for certain from your own reporting:</p>
+      <p>• A scam email was involved. (TRUE)<br>
+      • Only ONE source — an unnamed message in the parent chat — supports the cancellation claim. Your two named, on-the-record sources (Mrs. Alvarez's fact-check and your own budget math) both go against it. So "at least two independent named sources agree with the claim" is FALSE.</p>
+      <p>Apply Rule 1 and Rule 2 exactly as written, using AND and OR. Which tag does the bot give the story?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>For Rule 1, BOTH parts joined by AND need to be true for the tag to apply. Check each part on its own first.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>For Rule 2, only ONE part joined by OR needs to be true. You already know one of those two parts is true.</p></details>
+    <div class="answer-box" data-answer-hash="e6356b4f">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered... (two words, lowercase is fine, no punctuation)">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Deadline</h2>
+    <div class="puzzle">
+      <p>It's Thursday night. Mrs. Alvarez is waiting by the printer. "So," she says, "cancelled, or not?"</p>
+      <p>You tell her everything: the surplus in the budget, the scam email, the one reliable source, and the two that weren't. She nods slowly, then hands you a strip of paper that jammed in the printer — the letters scrambled:</p>
+      <p style="font-size:1.3rem; letter-spacing:0.2em; font-weight:700; text-align:center;">UGACORE</p>
+      <p>"Unscramble that," she says. "It's the one thing a reporter needs most — to print the true story instead of the popular one, even the night before deadline."</p>
+      <p>Type the unscrambled word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>There are 7 letters. Think about what it takes to publish the boring truth instead of the exciting rumor everyone already believes.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It starts with the same letter as "cub reporter" — the job title you've had all case long.</p></details>
+    <div class="answer-box" data-answer-hash="dae0e2f">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The truth wins the front page: no cancellation, no shortfall — just a scam that almost fooled a whole school. Printing the real story instead of the popular rumor takes something every good reporter needs: <strong>courage</strong>. Case closed — see you in Friday's issue, cub reporter.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

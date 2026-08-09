@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Great Pumpkin Weigh-Off — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C1571A;
+    --accent-dark: #8F3F12;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .note {
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent-dark);
+    padding: 0.6rem 0.9rem;
+    margin: 0.7rem 0;
+    font-size: 0.92rem;
+    border-radius: 2px;
+  }
+  .note strong { color: var(--accent-dark); }
+  .stage-label {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.55);
+    margin: 1.3rem 0 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.9rem 0;
+    font-size: 0.95rem;
+  }
+  .score-table th, .score-table td {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.4rem 0.6rem;
+    text-align: left;
+  }
+  .score-table th { background: var(--paper-dark); }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Great Pumpkin Weigh-Off</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>It's the final afternoon of the Amberfield County Fair. Five giant pumpkins are lined up for the championship Weigh-Off, and the whole fairgrounds is buzzing — results go up at <strong>4:00 PM sharp</strong>. Just as the biggest pumpkin of the day rolls onto the scale, the display flickers, freezes on an error code, and dies. Nobody knows the true winner. Head Judge Pemberton needs someone sharp with numbers, maps, and records to verify the real champion the old-fashioned way — before the crowd runs out of patience. She hands you a badge: <strong>Junior Judging Assistant</strong>. The clock is running.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Find the Judges' Tent</h2>
+    <div class="puzzle">
+      <p>Badge pinned on, you step through the fair gates. Somewhere in this maze of tents is Head Judge Pemberton — and she needed you five minutes ago. Use the fairground map below to find her tent.</p>
+      <p>Start at the <strong>Ferris Wheel</strong>. The Judges' Tent is exactly <strong>1 row SOUTH and 2 columns WEST</strong> of the Ferris Wheel. Which grid square is it in?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 320 270" width="320" height="270" role="img" aria-label="A fairground map on a 5-column, 4-row grid. Row letters A to D run down the left side, column numbers 1 to 5 run along the top. The Gate is in square A1, the Ferris Wheel is in square B3, the Dairy Barn is in square D2, and the Scale Shed is in square C5.">
+      <g stroke="#2B2A24" stroke-width="1.5" fill="none">
+        <line x1="40" y1="30" x2="40" y2="230"/>
+        <line x1="90" y1="30" x2="90" y2="230"/>
+        <line x1="140" y1="30" x2="140" y2="230"/>
+        <line x1="190" y1="30" x2="190" y2="230"/>
+        <line x1="240" y1="30" x2="240" y2="230"/>
+        <line x1="290" y1="30" x2="290" y2="230"/>
+        <line x1="40" y1="30" x2="290" y2="30"/>
+        <line x1="40" y1="80" x2="290" y2="80"/>
+        <line x1="40" y1="130" x2="290" y2="130"/>
+        <line x1="40" y1="180" x2="290" y2="180"/>
+        <line x1="40" y1="230" x2="290" y2="230"/>
+      </g>
+      <g font-size="13" text-anchor="middle" fill="#2B2A24">
+        <text x="65" y="20">1</text>
+        <text x="115" y="20">2</text>
+        <text x="165" y="20">3</text>
+        <text x="215" y="20">4</text>
+        <text x="265" y="20">5</text>
+        <text x="25" y="59">A</text>
+        <text x="25" y="109">B</text>
+        <text x="25" y="159">C</text>
+        <text x="25" y="209">D</text>
+      </g>
+      <g font-size="11" font-weight="700" text-anchor="middle" fill="#2B2A24">
+        <rect x="40" y="30" width="50" height="50" fill="#E8DEC4"/>
+        <text x="65" y="58">GATE</text>
+        <rect x="140" y="80" width="50" height="50" fill="#E8DEC4"/>
+        <text x="165" y="101">FERRIS</text>
+        <text x="165" y="114">WHEEL</text>
+        <rect x="90" y="180" width="50" height="50" fill="#E8DEC4"/>
+        <text x="115" y="201">DAIRY</text>
+        <text x="115" y="214">BARN</text>
+        <rect x="240" y="130" width="50" height="50" fill="#E8DEC4"/>
+        <text x="265" y="151">SCALE</text>
+        <text x="265" y="164">SHED</text>
+      </g>
+    </svg>
+    <div class="clue-caption">Rows are letters (top to bottom). Columns are numbers (left to right). Type your answer like this: A1 — row letter first, then column number, no space.</div>
+    <details class="hint"><summary>Hint 1</summary><p>"South" means down the map. "West" means left. Move one direction at a time, starting from the Ferris Wheel's square.</p></details>
+    <div class="answer-box" data-answer-hash="8829dfd9">
+      <label for="m1-answer">Your answer (grid square):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Hall of Fame Wall</h2>
+    <div class="puzzle">
+      <p>Judge Pemberton is buried in paperwork. Before she can brief you properly, she hands you a registration card to file and points you toward the "Hall of Fame" photo wall to wait.</p>
+    </div>
+    <div class="note"><strong>Agent's Notebook:</strong> The card reads <em>Hazel Kowalski — registration tag GPW-114</em>. Jot that down, Agent. Fair paperwork has a way of getting jumbled later today.</div>
+    <div class="puzzle">
+      <p>Pinned next to the old photos is a trivia plaque about the very first pumpkin weigh-off ever held — back when the towns of Half Moon Bay, California, and Circleville, Ohio, argued over who really grew the biggest pumpkin. Search online to find the year of that very first official weigh-off in Half Moon Bay.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Half Moon Bay pumpkin weigh-off first year" or "history of pumpkin weigh-offs."</p></details>
+    <div class="answer-box" data-answer-hash="2349a9c4">
+      <label for="m2-answer">Your answer (digits only):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? During its fastest growing stretch in July, a giant pumpkin can gain up to 50 pounds in a single day — roughly two pounds every hour, day and night.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>What Makes a Pumpkin Go Giant?</h2>
+    <div class="puzzle">
+      <p>Every giant pumpkin here started out as an ordinary-looking seed. Search online to find the name of the plant tissue that carries sugar from the leaves into the growing fruit. Giant pumpkins have extra amounts of this tissue — one big reason they can grow so enormous. (It's a science word, and it is NOT the same as "xylem," which is the tissue that carries water instead.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search something like "how do giant pumpkins get so big science." Look for the plant tissue that's the opposite of the one that carries water.</p></details>
+    <div class="answer-box" data-answer-hash="ab8d71f2">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Roots of the Giants</h2>
+    <div class="puzzle">
+      <p>Every Atlantic Giant pumpkin at this fair — the classic giant orange variety used in weigh-offs all over the world — traces back to one small farm. Search online to find the Canadian province where grower Howard Dill first bred the Atlantic Giant pumpkin, back in the 1970s and 80s. Type just the province name (two words).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Howard Dill Atlantic Giant pumpkin" and look for where his farm was located.</p></details>
+    <div class="answer-box" data-answer-hash="ad160fc6">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The very first giant pumpkin world record, set at the 1893 World's Fair in Chicago, weighed just 365 pounds. Every modern champion is now more than seven times heavier than that record-breaker was.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Sorting the Registration Cards</h2>
+    <div class="puzzle">
+      <p>Judge Pemberton needs the registration cards sorted into two overlapping circles before she can post the leaderboard:</p>
+      <p><strong>Circle A:</strong> grown from Atlantic Giant seed.<br>
+      <strong>Circle B:</strong> official weight over 1,000 pounds.</p>
+      <p>Here are today's cards (Big Walt's Behemoth isn't listed — its weigh-in never finished before the scale died):</p>
+      <ul>
+        <li><strong>Old Hazel</strong> (grower: Hazel Kowalski) — Atlantic Giant seed — 1,150 lbs</li>
+        <li><strong>Roscoe's Round Wonder</strong> (grower: Roscoe Mbeki) — Atlantic Giant seed — 640 lbs</li>
+        <li><strong>Dot's Dazzler</strong> (grower: Dot Yamada) — Prizewinner seed — 1,280 lbs</li>
+        <li><strong>Nettie's Nugget</strong> (grower: Nettie Alvarez) — Atlantic Giant seed — 380 lbs</li>
+      </ul>
+      <p>Exactly ONE of these four pumpkins belongs in <strong>BOTH</strong> circles at once. Which one? Type its nickname exactly as written above (for example: Dot's Dazzler).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First, circle every pumpkin that's Atlantic Giant seed. Then, from just that smaller group, check which one also topped 1,000 pounds.</p></details>
+    <div class="answer-box" data-answer-hash="516a6114">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Scoring Table</h2>
+    <div class="puzzle">
+      <p>4:00 PM is getting close, and the scale glitch scrambled the paper weigh-in slips too. <strong>Grab a pencil for this one</strong> — you'll want scratch paper.</p>
+      <p>Every returning grower gets weighed THREE times today (the fair always double-checks with a re-weigh whenever the scale hiccups). Their official weight is the <em>average</em> of the three readings: add the three numbers, then divide by 3.</p>
+      <p>One slip has no name on it at all — just a registration number.</p>
+    </div>
+    <table class="score-table">
+      <tr><th>Slip</th><th>Reading 1</th><th>Reading 2</th><th>Reading 3</th></tr>
+      <tr><td>Roscoe Mbeki</td><td>635</td><td>642</td><td>643</td></tr>
+      <tr><td>Dot Yamada</td><td>1275</td><td>1282</td><td>1283</td></tr>
+      <tr><td>Tag GPW-114, no name</td><td>1145</td><td>1152</td><td>1153</td></tr>
+      <tr><td>Nettie Alvarez (first-year grower)</td><td>375</td><td>382</td><td>383</td></tr>
+    </table>
+    <div class="puzzle">
+      <p>Judge Pemberton only wants the TOTAL official weight of the <strong>returning</strong> growers right now — first-year growers don't count toward this particular total (fair tradition). Figure out which grower the unlabeled slip belongs to, leave out the first-year entry, and add up the rest. What's the total, in pounds?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Average each grower's three numbers first (add them up, then divide by 3) before you add the growers together.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Whose registration number did you jot down earlier today? Match it to the unlabeled slip before you decide who counts as "returning."</p></details>
+    <div class="answer-box" data-answer-hash="a0cc66d9">
+      <label for="m6-answer">Your answer (digits only):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Longest Vine Mix-Up</h2>
+    <div class="puzzle">
+      <p>While the scale technician works, the fair holds its just-for-fun Longest Vine contest among three growers: Roscoe, Dot, and Walt. The registration clerk copied down each grower's claim, but made exactly ONE mistake — one of these three statements does NOT match reality:</p>
+      <p><strong>Roscoe says:</strong> "My vine is longer than Dot's."<br>
+      <strong>Dot says:</strong> "My vine is longer than Walt's."<br>
+      <strong>Walt says:</strong> "My vine is the longest of the three."</p>
+      <p>Judge Pemberton already spot-checked one fact herself with a tape measure: <strong>Walt's vine is definitely NOT the shortest of the three.</strong></p>
+      <p>Using logic — not guessing — figure out whose statement is the false one. Type just their first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>List every possible order for the three vines, from longest to shortest (there are 6 orders). For each one, count how many of the three statements would be true.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Only one of those orders makes "exactly one statement false" true AND keeps Walt from being shortest. Cross out every order that fails either test.</p></details>
+    <div class="answer-box" data-answer-hash="d3689f20">
+      <label for="m7-answer">Your answer (first name):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Pumpkin weight doesn't grow at the same rate as pumpkin size. A pumpkin that's 50% bigger around can end up almost four times heavier — which is exactly why judges trust math, not guesses, whenever a scale can't be used.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Weigh the Behemoth by Math</h2>
+    <div class="puzzle">
+      <p>The scale is officially dead — sparks and all. Judge Pemberton pulls out her tape measures instead. This is the real trick fair judges use whenever a scale fails: estimate the weight from measurements, using the same kind of math real giant-pumpkin judges rely on.</p>
+      <p>Big Walt's Behemoth is measured at its widest point. Here's the top-down view:</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 240 220" width="240" height="220" role="img" aria-label="Top-down view of a giant pumpkin at its widest point, drawn as a circle. A line from the center to the edge is labeled 25 inches, showing the radius.">
+      <circle cx="110" cy="110" r="75" fill="#F6D9B0" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="110" y1="110" x2="185" y2="110" stroke="#2B2A24" stroke-width="2"/>
+      <circle cx="110" cy="110" r="3" fill="#2B2A24"/>
+      <text x="147" y="103" text-anchor="middle" font-size="13" font-weight="700" fill="#2B2A24">25 in</text>
+      <text x="120" y="205" text-anchor="middle" font-size="12" fill="#2B2A24">Top view — widest point</text>
+    </svg>
+    <div class="clue-caption">The line from the center to the edge is the radius. Remember: diameter = radius × 2, and circumference = π × diameter.</div>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>What is the circumference (the distance all the way around) of Big Walt's Behemoth at its widest point? Use circumference = π × diameter, with π ≈ 3.14. Round to the nearest whole inch.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The diagram shows the RADIUS, not the diameter. Diameter is double the radius — find that first.</p></details>
+    <div class="answer-box" data-answer-hash="f62c66f4">
+      <label for="m8-stage1">Your answer (inches, digits only):</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Judge Pemberton's clipboard also lists the pumpkin's height (ground to top, not counting the stem): <strong>65 inches</strong>. Real giant-pumpkin judges use a formula like this simplified version to estimate weight from measurements:</p>
+      <p><strong>Estimated weight (lbs) = (circumference × circumference × height) ÷ 800</strong></p>
+      <p>Use your Stage 1 answer as the circumference. Round your final answer to the nearest whole pound.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Multiply your Stage 1 circumference by itself first (that's circumference squared), then multiply that result by the height.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Take (circumference × circumference × 65) and divide the whole thing by 800. Round to the nearest whole number.</p></details>
+    <div class="answer-box" data-answer-hash="d32ea22a">
+      <label for="m8-stage2">Your final answer (pounds, digits only):</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Sponsorship Trap</h2>
+    <div class="puzzle">
+      <p>While everyone waits on Walt's number to be confirmed, Hazel Kowalski asks for your help. Two local businesses want to sponsor Old Hazel (1,150 lbs, remember?), and she can only pick one deal:</p>
+      <p><strong>DEAL A — Meridian Farm Supply:</strong> pays $4.00 per pound... but takes a 15% "handling fee" off the total before paying her.<br>
+      <strong>DEAL B — Ferris &amp; Sons Hardware:</strong> pays a flat $3.50 per pound, no fees at all.</p>
+      <p>At first glance, Deal A's rate looks bigger. Grab a pencil and work out what each deal actually pays Hazel for her 1,150-pound pumpkin, fee included. The better deal pays more money — by how many DOLLARS does it beat the other one? (Type just the number, no dollar sign.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out the FULL payout for each deal first, before worrying about any fee.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Meridian's 15% fee comes OFF Hazel's total pay. Find 15% of Deal A's full payout, then subtract it from that payout.</p></details>
+    <div class="answer-box" data-answer-hash="683614c6">
+      <label for="m9-answer">Your answer (digits only):</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Announcing the Real Champion</h2>
+    <div class="puzzle">
+      <p>It's almost 4:00 PM. Judge Pemberton climbs onto the stage with the corrected leaderboard in hand — but she needs YOU to confirm the name before she says it into the microphone.</p>
+      <p>Here's what the case file already tells you: Dot's Dazzler weighed in at 1,280 lbs. Old Hazel weighed in at 1,150 lbs. Roscoe's Round Wonder weighed in at 640 lbs. Nettie's Nugget weighed in at 380 lbs. And you already rescued Big Walt's Behemoth's true weight with math, back when the scale died.</p>
+      <p>(Don't be fooled by the Longest Vine mix-up from earlier — that contest was about vines, not weight, and has nothing to do with who wins the Weigh-Off.)</p>
+      <p>Compare every official weight in the case file. Who is the TRUE champion of the Amberfield County Fair Giant Pumpkin Weigh-Off? Type the grower's full first and last name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You calculated one grower's weight yourself, using math instead of a scale. Scroll back and check that number against everyone else's.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The champion's pumpkin outweighs every other pumpkin in the case file by hundreds of pounds — it isn't close.</p></details>
+    <div class="answer-box" data-answer-hash="f9bce5cb">
+      <label for="finale-answer">Your answer (full name):</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Champion confirmed! Judge Pemberton didn't need a working scale to find the truth — she needed someone who wouldn't give up when the numbers got messy and the clock got tight. That's called <strong>PERSEVERANCE</strong>, and today, Junior Judging Assistant, you've got it in spades.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

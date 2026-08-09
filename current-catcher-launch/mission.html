@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Operation Current Catcher — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E7D8C;
+    --accent-dark: #1F5965;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .note {
+    font-size: 0.9rem;
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent-dark);
+    padding: 0.6rem 0.8rem;
+    margin: 0.7rem 0;
+    border-radius: 2px;
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.1rem 0 0.6rem; font-weight: 700; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .binary-table {
+    border-collapse: collapse;
+    margin: 0.9rem auto;
+    font-size: 0.85rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .binary-table th, .binary-table td {
+    border: 1px solid rgba(0,0,0,0.12);
+    padding: 0.3rem 0.5rem;
+    text-align: center;
+  }
+  .binary-table th { background: var(--paper-dark); }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>Operation Current Catcher</h1>
+  <div class="subtitle">Junior Engineer briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-95 minutes</div>
+</div>
+
+<div class="intro">
+  <p>In five days, the Blue Current Project launches CC-4 — a brand-new, V-shaped floating boom that gathers drifting plastic at Meridian Delta, where the Kelan River meets the sea, and guides it into a solar-powered collection tank. It works like real ocean-cleanup machines used in rivers and coastlines around the world today.</p>
+  <p>You've just been added to the crew as a Junior Engineer for Launch Week. Ten jobs stand between now and Launch Day: budgets, sensors, charts, contracts, and one very tricky sponsor wall. Every number has to be exactly right — get one wrong out here, and the whole system could fail once it's out on the water.</p>
+  <p>Grab a notebook. Some of what you find today, you'll need again later — without anyone reminding you.</p>
+</div>
+
+<!-- MISSION 1 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Launch Budget</h2>
+    <div class="puzzle">
+      <p>The crew's budget folder is a mess of receipts. Total launch budget: <strong>&euro;18,500</strong>. So far, the team has spent money on:</p>
+      <p>
+        Solar panel replacement: &euro;4,250<br>
+        Conveyor belt lubricant &amp; maintenance: &euro;1,180<br>
+        Safety inspection fee: &euro;950<br>
+        Dock rental for Launch Day: &euro;2,300<br>
+        Crew t-shirts &amp; banners: &euro;640
+      </p>
+      <p>Add up every expense, then subtract that total from the launch budget. How many euros are left over? Grab a pencil for this one — five numbers is a lot to hold in your head at once.</p>
+    </div>
+    <div class="note">📓 Field notebook: pinned above the budget folder is CC-4's spec sheet — <strong>Standard collection rate: 50,000 kg/day. Optimal-conditions collection rate: 100,000 kg/day.</strong> Not needed for this job, but worth jotting down.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Add up every expense first, then subtract that total from the whole budget. Do it in stages on paper rather than all at once.</p></details>
+    <div class="answer-box" data-answer-hash="18d0510f">
+      <label for="m1-answer">Your answer (just the number, no &euro; sign):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Two Ways Plastic Hurts</h2>
+    <div class="puzzle">
+      <p>The crew's marine biologist is building a poster about why CC-4 matters. She's sorting ocean debris into two groups, drawn here as two overlapping circles:</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 190" width="300" height="190" role="img" aria-label="Two overlapping circles: one labeled Entanglement, gets physically tangled up, and one labeled Ingestion, gets swallowed by mistake, with an empty overlap in the middle">
+      <circle cx="115" cy="100" r="78" fill="rgba(46,125,140,0.12)" stroke="#2B2A24" stroke-width="2"/>
+      <circle cx="195" cy="100" r="78" fill="rgba(165,59,45,0.12)" stroke="#2B2A24" stroke-width="2"/>
+      <text x="70" y="45" font-size="12" font-weight="bold">ENTANGLEMENT</text>
+      <text x="70" y="60" font-size="10">(gets physically</text>
+      <text x="70" y="72" font-size="10">tangled up)</text>
+      <text x="205" y="45" font-size="12" font-weight="bold">INGESTION</text>
+      <text x="205" y="60" font-size="10">(gets swallowed</text>
+      <text x="205" y="72" font-size="10">by mistake)</text>
+      <text x="155" y="103" font-size="11" text-anchor="middle" font-style="italic">?</text>
+    </svg>
+    <div class="puzzle">
+      <p>Here are three things CC-4 pulls out of the water: an <strong>abandoned fishing net</strong>, a <strong>plastic bottle cap</strong>, and a length of <strong>fishing line</strong>.</p>
+      <p>Search to check the real reports: which one of these three actually belongs in the <em>middle</em> of the diagram — the one item that both tangles animals up <em>and</em> gets swallowed by mistake?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for real reports on how a net harms animals, how a bottle cap harms animals, and how this third item harms animals. Two of the three only cause one kind of harm.</p></details>
+    <div class="answer-box" data-answer-hash="2eda252d">
+      <label for="m2-answer">Your answer (two words):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? More than half of the world's sea turtles have eaten plastic at some point, usually because a floating plastic bag looks just like their favorite food: jellyfish.</p>
+
+<!-- MISSION 3 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Which Claim Is Right?</h2>
+    <div class="puzzle">
+      <p>Two draft sentences for tomorrow's press release are sitting on the project lead's desk. Only one can go out — the other is misleading.</p>
+      <p><strong>Claim A:</strong> "CC-4 will remove <em>all</em> the plastic from the ocean and solve the problem completely, forever, all by itself."</p>
+      <p><strong>Claim B:</strong> "CC-4 can remove huge amounts of plastic, but stopping new plastic from entering the water in the first place matters just as much."</p>
+      <p>Search what real ocean-cleanup organizations actually say when people ask whether cleanup machines alone can fix ocean plastic pollution. Which claim matches what the experts say?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search something like: can ocean cleanup machines solve plastic pollution alone. Read what an official cleanup organization's own website says.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Look for a sentence that treats cleaning up existing plastic and stopping new plastic from getting in as two separate jobs that are <em>both</em> needed. That idea matches only one of the two claims above.</p></details>
+    <div class="answer-box" data-answer-hash="bd62a72d">
+      <label for="m3-answer">Your answer (type exactly: claim a — or — claim b):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Best Bid Wins</h2>
+    <div class="puzzle">
+      <p>CC-4 needs a new mooring anchor and chain set. Two suppliers sent quotes. The anchor <strong>must</strong> be installed and pressure-tested by <strong>Thursday morning</strong>, or CC-4 cannot be certified safe for Launch Day — no exceptions.</p>
+      <p>
+        <strong>Ironhold Marine Supply:</strong> &euro;640, ships and arrives <strong>Wednesday</strong>.<br>
+        <strong>Tidebound Rigging Co.:</strong> &euro;575, ships and arrives <strong>Friday</strong>.
+      </p>
+      <p>Which supplier should the crew actually order from?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Line up both delivery days against the Thursday-morning deadline before you even look at the prices.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>One shipment arrives after the deadline has already passed. No price is good enough if the anchor isn't there in time to be tested.</p></details>
+    <div class="answer-box" data-answer-hash="eaab487a">
+      <label for="m4-answer">Your answer (just the company's first name):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Morning Blink Code</h2>
+    <div class="puzzle">
+      <p>Every morning, CC-4's solar-powered status light blinks a short binary code to report itself ready. Each letter is sent as a 5-digit binary number, where the number simply says <em>which letter of the alphabet</em> it is (A is the 1st letter, so A = 00001; B is the 2nd, so B = 00010; and so on).</p>
+    </div>
+    <table class="binary-table">
+      <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th><th>M</th></tr>
+      <tr><td>00001</td><td>00010</td><td>00011</td><td>00100</td><td>00101</td><td>00110</td><td>00111</td><td>01000</td><td>01001</td><td>01010</td><td>01011</td><td>01100</td><td>01101</td></tr>
+      <tr><th>N</th><th>O</th><th>P</th><th>Q</th><th>R</th><th>S</th><th>T</th><th>U</th><th>V</th><th>W</th><th>X</th><th>Y</th><th>Z</th></tr>
+      <tr><td>01110</td><td>01111</td><td>10000</td><td>10001</td><td>10010</td><td>10011</td><td>10100</td><td>10101</td><td>10110</td><td>10111</td><td>11000</td><td>11001</td><td>11010</td></tr>
+    </table>
+    <div class="puzzle">
+      <p>This morning's blink pattern was:</p>
+      <p style="font-family:'Special Elite',monospace; letter-spacing:0.15em; font-size:1.1rem;">10010 &nbsp; 00101 &nbsp; 00001 &nbsp; 00100 &nbsp; 11001</p>
+      <p>Use the table to decode the five letters into one word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Match each 5-digit group to its column in the table, one group at a time, left to right.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If you'd rather calculate it: each digit stands for a place value of 16, 8, 4, 2, then 1. Add up the place values where the digit is a 1.</p></details>
+    <div class="answer-box" data-answer-hash="660ec0f4">
+      <label for="m5-answer">Your answer (one word):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A single plastic bottle can take about 450 years to fully break down in the ocean — nearly six times longer than anyone alive today has been alive.</p>
+
+<!-- MISSION 6 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Harbor Permit</h2>
+    <div class="puzzle">
+      <p>The harbor office won't sign CC-4's mooring permit until they know its total footprint on the water: the V-shaped catch corridor out front (a triangle) <em>plus</em> the rectangular collection tank behind it. Grab a pencil — this one has two shapes to work through.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 200 205" width="200" height="205" role="img" aria-label="A triangle sitting on top of a rectangle, sharing a 12 meter edge. The triangle has a height of 9 meters. The rectangle is 12 meters wide and 5 meters deep.">
+      <polygon points="92,10 20,118 164,118" fill="rgba(46,125,140,0.12)" stroke="#2B2A24" stroke-width="2"/>
+      <rect x="20" y="118" width="144" height="60" fill="rgba(181,121,43,0.10)" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="92" y1="10" x2="92" y2="118" stroke="#2B2A24" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="128" y="64" font-size="12" text-anchor="middle">9 m</text>
+      <text x="92" y="112" font-size="12" text-anchor="middle">12 m</text>
+      <text x="92" y="196" font-size="12" text-anchor="middle">12 m</text>
+      <text x="10" y="148" font-size="12" text-anchor="middle" transform="rotate(-90 10 148)">5 m</text>
+    </svg>
+    <div class="clue-caption">The dashed line is the triangle's height. The triangle's base and the rectangle's top edge are the same 12 m — they're the same seam where the two pieces join.</div>
+    <div class="puzzle">
+      <p>What is the total footprint area of CC-4, in square meters?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Split the shape into the two pieces you already know how to measure separately: a triangle and a rectangle.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Triangle area = &#189; &times; base &times; height. Rectangle area = length &times; width. Add both areas together for the total.</p></details>
+    <div class="answer-box" data-answer-hash="69361659">
+      <label for="m6-answer">Your answer (just the number, no units):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Which Sensor Do We Trust?</h2>
+    <div class="puzzle">
+      <p>CC-4 has two current-speed sensors, one on each arm of the V: <strong>Sensor North</strong> and <strong>Sensor South</strong>. Exactly one of them is broken. A broken sensor's statements are always false. A working sensor's statements are always true.</p>
+      <p>The crew already knows one fact for certain, straight from the dock's own hand-checked instrument: <strong>today's current is NOT flowing at exactly 4 knots — it's flowing faster than that.</strong></p>
+      <p>This morning, the two sensors reported:</p>
+      <p>
+        <strong>Sensor North:</strong> "Sensor South is broken."<br>
+        <strong>Sensor South:</strong> "The current is flowing at exactly 4 knots today."
+      </p>
+      <p>Which sensor is actually broken?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Check one sensor's claim against the fact the crew already knows for certain — don't start with the claim about the other sensor.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If a sensor's own words don't match a fact you already know for certain, that sensor must be the broken one — a working sensor never says something false.</p></details>
+    <div class="answer-box" data-answer-hash="e272d7a">
+      <label for="m7-answer">Your answer (North or South):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The middle of a big ocean current system (called a gyre) is calm and slow-moving. That's exactly why floating plastic gets trapped there for years instead of washing back to shore.</p>
+
+<!-- MISSION 8 -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Chart the Mooring Spot</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>The harbor pilot radios instructions in compass bearings, not plain words. She says the support buoy needs to be set on a bearing of "due Southeast" from the dock.</p>
+      <p>Search to find: how many degrees is the compass bearing for due Southeast?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Southeast sits exactly halfway between two of the four main compass points. Search for a compass bearing chart to find the exact number.</p></details>
+    <div class="answer-box" data-answer-hash="743aa4d8">
+      <label for="m8-stage1">Your answer (just the number, no degree symbol):</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Here's the harbor chart. The dock (marked H) sits at grid square <strong>C2</strong>. On this chart, moving <strong>east</strong> means moving one square right, and moving <strong>south</strong> means moving one square down (south is toward the bottom, like on any map).</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 230 230" width="230" height="230" role="img" aria-label="A 6 by 6 nautical grid chart, columns numbered 1 to 6 left to right, rows lettered A to F top to bottom, with the dock marked H at grid square C2">
+      <text x="82" y="14" font-size="12" text-anchor="middle">1</text>
+      <text x="110" y="14" font-size="12" text-anchor="middle">2</text>
+      <text x="138" y="14" font-size="12" text-anchor="middle">3</text>
+      <text x="166" y="14" font-size="12" text-anchor="middle">4</text>
+      <text x="194" y="14" font-size="12" text-anchor="middle">5</text>
+      <text x="222" y="14" font-size="12" text-anchor="middle">6</text>
+      <text x="30" y="46" font-size="12" text-anchor="middle">A</text>
+      <text x="30" y="74" font-size="12" text-anchor="middle">B</text>
+      <text x="30" y="102" font-size="12" text-anchor="middle">C</text>
+      <text x="30" y="130" font-size="12" text-anchor="middle">D</text>
+      <text x="30" y="158" font-size="12" text-anchor="middle">E</text>
+      <text x="30" y="186" font-size="12" text-anchor="middle">F</text>
+      <g stroke="#2B2A24" stroke-width="1">
+        <line x1="68" y1="22" x2="236" y2="22"/>
+        <line x1="68" y1="50" x2="236" y2="50"/>
+        <line x1="68" y1="78" x2="236" y2="78"/>
+        <line x1="68" y1="106" x2="236" y2="106"/>
+        <line x1="68" y1="134" x2="236" y2="134"/>
+        <line x1="68" y1="162" x2="236" y2="162"/>
+        <line x1="68" y1="190" x2="236" y2="190"/>
+        <line x1="68" y1="22" x2="68" y2="190"/>
+        <line x1="96" y1="22" x2="96" y2="190"/>
+        <line x1="124" y1="22" x2="124" y2="190"/>
+        <line x1="152" y1="22" x2="152" y2="190"/>
+        <line x1="180" y1="22" x2="180" y2="190"/>
+        <line x1="208" y1="22" x2="208" y2="190"/>
+        <line x1="236" y1="22" x2="236" y2="190"/>
+      </g>
+      <circle cx="110" cy="92" r="9" fill="var(--accent)" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="110" y="96" font-size="10" text-anchor="middle" fill="#fff" font-weight="bold">H</text>
+    </svg>
+    <div class="puzzle">
+      <p>Using the bearing you found in Stage 1, sail exactly <strong>3 diagonal steps</strong> from the dock along that heading. Each step moves one row and one column. Which grid square do you land on?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>A bearing exactly halfway between East and South moves you diagonally — one column right and one row down for every step.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Starting from C2, take three of those diagonal steps. Each step advances the letter by one row and the number by one column.</p></details>
+    <div class="answer-box" data-answer-hash="182273c4">
+      <label for="m8-stage2">Your final answer (letter + number, like A1):</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 9 -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Sponsor Wall</h2>
+    <div class="puzzle">
+      <p>Three sponsors are getting a decal each on CC-4, and each decal goes in exactly one of three zones: the <strong>Left Arm</strong>, the <strong>Right Arm</strong>, or the <strong>Tank</strong>. No zone gets two decals, and no sponsor gets two zones. The contracts say:</p>
+      <p>
+        1. BlueWave Bank's decal goes on the Left Arm <strong>or</strong> the Tank — never both, and never the Right Arm.<br>
+        2. Coastal Foods Co.'s decal is on the Right Arm <strong>and</strong> is <strong>not</strong> on the Tank.<br>
+        3. Nautix Batteries' decal is <strong>not</strong> on the Left Arm.
+      </p>
+      <p>Which zone gets Nautix Batteries' decal?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue that pins down an exact zone for one sponsor by itself. That's your first solid piece.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once one sponsor's zone is settled, only two zones are left for the other two sponsors. One remaining clue rules out a zone for one of them — leaving just one place it can go.</p></details>
+    <div class="answer-box" data-answer-hash="c285a89">
+      <label for="m9-answer">Your answer (one word: the zone name):</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 10: GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Season Countdown</h2>
+    <div class="puzzle">
+      <p>Launch Day has arrived — but the review board needs one last proof before they'll sign off. Together, Meridian Delta and the drift zone offshore still hold about <strong>900,000 kilograms</strong> of plastic that needs clearing before the autumn storms roll in.</p>
+      <p>If CC-4 runs at its <strong>optimal</strong> collection rate every single day from here on, exactly how many full days will it take to clear all 900,000 kilograms?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You need two numbers: the kilograms still left to collect, and how fast CC-4 can collect on its very best days. One of those numbers was written down earlier in your notes, not here.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Divide the total kilograms left by CC-4's optimal daily rate. If it divides evenly, that clean number is your answer, in days.</p></details>
+    <div class="answer-box" data-answer-hash="3c0cb3b4">
+      <label for="finale-answer">Your answer (just the number of days):</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Budgets, sensors, charts, contracts, and one stubborn diagram — no single job would have gotten CC-4 to the water on its own. It took every teammate's piece fitting with every other teammate's piece. That's <strong>teamwork</strong>, and it's exactly what got CC-4 launched on schedule.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
