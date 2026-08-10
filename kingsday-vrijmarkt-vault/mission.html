@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The King's Day Vrijmarkt Vault — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #E2672B;
+    --accent-dark: #A84A1D;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 1.4rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .notebook {
+    background: #FBF3DF;
+    border: 1px dashed var(--accent-dark);
+    padding: 1rem 1.3rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+  }
+  .notebook .eyebrow { display: block; margin-bottom: 0.35rem; }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .timetable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .timetable th, .timetable td {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.4rem 0.55rem;
+    text-align: left;
+  }
+  .timetable th { background: var(--paper-dark); }
+  .timetable-wrap { overflow-x: auto; margin: 0.9rem 0; }
+  .scam-box {
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    margin: 0.7rem 0;
+    background: var(--paper-dark);
+  }
+  .scam-box .label-tag {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-dark);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The King's Day Vrijmarkt Vault</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>It's Koningsdag (King's Day)! Your whole street is orange, and the neighborhood <strong>vrijmarkt</strong> — a giant sidewalk market where anyone can sell secondhand things — is in full swing. Every stall is donating part of today's earnings to the local library's brand-new children's reading corner.</p>
+  <p>But near closing time, the market organizer, Meneer de Wit, comes running over, notebook flapping in his hand. In all the chaos, the cashbox lock's combination and the day's donation numbers got completely mixed up. He needs a sharp Junior Detective — that's you — to visit each stall, solve what went wrong, and rebuild the day's earnings before the cashbox has to be handed to the library tonight.</p>
+</div>
+
+<div class="notebook">
+  <span class="eyebrow">🔎 Junior Detective Notebook</span>
+  <p style="margin:0;">Before the market opened, Meneer de Wit mentioned something worth remembering: the donation jar already had <strong>€14</strong> sitting inside it — left over and forgotten from last year's Koningsdag collection. Jot this number down somewhere. You won't need it right away, but you will need it later today.</p>
+</div>
+
+<!-- MISSION 1 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sorting the Stall Signs</h2>
+    <div class="puzzle">
+      <p>Your first stop is the sign-painting table, where handwritten price signs for the vrijmarkt got mixed up. Every Dutch word needs either "de" or "het" in front of it, and someone painted six signs without checking which word goes with which.</p>
+      <p>Here are the six words: <strong>fiets, boek, spel, speelgoed, jas, tas</strong>.</p>
+      <p>Not sure about one of them? It's fine to search online for a "de of het" checker (type the word plus "de of het") — even Dutch grown-ups do this sometimes!</p>
+      <p><strong>How many of these six words use "het"</strong> (not "de")? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Say each word out loud with "het" in front of it. Three of the six sound right that way — the other three sound right with "de" instead.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Whose Birthday Is It, Anyway?</h2>
+    <div class="puzzle">
+      <p>A little kid at the toy stall asks you: "Wait, WHY do we even have a vrijmarkt today?" You realize you should know this for sure before you keep investigating.</p>
+      <p>Search the internet: Koningsdag (King's Day) is celebrated every year on 27 April. <strong>Whose birthday does it celebrate?</strong> Type the King's name the way the Dutch usually write it: his first name, a hyphen, then his second name, with no spaces (for example: "Firstname-Secondname").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Koningsdag" — the very first sentence of most results explains whose birthday it marks.</p></details>
+    <div class="answer-box" data-answer-hash="602d4894">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? All that orange you see today comes from the House of Orange-Nassau, the royal family whose name and colors have been tied to the Netherlands for over 400 years.</p>
+
+<!-- MISSION 3 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Torn Schedule Board</h2>
+    <div class="puzzle">
+      <p>Next to the stage, the market's schedule board fell over in the crowd and got taped back up a bit crooked. It's still fully readable, though. This schedule is made up just for today's market — it's not a real event you'll find online.</p>
+      <div class="timetable-wrap">
+        <table class="timetable">
+          <tr><th>Time</th><th>What's happening</th></tr>
+          <tr><td>10:00</td><td>Market opens</td></tr>
+          <tr><td>10:30</td><td>Stage: Kids' choir "De Kleine Noten"</td></tr>
+          <tr><td>11:00</td><td>Pannenkoeken (pancake) stall opens</td></tr>
+          <tr><td>12:00</td><td>Stage: Magic show "Goochelaar Tom"</td></tr>
+          <tr><td>13:00</td><td>Tweedehands Boekenkraam (secondhand book stall) closes</td></tr>
+          <tr><td>13:30</td><td>Stage: Dance group "Oranje Danskids"</td></tr>
+          <tr><td>14:00</td><td>Pannenkoeken stall closes</td></tr>
+          <tr><td>14:30</td><td>Stage: Live band "The Tulip Beats"</td></tr>
+          <tr><td>15:00</td><td>Speelgoedkraam (toy stall) closes</td></tr>
+          <tr><td>16:00</td><td>Market closes</td></tr>
+        </table>
+      </div>
+      <p><strong>Which act plays right after the Pannenkoeken stall closes?</strong> Type its name exactly as it's written on the schedule.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the row that says the Pannenkoeken stall closes. What time is that?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The Pannenkoeken stall closes at 14:00. Look at the very next stage act after that time.</p></details>
+    <div class="answer-box" data-answer-hash="27753dc5">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Lemonade Stand's Digital Display</h2>
+    <div class="puzzle">
+      <p>The lemonade stand has a little digital display for keeping count. It's not a real scannable code of any kind — the stallholder just made up a simplified digital code for fun, using <strong>binary</strong>: a way of writing numbers using only 0s and 1s.</p>
+      <p>Here's how it works. Each position in a 4-digit binary number stands for a value: from left to right, the positions are worth <strong>8, 4, 2, and 1</strong>. Wherever there's a "1", you add that position's value. Wherever there's a "0", you skip it.</p>
+      <p>The display shows this code: <strong>1 1 0 1</strong></p>
+      <p><strong>What regular number does this binary code stand for?</strong> Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Line the four digits up under the values 8, 4, 2, 1, and only add up the columns where the digit is a "1".</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The digits are 1-1-0-1, matched to 8-4-2-1. That means you add 8, 4, and 1 — and skip the 2.</p></details>
+    <div class="answer-box" data-answer-hash="1eeb2efd">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The number system computers use today, binary, was first written about by a mathematician named Gottfried Leibniz, all the way back in 1679 — long before any computer existed!</p>
+
+<!-- MISSION 5 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Two Messages by the Donation Box</h2>
+    <div class="puzzle">
+      <p>Taped to the donation box are two printed messages. One is real. One is a scam someone tried to sneak in. Before you decide, do a quick search online for "why you should never share your PIN code" — real shops, markets, and banks never ask for it, not even by text message. Keep that rule in mind.</p>
+      <div class="scam-box">
+        <span class="label-tag">MESSAGE A</span>
+        <p style="margin:0;">"Thank you for supporting the library's new reading corner! You can hand your coins to any stallholder, or scan the stall's payment sign yourself. Every euro helps buy new books for the corner."</p>
+      </div>
+      <div class="scam-box">
+        <span class="label-tag">MESSAGE B</span>
+        <p style="margin:0;">"‼️URGENT‼️ Vrijmarkt Bonus! Send your bank PIN code to www.koningsdag-geld-bonuss.nl within 5 minutes to DOUBLE your donation!!! Act now, before it's too late!!!"</p>
+      </div>
+      <p><strong>Which message is the scam — A or B?</strong> Type just the letter.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Real charity collections never ask you to send your PIN code anywhere.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Look for words that rush you to act fast, and look closely at the web address — does it look like a normal, trustworthy site, or a strange, made-up one?</p></details>
+    <div class="answer-box" data-answer-hash="e70c2de5">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Measuring the Stage Tent</h2>
+    <div class="puzzle">
+      <p>The stage crew needs to know exactly how much orange fabric covers the front of their tent, for tomorrow's cleanup report. The front of the tent is shaped like a rectangle with a rounded awning (a semicircle) on top, like the picture below. Grab a pencil for this one.</p>
+      <svg class="clue-diagram" viewBox="0 0 200 200" width="320" height="320"
+           role="img" aria-label="A stage tent front: an 8 meter wide, 4 meter tall rectangle, topped by a semicircular awning with a 4 meter radius whose flat edge matches the rectangle's 8 meter width exactly">
+        <path d="M40,170 L40,110 A60,60 0 0 1 160,110 L160,170 Z"
+              fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+        <line x1="100" y1="110" x2="100" y2="50" stroke="#2B2A24" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="112" y="82" font-size="11">r = 4 m</text>
+        <text x="100" y="192" text-anchor="middle" font-size="12">8 m</text>
+        <text x="22" y="143" text-anchor="middle" font-size="12" transform="rotate(-90 22 143)">4 m</text>
+      </svg>
+      <div class="clue-caption">The awning's flat edge sits exactly on top of the rectangle, matching its width exactly — that's the semicircle's diameter.</div>
+      <p><strong>What is the total area of the tent's front, in square meters?</strong> Use π ≈ 3.14. Type just the number (for example: 12.34).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out the rectangle's area and the semicircle's area separately, then add them together.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Rectangle area = width × height. Semicircle area = (π × radius × radius) ÷ 2, using the 4 m radius shown.</p></details>
+    <div class="answer-box" data-answer-hash="ecda68d6">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Stalls in a Row</h2>
+    <div class="puzzle">
+      <p>Along Tulip Street there are exactly four stalls in a row, numbered 1 to 4 starting from the market entrance. Each stall belongs to one person, sells one type of item, and stands in one position. Use only these four clues — no searching, just logic — to figure out the whole row:</p>
+      <ol>
+        <li>The cupcake stall is immediately to the right of the plant stall (one position further from the entrance).</li>
+        <li>Anna's stall sells cupcakes.</li>
+        <li>Daan's stall is the very last stall in the row, and he sells neither plants nor books.</li>
+        <li>Cato's stall is closer to the entrance than Anna's stall, and Cato does not sell plants.</li>
+      </ol>
+      <p>The four items are: books, toys, plants, cupcakes. The four owners are: Anna, Bram, Cato, Daan.</p>
+      <p><strong>What does Cato's stall sell?</strong> Type just the item name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 2 — it hands you one full answer for free. Then use clue 3 to place Daan and his item.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once Anna sells cupcakes and Daan (at position 4) sells toys, only books and plants are left for Bram and Cato. Clue 4 tells you which one Cato does NOT sell.</p></details>
+    <div class="answer-box" data-answer-hash="7d5b411">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Spending the Errand Coins</h2>
+    <div class="puzzle">
+      <p>Meneer de Wit hands you 20 market coins (worth €1 each) to run a snack errand between stalls. Here's the price list:</p>
+      <div class="timetable-wrap">
+        <table class="timetable">
+          <tr><th>Treat</th><th>Price</th></tr>
+          <tr><td>Poffertjes (mini pancakes)</td><td>€6</td></tr>
+          <tr><td>Lemonade</td><td>€3</td></tr>
+          <tr><td>Stroopwafel</td><td>€2</td></tr>
+          <tr><td>Balloon</td><td>€4</td></tr>
+        </table>
+      </div>
+      <p><strong>The rule:</strong> you may buy the poffertjes OR the lemonade — but never both. There's only room for one sweet treat in your basket.</p>
+      <p>You definitely buy the stroopwafel and the balloon. By the time you reach the poffertjes stall, they've completely sold out for the day — so instead, you buy the lemonade.</p>
+      <p><strong>How many market coins do you have left after all your shopping?</strong> Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add up only the treats you actually bought — remember, the rule says pick ONE of the two, never both.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>You bought the lemonade (not the poffertjes), plus the stroopwafel and the balloon. Add those three prices together, then subtract the total from 20.</p></details>
+    <div class="answer-box" data-answer-hash="1ceb2bd7">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 9 -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>Rebuilding the Cashbox Total</h2>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Before you can add up the day's earnings, you need one more number — one you were told about right at the very start of this case, long before Mission 1.</p>
+      <p><strong>How many euros were already sitting in the donation jar before the market even opened?</strong> Type just the number, no € sign.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Scroll all the way back up to the Junior Detective Notebook note, just above Mission 01.</p></details>
+    <div class="answer-box" data-answer-hash="17eb23f8">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Four stallholders just handed you their end-of-day totals:</p>
+      <div class="timetable-wrap">
+        <table class="timetable">
+          <tr><th>Stall</th><th>Total collected</th></tr>
+          <tr><td>Pannenkoeken stall</td><td>€38</td></tr>
+          <tr><td>Speelgoedkraam</td><td>€27</td></tr>
+          <tr><td>Tweedehands Boekenkraam</td><td>€19</td></tr>
+          <tr><td>Limonade stand</td><td>€16</td></tr>
+        </table>
+      </div>
+      <p>Add these four totals together, then add your Stage 1 answer (the amount already in the jar) on top.</p>
+      <p><strong>What is the final cashbox amount, in euros?</strong> Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Line the four stall totals up under each other and add them column by column, like a normal addition problem.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Don't stop after adding the four stall totals — the €14 from the jar still needs to be added on top for the real final answer.</p></details>
+    <div class="answer-box" data-answer-hash="69361659">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? In many Dutch towns, the vrijmarkt is one of the only days when anyone — including kids — can legally sell secondhand things on the street without needing a permit (though exact rules can vary a little from town to town).</p>
+
+<!-- GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Opening the Cashbox</h2>
+    <div class="puzzle">
+      <p>It's almost 16:00 — closing time. Meneer de Wit sets the cashbox on the table in front of you. Its lock needs one number to release: the day's final total in euros, the very same number you just worked out.</p>
+      <p><strong>Type the final cashbox total to open the vault.</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You already solved this in the last mission — check the final answer you worked out there.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's the jar's starting €14, plus all four stall totals from Mission 9, added together one more time.</p></details>
+    <div class="answer-box" data-answer-hash="69361659">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The lock clicks open. Underneath the coins, Meneer de Wit finds a small folded note in his own handwriting, written that morning: "Every euro here becomes a book on the new reading corner's shelves — thank you to whoever helps make sure it all gets counted right." Taking the time to carefully rebuild someone else's mess, for a cause that helps the whole neighborhood, is its own kind of <strong>kindness</strong>. Case closed, Junior Detective — the library thanks you.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

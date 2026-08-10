@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Grandmaster's Locked Trophy — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #7A3B3B;
+    --accent-dark: #5C2A2A;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .intro .notebook {
+    display: block;
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed rgba(0,0,0,0.25);
+    font-style: italic;
+    color: var(--accent-dark);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ol, .puzzle ul { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle li { margin: 0.35rem 0; }
+  .stage-label {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.55);
+    margin: 1.3rem 0 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .stage-label:first-of-type { margin-top: 0.6rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .zigzag {
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.8rem 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Grandmaster's Locked Trophy</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 85-110 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Tomorrow afternoon, the town's Junior Chess Open crowns its champion — the biggest day on the club calendar. The trophy is legendary: a 1972 Fischer–Spassky commemorative chess set, sealed for years inside a glass case. Mrs. Okafor, the club's president since before anyone can remember, is retiring right after tomorrow's ceremony. Before she goes, she has sealed the case behind a puzzle-lock — her own farewell challenge — and pinned one note to the corkboard.</p>
+  <p>You're the club's newest member. Tonight, that note names you "Junior Detective," and asks you to solve her trail of chess-themed puzzles to earn the combination before the ceremony begins.</p>
+  <span class="notebook">📓 Agent's Notebook: Mrs. Okafor's note also says, "This club was founded in 1958." That number might matter more than you think — jot it down.</span>
+</div>
+
+<!-- MISSION 01 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Rice on the Squares</h2>
+    <p class="stage-label">First, verify the legend</p>
+    <div class="puzzle">
+      <p>On the workshop chessboard, Mrs. Okafor places grains of rice on the squares, one at a time: 1 grain on the first square, 2 on the second, 4 on the third, 8 on the fourth — doubling every square. "It's the same trick a clever storyteller from long ago is said to have used to outsmart a king," she says with a grin.</p>
+      <p>Search online for the "wheat and chessboard legend" (sometimes called the legend of Sissa) and find out how the story really ends. Once all 64 squares were doubled, could the king actually pay the full reward? Type "yes" or "no".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "wheat and chessboard legend" and read how a couple of retellings end.</p></details>
+    <div class="answer-box" data-answer-hash="62366ffa">
+      <label for="m1-check">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-check" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Now, try the pattern yourself</p>
+    <div class="puzzle">
+      <p>If the doubling keeps going the same way, how many grains would sit on the <strong>8th square</strong>?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Each square holds exactly double the grains of the square right before it. Keep doubling, starting from the 4th square's 8 grains.</p></details>
+    <div class="answer-box" data-answer-hash="6b385816">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 02 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Where the Game Began</h2>
+    <div class="puzzle">
+      <p>Chess wasn't invented all at once. It grew out of a much older strategy game called <strong>chaturanga</strong> — a Sanskrit word meaning "four divisions of the military."</p>
+      <p>Search online for chaturanga's history. Which present-day country is most often named as its birthplace? Type just the country's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "chaturanga origin country" and look for a reliable source, like Wikipedia or a chess history site.</p></details>
+    <div class="answer-box" data-answer-hash="f801948c">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The word "checkmate" comes from the old Persian phrase "shah mat." Most historians translate it as "the king is helpless" — it later passed through Arabic and French before becoming the English word we use today.</p>
+
+<!-- MISSION 03 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Clock That Never Lies</h2>
+    <div class="puzzle">
+      <p>Every chess match uses a special clock to time each player's turns. Mrs. Okafor drew one on the workshop wall as a perfect circle with a radius of 10 cm, and shaded in a wedge to show how much time one player had already used.</p>
+      <p><strong>Grab a pencil for this one.</strong> Find the area of the shaded wedge, in square centimeters. Use π ≈ 3.14, and remember: a full circle always measures 360°.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="A circle representing a chess clock face with a radius of 10 centimeters and a 90 degree wedge shaded near the top-right">
+      <circle cx="120" cy="120" r="80" fill="#FFFDF7" stroke="#2B2A24" stroke-width="2"/>
+      <path d="M120,120 L120,40 A80,80 0 0,1 200,120 Z" fill="#7A3B3B" fill-opacity="0.35" stroke="#5C2A2A" stroke-width="1.5"/>
+      <line x1="120" y1="120" x2="120" y2="40" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="120" y1="120" x2="200" y2="120" stroke="#2B2A24" stroke-width="2"/>
+      <circle cx="120" cy="120" r="3" fill="#2B2A24"/>
+      <text x="120" y="26" text-anchor="middle" font-size="12">12</text>
+      <text x="218" y="124" text-anchor="middle" font-size="12">3</text>
+      <text x="120" y="218" text-anchor="middle" font-size="12">6</text>
+      <text x="22" y="124" text-anchor="middle" font-size="12">9</text>
+      <text x="96" y="78" text-anchor="end" font-size="13" font-weight="bold">10 cm</text>
+      <text x="150" y="97" text-anchor="middle" font-size="14" font-weight="bold">90°</text>
+    </svg>
+    <div class="clue-caption">The radius and the shaded angle are both labeled right on the clock face.</div>
+    <details class="hint"><summary>Hint 1</summary><p>What fraction of the whole circle is 90° out of 360°?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>First find the area of the WHOLE circle (π × radius²). Then take that same fraction of it.</p></details>
+    <div class="answer-box" data-answer-hash="5891581b">
+      <label for="m3-answer">Your answer (just the number, no units):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 04 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Zigzag Farewell</h2>
+    <div class="puzzle">
+      <p>Mrs. Okafor left her next clue in a <strong>rail fence cipher</strong> — a code that zigzags letters down and up across rows, instead of scrambling them.</p>
+      <p>Here's how it works: write the message in a zigzag, moving down through the rows, then back up, then down again. For example, with 2 rails, the word KING zigzags like this:</p>
+      <div class="zigzag">Row 1: K . N .<br>Row 2: . I . G</div>
+      <p>Read Row 1 first, then Row 2, and you get the coded message: <strong>KNIG</strong>.</p>
+      <p>This time, Mrs. Okafor used 3 rails. Her coded message has 7 letters and lands on this exact zigzag skeleton (the X's mark where each letter goes):</p>
+      <div class="zigzag">Row 1: X . . . X . .<br>Row 2: . X . X . X .<br>Row 3: . . X . . . X</div>
+      <p>Her coded message is: <strong>EANGMDE</strong></p>
+      <p>Fill the 7 letters into the X's in order (the 1st letter into the 1st X, and so on), then read the message by following the zigzag path. What single chess word does it spell? Type it in lowercase, one word, no spaces.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Fill the X's row by row: the first 2 letters of EANGMDE go into Row 1, the next 3 go into Row 2, and the last 2 go into Row 3.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once every X has a letter, read in zigzag order: Row 1's first letter, then Row 2's first letter, then Row 3's first letter, then Row 2's second letter, then Row 1's second letter, then Row 2's third letter, then Row 3's second letter.</p></details>
+    <div class="answer-box" data-answer-hash="17d1dae8">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 05 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Sorting the Army</h2>
+    <div class="puzzle">
+      <p>Mrs. Okafor drew two overlapping circles on her whiteboard — a Venn diagram — and labeled them:</p>
+      <ul>
+        <li><strong>Circle A:</strong> "Moves diagonally"</li>
+        <li><strong>Circle B:</strong> "Can slide more than one square in a single turn"</li>
+      </ul>
+      <p>Sort these six pieces into the diagram: Rook, Bishop, Queen, King, Knight, Pawn. Use each piece's <em>normal</em> move only — not a pawn's first-move double-step, and not any piece's special capture rules.</p>
+      <p>Two pieces belong in <strong>both</strong> circles at once — right in the overlap. Which two? List their names in alphabetical order, separated by the word "and" (for example: "king and pawn").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Go through each of the six pieces one at a time. Ask two yes/no questions: does it ever move diagonally? Can it ever move more than one square in a single turn?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Both overlap pieces can always move along a diagonal, and neither one is ever limited to just a single square, the way the King is.</p></details>
+    <div class="answer-box" data-answer-hash="4f5ff787">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Nobody can list every possible chess game — mathematician Claude Shannon estimated there could be around 10<sup>120</sup> of them. Some say that's even more than the estimated number of atoms in the entire observable universe.</p>
+
+<!-- MISSION 06 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Round-Robin Ledger</h2>
+    <div class="puzzle">
+      <p>Four junior club members — Mia, Noah, Priya, and Tomas — just finished a mini round-robin before tomorrow's final. Mrs. Okafor left their scrambled results as a logic puzzle. Each member has one favorite opening, one nickname, and one final ranking (1st through 4th place). Use only these clues — no guessing:</p>
+      <ol>
+        <li>Priya plays the Caro-Kann Defense.</li>
+        <li>Whoever plays the Caro-Kann Defense finished in 1st place.</li>
+        <li>Priya's nickname is "The Wall."</li>
+        <li>Mia finished exactly one place after Priya.</li>
+        <li>Noah finished in last place (4th).</li>
+        <li>Tomas's nickname is "The Rook."</li>
+        <li>Tomas does not play the Italian Game.</li>
+        <li>Whoever is nicknamed "The Fox" plays the Sicilian Defense.</li>
+        <li>Noah's nickname is not "The Fox."</li>
+      </ol>
+      <p>Once you've filled in the whole grid: what nickname belongs to whoever finished in <strong>3rd place</strong>? Type just the nickname, including the word "the" (for example: "the eagle").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clues 1 and 2 together — they pin down exactly who finished 1st.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know who finished 1st, 2nd, and 4th, only one person and one place are left for 3rd.</p></details>
+    <div class="answer-box" data-answer-hash="537953c9">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 07 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Flashcard Tin</h2>
+    <div class="puzzle">
+      <p>Mrs. Okafor's own grandmother taught her chess in Dutch, long before this clubhouse existed. Tucked in the trophy case's drawer is a small tin of her grandmother's old flashcards — one Dutch word for each chess piece. Every card is missing its article.</p>
+      <p>In Dutch, most nouns pair with the word <strong>"de."</strong> A smaller group of special nouns pair with <strong>"het"</strong> instead. Here are six flashcards:</p>
+      <p style="text-align:center; font-size:1.05rem; font-weight:700; letter-spacing:0.03em;">koning (king) &middot; koningin (queen) &middot; toren (rook) &middot; paard (knight) &middot; loper (bishop) &middot; pion (pawn)</p>
+      <p>Sort all six into "de" words and "het" words. Five of them share the same article — only one breaks the pattern. Which word is it? Type just that Dutch word, in lowercase.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Most Dutch nouns take "de." A well-known exception is young or four-legged farm-and-stable animals — think sheep, pigs, calves, and horses.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Look up "de of het" plus each word if you're not sure. Five of these six chess words are "de" words — the exception is a word Dutch speakers also use outside of chess, for a common farm animal.</p></details>
+    <div class="answer-box" data-answer-hash="eb31fd67">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 08 -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Guards, One Truth</h2>
+    <div class="puzzle">
+      <p>Two junior members, Elena and Jamal, are guarding two small boxes near the trophy case — Box 1 and Box 2. Mrs. Okafor hid the real next clue inside exactly one of them; the other box is completely empty, just a decoy.</p>
+      <p>One of the two guards <em>always</em> tells the truth. The other <em>always</em> lies. Here's what they say:</p>
+      <ul>
+        <li><strong>Elena:</strong> "Both boxes are empty."</li>
+        <li><strong>Jamal:</strong> "The real clue is not in Box 2."</li>
+      </ul>
+      <p>Which box holds the real clue? Type "Box 1" or "Box 2".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>One of these two statements can never possibly be true, no matter what's really inside the boxes. Which one — and what does that tell you about who's lying?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know which guard always lies, the other guard is always telling the truth — trust their statement completely.</p></details>
+    <div class="answer-box" data-answer-hash="92a26425">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The real 1972 World Chess Championship between Bobby Fischer and Boris Spassky — the match this club's antique trophy set honors — was played in Reykjavík, Iceland, and stretched all the way from July to September.</p>
+
+<!-- MISSION 09 -->
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The Combination</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Every detective's case file has one detail worth remembering. Somewhere earlier in this case, Mrs. Okafor told you exactly which year the chess club was founded.</p>
+      <p>This year, at the retirement ceremony, the club celebrates another birthday — and this year is 2026. How many years old is the club this year?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This detail was written down before Mission 01 even started — scroll all the way back to the very beginning of your case file.</p></details>
+    <div class="answer-box" data-answer-hash="de8d5a3">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Now take the club's age you just worked out, and add the number of letters in the secret word you decoded back in the rail-fence puzzle. That sum is the number Mrs. Okafor uses to lock the vault every single year.</p>
+      <p>Type that number — it's the vault's combination.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Which earlier mission asked you to decode a secret word using a zigzag pattern? Count the letters in that word.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Club's age + letters in that decoded word = the combination. Simply add the two numbers together.</p></details>
+    <div class="answer-box" data-answer-hash="8ce5cbf9">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Grandmaster's Trophy</h2>
+    <p class="stage-label">Quick check</p>
+    <div class="puzzle">
+      <p>You turn the vault's dial to the combination you just found. <em>Click!</em> The trophy case swings open. Beside the gleaming 1972 Fischer–Spassky chess set sits a small brass plaque and a folded note in Mrs. Okafor's handwriting: "A great World Champion once said: <em>'You may learn much more from a game you lose than from a game you win.'</em>"</p>
+      <p>Search online to find out which World Chess Champion is most often credited with that exact quote. Type just their last name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching the quote in quotation marks, along with the words "chess champion."</p></details>
+    <div class="answer-box" data-answer-hash="dea150bf">
+      <label for="finale-check">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-check" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">The final riddle</p>
+    <div class="puzzle">
+      <p>Mrs. Okafor's note continues: "I didn't build this whole trail to test your chess. I built it to test whether you'd keep going after a wrong guess, a tricky hint, a puzzle you had to try twice. That's the real trophy — a single word for good judgment that only comes from experience, and from learning through your own mistakes."</p>
+      <p>What word does the plaque spell?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about everything you just did across ten missions — including the parts that took more than one try.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's a word for good judgment gained through experience. Grown-ups often call someone with a lot of it "wise."</p></details>
+    <div class="answer-box" data-answer-hash="2e0e79e6">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The plaque reads <strong>WISDOM</strong> — Mrs. Okafor's real farewell gift. Trophies get polished and put back on shelves, but the wisdom you picked up solving her trail — patience, careful thinking, and trying again after a wrong guess — is yours to keep for every match still ahead. Well played, Junior Detective.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

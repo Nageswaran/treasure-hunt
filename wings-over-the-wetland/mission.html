@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wings Over the Wetland — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #3E7C59;
+    --accent-dark: #2A5A3F;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .field-note {
+    margin: 0.9rem 0 0;
+    padding: 0.7rem 0.9rem;
+    background: rgba(62,124,89,0.12);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 2px;
+    font-size: 0.92rem;
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; fill: var(--ink); }
+  .dot-on { fill: var(--accent-dark); }
+  .dot-off { fill: none; stroke: rgba(0,0,0,0.25); stroke-width: 1; }
+  .braille-key { font-size: 0.88rem; margin: 0.6rem 0; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>Wings Over the Wetland</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-95 minutes (10 missions — take breaks between them!)</div>
+</div>
+
+<div class="intro">
+  <p>A storm tore through Reedmoor Wetland Reserve last night — right as Dr. Sanne Vos, this year's visiting Global Bird Count coordinator, was finishing her plan for the big day. Wind ripped through the observation hut, and her notebook pages, maps, and photos blew everywhere. Today is the count: volunteers arrive at nine to help scientists track how birds are doing, all around the world, on the very same day. Without Dr. Vos's plan, the count can't run — and the reserve badly needs a good count to help win an important conservation grant.</p>
+  <p>Ranger Elin Broek found you first and made you a Junior Detective on the spot. Your job: piece the science plan back together, page by page, before the volunteers show up.</p>
+  <div class="field-note">📋 <strong>Ranger's field note</strong> (tucked in the corner of a damp page): "Banding team ringed 12 birds near the reed bed this morning, before the storm — worth jotting down."</div>
+</div>
+
+<!-- MISSION 01 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Notebook's Soggy Sorting Page</h2>
+    <div class="puzzle">
+      <p>The first dry page you find is Dr. Vos's sorting chart. She was placing today's five most likely reserve visitors into two circles: one for birds that are <strong>MIGRATORY</strong> (they travel long distances between seasons) and one for <strong>WATERFOWL</strong> (ducks, geese, and swans). Some birds belong in just one circle. Some belong in neither. But exactly one clever bird belongs in <em>both</em> — right in the middle, where the circles overlap.</p>
+      <p>Her five candidates: <strong>Arctic Tern, Mallard Duck, Ostrich, European Robin, Canada Goose.</strong></p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 170" width="300" height="170" role="img" aria-label="Two overlapping circles, one labeled Migratory and one labeled Waterfowl, with an empty overlapping middle section">
+      <circle cx="115" cy="95" r="65" fill="#3E7C59" fill-opacity="0.18" stroke="#2A5A3F" stroke-width="2"/>
+      <circle cx="185" cy="95" r="65" fill="#3E7C59" fill-opacity="0.18" stroke="#2A5A3F" stroke-width="2"/>
+      <text x="75" y="25" text-anchor="middle" font-size="13" font-weight="bold">MIGRATORY</text>
+      <text x="225" y="25" text-anchor="middle" font-size="13" font-weight="bold">WATERFOWL</text>
+    </svg>
+    <div class="clue-caption">Search each bird's migration habits and its family (is it a duck/goose/swan, or something else?) before you sort.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "is a [bird name] migratory" and "is a [bird name] a waterfowl species" for each of the five — waterfowl means the duck, goose, and swan family specifically.</p></details>
+    <div class="answer-box" data-answer-hash="3f61c7fc">
+      <label for="m1-answer">Which bird belongs in the overlap?</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the full bird name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 02 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Photograph That Survived</h2>
+    <div class="puzzle">
+      <p>The storm ruined the memory card in Dr. Vos's camera, but a torn field-note survived, taped inside her notebook: "...cap black as ink, tail forked like scissors, nests near the North Pole, flies farther every year than any other bird alive..." Search to find out which of the five birds from Mission 1's list matches every clue in that note.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for a bird with a solid black cap and a deeply forked tail. One species breeds near the North Pole and travels farther every year than any other bird on Earth.</p></details>
+    <div class="answer-box" data-answer-hash="3d147a94">
+      <label for="m2-answer">Which species is this?</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the species name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The first scientific bird-ringing program began in 1899, when a Danish teacher named Hans Mortensen put numbered aluminium rings on starlings' legs to trace where they flew. Within twenty years, most of Europe had copied his idea.</p>
+
+<!-- MISSION 03 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Which Way to Antarctica?</h2>
+    <div class="puzzle">
+      <p>That photo in Mission 2 was taken on Svalbard — a cluster of islands deep in the Arctic Ocean, and one of this bird's breeding grounds. Once its chicks can fly, this species sets off on the longest journey of any animal on Earth: all the way to the edge of the pack ice at the rim of Antarctica, to enjoy the southern summer before flying all the way back again.</p>
+      <p>Picture a compass rose sitting over Svalbard. In one word, which general compass direction does this bird fly to reach its Antarctic wintering grounds?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Find Svalbard and Antarctica on a world map or a globe. One sits at the very top of the world, the other at the very bottom.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>You don't need the bird's exact zig-zagging path across the oceans — just think about which pole is behind it, and which pole is ahead.</p></details>
+    <div class="answer-box" data-answer-hash="e272d7a">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type a compass direction...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 04 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Mapping the Marsh by Hand</h2>
+    <div class="puzzle">
+      <p>Dr. Vos's map page shows the reserve's wetland outline traced over her survey grid. Each grid square stands for 5 hectares of land (about 5 sports fields). Grab a pencil for this one: count every full square inside the shape as 1. Each corner is sliced off in a clean diagonal cut, so count each of those triangle corners as about ½ a square. Add up your total number of squares, then multiply by 5.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 230 190" width="230" height="190" role="img" aria-label="A rectangular survey grid, 6 squares wide and 4 squares tall, with an eight-sided wetland shape drawn over it — the rectangle's four corners are each sliced off by a diagonal line">
+      <line x1="30" y1="25" x2="30" y2="145" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="60" y1="25" x2="60" y2="145" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="90" y1="25" x2="90" y2="145" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="120" y1="25" x2="120" y2="145" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="150" y1="25" x2="150" y2="145" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="180" y1="25" x2="180" y2="145" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="210" y1="25" x2="210" y2="145" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="30" y1="25" x2="210" y2="25" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="30" y1="55" x2="210" y2="55" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="30" y1="85" x2="210" y2="85" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="30" y1="115" x2="210" y2="115" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <line x1="30" y1="145" x2="210" y2="145" stroke="#2B2A24" stroke-opacity="0.35"/>
+      <polygon points="60,25 180,25 210,55 210,115 180,145 60,145 30,115 30,55" fill="#3E7C59" fill-opacity="0.28" stroke="#2A5A3F" stroke-width="2"/>
+      <text x="45" y="160" text-anchor="middle" font-size="11">1</text>
+      <text x="75" y="160" text-anchor="middle" font-size="11">2</text>
+      <text x="105" y="160" text-anchor="middle" font-size="11">3</text>
+      <text x="135" y="160" text-anchor="middle" font-size="11">4</text>
+      <text x="165" y="160" text-anchor="middle" font-size="11">5</text>
+      <text x="195" y="160" text-anchor="middle" font-size="11">6</text>
+      <text x="17" y="43" text-anchor="middle" font-size="11">A</text>
+      <text x="17" y="73" text-anchor="middle" font-size="11">B</text>
+      <text x="17" y="103" text-anchor="middle" font-size="11">C</text>
+      <text x="17" y="133" text-anchor="middle" font-size="11">D</text>
+      <text x="120" y="178" text-anchor="middle" font-size="11" font-style="italic">1 square = 5 hectares</text>
+    </svg>
+    <div class="clue-caption">Count carefully, row by row — it's easy to miss a corner triangle.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try counting one row of the grid at a time, left to right, so you don't lose track of which squares you've already counted.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>There are 20 squares that are completely covered by the shape, plus 4 corner triangles that are each half a square. Every partial square here is a clean half, so your total comes out to a whole number of squares — no rounding needed.</p></details>
+    <div class="answer-box" data-answer-hash="6d361ca5">
+      <label for="m4-answer">Estimated area, in hectares:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 05 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Ranger's Braille Note</h2>
+    <div class="puzzle">
+      <p>The reserve is testing new braille signs so every visitor can enjoy the trails. Ranger Broek left her observation post number written the braille way, on a torn notebook corner. Braille letters are made of raised dots in a 6-dot cell (2 columns, 3 rows). The first ten letters, a through j, double up as the digits 1 through 0 whenever a special "number sign" comes right before them. Here's the key:</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 270 140" width="270" height="140" role="img" aria-label="A reference chart of braille cells for the number sign and the digits 1 through 0, shown as raised-dot patterns">
+      <circle cx="15" cy="15" r="4.5" class="dot-off"/><circle cx="15" cy="29" r="4.5" class="dot-off"/><circle cx="15" cy="43" r="4.5" class="dot-on"/><circle cx="29" cy="15" r="4.5" class="dot-on"/><circle cx="29" cy="29" r="4.5" class="dot-on"/><circle cx="29" cy="43" r="4.5" class="dot-on"/>
+      <text x="22" y="56" text-anchor="middle" font-size="11" font-weight="bold">#</text>
+      <circle cx="59" cy="15" r="4.5" class="dot-on"/><circle cx="59" cy="29" r="4.5" class="dot-off"/><circle cx="59" cy="43" r="4.5" class="dot-off"/><circle cx="73" cy="15" r="4.5" class="dot-off"/><circle cx="73" cy="29" r="4.5" class="dot-off"/><circle cx="73" cy="43" r="4.5" class="dot-off"/>
+      <text x="66" y="56" text-anchor="middle" font-size="11" font-weight="bold">1</text>
+      <circle cx="103" cy="15" r="4.5" class="dot-on"/><circle cx="103" cy="29" r="4.5" class="dot-on"/><circle cx="103" cy="43" r="4.5" class="dot-off"/><circle cx="117" cy="15" r="4.5" class="dot-off"/><circle cx="117" cy="29" r="4.5" class="dot-off"/><circle cx="117" cy="43" r="4.5" class="dot-off"/>
+      <text x="110" y="56" text-anchor="middle" font-size="11" font-weight="bold">2</text>
+      <circle cx="147" cy="15" r="4.5" class="dot-on"/><circle cx="147" cy="29" r="4.5" class="dot-off"/><circle cx="147" cy="43" r="4.5" class="dot-off"/><circle cx="161" cy="15" r="4.5" class="dot-on"/><circle cx="161" cy="29" r="4.5" class="dot-off"/><circle cx="161" cy="43" r="4.5" class="dot-off"/>
+      <text x="154" y="56" text-anchor="middle" font-size="11" font-weight="bold">3</text>
+      <circle cx="191" cy="15" r="4.5" class="dot-on"/><circle cx="191" cy="29" r="4.5" class="dot-off"/><circle cx="191" cy="43" r="4.5" class="dot-off"/><circle cx="205" cy="15" r="4.5" class="dot-on"/><circle cx="205" cy="29" r="4.5" class="dot-on"/><circle cx="205" cy="43" r="4.5" class="dot-off"/>
+      <text x="198" y="56" text-anchor="middle" font-size="11" font-weight="bold">4</text>
+      <circle cx="235" cy="15" r="4.5" class="dot-on"/><circle cx="235" cy="29" r="4.5" class="dot-off"/><circle cx="235" cy="43" r="4.5" class="dot-off"/><circle cx="249" cy="15" r="4.5" class="dot-off"/><circle cx="249" cy="29" r="4.5" class="dot-on"/><circle cx="249" cy="43" r="4.5" class="dot-off"/>
+      <text x="242" y="56" text-anchor="middle" font-size="11" font-weight="bold">5</text>
+      <circle cx="15" cy="75" r="4.5" class="dot-on"/><circle cx="15" cy="89" r="4.5" class="dot-on"/><circle cx="15" cy="103" r="4.5" class="dot-off"/><circle cx="29" cy="75" r="4.5" class="dot-on"/><circle cx="29" cy="89" r="4.5" class="dot-off"/><circle cx="29" cy="103" r="4.5" class="dot-off"/>
+      <text x="22" y="116" text-anchor="middle" font-size="11" font-weight="bold">6</text>
+      <circle cx="59" cy="75" r="4.5" class="dot-on"/><circle cx="59" cy="89" r="4.5" class="dot-on"/><circle cx="59" cy="103" r="4.5" class="dot-off"/><circle cx="73" cy="75" r="4.5" class="dot-on"/><circle cx="73" cy="89" r="4.5" class="dot-on"/><circle cx="73" cy="103" r="4.5" class="dot-off"/>
+      <text x="66" y="116" text-anchor="middle" font-size="11" font-weight="bold">7</text>
+      <circle cx="103" cy="75" r="4.5" class="dot-on"/><circle cx="103" cy="89" r="4.5" class="dot-on"/><circle cx="103" cy="103" r="4.5" class="dot-off"/><circle cx="117" cy="75" r="4.5" class="dot-off"/><circle cx="117" cy="89" r="4.5" class="dot-on"/><circle cx="117" cy="103" r="4.5" class="dot-off"/>
+      <text x="110" y="116" text-anchor="middle" font-size="11" font-weight="bold">8</text>
+      <circle cx="147" cy="75" r="4.5" class="dot-off"/><circle cx="147" cy="89" r="4.5" class="dot-on"/><circle cx="147" cy="103" r="4.5" class="dot-off"/><circle cx="161" cy="75" r="4.5" class="dot-on"/><circle cx="161" cy="89" r="4.5" class="dot-off"/><circle cx="161" cy="103" r="4.5" class="dot-off"/>
+      <text x="154" y="116" text-anchor="middle" font-size="11" font-weight="bold">9</text>
+      <circle cx="191" cy="75" r="4.5" class="dot-off"/><circle cx="191" cy="89" r="4.5" class="dot-on"/><circle cx="191" cy="103" r="4.5" class="dot-off"/><circle cx="205" cy="75" r="4.5" class="dot-on"/><circle cx="205" cy="89" r="4.5" class="dot-on"/><circle cx="205" cy="103" r="4.5" class="dot-off"/>
+      <text x="198" y="116" text-anchor="middle" font-size="11" font-weight="bold">0</text>
+    </svg>
+    <p class="braille-key">Filled dot = raised. Open dot = flat (not part of the letter). The "#" cell is the number sign — it means "what follows is a number, not a letter."</p>
+    <div class="puzzle">
+      <p>Now decode Ranger Broek's post number, written as three braille cells in a row: a number sign, then two digit-letters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 160 70" width="160" height="70" role="img" aria-label="Three braille cells in a row: the number sign, followed by two digit cells to decode">
+      <circle cx="15" cy="15" r="4.5" class="dot-off"/><circle cx="15" cy="29" r="4.5" class="dot-off"/><circle cx="15" cy="43" r="4.5" class="dot-on"/><circle cx="29" cy="15" r="4.5" class="dot-on"/><circle cx="29" cy="29" r="4.5" class="dot-on"/><circle cx="29" cy="43" r="4.5" class="dot-on"/>
+      <circle cx="65" cy="15" r="4.5" class="dot-on"/><circle cx="65" cy="29" r="4.5" class="dot-on"/><circle cx="65" cy="43" r="4.5" class="dot-off"/><circle cx="79" cy="15" r="4.5" class="dot-off"/><circle cx="79" cy="29" r="4.5" class="dot-off"/><circle cx="79" cy="43" r="4.5" class="dot-off"/>
+      <circle cx="115" cy="15" r="4.5" class="dot-on"/><circle cx="115" cy="29" r="4.5" class="dot-off"/><circle cx="115" cy="43" r="4.5" class="dot-off"/><circle cx="129" cy="15" r="4.5" class="dot-on"/><circle cx="129" cy="29" r="4.5" class="dot-on"/><circle cx="129" cy="43" r="4.5" class="dot-off"/>
+    </svg>
+    <div class="clue-caption">Match each dot pattern to the chart above, letter by letter.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Compare each cell dot-by-dot against the reference chart — the number sign only tells you "these are digits," it isn't a digit itself.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The second cell matches the same pattern as digit 2. The third cell matches the same pattern as digit 4.</p></details>
+    <div class="answer-box" data-answer-hash="89f29333">
+      <label for="m5-answer">Ranger Broek's post number:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Wadden Sea — which touches the coasts of the Netherlands, Germany, and Denmark — can hold up to 6.1 million birds at once, and 10 to 12 million pass through it every year on their way along the East Atlantic Flyway.</p>
+
+<!-- MISSION 06 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Volunteers, One Morning</h2>
+    <div class="puzzle">
+      <p>Dr. Vos's volunteer schedule blew apart into loose clues. Four volunteers — Priya, Tomas, Elena, and Marcus — each carried a different color of binoculars (green, black, red, blue), each spotted a different bird (Canada Goose, Black-tailed Godwit, Mallard Duck, European Robin), and each began watching at a different time (7:00, 8:30, 10:00, 11:30). Grab a pencil and draw yourself a 4x4 grid — this one's easier to track on paper. Use every clue below; each fact is true.</p>
+      <ol>
+        <li>The volunteer with green binoculars began watching at 7:00.</li>
+        <li>Priya's binoculars are not black and not blue.</li>
+        <li>Whoever spotted the Canada Goose began at the earliest time of the morning.</li>
+        <li>Tomas began later than whoever spotted the Mallard Duck, but earlier than whoever carried blue binoculars.</li>
+        <li>Elena's binoculars are neither green nor blue.</li>
+        <li>The Black-tailed Godwit was spotted exactly 90 minutes after the Mallard Duck.</li>
+        <li>Marcus carried blue binoculars.</li>
+        <li>Whoever carried red binoculars started at 8:30 or 10:00 — never first, never last.</li>
+        <li>Whoever spotted the Black-tailed Godwit was not carrying red binoculars.</li>
+      </ol>
+      <p>Name the volunteer who was wearing black binoculars when they spotted the Black-tailed Godwit.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clues that name a person or a color directly (clues 2, 5, 7) before touching the time clues — they'll narrow your grid fastest.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know the Canada Goose spotter's time (clue 3) and the green-binoculars person's time (clue 1), those two facts point to the same volunteer.</p></details>
+    <div class="answer-box" data-answer-hash="237cee37">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the volunteer's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 07 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Offers on the Table</h2>
+    <div class="puzzle">
+      <p>Two conservation groups have offered to help fund new bird bands and trail signs. Ranger Broek needs your help choosing:</p>
+      <ul>
+        <li><strong>Offer A — Wetland Futures Fund:</strong> a flat grant of $650, no conditions.</li>
+        <li><strong>Offer B — GreenPath Conservation Trust:</strong> matches every dollar visitors donate today, dollar for dollar, up to a cap of $900.</li>
+      </ul>
+      <p>Today, visitors donate a total of $475. The reserve keeps its visitor donations either way — the offers only differ in what the grant itself adds on top. Work out the reserve's grand total under each offer (donations plus grant money), then find the difference. How many more dollars will the reserve end up with by picking Offer A instead of Offer B?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out the reserve's total money under each offer separately first — remember the $475 in donations counts toward the total both times.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Offer B only matches what was actually donated, up to its cap. Since $475 is less than the $900 cap, the match equals $475 exactly — not the full cap.</p></details>
+    <div class="answer-box" data-answer-hash="e430c7cc">
+      <label for="m7-answer">Extra dollars from choosing Offer A:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 08 -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Godwit Debate</h2>
+    <div class="puzzle">
+      <p>Two volunteers are arguing about the Black-tailed Godwit — the Netherlands' national bird, and a regular visitor to the reserve's marshes. Only one of them is right.</p>
+      <p><strong>Claim 1:</strong> "Great news — the Black-tailed Godwit is now a common bird with a growing population across the Netherlands, so it doesn't need protecting anymore!"</p>
+      <p><strong>Claim 2:</strong> "The Black-tailed Godwit population in the Netherlands has been shrinking for decades, and the species is now listed as Near Threatened."</p>
+      <p>A quick search of a trustworthy source — like the IUCN Red List or BirdLife International — confirms only one of these. Which claim is actually true?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for the Black-tailed Godwit's current conservation status on a reputable site like the IUCN Red List or BirdLife International, not a random blog.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Look for how the Dutch breeding population has changed over the last 50 years, not just how common the bird looks today.</p></details>
+    <div class="answer-box" data-answer-hash="ed62f2bd">
+      <label for="m8-answer">Type exactly: claim 1 or claim 2</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="claim 1 or claim 2">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A tagged Bar-tailed Godwit — a cousin of the Black-tailed Godwit — once flew nonstop from Alaska to New Zealand without landing, resting, or eating a single bite: well over 7,000 miles (over 11,000 km) in about a week and a half. Different tracked birds have set slightly different distance records as tracking tags improve, but each one is the longest nonstop flight ever recorded for a landbird.</p>
+
+<!-- MISSION 09: BIG AHA -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The Reed Bed Recount</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Before you calculate anything else, dig back through your notes from earlier this morning: how many birds did the banding team ring near the reed bed, before the storm hit?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>It was written down early on, in a small note from Ranger Broek — not inside any of the numbered missions themselves.</p></details>
+    <div class="answer-box" data-answer-hash="1deb2d6a">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Now it's early afternoon. The team sets a fresh net by the reed bed and catches 15 birds. Of those 15, 3 are already wearing a band from this morning. Real scientists use a trick called mark-recapture to estimate how many birds live in an area, without having to count every single one:</p>
+      <p style="text-align:center; font-weight:700;">estimated population = (first count &times; second count) &divide; recaptured count</p>
+      <p>Using the number you found in Stage 1 as the "first count," and today's new catch as the "second count," estimate the total number of birds living in this part of the wetland.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Multiply first — the two numbers you multiply are your Stage 1 answer and 15. Then divide that result by 3.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>This real technique is called the Lincoln-Petersen method. It works because the fraction of the second catch that's already banded should roughly match the fraction of the whole population that's already banded.</p></details>
+    <div class="answer-box" data-answer-hash="15e8e23b">
+      <label for="m9-stage2">Estimated wetland bird population:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Closing the Field Report</h2>
+    <div class="puzzle">
+      <p>The very last clean line in Dr. Vos's notebook reads: "Global Bird Count Day doesn't run on fancy equipment. It runs on ______ — the simple urge to find out what's really going on." The last word is smudged, but its letters are still legible, just scrambled, at the bottom of the page:</p>
+      <p style="text-align:center; font-size:1.3rem; letter-spacing:0.2em; font-family:'Special Elite', monospace;">I T R U C O Y S I</p>
+      <p>Unscramble the letters to complete Dr. Vos's sentence.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>It's the feeling that makes you want to open every drawer, ask "why," and follow a clue all the way to the end — which is exactly what you've been doing all day.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It starts with the same sound as the word "curious."</p></details>
+    <div class="answer-box" data-answer-hash="15878246">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type the unscrambled word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Case closed, Junior Detective! Dr. Vos's storm-scattered plan is whole again, and the Global Bird Count can go ahead exactly on schedule. But the real discovery today wasn't the notebook — it was watching you follow clue after clue simply because you wanted to know the answer. That restless, wonderful itch to find out is called <strong>curiosity</strong>, and it's the very same thing that turns ordinary people into real citizen scientists, at count days just like this one, all over the world.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
