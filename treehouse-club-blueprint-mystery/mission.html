@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Treehouse Club's Blueprint Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #4C7A52;
+    --accent-dark: #355B3A;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .logbook {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 1rem 1.3rem;
+  }
+  .logbook .eyebrow { display: block; margin-bottom: 0.4rem; }
+  .logbook p { margin: 0.3rem 0; }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Treehouse Club's Blueprint Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60–75 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Welcome to the Acorn Street Treehouse &amp; Inventors' Club! You're the newest member, and Build Day is this Saturday — the whole club is finally putting up the treehouse in the big tree at the back of Mira's yard.</p>
+  <p>Last night, a gust of wind blew through the clubhouse shed and scattered every blueprint page, tool-bag note, and logbook scrap across the yard. Nobody can agree anymore on the shape of the platform, who's doing which job, or how much rope and wood to buy.</p>
+  <p>Your job: piece the plan back together, one clue at a time. Solve every mission and you'll land on the exact amount of rope the club needs to finish the build — the last number on the Build Day checklist.</p>
+</div>
+
+<!-- MISSION 1 — EASY — Logical Reasoning (Foundational: sequencing / cause-effect) -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Rule Sheet in the Mud</h2>
+    <div class="puzzle">
+      <p>The first blueprint page you find is a muddy "Build Order Rule Sheet." The six build steps got shuffled and labeled with random letters, but the rule sheet also lists facts about what has to happen before what. Read carefully — the facts force one exact order.</p>
+      <p><strong>The six steps (shuffled):</strong></p>
+      <p>
+        A. Attach the ladder to the platform edge<br>
+        B. Measure the trunk and mark where the support beams go<br>
+        C. Bolt the support beams onto the trunk<br>
+        D. Lay the decking planks across the platform frame<br>
+        E. Build the railing around the platform's open edges<br>
+        F. Paint the walls and hang the window shutters
+      </p>
+      <p><strong>The rules:</strong></p>
+      <p>
+        — You must mark your measurements before you can bolt anything.<br>
+        — You can't lay decking planks until the support beams are bolted on.<br>
+        — The railing can only go up after the decking is laid.<br>
+        — The ladder can only be attached after the railing is finished, so climbers have something to hold onto at the top.<br>
+        — Painting is always the very last step, once everything else is built.
+      </p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look for words like "before," "until," and "after" in the rules — each one links exactly two steps together. Chain the links from the very first step to the very last.</p></details>
+    <div class="answer-box" data-answer-hash="34707e7e">
+      <label for="m1-answer">Type the six letters in the correct order, all together with no spaces (like ABCDEF):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="e.g. ABCDEF">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 — EASY — Science & Nature (internet research) -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Right Tree for the Job</h2>
+    <div class="puzzle">
+      <p>Mira's backyard has three trees, and one blueprint scrap just says: "Build in the safest one — obviously!" but doesn't say which. Search online to find out which kind of tree real treehouse builders trust, and which kinds they always avoid.</p>
+      <p>The three candidates are:</p>
+      <p>
+        🌱 A young pine sapling, thinner than your wrist<br>
+        🪵 A tall dead elm tree with no leaves and crumbly bark<br>
+        🌳 A mature, healthy oak tree with a thick trunk and strong branches
+      </p>
+      <p>Which one should the club build in? Type just the tree name (one word, e.g. "birch").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for what real builders look for in a "treehouse tree" — search words like healthy, mature, and hardwood, and think about why a dead tree or a skinny sapling would fail those tests.</p></details>
+    <div class="answer-box" data-answer-hash="a84bce72">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the tree name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Trees don't actually heal their wounds the way people do — they seal them off instead. It's called compartmentalization: the tree builds a wall around the damaged wood so it can safely keep growing around it.</p>
+
+<div class="logbook">
+  <span class="eyebrow">📓 Club Logbook — worth remembering</span>
+  <p>Taped inside the shed door, in Mira's handwriting: <em>"Reminder for the next build: we still have 3 leftover planks from last year's ground fort, stacked behind the shed. Don't buy more than we need!"</em></p>
+</div>
+
+<!-- MISSION 3 — MEDIUM — Mathematics (geometry / measurement diagram) -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Blueprint Page Two: The Platform Shape</h2>
+    <div class="puzzle">
+      <p>You find Blueprint Page 2, pressed flat under a flowerpot. It shows the platform's outline — with a chunk missing in one corner, where the tree trunk itself will pass through. Every measurement you need is marked right on the drawing.</p>
+      <p>Figure out the total area of decking (in square meters) the club needs to buy to cover the whole platform, trunk-gap and all.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 240 190" width="240" height="190" role="img" aria-label="A treehouse platform shaped like the letter L: a rectangle with a square notch cut from the top-right corner where the tree trunk passes through">
+      <polygon points="60,40 132,40 132,88 180,88 180,136 60,136" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <circle cx="156" cy="64" r="15" fill="#C9A971" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="156" y="68" text-anchor="middle" font-size="9">trunk</text>
+      <text x="96" y="32" text-anchor="middle" font-size="12">3 m</text>
+      <text x="144" y="68" text-anchor="middle" font-size="12" transform="rotate(-90 144 68)">2 m</text>
+      <text x="156" y="80" text-anchor="middle" font-size="12">2 m</text>
+      <text x="192" y="116" text-anchor="middle" font-size="12" transform="rotate(-90 192 116)">2 m</text>
+      <text x="120" y="154" text-anchor="middle" font-size="12">5 m</text>
+      <text x="48" y="92" text-anchor="middle" font-size="12" transform="rotate(-90 48 92)">4 m</text>
+    </svg>
+    <div class="clue-caption">Every side of the platform's outline is labeled in meters — use them to work out the total decking area.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try splitting the L-shape into two simpler rectangles, or picture the whole 5 m × 4 m rectangle first and then remove the missing corner.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Whole rectangle: 5 m × 4 m. Missing corner: 2 m × 2 m. Subtract the second from the first.</p></details>
+    <div class="answer-box" data-answer-hash="19eb271e">
+      <label for="m3-answer">Total decking area needed (just the number, in square meters):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type a number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 — MEDIUM — Internet Safety & Digital Citizenship -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Three Pop-Ups, One Safe Click</h2>
+    <div class="puzzle">
+      <p>While hunting for a replacement blueprint online, Zara's laptop shows three pop-ups at once. Only ONE of them is safe for the club to click.</p>
+      <p>
+        <strong>A)</strong> A flashing red banner: "🎉🎉 YOU'RE THE 1,000TH VISITOR!! Click NOW for 100% FREE Secret Treehouse Blueprints! Timer: 01:58 ⏰ Enter a parent's email + phone number to unlock!"
+      </p>
+      <p>
+        <strong>B)</strong> A plain gray box on a woodworking resource page: "Free downloadable treehouse building guide (PDF, 2.1 MB) — published by the Woodworking for Beginners resource page. No sign-up needed."
+      </p>
+      <p>
+        <strong>C)</strong> A spinning-logo pop-up: "Install the 'TreehouseHelper' app to see secret plans! (Downloads a file straight to your device — not from your phone's app store)"
+      </p>
+      <p>Which one is safe to click — A, B, or C?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Real free downloads don't usually need a countdown timer or a stranger's phone number to "unlock" them.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A safe download sits quietly on a normal page. Watch out for anything that pressures you to hurry, asks for personal details, or wants you to install a file from outside an official app store.</p></details>
+    <div class="answer-box" data-answer-hash="e70c2de5">
+      <label for="m4-answer">Your answer (one letter):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="A, B, or C">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 — MEDIUM — Logical Reasoning (Foundational: classification / odd-one-out) -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Mixed-Up Tool Bag</h2>
+    <div class="puzzle">
+      <p>Someone dumped the whole tool bag onto the porch, searching for a blueprint page underneath — and now kitchen stuff is mixed in with the tools. Here's everything that spilled out:</p>
+      <p>a tape measure &middot; a spirit level &middot; a carpenter's square &middot; an oven mitt &middot; a chalk line</p>
+      <p>Four of these are proper building or measuring tools you'd expect in a builder's kit. One doesn't belong there at all. Which item should go back in the kitchen drawer, not the tool bag?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about what job each item actually helps you do — building, measuring, and marking straight lines... or something completely different.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Four items help you measure length, check for level, or mark a line for cutting. One item is only useful for handling something hot.</p></details>
+    <div class="answer-box" data-answer-hash="20a05367">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the item...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? On the Janka hardness scale (a real test of how hard wood is), white oak scores about 1,360 — over three times harder than knotty pine's score of around 380! That's part of why Mira insists on oak for anything that has to hold weight.</p>
+
+<!-- MISSION 6 — HARD — Logical Reasoning (Intermediate: logic grid) -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Who Does Which Job?</h2>
+    <div class="puzzle">
+      <p>A torn job-assignment note names the four club members — Mira, Theo, Zara, and Oskar — and the four jobs for Build Day: sawing planks, hammering nails, measuring wood, and painting the door. The note is torn, but these clues survived:</p>
+      <p>
+        1. Mira doesn't saw, and she doesn't hammer either — she likes precise work.<br>
+        2. The person measuring the wood is not Theo.<br>
+        3. Zara loves color, so she always ends up painting something.<br>
+        4. Oskar has the steadiest hands of anyone in the club, so he's hammering nails — and he never measures.
+      </p>
+      <p>Work out the full job for each person. Who will be sawing the planks?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue that names a job directly and certainly — that gives you your first fixed answer before anything else.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Zara paints and Oskar hammers, only two jobs and two people are left. Use the "not" clues to place the last two.</p></details>
+    <div class="answer-box" data-answer-hash="e622eb09">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type a name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 — HARD — Mathematics, multi-stage, pen-and-paper -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Lumber Order</h2>
+    <p class="stage-label">Stage 1 of 2 — grab a pencil for this one!</p>
+    <div class="puzzle">
+      <p>Each pre-cut deck plank the lumber yard sells covers exactly 2 square meters. Using the platform's total decking area you worked out on Blueprint Page 2 (Mission 3), how many planks does the club need to cover the whole platform with no gaps?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You already figured out the platform's total area earlier in this case — scroll back to Mission 3 if you need to check it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Divide the total area by how many square meters one plank covers.</p></details>
+    <div class="answer-box" data-answer-hash="3d0cb547">
+      <label for="m7-stage1">Planks needed to cover the platform:</label>
+      <div class="answer-row">
+        <input id="m7-stage1" type="text" placeholder="Type a number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 — the final total</p>
+    <div class="puzzle">
+      <p>The lumber yard sells planks for $6 each. But the club doesn't need to buy every plank from scratch — remember what was noted in the Club Logbook earlier in this case? Subtract those leftover planks from the number you just calculated, then work out the total cost (in dollars) of buying the rest.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Check the Club Logbook note from earlier in the case — how many planks does the club already have sitting behind the shed?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Planks still needed = planks required minus leftover planks. Then multiply that number by the price per plank.</p></details>
+    <div class="answer-box" data-answer-hash="87f05176">
+      <label for="m7-stage2">Total cost in dollars (just the number):</label>
+      <div class="answer-row">
+        <input id="m7-stage2" type="text" placeholder="Type a number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 — HARD — Everyday Life Skills (internet research) -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Rope That Won't Slip</h2>
+    <div class="puzzle">
+      <p>The club's pulley rope needs a strong loop tied at the end so it can't slip or tighten by accident while someone is hoisting the toolbox. Search online to find the classic loop knot that sailors and rescue workers trust most for exactly this job — it's sometimes even called the "king of knots."</p>
+      <p>Type just the knot's name (one word).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for a loop knot that holds firm under load but is still easy to untie afterward — it's one of the most famous knots in the world.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Sailors remember how to tie it with a little story: the rabbit comes up out of its hole, goes around the tree, and dives back down the hole.</p></details>
+    <div class="answer-box" data-answer-hash="7a5095e1">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type the knot's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A single fixed pulley doesn't reduce the force you need at all — it just changes the direction you pull. You only get real force-saving "mechanical advantage" by adding a movable pulley that travels along with the load itself.</p>
+
+<!-- MISSION 9 — BIG AHA — Science & Nature (internet research + calculation) -->
+<div class="mission">
+  <div class="tab">MISSION 09 &middot; BIG AHA</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Lifting Without the Muscle</h2>
+    <div class="puzzle">
+      <p>The toolbox and tools the club needs to haul up to the platform weigh about 12 kg altogether. To stay safe, no kid should pull with more than about 4 kg of force on the rope at once.</p>
+      <p>Search online to learn how a pulley system's "mechanical advantage" works. Here's the key idea real engineers use: the more rope segments are directly supporting the load, the less force each one needs — mechanical advantage equals the number of supporting rope segments.</p>
+      <p>How many supporting rope segments does the club's pulley system need, so a kid really can lift the toolbox safely?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for how mechanical advantage works for a pulley — what happens to the force you need as you add more supporting rope segments?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Divide the weight that needs lifting by the force one kid can safely pull.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m9-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type a number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 10 — GRAND FINALE — computed-quantity reveal -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Line on the Build Day Checklist</h2>
+    <div class="puzzle">
+      <p>Build Day is tomorrow, and there's one line left blank on the checklist: how much rope to buy for the pulley.</p>
+      <p>The platform sits 3 meters above the ground in the old oak tree. The pulley needs ONE full length of rope for EACH supporting rope segment you worked out in Mission 9 — and every one of those lengths has to reach all the way from the ground up to the platform. On top of that, add 2 extra meters at the bottom, so the crew has enough spare rope to pull and tie off safely.</p>
+      <p>How many total meters of rope should the club buy?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>How many rope segments did you work out the pulley needs in Mission 9? Each one has to be at least as long as the platform is tall.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply the number of segments by the platform's height, then add the extra 2 meters for tying off.</p></details>
+    <div class="answer-box" data-answer-hash="1ceb2bd7">
+      <label for="finale-answer">Total meters of rope to buy:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type a number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every measurement, every recalled logbook note, every calculation only worked because each club member's small piece fit together with everyone else's — that's <strong>teamwork</strong>. Tomorrow, Build Day succeeds not because of any one genius move, but because the whole club's clues, and the whole club's hands, came together. Nice work, Agent — the treehouse is ready to rise.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

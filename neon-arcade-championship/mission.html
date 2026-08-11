@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Neon Arcade Championship — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #B0227A;
+    --accent-dark: #7A1856;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul { margin: 0.4rem 0; padding-left: 1.3rem; }
+  .puzzle li { margin: 0.2rem 0; }
+  .case-file {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.8rem 0;
+    font-size: 0.95rem;
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Neon Arcade Championship</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-90 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Pixel Peak Arcade is throwing its biggest night ever: the Neon Arcade Championship, where today's best players battle it out under buzzing marquee lights for a spot on the Wall of Fame. But an hour before the trophy ceremony, disaster strikes — Jamie Rook's legendary all-time high score on the Barrel Boss cabinet, the number every player here has chased for years, has vanished from the record book.</p>
+  <p>All that's left are old scoresheets, faded stickers, and scraps of arcade trivia scattered around the building. Head Judge Alvarez needs a sharp-eyed detective to piece the true record back together before the crowd finds out. That detective is you.</p>
+</div>
+
+<!-- MISSION 01 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Blinking Bonus Board</h2>
+    <div class="puzzle">
+      <p>Right by the token counter, the Bonus Streak light board is doing its pre-championship show. It blinks one number at a time before it resets for the night:</p>
+      <p style="text-align:center; font-weight:700; font-size:1.15rem;">3 &rarr; 6 &rarr; 12 &rarr; 24 &rarr; ?</p>
+      <p>What's the next number in the pattern?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at how each number relates to the one right before it — what simple operation turns 3 into 6, and 6 into 12?</p></details>
+    <div class="answer-box" data-answer-hash="91e39541">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the next number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The word "arcade" comes from the Latin word <em>arcus</em>, meaning "arc" or "bow." It first meant a covered walkway lined with arches — and only much later came to mean a place full of games!</p>
+
+<!-- MISSION 02 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Arcade's Oldest Cabinet</h2>
+    <div class="puzzle">
+      <p>Tucked in the corner, past all the newer cabinets, sits Pixel Peak's very first machine — battered, but still glowing. A small plaque says it was inspired by one of the very first arcade video games ever made, a simple two-paddle game called Pong.</p>
+      <p>Search online to find out: in what year was Pong first released?</p>
+    </div>
+    <div class="case-file">🗒️ <strong>Case File:</strong> While you're poking around this corner, something else catches your eye — a brass plaque screwed to the front door reads: <strong>"Pixel Peak Arcade — Est. 1984."</strong> Worth jotting down before you move on.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching something like "Pong video game release year." Reliable sites like an encyclopedia or a well-known history site will all agree on the same year.</p></details>
+    <div class="answer-box" data-answer-hash="2149a69e">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the year...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 03 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Two Deals at the Token Counter</h2>
+    <div class="puzzle">
+      <p>A hand-lettered sign hangs above the token counter:</p>
+      <ul>
+        <li><strong>ROOKIE BUNDLE</strong> — 50 tokens for $12.00</li>
+        <li><strong>CHAMPION BUNDLE</strong> — 90 tokens for $20.00</li>
+      </ul>
+      <p>But a smaller sign taped underneath adds one more detail: <em>"Champion Bundle purchases include a $2.50 wristband fee."</em></p>
+      <p>Work out the TRUE cost per token for each bundle (total cost divided by number of tokens). Which bundle actually gives you more tokens for your money? Type just the bundle name: Rookie or Champion.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Don't just compare the sticker prices — add the wristband fee into the Champion Bundle's total cost first.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Rookie: $12.00 &divide; 50 tokens. Champion: ($20.00 + $2.50) &divide; 90 tokens. Compare the two results in cents per token.</p></details>
+    <div class="answer-box" data-answer-hash="25069e2">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Rookie or Champion...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 04 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Technician's Shorthand</h2>
+    <div class="puzzle">
+      <p>Every cabinet at Pixel Peak has a number, but the old maintenance technician liked to write them in binary code, just for fun. A note taped inside his toolbox reads:</p>
+      <p style="text-align:center; font-weight:700; font-size:1.15rem;">"The cabinet you need: 1011 in binary."</p>
+      <p>Convert that binary code into an ordinary decimal number. Which cabinet number is he pointing you to?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Binary place values, from right to left, are 1, 2, 4, 8. Add up the place values wherever there's a 1 in the code.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>1011 breaks down as (1&times;8) + (0&times;4) + (1&times;2) + (1&times;1).</p></details>
+    <div class="answer-box" data-answer-hash="1ceb2bd7">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the cabinet number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 05 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Trivia Wall Argument</h2>
+    <div class="puzzle">
+      <p>On the arcade's trivia wall, two regulars have scribbled rival claims in different colors of marker:</p>
+      <ul>
+        <li><strong>CLAIM A</strong> (red pen): "Pac-Man was made by Nintendo."</li>
+        <li><strong>CLAIM B</strong> (blue pen): "Pac-Man was made by Namco."</li>
+      </ul>
+      <p>Search online to find out which claim a reliable source actually confirms. Type A or B.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "who created Pac-Man" and check an official-sounding or well-known source, not just a random comment.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Nintendo is famous for Donkey Kong and Mario — but Pac-Man came out of a different Japanese game company entirely.</p></details>
+    <div class="answer-box" data-answer-hash="e70c2de5">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type A or B...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Many classic arcade games only let you type 3 letters for your high-score initials. One big reason was to stop players from spelling rude words on the screen for everyone in the arcade to see!</p>
+
+<!-- MISSION 06 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Torn Scoresheet</h2>
+    <div class="puzzle">
+      <p>In a drawer under the trophy case, you find Jamie Rook's original scoresheet from the record run — torn at one corner, but still readable. It lists five round scores from that legendary game on the Barrel Boss cabinet:</p>
+      <ul>
+        <li>Round 1: 8,450</li>
+        <li>Round 2: 7,225</li>
+        <li>Round 3: 9,930</li>
+        <li>Round 4: 6,140</li>
+        <li>Round 5: 8,755</li>
+      </ul>
+      <p>Grab a pencil for this one — add up all five rounds to find the Round Subtotal. Type the number only, no commas.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add them two at a time to keep it manageable: Round 1 + Round 2 first, then keep adding one round at a time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Round 1 + Round 2 = 15,675. Add Round 3 to get 25,605, then Round 4, then Round 5.</p></details>
+    <div class="answer-box" data-answer-hash="527da714">
+      <label for="m6-answer">Round Subtotal:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the total...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 07 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Finalists, One Afternoon</h2>
+    <div class="puzzle">
+      <p>This year's semifinal round is done. Four players each played a different cabinet and got a different final score. Using only these clues, figure out who played the Barrel Boss cabinet:</p>
+      <ul>
+        <li>Ben did not play Barrel Boss or Cosmic Defenders.</li>
+        <li>The Maze Muncher player scored exactly 12,300 points.</li>
+        <li>Ben scored more points than the Maze Muncher player.</li>
+        <li>The player who scored 21,400 points did not play Rocket Rally or Maze Muncher.</li>
+        <li>Cleo did not play Maze Muncher.</li>
+        <li>Diego's score was not 9,800.</li>
+        <li>Ava scored fewer points than Cleo.</li>
+        <li>The Cosmic Defenders player scored fewer points than the Barrel Boss player.</li>
+      </ul>
+      <p><strong>Players:</strong> Ava, Ben, Cleo, Diego. <strong>Cabinets:</strong> Rocket Rally, Maze Muncher, Cosmic Defenders, Barrel Boss. <strong>Scores:</strong> 9,800 / 12,300 / 15,750 / 21,400.</p>
+      <p>Who played Barrel Boss?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with Ben — two of the clues about him combine to pin down his exact cabinet before anything else.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Ben plays Rocket Rally, his score must be more than 12,300 but can't be 21,400 either — only one number is left for him.</p></details>
+    <div class="answer-box" data-answer-hash="402df326">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type the player's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? In 1981, a real arcade in Ottumwa, Iowa started the very first official scoreboard for tracking the world's best arcade high scores. It was called Twin Galaxies, and adjudicators still use records like it to verify big scores today.</p>
+
+<!-- MISSION 08 -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Maintenance Sticker</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>You flip the Barrel Boss cabinet around and find a yellowed maintenance sticker stuck to the back panel. The old technician — the same one who loved binary — wrote a single number on it:</p>
+      <p style="text-align:center; font-weight:700; font-size:1.15rem;">1001</p>
+      <p>What number is that in decimal?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Same trick as Mission 4: place values 8, 4, 2, 1 from left to right. Add up the ones with a 1 underneath.</p></details>
+    <div class="answer-box" data-answer-hash="3c0cb3b4">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Underneath the sticker, in faded pencil, is a note: <em>"Perfect Climb Bonus = sticker number &times; 100 points."</em></p>
+      <p>Work out that bonus, then add it to the Round Subtotal you calculated in Mission 6 to find Jamie Rook's true final Barrel Boss score. Type the number only, no commas.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First multiply your Stage 1 number by 100 — that's the bonus. Then add it to Mission 6's Round Subtotal.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Stage 1's number &times; 100 = the bonus points. Add that bonus to the exact Round Subtotal you wrote down after solving Mission 6.</p></details>
+    <div class="answer-box" data-answer-hash="27289c36">
+      <label for="m8-stage2">Jamie Rook's true Barrel Boss score:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type the total...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 09: BIG AHA -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>How Many Ways Could It Have Gone?</h2>
+    <div class="puzzle">
+      <p>Head Judge Alvarez leans in with a grin. "Before I show you the trophy, one more puzzle for you. This year's 4 semifinalists — the ones you identified a couple missions back — were competing for exactly 3 podium spots: gold, silver, and bronze. Any of the 4 could have finished in any of those 3 spots, with no repeats."</p>
+      <p>"How many different possible podium orders were there in total, before anyone knew the real scores?"</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Break it into three separate choices: how many players could take gold? Once gold is picked, how many are left for silver? Then bronze?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>4 choices for gold, then 3 left for silver, then 2 left for bronze. Multiply those three numbers together.</p></details>
+    <div class="answer-box" data-answer-hash="89f29333">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type the number of orders...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The True Championship Score</h2>
+    <div class="puzzle">
+      <p>One last thing before the trophy gets engraved. Pixel Peak has an old tie-breaker tradition for any reconstructed record: search online to find out what year Space Invaders — the oldest style of game once played here — first released in Japan.</p>
+      <p>Then count how many years passed between that year and the year Pixel Peak itself opened. (Check your Case File notes from earlier in the case!) That small number is the tie-breaker bonus.</p>
+      <p>Add the tie-breaker bonus to the true Barrel Boss score you found in Mission 8 to reveal the ONE TRUE FINAL CHAMPIONSHIP HIGH SCORE that goes on tonight's trophy. Type the number only, no commas.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching something like "Space Invaders release year Japan." Reliable sources all agree on one year.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Your Case File note about when Pixel Peak opened has the other number you need. Subtract the earlier year from the later year to get the tie-breaker bonus.</p></details>
+    <div class="answer-box" data-answer-hash="29289f5c">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The engraver's tool buzzes to life, stamping a fresh number onto the brass plate above Jamie Rook's name. Judge Alvarez shakes your hand: nobody solved this by being the fastest — you solved it by refusing to give up on a single torn scoresheet, faded sticker, or scribbled note. That's <strong>perseverance</strong>, and tonight, the whole arcade owes you one. Case closed, Junior Detective.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

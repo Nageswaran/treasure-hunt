@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Case of the Missing Boarding Pass — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2B6E8C;
+    --accent-dark: #1D4E63;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .notebook {
+    margin: 1rem 0 0;
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent-dark);
+    border-radius: 2px;
+    padding: 0.7rem 0.9rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    font-size: 0.92rem;
+  }
+  .stage-label {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.55);
+    margin: 1.3rem 0 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Case of the Missing Boarding Pass</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  A navy-blue suitcase just came off the wrong carousel at bustling Meridian International Airport — no name on it, no boarding pass, just stickers, torn tags, and a lot of questions. Somewhere in this airport, a passenger is about to board a flight without her bag, and the gates are closing fast. You've been called in from the Internet Detective Academy to follow every clue on this suitcase, find out who it really belongs to, and figure out exactly where — and when — she needs to be.
+</div>
+
+<!-- MISSION 1 — Easy — Geography & World Knowledge, internet research -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Postcard on the Handle</h2>
+    <div class="puzzle">
+      <p>Stuck to the suitcase's handle is a well-worn postcard. On the back, someone has scrawled a description instead of a name:</p>
+      <p><em>"Greetings from the Lost City of the Incas — a stone citadel perched high in the Andes Mountains, kept secret from the outside world until an American explorer rediscovered it in 1911."</em></p>
+      <p>Search online to find out: which COUNTRY is this famous "Lost City" in? That's the last place this suitcase's owner visited.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching for "lost city of the Incas" together with "1911" — one very famous place comes up again and again.</p></details>
+    <div class="answer-box" data-answer-hash="b8f04003">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Machu Picchu, high in Peru's Andes Mountains, was built around 1450 without any iron tools or wheels — the Inca builders shaped and moved massive stone blocks using stone hammers, wooden levers, and sheer teamwork.</p>
+
+<!-- MISSION 2 — Easy — Cryptography & Secret Codes -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Torn Tag</h2>
+    <div class="puzzle">
+      <p>Under the postcard, half-hidden, is a torn luggage tag. Someone has written a coded word on it in shaky handwriting:</p>
+      <p style="font-family:'Special Elite', monospace; font-size:1.3rem; letter-spacing:0.15em; text-align:center;">HOHQD</p>
+      <p>The airline's rush-tag clerk always shifts each letter forward by 3 places in the alphabet when writing these codes (so A becomes D, B becomes E, and so on). Shift every letter of HOHQD <strong>backward</strong> by 3 to find the owner's first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write the alphabet out in a row, then for each letter in HOHQD, count back 3 letters — for example, H → G → F → E.</p></details>
+    <div class="answer-box" data-answer-hash="d62de4d2">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <p class="notebook">📓 Detective's Notebook: Just below the torn edge of the tag, before it rips off completely, you spot four more digits stamped in ink: <strong>3742</strong>. It might just be an old baggage-handling code... or it might matter later. Worth jotting down.</p>
+  </div>
+</div>
+
+<!-- MISSION 3 — Medium — Logical Reasoning (Foundational: process of elimination) -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Four Claims at the Counter</h2>
+    <div class="puzzle">
+      <p>At the help desk, four passengers all insist the navy suitcase is theirs: Marcus Webb, Fatima Nasser, Elena Petrova, and Elena Duarte.</p>
+      <p><strong>Clue 1:</strong> You already decoded the torn tag — the true owner's first name is Elena.</p>
+      <p><strong>Clue 2:</strong> Inside the suitcase is a customs declaration form. Under "Occupation," it reads: <em>Marine Biologist</em>.</p>
+      <p><strong>Clue 3:</strong> Elena Petrova is a touring violinist. Elena Duarte works as a marine biologist, on her way to a research station.</p>
+      <p>Who does the suitcase really belong to? Type the owner's full name (first and last).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Clue 1 already rules out two of the four passengers entirely.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Between the two remaining passengers, only one has a job that matches what's written on the customs form.</p></details>
+    <div class="answer-box" data-answer-hash="bf084851">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 — Medium — Mathematics (geometry/measurement, pen-and-paper) -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Torn Customs Seal</h2>
+    <div class="puzzle">
+      <p>The suitcase carries an old gold customs seal — a rectangular sticker with one corner torn clean off. The airline wants to print an exact replacement patch, so they need to know exactly how many square centimeters of gold sticker are left.</p>
+      <p>Grab a pencil for this one — it's much easier to work out on paper than in your head! Use the measurements marked on the picture below.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 260 175" width="260" height="175" role="img" aria-label="A rectangular gold customs seal sticker with a rectangular corner torn off the top right, forming an L-shape">
+      <polygon points="20,20 164,20 164,68 236,68 236,140 20,140" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="128" y="155" text-anchor="middle" font-size="12">18 cm</text>
+      <text x="8" y="80" text-anchor="middle" font-size="12" transform="rotate(-90 8 80)">10 cm</text>
+      <text x="200" y="62" text-anchor="middle" font-size="12">6 cm</text>
+      <text x="176" y="44" text-anchor="middle" font-size="12" transform="rotate(-90 176 44)">4 cm</text>
+    </svg>
+    <div class="clue-caption">How many square centimeters of gold sticker remain? (Type just the number, no units.)</div>
+    <details class="hint"><summary>Hint 1</summary><p>Start by working out the area of the whole rectangle, as if no corner were missing at all.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Split the shape into one big rectangle (18 cm × 10 cm) and subtract the torn-off corner's rectangle (6 cm × 4 cm).</p></details>
+    <div class="answer-box" data-answer-hash="f72c6887">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Suitcases didn't roll on wheels until 1970! Inventor Bernard Sadow patented the first wheeled suitcase that year — before that, every traveler carried their whole bag by hand, no matter how heavy.</p>
+
+<!-- MISSION 5 — Medium — Navigation & Orientation -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Through the Terminal</h2>
+    <div class="puzzle">
+      <p>You know the suitcase belongs to Elena Duarte. Now you need to carry it from Lost &amp; Found to the transfer desk. Below is a hand-drawn map of the terminal, laid out in a grid of lettered columns and numbered rows.</p>
+      <p>Lost &amp; Found (marked with a star) is at square B1. From there: walk 2 squares EAST, then 3 squares NORTH. Which grid square do you land on?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 320 260" width="320" height="260" role="img" aria-label="A grid map of the airport terminal with columns A to E and rows 1 to 5, a star marking Lost and Found at square B1, and a compass rose showing north, east, south, and west">
+      <line x1="30" y1="30" x2="30" y2="230" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="70" y1="30" x2="70" y2="230" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="110" y1="30" x2="110" y2="230" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="150" y1="30" x2="150" y2="230" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="190" y1="30" x2="190" y2="230" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="230" y1="30" x2="230" y2="230" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="30" y1="30" x2="230" y2="30" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="30" y1="70" x2="230" y2="70" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="30" y1="110" x2="230" y2="110" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="30" y1="150" x2="230" y2="150" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="30" y1="190" x2="230" y2="190" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="30" y1="230" x2="230" y2="230" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="50" y="20" text-anchor="middle" font-size="13">A</text>
+      <text x="90" y="20" text-anchor="middle" font-size="13">B</text>
+      <text x="130" y="20" text-anchor="middle" font-size="13">C</text>
+      <text x="170" y="20" text-anchor="middle" font-size="13">D</text>
+      <text x="210" y="20" text-anchor="middle" font-size="13">E</text>
+      <text x="15" y="214" text-anchor="middle" font-size="13">1</text>
+      <text x="15" y="174" text-anchor="middle" font-size="13">2</text>
+      <text x="15" y="134" text-anchor="middle" font-size="13">3</text>
+      <text x="15" y="94" text-anchor="middle" font-size="13">4</text>
+      <text x="15" y="54" text-anchor="middle" font-size="13">5</text>
+      <text x="90" y="218" text-anchor="middle" font-size="22">★</text>
+      <line x1="275" y1="35" x2="275" y2="85" stroke="#2B2A24" stroke-width="1.5"/>
+      <line x1="250" y1="60" x2="300" y2="60" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="275" y="28" text-anchor="middle" font-size="12">N</text>
+      <text x="275" y="100" text-anchor="middle" font-size="12">S</text>
+      <text x="310" y="64" text-anchor="middle" font-size="12">E</text>
+      <text x="240" y="64" text-anchor="middle" font-size="12">W</text>
+    </svg>
+    <div class="clue-caption">★ = Lost &amp; Found, where you start. Answer using a letter and a number, like "C3".</div>
+    <details class="hint"><summary>Hint 1</summary><p>Do the moves in order: face east first and count those steps, then turn to face north for the rest.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Moving east changes the letter (A→B→C...). Moving north changes the number, going up (1→2→3...).</p></details>
+    <div class="answer-box" data-answer-hash="8d1d1bc5">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 — Hard — Logical Reasoning (Intermediate: logic grid) + delayed recall -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Gate Assignments</h2>
+    <div class="puzzle">
+      <p>At the gate-assignment desk, four passengers are listed for four different gates: 14, 18, 22, and 26. The passengers are Elena, Yusuf, Priya, and Tomas. Here's what the desk clerk tells you:</p>
+      <p><strong>Clue 1:</strong> Priya's gate is not 14, and it's not 18 either.</p>
+      <p><strong>Clue 2:</strong> Tomas's gate number is exactly 4 higher than Priya's gate number.</p>
+      <p><strong>Clue 3:</strong> Take the last digit of the baggage tag number you noted earlier. Subtract it from Elena's gate number, and you get 12.</p>
+      <p>Which gate is Elena's? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with Clue 1 and Clue 2 together — they only leave one possible gate for Priya.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once Priya and Tomas have their gates, only two gates are left for Elena and Yusuf. Clue 3 tells you which one is Elena's.</p></details>
+    <div class="answer-box" data-answer-hash="17eb23f8">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 — Hard — Technology & Computers + internet research -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Blinking Tracker</h2>
+    <div class="puzzle">
+      <p>Clipped to the suitcase handle is a tiny digital luggage tracker. Its little screen blinks a pattern in binary code, five digits at a time:</p>
+      <p style="font-family:'Special Elite', monospace; font-size:1.2rem; letter-spacing:0.1em; text-align:center;">01110&nbsp;&nbsp;10010&nbsp;&nbsp;10100</p>
+      <p>Each group of five digits is a number in binary — and each number matches a letter's position in the alphabet (A=1, B=2, C=3, all the way to Z=26). Decode the three letters. They spell a real 3-letter airport code.</p>
+      <p>Search online to find out: which CITY is that airport in?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Turn each 5-digit binary group into an ordinary decimal number first, before matching it to a letter.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A=1, B=2, C=3, all the way to Z=26. Which three letters do 14, 18, and 20 spell?</p></details>
+    <div class="answer-box" data-answer-hash="95484ef9">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 — Hard — Multi-stage: Cryptography + Mathematics/Navigation (timezone), internet research -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Race Against the Clock</h2>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Folded inside a zipper pocket is a strip of paper with this written on it:</p>
+      <p style="font-family:'Special Elite', monospace; font-size:1.3rem; letter-spacing:0.15em; text-align:center;">JSVXCJMZI</p>
+      <p>The airline's night-shift clerk always shifts each letter forward by 4 places when writing codes. Shift every letter of JSVXCJMZI <strong>backward</strong> by 4. It spells a number, written out in words. Type just that number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write the alphabet out and count backward 4 letters for each letter in JSVXCJMZI.</p></details>
+    <div class="answer-box" data-answer-hash="8ce38d62">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>You already know Elena's suitcase is Tokyo-bound. Her flight departs at 23:35, Tokyo local time. Boarding always closes the number of minutes you just found in Stage 1 before the flight departs.</p>
+      <p>Search online for Tokyo's time zone, and for Reykjavik's (that's where Meridian Airport sits) — both places stay on the exact same time all year round, with no daylight saving changes.</p>
+      <p>What time will Meridian Airport's departure board show, in Reykjavik time, at the exact moment boarding closes? Answer in 24-hour time, like "09:05".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First work out what time boarding closes in Tokyo — subtract the Stage 1 number of minutes from the 23:35 departure time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Tokyo runs 9 hours ahead of Reykjavik, all year round. Subtract 9 hours from the Tokyo boarding-closure time to get Reykjavik time.</p></details>
+    <div class="answer-box" data-answer-hash="2bd08220">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Iceland and Japan never change their clocks for daylight saving time — they stay on the exact same time zone all year round, which makes them two of the easiest countries in the world to convert time for!</p>
+
+<!-- MISSION 9 — Big Aha — Logical Reasoning (Advanced: knights and knaves) -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA MOMENT</span>
+    <h2>Two Agents, One Truth</h2>
+    <div class="puzzle">
+      <p>Word arrives that Elena's gate may have changed at the last minute. Two gate agents are on duty: Agent Silva and Agent Cole. One of them always tells the truth. The other always lies. You don't know which is which — but you can still figure this out.</p>
+      <p><strong>Agent Silva says:</strong> "Cole is telling the truth, and the new gate is Gate 31."</p>
+      <p><strong>Agent Cole says:</strong> "The gate is still Gate 14."</p>
+      <p>Using only pure logic — no guessing — work out which gate is really correct. Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try assuming Agent Silva is the truth-teller. Follow that assumption all the way through both statements — does everything still fit together?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If Silva is truthful, then Silva's ENTIRE statement must be true, including the part about Cole. That would mean Cole is also truthful — but then Cole's own statement must match Silva's gate number too. Does it?</p></details>
+    <div class="answer-box" data-answer-hash="17eb23f8">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE — synthesis puzzle -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Run For It</h2>
+    <div class="puzzle">
+      <p>Elena is sprinting through the terminal with a boarding pass but no bag — and you're the only one with the full picture. You've already worked out exactly which gate her flight is really leaving from, and exactly what time (in Reykjavik time) boarding closes there.</p>
+      <p>Combine both pieces into one final answer, in this exact format: <strong>gate [number] [time]</strong> — for example: <em>gate 9 08:05</em></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You worked out this gate number in two completely different ways, in two different missions. Both should agree.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>You already calculated the exact boarding-closure time, in Reykjavik time, back in an earlier stage. Just combine gate and time, separated by a space.</p></details>
+    <div class="answer-box" data-answer-hash="aeb596d4">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Elena makes it to the gate with seconds to spare, suitcase in hand — all because you followed every clue instead of guessing. That's what real detective work feels like: the thrill of <strong>discovery</strong>, piecing together small clues until the whole picture suddenly, satisfyingly makes sense.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
