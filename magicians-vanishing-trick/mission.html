@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Magician's Vanishing Trick — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #8A2E3B;
+    --accent-dark: #5E1F28;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .emoji-key { display: flex; flex-wrap: wrap; gap: 0.6rem 1.1rem; background: var(--paper-dark); border-radius: 3px; padding: 0.7rem 0.9rem; margin: 0.7rem 0; font-size: 0.95rem; }
+  .emoji-code { font-size: 1.6rem; text-align: center; margin: 0.8rem 0; letter-spacing: 0.3rem; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Magician's Vanishing Trick</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  Tonight is opening night at the Grand Alcazar Theatre, and the star magician's signature finale — the Vanishing Cabinet trick — has gone completely wrong. The secret notes explaining how the trick works have been scattered, coded, and mixed up backstage, and the show starts in two hours. The theater manager has called you in personally. Solve all ten backstage mysteries, and the final page will reveal the one quality every great magician needs most.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Name Behind the Name</h2>
+    <div class="puzzle">
+      <p>A dusty photo backstage shows the theater's very first headline act: the legendary escape artist Harry Houdini. But "Harry Houdini" was a stage name. Search online to find the real name he was born with.</p>
+      <p>Type his real first and last name together.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Harry Houdini real name born." He was born in Budapest in 1874.</p></details>
+    <div class="answer-box" data-answer-hash="cd6077f4">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Scarf Trick</h2>
+    <div class="puzzle">
+      <p>Backstage, someone left a practice sheet showing the order scarves get pulled from a sleeve, but the last one is smudged out:</p>
+      <p style="text-align:center; font-size:1.2rem;">🟡 🟡 🔴 🟡 🟡 🔴 🟡 🟡 ❓</p>
+      <p>What color comes next?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look for a small group of colors that keeps repeating from the start.</p></details>
+    <div class="answer-box" data-answer-hash="40f480dc">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Harry Houdini died on Halloween — October 31, 1926 — and his fans still hold séances every year on that date, hoping to hear from him.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Box Office Puzzle</h2>
+    <div class="puzzle">
+      <p>The box office has two deals for a family of 4 tickets. <strong>Deal A:</strong> tickets cost $15 each, and buy-3-get-the-4th-free. <strong>Deal B:</strong> a flat "family pass" for exactly 4 tickets costs $50. Work out the total cost of each deal, figure out which is cheaper, then answer: how many dollars would the family save by choosing the cheaper deal instead of the other one?</p>
+      <p><em>Agent's notebook: while checking the price board, you spot a keypad code taped underneath it, for the backstage door: 7. Worth remembering.</em></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>For Deal A, remember the 4th ticket is free — you only pay for 3 of them.</p></details>
+    <div class="answer-box" data-answer-hash="300ca0d0">
+      <label for="m3-answer">Your answer (dollars saved):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Vanishing Cabinet's Blueprint</h2>
+    <div class="puzzle">
+      <p>The old blueprint shows the front panel of the Vanishing Cabinet: a rectangle topped with a triangular peak. The carpenter needs to know the total area of the front panel (in square meters) to order the right amount of velvet fabric to cover it.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 200 150" width="200" height="150"
+         role="img" aria-label="A cabinet front panel: a rectangle topped by a triangular peak">
+      <polygon points="80,20 120,50 120,110 40,110 40,50" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="80" y="130" text-anchor="middle" font-size="12">4 m</text>
+      <text x="20" y="80" text-anchor="middle" font-size="12" transform="rotate(-90 20 80)">3 m</text>
+      <text x="140" y="35" text-anchor="middle" font-size="12" transform="rotate(-90 140 35)">1.5 m</text>
+    </svg>
+    <div class="clue-caption">The triangle's base is exactly as wide as the rectangle below it. The cabinet has a solid wood floor with a hidden trapdoor built in — no mirrors anywhere inside it.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out the rectangle's area and the triangle's area separately, then add them.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A triangle's area is half of its base times its height.</p></details>
+    <div class="answer-box" data-answer-hash="18eb258b">
+      <label for="m4-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Emoji Code</h2>
+    <div class="puzzle">
+      <p>A note pinned to the cabinet uses a secret emoji code instead of letters. Use the key below to decode the message.</p>
+      <div class="emoji-key">
+        <span>🎩 = C</span><span>🐇 = U</span><span>⭐ = R</span><span>🃏 = T</span><span>🔮 = A</span><span>🦉 = I</span><span>🎭 = N</span>
+      </div>
+      <div class="emoji-code">🎩 🐇 ⭐ 🃏 🔮 🦉 🎭</div>
+      <p>What word does it spell?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Replace each emoji with its matching letter, in order, and read the result.</p></details>
+    <div class="answer-box" data-answer-hash="1927afd9">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Assistants, One Key</h2>
+    <div class="puzzle">
+      <p>Backstage there are two assistants: one always tells the truth, and the other always lies — but you don't know which is which yet. The sign-in sheet clearly shows Assistant A arrived at 6:00 PM. But Assistant A just told you, "I arrived at 5:00 PM."</p>
+      <p>Assistant B then tells you, "The key to the cabinet is hidden inside the Blue box."</p>
+      <p>Which box is the key really in — Red or Blue?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The sign-in sheet is a fact you can trust. Compare it to what Assistant A said — does that make A the truth-teller or the liar?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Assistant A is lying, you know exactly what Assistant B must be — and that tells you whether to trust what B said about the box.</p></details>
+    <div class="answer-box" data-answer-hash="82fbf5cd">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>De of Het Achter het Gordijn</h2>
+    <div class="puzzle">
+      <p>The old Dutch theater program lists four words: <strong>goochelaar</strong> (magician), <strong>truc</strong> (trick), <strong>hoed</strong> (hat), and <strong>konijn</strong> (rabbit). Three of these words use "de," and one uses "het." Which one is the odd one out — the "het" word?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try saying "de ___" and "het ___" out loud for each word — one will sound clearly wrong with "de."</p></details>
+    <div class="answer-box" data-answer-hash="f9e99556">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Trapdoors have been used to make performers "vanish" through the stage floor since long before Houdini — theaters were using them as far back as Shakespeare's time, over 400 years ago!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Founding Year</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Search online to find the year Harry Houdini died. The Grand Alcazar Theatre (where you are now) first opened its doors in 1889. How many years had the theater already been open when Houdini died?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "what year did Houdini die," then subtract 1889 from that year.</p></details>
+    <div class="answer-box" data-answer-hash="8af0562f">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Take your Stage 1 answer. Subtract the backstage keypad code you noted a few missions back. Then double whatever is left. What's the final number?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>What number did your notebook say was taped under the price board back at the box office?</p></details>
+    <div class="answer-box" data-answer-hash="15e8e23b">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp finale">AHA!</span>
+    <h2>Two Witnesses, One Truth</h2>
+    <div class="puzzle">
+      <p>Two audience members are arguing about how the Vanishing Cabinet trick works. One says, "She must have slipped out through a trapdoor in the floor." The other says, "No, it was done with a hidden mirror reflecting the back wall."</p>
+      <p>Think back to the cabinet's blueprint from Mission 04 — what did it actually show inside the cabinet? You can also quickly search whether trapdoors or mirrors have the longer, better-documented history for floor-vanishing tricks, to double-check your reasoning.</p>
+      <p>Which explanation is correct: the trapdoor, or the mirror?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Scroll back and re-read the caption under Mission 04's diagram carefully.</p></details>
+    <div class="answer-box" data-answer-hash="8477543e">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Secret Order</h2>
+    <div class="puzzle">
+      <p>The trick only works if 4 differently colored scarves are loaded into the cabinet in one exact secret order. No two scarves can share a spot, and every scarf must be used exactly once. How many different possible orders are there for loading all 4 scarves?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about it one scarf at a time: how many choices for the first spot? Then how many are left for the second spot?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply your choices for each spot together: 4 choices, then 3, then 2, then 1.</p></details>
+    <div class="answer-box" data-answer-hash="89f29333">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The cabinet door swings open right on cue, curtain rising to thunderous applause. Every trick you cracked tonight — the pattern, the code, the logic, the numbers — took the same spark: CREATIVITY. That's the real secret behind every great magic show, agent, and you've got it in spades.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

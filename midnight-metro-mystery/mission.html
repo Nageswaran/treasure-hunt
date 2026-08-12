@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Midnight Metro Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2C4C7C;
+    --accent-dark: #1D3454;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .morse-key { display: flex; flex-wrap: wrap; gap: 0.6rem 1.1rem; background: var(--paper-dark); border-radius: 3px; padding: 0.7rem 0.9rem; margin: 0.7rem 0; font-size: 0.95rem; }
+  .morse-code { font-size: 1.4rem; text-align: center; margin: 0.8rem 0; letter-spacing: 0.2rem; font-family: monospace; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Midnight Metro Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  Tonight, London's Underground is running a special after-hours heritage tour through its oldest tunnels — but just before the doors open, the vintage signal room falls eerily silent, and a brass lever from the very first opening-day ceremony has vanished from its display case. The station master needs a sharp mind before the midnight train departs. Solve all ten mysteries hidden along the platforms, and the final signal will reveal the quality that's kept this railway running for over a century.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The World's First</h2>
+    <div class="puzzle">
+      <p>A brass plaque near the entrance is worn smooth, but you can still make out: "...the world's very first underground railway, opened right here in London." Search online to find the exact year London's Underground first opened to passengers.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "London Underground first opened year." It happened in the 1860s.</p></details>
+    <div class="answer-box" data-answer-hash="3dbe6d67">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Old Departure Board</h2>
+    <div class="puzzle">
+      <p>An old mechanical departure board is stuck mid-countdown, clicking down the minutes until the next train: 15, 12, 9, 6, ?. What number comes next?</p>
+      <p><em>Agent's notebook: while you watch the board, you notice the night conductor's badge, stamped with the number 23. Worth remembering.</em></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at how much smaller each number gets compared to the one before it.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? On its very first day of service in 1863, London's Underground carried more than 30,000 passengers — even though nobody had ever ridden an underground train before!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Racing the Rails</h2>
+    <div class="puzzle">
+      <p>Two heritage trains leave the station tonight. Train 1 departs at 11:47 and takes 38 minutes to reach the final stop. Train 2 departs 12 minutes after Train 1, and takes 51 minutes to reach the same final stop. Work out each train's exact arrival time, then find out: by how many minutes does the earlier train arrive before the other one? Grab a pencil for this one!</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out each arrival time one at a time. For Train 1: 11:47 plus 38 minutes — carry over into the next hour once you pass 60 minutes.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Train 2 departs at 11:59. Add 51 minutes to that to find its arrival time.</p></details>
+    <div class="answer-box" data-answer-hash="88f291a0">
+      <label for="m3-answer">Your answer (minutes):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Ticket Hall Floor</h2>
+    <div class="puzzle">
+      <p>The old ticket hall floor is a rectangle. A restoration note says its total perimeter is 34 meters, and the diagram shows one side is 9 meters. What is the length of the other side, in meters?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 200 170" width="200" height="170"
+         role="img" aria-label="A rectangular ticket hall floor with one side labeled 9 meters and the other side unknown">
+      <rect x="30" y="30" width="135" height="120" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="97" y="22" text-anchor="middle" font-size="12">9 m</text>
+      <text x="14" y="90" text-anchor="middle" font-size="12" transform="rotate(-90 14 90)">? m</text>
+    </svg>
+    <div class="clue-caption">Remember: a rectangle's perimeter is the sum of all four sides — two of one length, two of the other.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Half the perimeter equals one width plus one length.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Half of 34 is 17. Subtract the known side (9) from that.</p></details>
+    <div class="answer-box" data-answer-hash="3d0cb547">
+      <label for="m4-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Signal Room Tapper</h2>
+    <div class="puzzle">
+      <p>The old telegraph tapper in the signal room left one last message in Morse code before it fell silent. Use the key below to decode it.</p>
+      <div class="morse-key">
+        <span>G = <code>--.</code></span><span>A = <code>.-</code></span><span>P = <code>.--.</code></span>
+      </div>
+      <div class="morse-code">--. &nbsp; .- &nbsp; .--.</div>
+      <p>What word does it spell?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>There are three groups of dots and dashes, separated by gaps — one group per letter.</p></details>
+    <div class="answer-box" data-answer-hash="481721cf">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Engineers, Three Lines</h2>
+    <div class="puzzle">
+      <p>Three night engineers — Priya, Tom, and Aisha — each maintain one line (Central, Circle, or District) and each found one fault tonight (a broken signal light, a cracked rail, or a jammed door). Use these clues to work out who maintains the Central line:</p>
+      <ol>
+        <li>The cracked rail was not found on the Circle or District line.</li>
+        <li>The jammed door was found by the engineer on the District line.</li>
+        <li>Tom does not work on the Central line.</li>
+        <li>Aisha found the broken signal light.</li>
+      </ol>
+      <p>No searching needed — work it out from the clues alone.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Clue 1 tells you exactly which line the cracked rail is on, even without naming it directly.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know which line has the cracked rail and which has the jammed door, the third line's fault is forced. Then use clues 3 and 4 to place each engineer.</p></details>
+    <div class="answer-box" data-answer-hash="35c3d78">
+      <label for="m6-answer">Who maintains the Central line?</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Odd One Out</h2>
+    <div class="puzzle">
+      <p>A Dutch exchange student left a note listing four words she learned at the train station: <strong>perron</strong> (platform), <strong>spoor</strong> (track), <strong>wolk</strong> (cloud), and <strong>kaartje</strong> (ticket). Three of these belong together as things you'd find at a train station. Which one doesn't belong?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about which of these four things you would never actually see inside a train station.</p></details>
+    <div class="answer-box" data-answer-hash="83bba39a">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? London's famous colorful subway map — the one with straight lines and evenly spaced stations instead of a real geographic layout — wasn't drawn by a mapmaker at all. It was designed by an electrical draughtsman, who based its look on electrical circuit diagrams!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Signal Room Clock</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Search online to find the year the famous diagram-style Underground map (the one described above) was first designed by its inventor, Harry Beck. Subtract 1863 — the year the Underground itself first opened — from that year. How many years passed between the two events?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Harry Beck Tube map year designed."</p></details>
+    <div class="answer-box" data-answer-hash="de8d5a3">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Add the night conductor's badge number you noted a few missions back to your Stage 1 answer. Treat the total as a number of minutes counted from midnight (00:00), and write the resulting clock time in 24-hour format as HH:MM (for example, a time like 02:47 would be written just like that).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>What number was stamped on the night conductor's badge, back at the departure board?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>60 minutes past midnight is 01:00. Count onward from there.</p></details>
+    <div class="answer-box" data-answer-hash="7fb82268">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="HH:MM">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp finale">AHA!</span>
+    <h2>Mind the Gap</h2>
+    <div class="puzzle">
+      <p>Every visitor hears the famous warning: "Mind the gap." Two theories are floating around the tour group. Theory 1: it warns about the horizontal gap between the train doors and the curved platform edge. Theory 2: it warns about a height difference between the train floor and the platform.</p>
+      <p>Search online using a trustworthy source (like a transport museum) to find out which one is actually correct.</p>
+      <p>Type "horizontal" or "vertical" depending on which kind of gap it really means.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "mind the gap meaning London Underground" and look for why some platforms are more dangerous than others — it has to do with the shape of the tunnel.</p></details>
+    <div class="answer-box" data-answer-hash="55358a69">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Signal</h2>
+    <div class="puzzle">
+      <p>The recovered brass lever controls an old bell-signal system. A faded instruction card reads:</p>
+      <p>"If the lever is RED: sound one bell when the platform is clear, or sound two bells when the platform is NOT clear.<br>If the lever is GREEN: always sound three bells, no matter what."</p>
+      <p>Tonight, the lever is RED, and the platform is NOT clear. How many bells should sound?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First check which color the lever is tonight — that decides which whole rule applies.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you're inside the RED rule, check whether the platform is clear or not clear to pick the right bell count.</p></details>
+    <div class="answer-box" data-answer-hash="370cabd5">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The bell sounds twice, right on cue, and the signal lights flicker back to life just as the midnight tour doors open. It took an engineer, a conductor, a translator, and a detective — that's you — all working from different clues to get here. TEAMWORK is what's kept this railway's gears turning for over 160 years, and tonight, it kept the mystery from staying buried in the tunnels.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
