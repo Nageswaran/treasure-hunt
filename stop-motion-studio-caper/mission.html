@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Stop-Motion Studio Caper — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C4562A;
+    --accent-dark: #8F3D1C;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul { margin: 0.4rem 0 0.7rem; padding-left: 1.3rem; }
+  .puzzle li { margin: 0.25rem 0; }
+  .notebook {
+    background: rgba(255,255,255,0.5);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook strong { color: var(--accent-dark); }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 0 0 0.6rem; }
+  .stage-label.second { margin: 1.3rem 0 0.6rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Stop-Motion Studio Caper</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 90-120 minutes (10 case files — grab a pencil and a notebook!)</div>
+</div>
+
+<div class="intro">
+  Mapleframe Animation Studio is one night away from premiering its very first short film, <em>"The Clockwork Fox,"</em> at the town film festival. But this morning, the editor found an entire reel of finished footage missing from the shelf — and the shot-log notebook is full of scrambled numbers and secret code. You've been called in as an Internet Detective to crack the shot log, work out exactly how much footage has gone missing, and help the crew finish the film, frame by frame, before the curtain rises tomorrow night.
+</div>
+
+<!-- MISSION 1 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Camera Manual's Missing Page</h2>
+    <div class="puzzle">
+      <p>The studio's ancient camera manual is missing its very first page — the one every new animator is supposed to read before ever touching the camera. All the crew remembers is that it explained one number nearly every filmmaker in the world agrees on: how many single photographs, called <strong>frames</strong>, need to flash by every second for movement to look smooth on a movie screen.</p>
+      <p>Search online to find that standard number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "standard frame rate for film" or "frames per second movies" — this number is used by almost every movie theater and film camera in the world.</p></details>
+    <div class="answer-box" data-answer-hash="89f29333">
+      <label for="m1-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Studio Down the Road</h2>
+    <div class="puzzle">
+      <p>Pinned above the workbench is Ferris's character sheet: <em>"FERRIS THE FOX — hero puppet of The Clockwork Fox. Always wears his lucky cobalt-blue scarf."</em></p>
+    </div>
+    <div class="notebook">📓 <strong>Agent's Notebook:</strong> that scarf color is worth remembering.</div>
+    <div class="puzzle">
+      <p>Taped next to it on the corkboard is a torn magazine clipping about a much bigger claymation studio the Mapleframe crew all admire — based in Bristol, England, famous the world over for an inventor and his silent but very clever dog, both made of plasticine.</p>
+      <p>Search online: what is the name of the dog?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Wallace and Gromit" — the studio that made them is called Aardman Animations.</p></details>
+    <div class="answer-box" data-answer-hash="77a30eb1">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Aardman Animations — the studio behind Wallace &amp; Gromit — started in 1972, and moved to Bristol, England in 1976, where it still makes claymation films today.</p>
+
+<!-- MISSION 3 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Five Cards on the Cutting-Room Floor</h2>
+    <div class="puzzle">
+      <p>Five shot cards fell off the editing desk and got mixed up. They're all from the same chase scene, where Ferris's wind-up mouse toy zooms along a shelf of spare clock gears — and every time the toy bumps the shelf, one more gear tumbles off and stays on the floor. Gears never bounce back up onto the shelf. Here's what each card shows:</p>
+      <ul>
+        <li><strong>Card F:</strong> 3 gears have fallen.</li>
+        <li><strong>Card G:</strong> 0 gears have fallen.</li>
+        <li><strong>Card H:</strong> 4 gears have fallen.</li>
+        <li><strong>Card I:</strong> 1 gear has fallen.</li>
+        <li><strong>Card J:</strong> 2 gears have fallen.</li>
+      </ul>
+      <p>Put the five cards in the order the shots actually happened. Type the five letters together, in order, with no spaces or commas (for example: <strong>FGHIJ</strong>).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Since gears only ever fall and never climb back onto the shelf, the number of fallen gears can only go up as the scene continues.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Start with the card that shows zero fallen gears — that has to be the very first shot.</p></details>
+    <div class="answer-box" data-answer-hash="b9d29413">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Sorting the Supply Shelf</h2>
+    <div class="puzzle">
+      <p>The supply shelf is labeled with Dutch word cards for things every stop-motion studio needs: <strong>licht</strong> (light), <strong>decor</strong> (set), <strong>draaiboek</strong> (script), <strong>klei</strong> (clay), and <strong>statief</strong> (tripod).</p>
+      <p>Four of these five words use <strong>"het"</strong> in Dutch. One word doesn't belong — it's the only one that uses <strong>"de"</strong> instead. Find the odd one out.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try saying "het" in front of each word out loud — one of them will sound wrong to a Dutch ear.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>This word means "clay" — exactly what Ferris the Fox is made of.</p></details>
+    <div class="answer-box" data-answer-hash="299cfb54">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Posing Ferris, Frame by Frame</h2>
+    <div class="puzzle">
+      <p>Mapleframe always shoots "on twos" — meaning every pose the animator sets up gets held for 2 frames before the camera moves on to the next pose. You already know the studio's standard frame rate from Mission 1.</p>
+      <p>How many different puppet poses does the animator actually have to create, by hand, for one full second of finished film?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>If every pose is held for 2 frames, divide the total number of frames per second by 2.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Take your Mission 1 answer and divide it by 2.</p></details>
+    <div class="answer-box" data-answer-hash="1deb2d6a">
+      <label for="m5-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Giant Ape on the Wall</h2>
+    <div class="puzzle">
+      <p>Above the break-room couch hangs a framed poster the crew treats like a shrine: a giant stop-motion ape climbing a New York skyscraper, swatting at biplanes. It's the film that first proved stop-motion animation could amaze an entire generation of moviegoers, using an 18-inch puppet animated one frame at a time.</p>
+      <p>Search online: in what year was the original "King Kong" stop-motion film first released?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "King Kong 1933 stop motion" and check what year an encyclopedia or film-history site gives for the original release.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The animator who brought Kong to life was named Willis O'Brien — his name should show up right next to the year you need.</p></details>
+    <div class="answer-box" data-answer-hash="9a535f75">
+      <label for="m6-answer">Your answer (just the year):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? When the Academy offered Willis O'Brien, King Kong's animator, a special Oscar for his effects work, he turned it down — he wanted his whole crew honored too, not just himself.</p>
+
+<!-- MISSION 7 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Animators, One Missing Reel</h2>
+    <div class="puzzle">
+      <p>Four animators worked on shots for the missing reel this week: Bo, Mika, Sanne, and Theo. Each filmed exactly one shot, on a different day. Here's what's on each shot card:</p>
+      <ul>
+        <li><strong>Shot 12</strong> — a wide shot of gears scattered across the floor.</li>
+        <li><strong>Shot 18</strong> — a close-up of a ticking clock face.</li>
+        <li><strong>Shot 25</strong> — the hero puppet mid-leap, his scarf catching the light in a shade that matches a clear afternoon sky.</li>
+        <li><strong>Shot 31</strong> — the workshop door creaking open.</li>
+      </ul>
+      <p>Now use these clues:</p>
+      <ul>
+        <li>Bo filmed shot 12.</li>
+        <li>The animator who worked Thursday filmed shot 31.</li>
+        <li>Sanne worked Wednesday.</li>
+        <li>Theo filmed shot 25.</li>
+        <li>Theo filmed his shot the day immediately after Bo filmed his.</li>
+      </ul>
+      <p>Which day was <strong>Ferris's</strong> shot filmed?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First figure out which shot number is Ferris's — think back to how his scarf was described in an earlier case file.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Bo has shot 12 and Theo has shot 25, work out who's left for Thursday — remember, only shot 31's animator worked Thursday, and neither Bo nor Theo has that shot.</p></details>
+    <div class="answer-box" data-answer-hash="26285d10">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Clapperboard's Mirror Code</h2>
+    <div class="puzzle">
+      <p>Taped to the missing reel's clapperboard is a scrap of paper, scrawled in a code the studio's founder loved to use — a "mirror code," where every letter swaps places with its mirror partner in the alphabet: A becomes Z, B becomes Y, C becomes X, and so on, all the way to M becomes N.</p>
+      <p style="text-align:center; font-size:1.3rem; letter-spacing:0.2em;"><strong>KIVNRVIV</strong></p>
+      <p>Decode the word. Grab a pencil and write the alphabet forward on one line, then backward underneath it, to help you match each letter to its mirror.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write A-B-C...Z on one line, then Z-Y-X...A directly underneath. Whatever letter is under a coded letter is its mirror partner — swap each one.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>K is the 11th letter counting from A. Its mirror is the 11th letter counting backward from Z, which is P. Decode the rest of KIVNRVIV the same way — the finished word describes what's happening at Mapleframe tomorrow night.</p></details>
+    <div class="answer-box" data-answer-hash="34375e0e">
+      <label for="m8-answer">Your decoded word:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? One of the very first stop-motion films ever made, "The Humpty Dumpty Circus" (1897-98), used a child's toy circus set as its cast — and the finished film has been lost for more than a century.</p>
+
+<!-- MISSION 9 - BIG AHA -->
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The Editor's Missing Minutes</h2>
+    <div class="puzzle">
+      <p>The festival program already went to print with one confirmed fact: <em>"The Clockwork Fox" runs exactly 5 minutes long.</em> The editor has spliced together footage from 5 recovered chunks so far — but one whole chunk of footage is still missing completely.</p>
+      <p>Grab a pencil for this one. The studio's standard frame rate is 24 frames per second (Mission 1). Here's the shot log for the 5 recovered chunks:</p>
+      <ul>
+        <li><strong>Chunk 1</strong> — three shots: 168, 192, and 120 frames.</li>
+        <li><strong>Chunk 2</strong> — three shots: 216, 192, and 144 frames.</li>
+        <li><strong>Chunk 3</strong> — two shots: 168 and 240 frames.</li>
+        <li><strong>Chunk 4</strong> — three shots: 240, 192, and 144 frames.</li>
+        <li><strong>Chunk 5</strong> — three shots: 264, 216, and 216 frames.</li>
+      </ul>
+      <p>For each chunk: add up its frames, then divide by 24 to get that chunk's length in seconds. Add up all 5 chunks' seconds. Then subtract that total from the film's full running time (5 minutes = 300 seconds). Type just the number of seconds that are still missing.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add up the frames within each chunk first, then divide each chunk's own total by 24 to get seconds. Don't mix frames from different chunks together before dividing.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The five chunks add up to 113 seconds altogether. Now subtract that from 300.</p></details>
+    <div class="answer-box" data-answer-hash="f61f9b01">
+      <label for="m9-answer">Your answer (just the number of seconds):</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Many stop-motion animators shoot on "twos" (holding each pose for 2 frames) to save time, but switch to shooting on "ones" (a brand-new pose for every single frame) during fast action, because quick movement looks jerky unless it's extra smooth.</p>
+
+<!-- MISSION 10 - GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Reel Before Curtain</h2>
+    <div class="puzzle">
+      <p>With the missing minutes counted, there's only one job left: find the actual reel, and finish it before curtain time tomorrow.</p>
+    </div>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Taped inside the empty spot on the shelf is a hurried note in the studio owner's handwriting:</p>
+      <p style="text-align:center;"><em>"Reel number = today's slate frame count &divide; studio standard fps."</em></p>
+      <p>Today's slate, still clipped to the camera, reads: <strong>96 frames</strong>. You already know the studio's standard frame rate from Mission 1. Which reel number does the note point to?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You found the studio's standard frames-per-second all the way back in Mission 1 — use that number to divide.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>96 &divide; 24 = ?</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m10-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m10-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label second">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>You find the canister marked with the reel number from Stage 1. Its lid reads: <strong>"TOTAL: 552 frames."</strong> Inside, only two of that reel's three film strips are still there: one measuring 216 frames, the other 168 frames.</p>
+      <p>At the studio's standard 24 frames per second, how many <strong>seconds</strong> long is the still-missing third strip?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First subtract both known strips from the canister's total to find the missing strip's frame count.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>552 &minus; 216 &minus; 168 = 168 frames. Now convert that to seconds.</p></details>
+    <div class="answer-box" data-answer-hash="320ca3f6">
+      <label for="m10-stage2">Your final answer (just the number of seconds):</label>
+      <div class="answer-row">
+        <input id="m10-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The missing strip is barely 7 seconds long — easily reshot before tomorrow night. As the crew scrambles to set Ferris back up one more time, the studio owner grins: "This is why we make stop-motion films, Agent — one tiny disaster, and a hundred tiny <strong>creative</strong> fixes." That's <strong>creativity</strong>: turning a crisis into one more clever shot. Case closed — curtain's up on time!</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Marathon Day Mixup — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #D8611F;
+    --accent-dark: #A8460F;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .notebook {
+    background: #FBF3DD;
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    margin: 0.9rem 0;
+    font-size: 0.95rem;
+  }
+  .splits-table {
+    width: 100%;
+    max-width: 420px;
+    margin: 0.8rem 0;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  .splits-table th, .splits-table td {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.3rem 0.6rem;
+    text-align: left;
+  }
+  .splits-table th { background: var(--paper-dark); }
+  .nutrition-label {
+    max-width: 280px;
+    border: 2px solid var(--ink);
+    padding: 0.6rem 0.8rem;
+    margin: 0.9rem 0;
+    font-size: 0.9rem;
+    background: #FFFDF7;
+  }
+  .nutrition-label h3 { margin: 0 0 0.3rem; font-size: 1rem; border-bottom: 3px solid var(--ink); padding-bottom: 0.2rem; }
+  .nutrition-label .row { display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.2); padding: 0.15rem 0; }
+  .message-box {
+    border: 1px solid rgba(0,0,0,0.15);
+    border-left: 4px solid var(--accent-dark);
+    background: var(--paper-dark);
+    padding: 0.7rem 0.9rem;
+    margin: 0.8rem 0;
+    font-size: 0.92rem;
+  }
+  .message-box strong.from { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-dark); margin-bottom: 0.25rem; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; font-weight: 700; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Marathon Day Mixup</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 80-100 minutes (spread across a few sittings if you like)</div>
+</div>
+
+<div class="intro">
+  <p>This morning, at the NN Marathon Rotterdam, a whole city gathered to run 42.195 kilometers past the Erasmus Bridge, the Euromast, and the Cube Houses. But right before the starting gun, two lifelong friends grabbed the wrong grey bag in the crowded bag-drop tent.</p>
+  <p>Noor, an experienced marathoner aiming for a fast finish from Corral B, and Finn, running his very first marathon from the back-of-pack Corral D, accidentally swapped their timing wristbands — the exact device the results computer uses to know who is who, and which corral each runner may enter.</p>
+  <p>Now the results are scrambled, and the medal ceremony on the Coolsingel is only hours away. The Race Director needs a sharp young detective to set the record straight. Every clue matters, Agent — even the small ones. Good detectives write things down.</p>
+</div>
+
+<!-- MISSION 1 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Race Morning, Step by Step</h2>
+    <div class="puzzle">
+      <p>Six things happen on marathon morning — but our notes got shuffled! Here's what we know: the bag-drop tent closes a full 30 minutes before the starting gun, so every runner drops off their bag early and warms up in whatever time is left before showing their wristband to enter their corral.</p>
+      <p>Put these six moments in the order they really happen, then type which position (1, 2, 3, 4, 5, or 6) "Show your wristband to enter your starting corral" belongs in:</p>
+      <ul>
+        <li>Cross the finish line on the Coolsingel</li>
+        <li>Pin on your bib number at home</li>
+        <li>Warm up near the start area</li>
+        <li>Drop your gear bag at the bag-drop tent</li>
+        <li>Show your wristband to enter your starting corral</li>
+        <li>Hear the starting gun</li>
+      </ul>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>One of these six things happens at home, long before anyone even reaches the race village. That one has to come first — count carefully from there.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Why 42.195 Kilometers?</h2>
+    <div class="puzzle">
+      <p>Every marathon in the world is exactly 42.195 kilometers (26.2 miles) long — but why that oddly specific number? The story starts in ancient Greece, with a legendary run from the town of Marathon to Athens. But the EXACT distance we use today comes from much later: the 1908 Olympic Games in London.</p>
+      <p>Search online to find out: which royal residence did that 1908 Olympic marathon START at, so young royal children could watch the runners go by from a window? (Two words, both capitalized, like a famous fairytale-sounding building.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "1908 Olympics marathon 26.2 miles royal family start". The answer is a real castle you might already know the name of.</p></details>
+    <div class="answer-box" data-answer-hash="a0fedcdf">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <div class="notebook">
+      <strong>📓 Agent's Notebook:</strong> While you're here, the Race Director hands you Noor's original registration slip. Her bib number is printed clearly: <strong>2483</strong>. Jot that down somewhere safe, Agent — case files like this one have a way of becoming useful again later.
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The very first Rotterdam Marathon, back in 1981, had just 200 runners at the start line. Today, tens of thousands cross that same finish line on the Coolsingel every year.</p>
+
+<!-- MISSION 3 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Follow the Blue Line</h2>
+    <div class="puzzle">
+      <p>Here's a simplified sketch of today's marathon route, drawn from the timing crew's course notes. It's not to scale, but the landmarks and the river are real.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 360 240" width="360" height="240" role="img" aria-label="A simplified, not-to-scale sketch map of the Rotterdam marathon route, showing the river, a bridge crossed twice, several landmarks, the start and finish, and a compass rose">
+      <rect x="0" y="95" width="360" height="55" fill="#BFD9E6"/>
+      <text x="8" y="90" font-size="9" fill="#2B2A24">Nieuwe Maas (river)</text>
+      <rect x="138" y="90" width="94" height="65" fill="#D9C08A" opacity="0.55"/>
+      <text x="185" y="83" font-size="9" text-anchor="middle" font-weight="700">Erasmus Bridge</text>
+      <polyline points="70,205 150,150 150,102 90,72 170,52 230,63 300,92 300,110 232,100 210,110 210,150 130,205"
+        fill="none" stroke="#A33B2D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="150" cy="128" r="4" fill="#A33B2D"/>
+      <text x="118" y="132" font-size="8">~3 km</text>
+      <circle cx="210" cy="128" r="4" fill="#A33B2D"/>
+      <text x="216" y="132" font-size="8">~27 km</text>
+      <circle cx="90" cy="72" r="4" fill="#2B2A24"/>
+      <text x="60" y="66" font-size="8">Euromast</text>
+      <circle cx="170" cy="52" r="4" fill="#2B2A24"/>
+      <text x="140" y="45" font-size="8">Cube Houses</text>
+      <circle cx="230" cy="63" r="4" fill="#2B2A24"/>
+      <text x="234" y="55" font-size="8">Markthal</text>
+      <circle cx="300" cy="92" r="4" fill="#2B2A24"/>
+      <text x="270" y="84" font-size="8">Kralingse Bos</text>
+      <circle cx="70" cy="205" r="4" fill="#4C7A52"/>
+      <text x="18" y="220" font-size="8" font-weight="700">START (Schiedamsedijk)</text>
+      <circle cx="130" cy="205" r="4" fill="#5B3A8A"/>
+      <text x="118" y="222" font-size="8" font-weight="700">FINISH (Coolsingel)</text>
+      <g transform="translate(330,35)">
+        <line x1="0" y1="-16" x2="0" y2="16" stroke="#2B2A24" stroke-width="1.5"/>
+        <line x1="-16" y1="0" x2="16" y2="0" stroke="#2B2A24" stroke-width="1.5"/>
+        <text x="0" y="-19" font-size="9" text-anchor="middle">N</text>
+        <text x="0" y="27" font-size="9" text-anchor="middle">S</text>
+        <text x="20" y="4" font-size="9" text-anchor="middle">E</text>
+        <text x="-20" y="4" font-size="9" text-anchor="middle">W</text>
+      </g>
+    </svg>
+    <div class="clue-caption">Follow the red route line from START. Notice it crosses the same bridge twice — once early, once much later. Search online to name that bridge.</div>
+    <div class="puzzle">
+      <p>Using the map and an online search, name the bridge — nicknamed "The Swan" for its curved white pylon — that the marathon route crosses TWICE: once near kilometer 3, and again near kilometer 27.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This bridge is Rotterdam's most famous landmark and even appears in the city's own logo. Try searching "Rotterdam marathon route bridge crossed twice".</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Locals nicknamed it "The Swan" because of its tall, curved, white pylon. What bridge is that?</p></details>
+    <div class="answer-box" data-answer-hash="5ceacaaa">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Fuel Check</h2>
+    <div class="puzzle">
+      <p>Sports scientists say endurance runners should take in about 60 to 90 grams of carbohydrate (a kind of energy fuel) per hour during a marathon, to avoid running out of energy. Here's the nutrition label from the energy gel packets in Noor's pocket:</p>
+    </div>
+    <div class="nutrition-label">
+      <h3>PowerRun Energy Gel</h3>
+      <div class="row"><span>Calories</span><span>100</span></div>
+      <div class="row"><span>Total Carbohydrate</span><span>23 g</span></div>
+      <div class="row"><span>Sugars</span><span>12 g</span></div>
+      <div class="row"><span>Sodium</span><span>60 mg</span></div>
+    </div>
+    <div class="puzzle">
+      <p>If Noor wants to reach AT LEAST the low end of that range — 60 grams of carbohydrate — in one hour, using only these gels, how many WHOLE gels does she need to eat that hour, at minimum?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Divide 60 by the grams of carbohydrate in one gel — but remember, she can't eat part of a gel.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>60 ÷ 23 isn't a whole number. If she needs AT LEAST 60 grams, does she round that answer up or down?</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Four Friends, One Podium</h2>
+    <div class="puzzle">
+      <p>Grab some scratch paper for this one, Agent — it's a classic logic grid. Four running-club friends — Priya, Sam, Wouter, and Lotte — ran the marathon together and are comparing notes afterward.</p>
+      <p>Their bib numbers were 3092, 3311, 3577, and 3648 (not in that order), and they finished 1st, 2nd, 3rd, and 4th among themselves (not in that order). Here's what you know:</p>
+      <ol>
+        <li>Wouter's bib number is the lowest of the four.</li>
+        <li>Among the four friends, Priya, Lotte, and Sam finished in three consecutive positions — in exactly that order: Priya, then Lotte, then Sam, one right after another with nobody else between them.</li>
+        <li>Wouter did not finish first.</li>
+        <li>If you add up all four digits of Sam's bib number, they total 21.</li>
+        <li>Lotte's bib number is exactly 266 higher than Priya's.</li>
+      </ol>
+      <p>Work out who wore which bib and who finished where. What bib number did the friend who finished 2nd wear?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue that pins down one bib number exactly — Wouter's is easiest, since it's simply the lowest of the four numbers.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Clue 2 gives you three friends' finishing order as a block of three in a row. Clue 3 tells you where Wouter can't be — that leaves only one place for Wouter. Then use clues 4 and 5 to match names to bibs.</p></details>
+    <div class="answer-box" data-answer-hash="c2f1a0e3">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Rotterdam's marathon course is one of the flattest big-city courses in the world — its only real "hills" are the two ramps up and over the Erasmus Bridge.</p>
+
+<!-- MISSION 6 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Chip #1847's Secret Splits</h2>
+    <div class="puzzle">
+      <p>The timing crew just recovered raw checkpoint-mat data for chip #1847 — one of the two swapped chips. Every checkpoint only recorded the time for THAT stretch alone (a "split"), not a running total.</p>
+      <p>Grab a pencil, Agent: add up all nine splits below to find chip #1847's full net time, from the start mat to the finish mat on the Coolsingel.</p>
+    </div>
+    <table class="splits-table">
+      <tr><th>Stretch</th><th>Split time</th></tr>
+      <tr><td>0–5 km</td><td>24:47</td></tr>
+      <tr><td>5–10 km</td><td>25:03</td></tr>
+      <tr><td>10–15 km</td><td>24:58</td></tr>
+      <tr><td>15–20 km</td><td>25:11</td></tr>
+      <tr><td>20–25 km</td><td>25:34</td></tr>
+      <tr><td>25–30 km</td><td>26:02</td></tr>
+      <tr><td>30–35 km</td><td>26:47</td></tr>
+      <tr><td>35–40 km</td><td>27:15</td></tr>
+      <tr><td>40–42.195 km</td><td>11:53</td></tr>
+    </table>
+    <div class="puzzle">
+      <p>Type the total as H:MM:SS (for example, 2:15:47 — that's just a format example, not the real answer).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add all the minutes together first, then add all the seconds together separately. Combine them at the end.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Your seconds should add up to more than 60 — carry the extra minute over. Your minutes total will also pass 60 — carry that extra hour over too.</p></details>
+    <div class="answer-box" data-answer-hash="dd7e663">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Messages, One Scam</h2>
+    <div class="puzzle">
+      <p>With the timing mess still unsolved, your phone buzzes. Two different messages showed up today, both asking people to support runners' charity fundraisers. Only ONE of them is safe to trust.</p>
+    </div>
+    <div class="message-box">
+      <strong class="from">Message A — from KWF Kankerbestrijding (the real, official Dutch cancer research fund)</strong>
+      "Support Lotte's Marathon Run for KWF Kankerbestrijding! Donate through our official page at kwf.nl/doneren/lotte-rotterdam. Every euro helps fund cancer research, and you'll get an automatic donation receipt by email."
+    </div>
+    <div class="message-box">
+      <strong class="from">Message B — from "Marathon Runner Fund"</strong>
+      "🎉 CONGRATULATIONS! You've been specially chosen to help our Marathon Runner Fund support sick children! Just send €50 in GIFT CARDS to claim your reward. Reply within 1 HOUR or you'll miss this LIMITED chance! Tap here: bit.ly/w1n-fund-now"
+    </div>
+    <div class="puzzle">
+      <p>Which message should you NOT trust — and report to an adult instead? Type just A or B.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Real charities never ask you to pay using gift cards — that's one of the most common scam tricks there is.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Look closely at the web link in each message. Which one looks like a real charity's own website — and which looks like a shortened, disguised link?</p></details>
+    <div class="answer-box" data-answer-hash="e70c2de5">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>De or Het?</h2>
+    <div class="puzzle">
+      <p>Before the medal ceremony, the Dutch race announcer needs help with the program notes. Here are four Dutch running words, all missing their little article word ("de" or "het"):</p>
+      <p style="text-align:center; font-weight:700; letter-spacing:0.05em;">hardloper &middot; wedstrijd &middot; medaille &middot; parcours</p>
+      <p>Three of these four words use "de" — but one oddball uses "het" instead. Search a Dutch dictionary if you need to. Which word is the odd one out? Type just that one Dutch word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try looking up each word with "de" and "het" in front in an online Dutch dictionary. Words for PEOPLE and words for EVENTS often use "de" — three of these four fit that pattern.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>This one is a French loanword that entered Dutch fairly recently. Words borrowed like this often default to "het". Which of the four fits that pattern?</p></details>
+    <div class="answer-box" data-answer-hash="201bea6a">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The fastest man ever to run the Rotterdam Marathon, Bashir Abdi, finished in 2 hours, 3 minutes, and 36 seconds in 2021 — a pace of under 3 minutes per kilometer, for all 42.195 of them, and his record still stands today.</p>
+
+<!-- MISSION 9: BIG AHA, MULTI-STAGE -->
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Working Backward From the Finish Clock</h2>
+    <div class="puzzle">
+      <p>You've found chip #1847's net time: 3:37:30 (your answer from the splits). Now the timing crew pulls up the official race CLOCK reading for that same chip — the clock that started the instant the gun fired at exactly 09:00:00. It shows chip #1847 crossing the FINISH line when the race clock read 12:52:18.</p>
+      <p>Here's how the marathon's four starting corrals work (each one entered by wristband, before the gun):</p>
+      <ul>
+        <li>Corral A (elite): starts 0–2 minutes after the gun</li>
+        <li>Corral B (fast, aiming for about 3:15–3:45): starts 2–6 minutes after the gun</li>
+        <li>Corral C (aiming for about 3:45–4:15): starts 6–12 minutes after the gun</li>
+        <li>Corral D (aiming for about 4:15–4:45, run/walk pace): starts 12–20 minutes after the gun</li>
+      </ul>
+    </div>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Grab a pencil. First, find the total race-clock time from gun to finish (12:52:18 minus the 09:00:00 start). Then subtract chip #1847's net time (3:37:30) from that. The leftover is how many minutes and seconds AFTER the gun this runner actually crossed the START line. Type your answer as MM:SS.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the total race-clock time from gun to finish by subtracting 09:00:00 from 12:52:18.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Then subtract the net time (chip time) from that gun-to-finish total. What's left over is the start delay.</p></details>
+    <div class="answer-box" data-answer-hash="a7feb56a">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>That start delay places chip #1847 in one very specific corral. But its net time — a blazing 3:37:30 — is far too fast for that corral's typical pace. Remember: Noor (an experienced racer) signed up for the fast Corral B, and Finn (running his very first marathon) signed up for that slow corral. Only one of the two friends could realistically run 3:37:30.</p>
+      <p>Type the first name of the friend who must have secretly been wearing chip #1847 all along.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Which corral was built for brand-new, first-time marathoners — and does a 3:37:30 net time sound like a first-timer's pace?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If it can't be the friend who truly signed up for that corral, it must be the OTHER friend — the one who mistakenly ended up wearing that wristband.</p></details>
+    <div class="answer-box" data-answer-hash="a4ab7347">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Medal Ceremony Countdown</h2>
+    <div class="puzzle">
+      <p>Case nearly closed, Agent! You now know chip #1847 (net time 3:37:30) was secretly worn by the friend you named in Mission 9 — not the friend it was originally handed to. The results computer, confused by the swapped wristbands, is showing:</p>
+      <ul>
+        <li>Bib #2483: finished in 4:41:12</li>
+        <li>Bib #1847: finished in 3:37:30</li>
+      </ul>
+      <p>But wristbands don't change what's printed on a runner's OWN shirt — only their bib number does that, and you noted someone's real bib number a while back in this case file.</p>
+      <p>First, on scratch paper, work out the winning margin: subtract the smaller true time from the bigger true time to see by how many minutes and seconds the faster friend won. Then combine that bib number you noted earlier with everything you now know to answer: what is the TRUE bib number of the friend who really finished FIRST?</p>
+      <p>Type just that bib number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Which chip did your Mission 9 friend secretly wear? That tells you which raw time — 3:37:30 or 4:41:12 — is really theirs, and whether they're the faster or slower of the two.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Now recall that friend's OWN bib number from earlier in this case file — not a chip serial number, but the real number printed on their own shirt.</p></details>
+    <div class="answer-box" data-answer-hash="7a7a846">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>You cracked it, Agent! No single clue solved this alone — it took searching, sketching a map, gnarly pencil math, careful logic, and a bib number you jotted down ages ago, all working together. At the medal ceremony, Noor and Finn laugh about the mix-up and cheer each other on anyway, proving that the real magic of race day was never just one fast finisher. It was <strong>TEAMWORK</strong> — runners, volunteers, and one sharp young detective, all pulling in the same direction.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

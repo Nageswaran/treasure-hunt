@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Atlantic Cable Splice — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #24608F;
+    --accent-dark: #163E5C;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .notebook {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook .eyebrow { display: block; margin-bottom: 0.3rem; }
+  .email-box {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-left: 4px solid var(--hard);
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    margin: 0.9rem 0;
+    font-size: 0.9rem;
+  }
+  .email-box .email-field { color: rgba(0,0,0,0.55); }
+  .email-box .email-link { color: var(--hard); text-decoration: underline; word-break: break-all; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.2rem 0 0.6rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Atlantic Cable Splice</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 95-125 minutes (across all 10 missions)</div>
+</div>
+
+<div class="intro">
+  <p>Last night, every screen in a small Dutch seaside town went dark. Wi-Fi vanished. Video calls froze mid-sentence. The school's whole computer lab stopped working at exactly the same moment.</p>
+  <p>It isn't a broken router. The entire town's connection to the rest of the world runs through a single glass cable, resting on the floor of the Atlantic Ocean — and somewhere out there, it's broken. Command has called in the repair ship <strong>CS Noordster</strong> and her crew, and Captain Bakker has asked for a sharp young detective to help track down the break, decode the ship's instruments, and get the town back online.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Town Without Wi-Fi</h2>
+    <div class="puzzle">
+      <p>Inside a cable like this one, there's no copper wire at all — just hair-thin strands of glass. A tiny laser flashes on and off unbelievably fast. Every flash of light stands for a <strong>1</strong>, every pause stands for a <strong>0</strong>. That's the "binary" code computers understand, blinking across the ocean floor at the speed of light.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 260 260" width="260" height="260"
+         role="img" aria-label="Cross-section of a fiber-optic cable: a tiny glass core at the very center, surrounded by rings for the cladding, a buffer coating, steel strength wires, and a tough outer jacket">
+      <circle cx="130" cy="130" r="95" fill="#2B2A24"/>
+      <circle cx="130" cy="130" r="78" fill="#AAB6BB"/>
+      <circle cx="130" cy="130" r="64" fill="#E8DEC4"/>
+      <circle cx="130" cy="130" r="38" fill="#CFE8F2"/>
+      <circle cx="130" cy="130" r="12" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+      <circle cx="130" cy="58" r="5" fill="#6B7A80"/>
+      <circle cx="196" cy="94" r="5" fill="#6B7A80"/>
+      <circle cx="196" cy="166" r="5" fill="#6B7A80"/>
+      <circle cx="130" cy="202" r="5" fill="#6B7A80"/>
+      <circle cx="64" cy="166" r="5" fill="#6B7A80"/>
+      <circle cx="64" cy="94" r="5" fill="#6B7A80"/>
+    </svg>
+    <div class="clue-caption">From the center out: ① glass core (carries the laser light) → ② cladding (bounces the light back in) → ③ buffer coating → ④ steel strength wires → ⑤ tough outer jacket.</div>
+    <div class="puzzle">
+      <p>Before the CS Noordster can even leave port, Command needs to confirm exactly where this kind of cable comes ashore in the Netherlands. Modern fiber-optic cables like this one aren't just old history — one real one, named <strong>TAT-14</strong>, once carried internet traffic and phone calls between the United States and Europe.</p>
+      <p>Search online to find the real Dutch town where TAT-14's cable came ashore. Type just the town's name (one word — you don't need "aan Zee").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "TAT-14 cable Netherlands landing station" and look for the town's name.</p></details>
+    <div class="answer-box" data-answer-hash="3f9e3100">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A single strand of glass fiber, about as thin as a human hair, can carry trillions of bits of data every second — just by flashing laser light on and off.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Cable That Almost Worked</h2>
+    <div class="puzzle">
+      <p>Long before fiber optics, people tried sending messages under the Atlantic using copper telegraph wire. The very first attempt actually worked for a few weeks in 1858 — Queen Victoria and the American President even exchanged congratulations over it — before the cable failed for good.</p>
+      <p>Search online to find the year a transatlantic telegraph cable finally worked for good and stayed in service, after several earlier attempts had failed. Type just the year (4 digits).</p>
+    </div>
+    <div class="notebook">
+      <span class="eyebrow">Agent's Notebook</span>
+      Captain Bakker hands you a clipboard. "Every repair trip gets logged with a Job Order Number, so Command can track the paperwork for years afterward. This one's <strong>Job Order 108</strong>. Doesn't matter much right now — but write it down, Agent. You'll want it again before this case is closed."
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "first successful permanent transatlantic telegraph cable year" — it's not 1858, since that one failed after a few weeks.</p></details>
+    <div class="answer-box" data-answer-hash="38be6588">
+      <label for="m2-answer">Your answer (just the year):</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? It took five attempts and twelve whole years before a transatlantic telegraph cable finally worked for good in 1866.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Diagnostic Blink</h2>
+    <div class="puzzle">
+      <p>Back aboard the CS Noordster, an old diagnostic panel is blinking out a short message in binary — just like a real fiber-optic cable "talks" in flashes of light.</p>
+      <p>Each group of 5 digits below is a binary number. Convert each group to a number from 1-26, using place values 16-8-4-2-1 (add up the place values wherever there's a 1). Then turn each number into a letter, where A=1, B=2, C=3 ... Z=26.</p>
+      <p style="font-size:1.2rem; letter-spacing:0.15em; font-weight:700; text-align:center;">00110 &nbsp; 00001 &nbsp; 10101 &nbsp; 01100 &nbsp; 10100</p>
+      <p>Type the decoded word — it's the kind of thing the crew is now hunting for.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The first group, 00110, has 1s in the 4-place and 2-place: 4 + 2 = 6. That's the letter F. Keep going the same way for the rest.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The third group, 10101, has 1s in the 16, 4, and 1 places: 16 + 4 + 1 = 21. Which letter is number 21?</p></details>
+    <div class="answer-box" data-answer-hash="af07e37f">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Harbourmaster's Warning</h2>
+    <div class="puzzle">
+      <p>A message crackles in from the Katwijk harbourmaster's office, partly in Dutch: <em>"Wij melden een storing in de kabel."</em> (We are reporting a fault in the cable.)</p>
+      <p>Below are four Dutch words the crew uses all the time. Three of them use the article "de" (like "de kabel"). One of them is different — it uses "het" instead.</p>
+      <p style="text-align:center; font-weight:700; letter-spacing:0.05em;">kabel &nbsp; storing &nbsp; schip &nbsp; zee</p>
+      <p>Find the odd one out and type just that one word, in Dutch.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Say "de" and then "het" out loud before each word — one of them will sound clearly wrong.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Three of these words name something you can send, hear, or measure. The fourth names something you can sail on — that one is the odd one out.</p></details>
+    <div class="answer-box" data-answer-hash="5c7c6218">
+      <label for="m4-answer">Your answer (in Dutch):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Buoy Line</h2>
+    <div class="puzzle">
+      <p>Along the cable route, signal buoys are numbered by how many kilometers they sit from shore. The first five buoys are marked, in order:</p>
+      <p style="text-align:center; font-weight:700; font-size:1.1rem;">4, &nbsp; 8, &nbsp; 16, &nbsp; 32, &nbsp; 64, &nbsp; ?</p>
+      <p>If the pattern keeps going, what number would be painted on the next buoy?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look at what happens to each number to get to the next one — the same thing happens every single time.</p></details>
+    <div class="answer-box" data-answer-hash="6b385816">
+      <label for="m5-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Nine Hours to the Buoy</h2>
+    <div class="puzzle">
+      <p><strong>Grab a pencil for this one.</strong> The CS Noordster leaves Katwijk harbor at 07:00. Rough seas slow her to 9 knots for the first 3 hours. Then the sea calms, and she speeds up to 15 knots for the rest of the trip.</p>
+      <p>The marker buoy above the suspected fault is 117 nautical miles from the harbor, measured along the whole route. Once the ship reaches the buoy, it takes another 90 minutes to lower the ROV (the underwater repair robot) before work can actually begin.</p>
+      <p>What time (24-hour clock) does the repair work finally begin? Type your answer like this: 13:45</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find how far the ship travels in the first 3 hours at 9 knots. Subtract that from 117 nautical miles to find the second leg's distance.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Divide the second leg's distance by 15 knots to get its travel time. Add both legs' times to 07:00 to find the buoy arrival time — then add the 90-minute wait.</p></details>
+    <div class="answer-box" data-answer-hash="1d4a7e42">
+      <label for="m6-answer">Your answer (24-hour time):</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Email in Command's Inbox</h2>
+    <div class="puzzle">
+      <p>While waiting for the ROV, Captain Bakker shows you an email that just landed in the ship's inbox.</p>
+    </div>
+    <div class="email-box">
+      <div class="email-field"><strong>From:</strong> support@atlanticlink-verify-secure.ru</div>
+      <div class="email-field"><strong>Subject:</strong> URGENT — Your Cable Service Will Be Cut Off!</div>
+      <p>Dear Customer,</p>
+      <p>Our system has detected a fault on your line. To avoid permanent disconnection within 24 hours, please <strong>reply to this email with your account username and password</strong> so a technician can verify your connection remotely.</p>
+      <p>Click here to confirm now: <span class="email-link">atlanticlink-cable-verify-secure.ru/login</span></p>
+      <p>— AtlanticLink Support Team</p>
+    </div>
+    <div class="puzzle">
+      <p>Captain Bakker isn't sure whether to reply. Read the email carefully. Real cable companies never ask customers to email them a password, and this message uses a countdown threat plus a strange web address instead of the company's normal one.</p>
+      <p>What is this kind of trick called? Type the one-word name for it.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about what this message is trying to do: it creates panic, then asks for a password by reply. There's a common internet-safety word for that.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's a well-known term for tricking people into handing over private information by pretending to be someone trustworthy.</p></details>
+    <div class="answer-box" data-answer-hash="ccc6f8f1">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The deepest point in the whole Atlantic Ocean, the Puerto Rico Trench, plunges about 8,380 meters down.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Stations, One Reading</h2>
+    <svg class="clue-diagram" viewBox="0 0 300 220" width="300" height="220"
+         role="img" aria-label="A simple deck plan of the CS Noordster showing four rooms: Sonar Room, Grapnel Deck, Splice Bay, and Signal Monitor">
+      <rect x="20" y="20" width="120" height="80" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <rect x="160" y="20" width="120" height="80" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <rect x="20" y="120" width="120" height="80" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <rect x="160" y="120" width="120" height="80" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="80" y="55" text-anchor="middle" font-size="12">Sonar</text>
+      <text x="80" y="70" text-anchor="middle" font-size="12">Room</text>
+      <text x="220" y="55" text-anchor="middle" font-size="12">Grapnel</text>
+      <text x="220" y="70" text-anchor="middle" font-size="12">Deck</text>
+      <text x="80" y="155" text-anchor="middle" font-size="12">Splice</text>
+      <text x="80" y="170" text-anchor="middle" font-size="12">Bay</text>
+      <text x="220" y="155" text-anchor="middle" font-size="12">Signal</text>
+      <text x="220" y="170" text-anchor="middle" font-size="12">Monitor</text>
+    </svg>
+    <div class="clue-caption">The four crew stations aboard the CS Noordster tonight.</div>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Four technicians are on duty tonight: Anna, Ben, Charlotte, and Dev. Each one is stationed in a different room. Use these three clues to figure out who's watching the Signal Monitor.</p>
+      <p>
+        1. Charlotte is stationed in the Splice Bay.<br>
+        2. Dev is stationed in the Sonar Room.<br>
+        3. Whoever is at the Signal Monitor has a longer name (more letters) than whoever is at the Grapnel Deck.
+      </p>
+      <p>Who is stationed at the Signal Monitor?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Two clues tell you exactly where two of the four technicians are — place those two first, then compare the two names left over.</p></details>
+    <div class="answer-box" data-answer-hash="c9cce27b">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 (final)</p>
+    <div class="puzzle">
+      <p>Now check that technician's monitor. The baseline signal-loss reading is 8 decibels (dB). For every letter in their name, add 3 dB.</p>
+      <p>What's the final reading they report, in dB? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Count the letters in the name you found in Stage 1.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply the number of letters by 3 first, then add that result to the baseline of 8 dB.</p></details>
+    <div class="answer-box" data-answer-hash="8df2997f">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Three Nights, One Missing Number</h2>
+    <div class="puzzle">
+      <p>While you were working, Chief Engineer Okafor left you a note about three signal buoys that went dark, one per night, along the route:</p>
+      <p><em>"The first buoy that failed was some distance from shore — call that your mystery number. The second buoy that failed was exactly twice as far from shore as the first one. The third buoy that failed was as far from shore as the first two buoys' distances added together. We measured that third buoy ourselves: it's 18 kilometers from shore."</em></p>
+      <p>Work backward from that 18 km clue: how far from shore, in kilometers, was the very first buoy that failed?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>If the mystery number is your unknown, write the second buoy's distance using that same unknown too. Then write what the third buoy's distance equals.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The third buoy's distance equals the unknown plus twice the unknown — that's three times the unknown. Three times the unknown equals 18. What's the unknown?</p></details>
+    <div class="answer-box" data-answer-hash="330ca589">
+      <label for="m9-answer">Your answer (just the number):</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Final Splice Marker</h2>
+    <div class="puzzle">
+      <p>The ROV has reached the seafloor, and its sensor gives one last reading: the fault sits exactly 73 nautical miles from the Katwijk landing station, measured along the cable route.</p>
+      <p>Command's old repair log uses a simple rule to turn a distance reading into an official Marker Number: <strong>subtract Katwijk aan Zee's latitude (in whole degrees North) from the distance in nautical miles.</strong> Search online to find Katwijk's latitude, rounded to the nearest whole degree North, and do the subtraction.</p>
+      <p>Then, to log the exact splice point for the record, add one more number: the Job Order Number Captain Bakker gave you at the very start of this case. Add it to your Marker Number.</p>
+      <p>Type the final total — that's the Final Splice Marker, and it's exactly where the ROV needs to cut and repair the cable.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Katwijk aan Zee latitude" — round the number you find to the nearest whole degree North.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>73 minus that latitude gives you the Marker Number. Then add the Job Order Number from Mission 2's notebook — you wrote it down for a reason.</p></details>
+    <div class="answer-box" data-answer-hash="6c3859a9">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Just like Cyrus Field's crew, who needed five tries and twelve years before their cable finally held in 1866, the CS Noordster's crew — and you — didn't give up until the fault was found. Screens flicker back to life all along the coast, and the value that cracked this whole case is <strong>perseverance</strong>. Case closed, Detective.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
