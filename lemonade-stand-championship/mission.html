@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Great Willow Lane Lemonade Championship — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #D6407A;
+    --accent-dark: #A62F5E;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .note-aside {
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent);
+    padding: 0.7rem 0.9rem;
+    border-radius: 2px;
+    margin: 0.9rem 0;
+    font-size: 0.97rem;
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .table-wrap { overflow-x: auto; margin: 0.9rem 0; }
+  .tally-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; min-width: 480px; }
+  .tally-table th, .tally-table td { border: 1px solid rgba(0,0,0,0.15); padding: 0.45rem 0.6rem; text-align: left; }
+  .tally-table th {
+    background: var(--paper-dark);
+    font-family: 'Special Elite', monospace;
+    font-weight: 400;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Great Willow Lane Lemonade Championship</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  Every summer, five kid-run lemonade stands line Willow Lane for the neighborhood's biggest event: the Lemonade Stand Championship! There's no cash prize — just bragging rights, a golden trophy cup, and a pooled donation to the Willow Lane Furry Friends Animal Shelter. This year, the street committee asked YOU to be the official Guest Judge: the sharp-eyed detective who checks the math, sniffs out fair play, and makes sure every dollar raised for the shelter gets counted right. Grab your badge and a notebook — the championship starts now!
+</div>
+
+<!-- MISSION 1 — Easy — Foundational classification -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Five Stands, Five Recipes</h2>
+    <div class="puzzle">
+      <p>Before judging begins, you walk the length of Willow Lane taking notes on each stand's recipe card. Every stand starts with the exact same base: fresh-squeezed lemon, sugar, and water. But four of the five stands add ONE extra special ingredient on top of that base. Here's what you wrote down:</p>
+      <p>
+        • Ruby's Strawberry Sunrise — adds real strawberries<br>
+        • Max's Classic Squeeze — adds nothing extra, just the classic base<br>
+        • Priya's Mint Cooler — adds fresh mint leaves<br>
+        • Leo's Blueberry Blast — adds real blueberries<br>
+        • Sanne's Citroen Special — adds a cinnamon stick for warmth
+      </p>
+      <p>Sort the five stands into two groups: stands that add a <strong>FRUIT</strong> on top of the lemon base, and stands that <strong>DON'T</strong> (whether they add nothing, an herb, or a spice). Which group has more stands in it — "fruit" or "no fruit"? Type your answer as one of those two exact phrases.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Mint is an herb and cinnamon is a spice — neither one is a fruit. Count carefully how many stands land in each group.</p></details>
+    <div class="answer-box" data-answer-hash="35d161f4">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="fruit or no fruit">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 — Easy — Internet research -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Where It All Began</h2>
+    <div class="puzzle">
+      <p>Every stand on Willow Lane was inspired by a much bigger event: Lemonade Day, a real program that teaches kids across North America how to run their own lemonade stand as an actual small business. It all started with one dad, his daughter, and her wish for a pet turtle — in one U.S. city.</p>
+      <p>Search online: in what year did Lemonade Day begin in Houston, Texas? Type just the four-digit year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Lemonade Day Houston founder" — the story involves a girl who wanted a pet turtle.</p></details>
+    <div class="answer-box" data-answer-hash="cf2e9bde">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the year...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Lemonade has a real professional history. In 1676, the city of Paris granted lemonade sellers ("limonadiers") their own official guild — the Compagnie de Limonadiers — with strict rules about how much lemon juice to use and fixed prices per cup.</p>
+
+<!-- MISSION 3 — Medium — Dutch language + delayed-recall plant -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Sanne's Secret Recipe Card</h2>
+    <div class="puzzle">
+      <p>Sanne, this year's exchange-student vendor from the Netherlands, hands you her family's handwritten recipe card — half of it written in Dutch! Before you can judge her Citroen Special fairly, she challenges you to prove you can read it.</p>
+      <p>Every Dutch noun needs the right "lidwoord" (the little word for "the"): most nouns use <em>de</em>, but some special ones use <em>het</em> instead. Here are five words from her recipe card:</p>
+      <p><em>citroen</em> (lemon), <em>suiker</em> (sugar), <em>water</em> (water), <em>beker</em> (cup), <em>limonade</em> (lemonade)</p>
+      <p>Four of these five words use <em>de</em>. One of them is the odd one out and uses <em>het</em> instead. If you're not sure, search a Dutch dictionary site (try searching "[woord] de of het") to check each one. Which word is the odd one out?</p>
+    </div>
+    <div class="note-aside"><strong>Sanne's notebook aside:</strong> Before you get started, Sanne taps her notebook and adds one more thing: "This part is worth remembering, detective — my oma's (grandma's) secret ratio for this recipe is 6 lemons for every 1 cup of sugar. Don't lose that number!"</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "citroen de of het" on a Dutch dictionary site — or check each of the five words one at a time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Four of the five words are "de" words. The one "het" word is a very basic, everyday noun — one of the first words most people learn in Dutch.</p></details>
+    <div class="answer-box" data-answer-hash="49c69a10">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the Dutch word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 — Medium — Internet research -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Sanne's Old Coin Jar</h2>
+    <div class="puzzle">
+      <p>Sanne keeps a jar of old coins her oma gave her — coins from before the Netherlands used the euro. She won't tell you what they're called; she wants you to find out yourself.</p>
+      <p>Search online: what was the name of the currency the Netherlands used before switching to the euro? Type the English name for it (not the Dutch word).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Netherlands currency before the euro" — the coins were minted with this name until the early 2000s.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Wikipedia's page on this old currency will give you the exact English name, spelled out clearly in the very first line.</p></details>
+    <div class="answer-box" data-answer-hash="46865e37">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the currency name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Lemons probably didn't first grow in Italy or California at all. Scientists trace the fruit's roots to the Assam region of northeastern India, where it likely first grew as a natural cross between a citron and a bitter orange.</p>
+
+<!-- MISSION 5 — Medium — Critical Thinking / real-world decision-making -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Two Claims, One Trophy</h2>
+    <div class="puzzle">
+      <p>Two flyers are taped up near the judging table, each claiming a different stand makes "the best lemonade on the street." As Guest Judge, you need to figure out which claim is actually backed by real evidence — not just excitement.</p>
+      <p><strong>FLYER A</strong> (taped to a lamppost, no name on it):<br>
+      "⭐⭐⭐⭐⭐ BEST LEMONADE ON THE STREET! Everyone agrees Ruby's Strawberry Sunrise is the greatest lemonade ever made! Thousands of happy customers can't be wrong — don't even bother trying the others!"</p>
+      <p><strong>FLYER B</strong> (pinned to the official community board, signed):<br>
+      "Willow Lane Championship — Official Taste-Test Results. 42 neighbors judged every stand in a blind taste test (no one knew which cup was which as they tasted). Each drink was scored 1-10 on taste, freshness, and value, then averaged. Priya's Mint Cooler earned the highest average score: 8.7 out of 10. Full scorecards on file with the Street Committee, signed by chief judge Mrs. Alvarez."</p>
+      <p>Which claim would a careful detective actually trust as well-supported evidence, not just hype? Type the vendor's first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look for details you could actually check yourself: who ran the test, how many people took part, and how it was scored.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A claim like "thousands agree" with no names, no numbers, and no method is hard to verify. A signed report with an exact sample size and a fair method is much easier to trust.</p></details>
+    <div class="answer-box" data-answer-hash="35c3d78">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the vendor's first name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 — Hard — Intermediate logic grid -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Judge's Ledger</h2>
+    <div class="puzzle">
+      <p>Four stands remain to be logged in your ledger: Ruby, Max, Priya, and Leo. Each sells one flavor — Strawberry Sunrise, Classic Squeeze, Mint Cooler, or Blueberry Blast — at one of four prices: $0.75, $1.00, $1.25, or $1.50. No two stands share a flavor, and no two stands share a price. Use these clues to work out who charges the least:</p>
+      <p>
+        1. The Classic Squeeze is the least expensive stand on the street.<br>
+        2. The Blueberry Blast is the most expensive stand on the street.<br>
+        3. The Mint Cooler costs exactly 25 cents less than the Strawberry Sunrise.<br>
+        4. Leo runs the most expensive stand.<br>
+        5. Ruby's stand isn't the cheapest, and she doesn't sell the Mint Cooler.<br>
+        6. Max's drink costs less than Priya's drink.
+      </p>
+      <p>Grab a pencil and work through it clue by clue. Which vendor charges the least for their drink? Type that vendor's first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clues 1-3, which only talk about flavors and prices, before worrying about who runs which stand.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know the price order of all four flavors, clues 4-6 tell you exactly who sells what.</p></details>
+    <div class="answer-box" data-answer-hash="d7a2e319">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the vendor's first name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 — Hard — Pen-and-paper math tally -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Tally Time: The Full Ledger</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one — scratch paper will really help! At the end of the day, you collect each stand's sales sheet. For every stand, work out its <strong>profit</strong> (money earned from sales, minus what the ingredients cost) — then add up all five profits to find the total amount raised for the Furry Friends Animal Shelter today.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="tally-table">
+        <thead>
+          <tr><th>Stand</th><th>Cups Sold</th><th>Price per Cup</th><th>Ingredient Cost</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ruby — Strawberry Sunrise</td><td>52</td><td>$1.25</td><td>$19.00</td></tr>
+          <tr><td>Max — Classic Squeeze</td><td>68</td><td>$0.75</td><td>$14.50</td></tr>
+          <tr><td>Priya — Mint Cooler</td><td>45</td><td>$1.00</td><td>$12.75</td></tr>
+          <tr><td>Leo — Blueberry Blast</td><td>37</td><td>$1.50</td><td>$16.25</td></tr>
+          <tr><td>Sanne — Citroen Special</td><td>41</td><td>$1.10</td><td>$13.90</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="puzzle">
+      <p>For each stand: multiply cups sold by price per cup to get its total sales, then subtract the ingredient cost to get its profit. Add all five profits together. What is the total profit for the whole street today? Type your answer as a dollar amount with two decimal places, like 100.00 (no dollar sign).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Do one stand at a time: cups × price = sales, then sales − cost = profit. Keep a running total as you go.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If your total feels off, double-check Max's stand — 68 cups at 75 cents each is an easy one to slip a decimal on.</p></details>
+    <div class="answer-box" data-answer-hash="bc731f35">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="e.g. 100.00">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The very first coins in the world were minted around 600 BCE, in the ancient kingdom of Lydia (in what's now western Turkey) — long before anyone used paper money or a piggy bank.</p>
+
+<!-- MISSION 8 — Hard — Delayed recall payoff -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Sanne's Sugar Run</h2>
+    <div class="puzzle">
+      <p>After the judging, Sanne wants to whip up one giant batch of her Citroen Special for tomorrow's street party. She's picked up 54 fresh lemons and needs to know how much sugar to buy.</p>
+      <p>Using the secret ratio she told you about earlier, figure out how many cups of sugar she needs for 54 lemons. Sugar at the corner store only comes in bags that hold 2.5 cups each — and you can't buy part of a bag. How many bags does Sanne need to buy? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First figure out how many cups of sugar 54 lemons need, using the ratio Sanne told you about. Then think about how buying bags works.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>54 lemons ÷ (the lemon number from her ratio) = cups of sugar needed. Divide that by 2.5 cups per bag, then round UP to a whole bag — you can't buy part of one.</p></details>
+    <div class="answer-box" data-answer-hash="310ca263">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type the number of bags...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 9 — Big Aha — Advanced logic, working backward -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Old Championship Ledger</h2>
+    <div class="puzzle">
+      <p>Before you close your notebook, the street committee's oldest member, Mr. Okafor, shows you a yellowed newspaper clipping from LAST YEAR's championship — back when only three stands competed: the Sunshine Stand, the Twist Stand, and the Breeze Stand.</p>
+      <p>The clipping says the three stands earned a combined total profit of $63 that day. Every single cup sold for $1.00, no matter which stand made it, and every cup cost exactly 30 cents in ingredients to make — also no matter which stand.</p>
+      <p>Two more clues from the old ledger:</p>
+      <p>
+        • The Sunshine Stand's profit was exactly double the Breeze Stand's profit.<br>
+        • The Twist Stand sold exactly 10 more cups than the Breeze Stand.
+      </p>
+      <p>Work backward from the total profit to figure out exactly how many cups the Breeze Stand sold. Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start by figuring out the profit made on just ONE cup. Then use that to work out the total number of cups sold by all three stands together.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If the Sunshine Stand's profit was exactly double the Breeze Stand's, and every stand earns the same profit per cup, that means Sunshine sold exactly double the cups Breeze did, too.</p></details>
+    <div class="answer-box" data-answer-hash="8df2997f">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type the number of cups...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 10 — GRAND FINALE — Multi-stage -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Pooling the Profits</h2>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>In the final 30 minutes before the closing bell, all five stands team up for one last combined rush: together they sell 58 more cups at an average price of $1.10 each. Restocking ice and extra cups for that final rush costs $8.80 total.</p>
+      <p>What is the profit from this last half-hour, all five stands combined? Type your answer as a dollar amount with two decimal places, like 55.00.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Multiply the cups sold by the price per cup first to get the revenue, then subtract the restocking cost.</p></details>
+    <div class="answer-box" data-answer-hash="86ce11fb">
+      <label for="finale-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage1" type="text" placeholder="e.g. 55.00">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Now for the big finish: add this Golden Hour profit to the total profit you tallied earlier today across all five stands' full sales. That combined grand total is exactly what Willow Lane is donating to the Furry Friends Animal Shelter this year.</p>
+      <p>What is that grand total? Type it as a dollar amount with two decimal places.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Grab the total profit number you calculated earlier today, when you tallied all five stands into your ledger — you'll add this Golden Hour's profit on top of it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Total profit from all five stands earlier, PLUS this Golden Hour's profit, equals the grand total. Add carefully — don't forget the cents!</p></details>
+    <div class="answer-box" data-answer-hash="10b7fcef">
+      <label for="finale-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage2" type="text" placeholder="e.g. 240.20">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every single stand raised good money alone — but the moment all five pooled their profits together for one final push, Willow Lane crossed $240 for the Furry Friends Animal Shelter, blowing past the $200 goal and earning the shelter's matching bonus. No single stand could have done that alone. That's the real prize of Championship Day: <strong>TEAMWORK</strong>.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

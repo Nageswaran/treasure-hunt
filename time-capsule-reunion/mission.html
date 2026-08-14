@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Class of 2001 Time Capsule — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #7A2E33;
+    --accent-dark: #5A2126;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 0 0 0.6rem; }
+  .stage-label.second { margin: 1.3rem 0 0.6rem; }
+  .flavor-aside {
+    font-style: italic;
+    color: rgba(0,0,0,0.6);
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed rgba(0,0,0,0.15);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Class of 2001 Time Capsule</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  Maple Street Elementary is throwing its biggest party of the year today: the 25-year reunion of the Class of 2001! Twenty-five years ago, a group of soon-to-graduate fourth graders sealed a time capsule and buried it somewhere on the school grounds. Now the grown-up alumni are back — but nobody quite remembers the details, and some of the old notes inside are going to need real detective work to crack. The reunion committee has hired YOU, Junior Detective, to verify the old facts, solve the class's leftover puzzles, and help reveal the one word the Class of 2001 left behind for whoever found this box. Ready? Let's dig in.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Sock Full of Secrets</h2>
+    <div class="puzzle">
+      <p>Right at the top of the capsule, wrapped in an old gym sock, is a small handheld game console — still in decent shape. Nobody on the reunion committee can remember exactly when the class got these; they just recall it was "brand new that year."</p>
+      <p>Take a look at the photo below. Then find out: what month and day did this exact console officially go on sale in the United States? (Same year the capsule was sealed — 2001.)</p>
+    </div>
+    <img class="clue-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Nintendo-Game-Boy-Advance-Purple-FL.jpg" alt="A purple/indigo Nintendo Game Boy Advance handheld game console, photographed from the front against a plain white background, showing its screen, D-pad, and A/B buttons.">
+    <div class="clue-caption">Look closely at its shape and button layout — this isn't the original, brick-shaped Game Boy. It's the console that came after it.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for the console's full name (it's a Nintendo handheld) plus "US release date 2001." Reputable gaming-history sites will agree on the exact day.</p></details>
+    <div class="answer-box" data-answer-hash="3e9a87c1">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type month and day, like 'march 3'...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Class Letter</h2>
+    <div class="puzzle">
+      <p>Inside a plastic sleeve, a little yellowed at the edges, is a handwritten letter:</p>
+      <p><em>"Dear Future Detective, We are Mrs. Alcott's 4th grade class of 2001! We wrapped up our very last day of school by burying this box under the flagpole on a warm, sunny afternoon. All 24 of us signed our names below before we sealed the lid. (Psst — that number might matter again someday. Worth jotting down!) We hope whoever finds this had just as much fun in school as we did. — Class of 2001"</em></p>
+      <p>Question: according to the letter, exactly where did the class bury the capsule?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Read the letter again slowly — the answer is a single object standing on the school grounds, named right in the second sentence.</p></details>
+    <div class="answer-box" data-answer-hash="81fab309">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Wikipedia — the encyclopedia website millions of people use today — first went online on January 15, 2001, the very same year this capsule was sealed. Back then it only existed in English!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Order of the Afternoon</h2>
+    <div class="puzzle">
+      <p>Five things happened at today's reunion — but everyone's retelling has the order mixed up! Using only the clues below (no guessing from "what usually happens"), figure out the true order of the afternoon.</p>
+      <p><strong>The five events:</strong></p>
+      <p>
+        Code N — Alumni signed in and got name tags in the gym.<br>
+        Code P — The principal gave a welcome speech.<br>
+        Code R — A ribbon was cut at the edge of the schoolyard.<br>
+        Code D — Shovels came out and the capsule was dug up.<br>
+        Code L — The old class letter was read aloud to everyone.
+      </p>
+      <p><strong>The clues:</strong></p>
+      <p>
+        1. Signing in happened before the principal said a single word.<br>
+        2. The ribbon was cut after the speech ended, but before any shovel touched the ground.<br>
+        3. Digging happened right after the ribbon was cut.<br>
+        4. The letter wasn't read until after the box was fully dug up.<br>
+        5. The letter reading was the grand finale of the whole afternoon.
+      </p>
+      <p>Type the five codes in the correct order, all together with no spaces or commas — like <code>ABCDE</code>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue that only involves two events and no "before/after" ambiguity — which one absolutely has to come first?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Clue 1 fixes the very first event. Clue 2 then fixes the next two, in order. Clues 3-5 lock in the rest — there's only one order left that fits everything.</p></details>
+    <div class="answer-box" data-answer-hash="19e4ad9b">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type the 5-letter order...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Tiny Square That Held (Almost) Nothing</h2>
+    <div class="puzzle">
+      <p>Deeper in the capsule is a hard little plastic square with a metal slider on one edge — see the photo below. Classrooms in 2001 used these to save their work, because USB flash drives barely existed yet.</p>
+      <p>Research: how much data could ONE of these actually hold, in megabytes (MB)?</p>
+      <p>Now the real test: let's say a single photo from a phone today takes up about 4 MB. If you HAD to save just one modern phone photo using only disks like this one, how many of these old disks would you need in total?</p>
+    </div>
+    <img class="clue-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Floppy_disk_90mm.JPG" alt="A black 3.5-inch floppy disk, the classic small square data-storage disk with a metal shutter, used with school computers in the early 2000s.">
+    <div class="clue-caption">This exact size and shape of disk was standard in almost every school computer lab in 2001.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "3.5 inch floppy disk capacity" — the exact number of megabytes might surprise you.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know how many MB fit on one disk, divide 4 by that number — then round UP, since you can't use part of a disk to save part of a photo.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the number of disks needed...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Fleur's Postcard</h2>
+    <div class="puzzle">
+      <p>Folded inside an old comic book is a postcard from a pen pal named Fleur, who lived in the Netherlands and wrote to the class back in 2001. Part of her note reads:</p>
+      <p><em>"Hallo vrienden! Bij mij op de school is het heel gezellig. Na de klas spelen we buiten op het grote ___."</em><br>
+      <em>(Translation: "Hello friends! At my school it's very cozy. After class we play outside on the big ___.")</em></p>
+      <p>The missing Dutch word is <strong>plein</strong> (it means "square" or "yard" — think of a big open space kids play on).</p>
+      <p>Every Dutch noun needs either <strong>de</strong> or <strong>het</strong> in front of it — never both, and you can't guess just by the sound of the word. Fleur already used "de school" and "de klas" correctly earlier in her note. But "plein" is one of the tricky ones that breaks that pattern — it needs the OTHER article.</p>
+      <p>Which article goes with "plein"? Type the article and the word together, lowercase, exactly how Fleur would write it (for example: <code>de klas</code>).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Most Dutch nouns take "de" — but a smaller group of words take "het" instead, and there's no shortcut for knowing which without checking.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Search an online Dutch dictionary (like woorden.org) for the word "plein." Dutch dictionaries always mark whether a noun is a de-word or a het-word.</p></details>
+    <div class="answer-box" data-answer-hash="b6b39b22">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the article + word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The first-ever iPod was announced on October 23, 2001, and went on sale a few weeks later that November. It could hold about 1,000 songs on just 5 gigabytes of storage — which felt like an impossibly huge number of songs to carry around back then!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Whose Treasure Was Whose?</h2>
+    <div class="puzzle">
+      <p>Four former classmates — Jordan, Casey, Priya, and Mateo — each tucked one personal item into the capsule: a mixtape cassette, a Beanie Baby bear, a stack of Pogs, and a friendship bracelet. A water-stained tag names all four kids and all four items, but the connecting lines have worn away completely. Use these five clues to figure out exactly who buried what.</p>
+      <p>
+        1. Priya's item was not the Beanie Baby bear.<br>
+        2. Either Jordan or Mateo buried the cassette tape.<br>
+        3. Casey did not bury the Pogs.<br>
+        4. Mateo's item is something you could listen to.<br>
+        5. Casey did not bury the Beanie Baby bear, either.
+      </p>
+      <p><strong>Question: what item did Priya bury?</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Clue 4 tells you exactly what Mateo buried — start there, then clue 2 falls into place on its own.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Mateo's item, clues 1 and 5 leave only one person who could have the Beanie Baby bear. Everything else follows after that.</p></details>
+    <div class="answer-box" data-answer-hash="7ec9d3e2">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what Priya buried...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Memories, One Truth</h2>
+    <div class="puzzle">
+      <p>The reunion committee asked four grown-up alumni to describe the burial day from memory. Only ONE of them remembers it with zero mistakes. Read carefully:</p>
+      <p>
+        <strong>Jordan:</strong> "It was pouring rain, and all 24 of us signed the log before we buried the box under the flagpole."<br>
+        <strong>Casey:</strong> "It was a beautiful sunny day, all 25 of us signed the log, and we buried the box under the flagpole."<br>
+        <strong>Priya:</strong> "It was pouring rain, all 24 of us signed the log, and we buried the box beside the big oak tree."<br>
+        <strong>Mateo:</strong> "It was a beautiful sunny day, all 24 of us signed the log, and we buried the box under the flagpole."
+      </p>
+      <p>School records confirm two things for certain: it was a sunny day, and the box went under the flagpole (not any tree). Whose memory is completely accurate — matching every single detail?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Two of the four alumni already get both the weather AND the location right — so weather and location alone won't be enough to pick a winner. What's the third detail each of them mentions?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Scroll back up to the very first letter the Class of 2001 left behind — one number in there matters a lot right now.</p></details>
+    <div class="answer-box" data-answer-hash="6110f765">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type the name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Twenty-Five Years, Give or Take a Few Days</h2>
+    <div class="puzzle">
+      <p>The class letter is dated the very last day of school: <strong>June 15, 2001</strong>. Today's reunion is happening on <strong>August 14, 2026</strong>.</p>
+      <p>Grab a pencil for this one — you'll want scratch paper. Exactly how many days have passed between those two dates? Don't forget: some of those 25 years were leap years with an extra day tucked into February!</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First count the leap years between 2001 and 2026 (years divisible by 4). Each one adds exactly one extra day to your total.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Try this order: (25 years × 365 days) + (your leap-day count) gets you all the way to June 15, 2026. Then add the handful of extra days from June 15 to August 14, 2026 on top of that.</p></details>
+    <div class="answer-box" data-answer-hash="13ce0a99">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type the number of days...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? In 2001, most homes connected to the internet using "dial-up" — a screechy, beeping connection that could take over a minute just to load a single web page, and it tied up the phone line the entire time it was connected!</p>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA</span>
+    <h2>The Box Inside the Box</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Beneath the letter, wrapped in a plastic bag, is a real five-dollar bill from 2001 — the class's leftover fundraiser money. A note beside it asks: was leaving this $5 bill untouched for 25 years actually a smart move, money-wise?</p>
+      <p>To answer that, you need to know what $5 from 2001 is really worth today. Search for a real online inflation calculator (one that mentions the U.S. government's official CPI data) and look up: how many of TODAY'S dollars would you need to match the buying power of $5.00 from 2001? Round to the nearest cent, and type just the number (like <code>9.43</code> — no dollar sign).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "inflation calculator $5 in 2001" — look for a calculator that explains it's using the CPI (Consumer Price Index).</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>An accurate calculator should land you somewhere between $9 and $10. If you're way outside that range, double-check you searched for the year 2001, not some other year.</p></details>
+    <div class="answer-box" data-answer-hash="1877a127">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type the dollar amount...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label second">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Now you know: it would take roughly your Stage 1 answer, in today's dollars, to buy what that old $5 bill could buy back in 2001 — proof that money left sitting still doesn't stay "still" in value!</p>
+      <p>But here's where it gets interesting: tucked underneath the $5 bill is a TINY inner box with a 2-digit combination lock. To crack it, take your Stage 1 answer apart and add its two halves together: the whole-dollar part, plus the cents part. (For example, if your Stage 1 answer had been $12.07, you'd add 12 + 07 = 19.)</p>
+      <p>What 2-digit combination opens the inner box?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Split your Stage 1 answer at the decimal point into two whole numbers, then simply add them.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If Stage 1's answer was $9.43, that's 9 and 43 — what do those two numbers add up to?</p></details>
+    <div class="answer-box" data-answer-hash="85e143c6">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type the 2-digit combination...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <p class="flavor-aside">The lock clicks open. Inside the tiny box is a single index card: <em>"Congratulations on solving this, Junior Detective. We hope you have as much fun today as we did in 2001. — The Class of 2001, buried with love."</em> One part of this case is still waiting for you...</p>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Code</h2>
+    <div class="puzzle">
+      <p>Taped to the very bottom of the capsule is a strip of paper with six shifted letters: <strong>U G Q B M K</strong>.</p>
+      <p>A note beside it reads: <em>"Shift each letter backward through the alphabet by the number of classmates who signed our very first letter to you."</em></p>
+      <p>Work out the shift amount, decode the message, and type the word you find.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Remember that number of classmates from the very first class letter you read? That's your shift amount. "Shift backward" means each letter moves earlier in the alphabet (Z becomes Y, Y becomes X, and so on).</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Shifting backward by a big number like 24 is the same as shifting FORWARD by a much smaller one, since the alphabet only has 26 letters (24 back = 2 forward). Try it: U forward 2 becomes W.</p></details>
+    <div class="answer-box" data-answer-hash="2e0e79e6">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Case closed, Junior Detective! The word <strong>WISDOM</strong> was the Class of 2001's gift to you — because every clue you cracked today, from decades-old floppy disks to inflation math to four competing memories, took real thinking, real patience, and real wisdom. Twenty-five years from now, maybe it'll be YOUR time capsule someone else digs up.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Escape Room Design Contest — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #1F7A8C;
+    --accent-dark: #145A66;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .stage-label {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.55);
+    margin: 0 0 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .stage-label.second { margin: 1.3rem 0 0.6rem; }
+  .notebook {
+    background: rgba(31,122,140,0.08);
+    border: 1px dashed var(--accent);
+    border-radius: 3px;
+    padding: 0.6rem 0.85rem;
+    margin: 0.7rem 0;
+    font-size: 0.95rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>Escape Room Design Contest</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 80-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>The Puzzle Parlor, downtown's newest escape-room company, just made the final five for the Golden Key Design Awards — a national contest for the best new escape rooms in the country. Head Designer Jordan Reyes has hired you as a Junior Puzzle Tester: your job is to inspect every prototype room and make sure each puzzle has <strong>exactly one</strong> correct answer. Miss a puzzle with two possible answers, and the judges disqualify the whole room. Ten stops on your inspection list, one submission deadline — let's get testing.</p>
+</div>
+
+<!-- MISSION 1 — Easy — Technology & Computers — internet research -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Badge In With a Scan</h2>
+    <div class="puzzle">
+      <p>Your very first task: scan your new staff badge to clock in for the day. The scanner reads a square, dotted pattern called a QR code — Jordan mentions it's actually much older technology than most people guess. Before you scan, she wants you to know exactly how old. Search the web: in what year were QR codes invented? Type just the year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "QR code invented year" and look for the Japanese company that first created it to track car parts on a factory floor.</p></details>
+    <div class="answer-box" data-answer-hash="97445032">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The QR code was invented in 1994 by engineer Masahiro Hara at the Japanese company Denso Wave — originally just to track car parts faster on the factory floor.</p>
+
+<!-- MISSION 2 — Easy — Logical Reasoning (Foundational: pattern/sequence) — delayed-recall PLANT -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>A Badge and a Hallway Full of Numbers</h2>
+    <div class="puzzle">
+      <p>Jordan pins a badge to your shirt. "Every staff member gets a two-digit badge number," she says. "Yours is 47. Keep it on you — you'll need to know it by heart before this case is closed."</p>
+      <div class="notebook">📓 <strong>Agent's Notebook:</strong> Jot this down — Junior Tester badge #47.</div>
+      <p>Down the hallway, the room number plaques follow a pattern: <strong>2, 6, 12, 20, 30, ?</strong> What number belongs on the very next door?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Don't just stare at the numbers themselves — look at the gaps between them. How much does each gap grow compared to the last one?</p></details>
+    <div class="answer-box" data-answer-hash="87e38583">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 3 — Medium — Cryptography — image #1: Morse code chart -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Blinking Prop Light</h2>
+    <div class="puzzle">
+      <p>One prototype room has a prop lantern that blinks a short message in Morse code — long and short flashes, written here as dashes and dots. The design team needs to know it decodes to exactly one clear word before the judges see it. Here's what the lantern blinks:</p>
+      <p style="font-size:1.2rem; letter-spacing:0.15em; text-align:center;"><strong>...&minus; .&minus; ..&minus; .&minus;.. &minus;</strong></p>
+    </div>
+    <img class="clue-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/International_Morse_Code.svg" alt="A reference chart of the International Morse Code, listing every letter A through Z and every digit 0 through 9 alongside its pattern of dots and dashes.">
+    <div class="clue-caption">Match each group of dots and dashes to one letter using the chart. A gap between groups means a new letter.</div>
+    <details class="hint"><summary>Hint 1</summary><p>There are 5 groups of dots/dashes above, separated by spaces — so the decoded word has exactly 5 letters.</p></details>
+    <div class="answer-box" data-answer-hash="45496baf">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Morse code was developed by Samuel Morse and his partner Alfred Vail in the 1830s, and their telegraph system successfully sent its first real message in 1838.</p>
+
+<!-- MISSION 4 — Medium — Logical Reasoning (Intermediate: logic grid) -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Three Designers, Three Rooms</h2>
+    <div class="puzzle">
+      <p>Three of the Parlor's top designers — Priya, Marcus, and Talia — just handed in their prototype rooms. Jordan needs each designer matched to their room and its signature prop before she can schedule inspections. Here's what you know:</p>
+      <p>Clue 1: Marcus's room is not "Pharaoh's Curse."<br>
+      Clue 2: Talia's signature prop is a padlock.<br>
+      Clue 3: Priya designed "Heist at Midnight."<br>
+      Clue 4: Whichever room is "Space Station Zero" uses a laser grid as its signature prop.</p>
+      <p><strong>Who designed "Space Station Zero"?</strong> Type their first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue that names a specific room outright — that pins down one full match before you touch the others.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know who designed "Heist at Midnight," only two designers are left for the other two rooms. Clue 1 tells you which of those two can't be "Pharaoh's Curse" — so the other one must be "Space Station Zero."</p></details>
+    <div class="answer-box" data-answer-hash="e05bf0c">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 — Medium — Critical Thinking & Media Literacy (real-world decision-making, internet-verified) -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Two Trainees, One Vault</h2>
+    <div class="puzzle">
+      <p>The star prototype, "Vault of Ages," ends with a locked door that opens on a 2-digit code. The design notes say the code is simply "the atomic number of gold." Two junior trainees tested the room and filed different reports:</p>
+      <p><strong>Devon's report:</strong> "The code is 79 — that's gold's atomic number."<br>
+      <strong>Marisol's report:</strong> "The code is 82 — I'm sure that's gold's atomic number too, I just double-checked."</p>
+      <p>They can't both be right, and this contest only accepts rooms with exactly one correct solution. Search to verify gold's real atomic number (the number of protons in a gold atom), and figure out which trainee mixed up gold with a different, similar-sounding metal. Type the correct 2-digit code that should be submitted to the judges.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "atomic number of gold" on a reliable science source, like a periodic table site. 82 is a real atomic number too — just not gold's.</p></details>
+    <div class="answer-box" data-answer-hash="98e5dedd">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 — Hard — Mathematics (combinatorics/counting-logic, pen and paper) -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Backup Keypad</h2>
+    <div class="puzzle">
+      <p>"Vault of Ages" also ships with a backup keypad lock, in case the main lock ever needs replacing before judging day. The design spec says the backup code must follow ALL of these rules:</p>
+      <p>&bull; It's exactly 4 digits long.<br>
+      &bull; It uses four DIFFERENT digits chosen from 0-9 (no digit repeats).<br>
+      &bull; It can never start with 0 (the keypad reads a leading 0 as "power off").<br>
+      &bull; It must end in an EVEN digit — 0, 2, 4, 6, or 8 — because the last tumbler only accepts even numbers.</p>
+      <p>This one has enough moving parts that it's really worth grabbing scratch paper and working through it case by case, rather than trying it in your head. <strong>How many different valid 4-digit codes fit every one of these rules?</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Split it into two cases based on the last digit: one case where the last digit is 0, and a separate case for when it's 2, 4, 6, or 8. Zero is special, since it also can't be the first digit.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>In each case, count how many digits are left for the first spot, then the next, then the last, multiplying as you go — then add the totals from both cases together.</p></details>
+    <div class="answer-box" data-answer-hash="185caa06">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The world's first commercial real-life escape room opened in Kyoto, Japan, in 2007. It was created by Takao Kato's company SCRAP — at the debut event, only 6 out of 150 players managed to escape!</p>
+
+<!-- MISSION 7 — Hard — MULTI-STAGE — Technology/Mathematics — image #2: combination padlock -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Old-Fashioned Failsafe</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>"Vault of Ages" has one more backup: a real dial combination padlock, just like the one in the photo below, bolted inside the prop chest in case the electronics ever fail.</p>
+    </div>
+    <img class="clue-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Masterpadlock.jpg" alt="Photograph of a silver combination padlock with a rotating numbered dial on its face and a metal shackle at the top.">
+    <div class="clue-caption">A classic single-dial combination padlock — the same style used on gym lockers for generations.</div>
+    <div class="puzzle">
+      <p>Before the team sets a fresh combination, Jordan wants you to confirm one fact about how a padlock like this actually works. Search to confirm: on a classic dial combination padlock, what is the highest number that appears on the dial before the numbers loop back around to 0? Type that number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "combination padlock dial numbers" — these dials don't go all the way up to 100, or even 50.</p></details>
+    <div class="answer-box" data-answer-hash="90f05fa1">
+      <label for="m7-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label second">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Take that highest dial number and subtract the number of letters in the company's full name, "THE PUZZLE PARLOR" — count only the letters, not the spaces. Whatever's left over is the code stamped inside the vault door as its manufacturing number. What's the final code?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Count the letters in THE, then PUZZLE, then PARLOR separately, add those three totals together, and subtract that from your Stage 1 number.</p></details>
+    <div class="answer-box" data-answer-hash="89f29333">
+      <label for="m7-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m7-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 — Hard — Logical Reasoning (Advanced: working backward) — delayed-recall PAYOFF from Mission 2 -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Review Terminal</h2>
+    <div class="puzzle">
+      <p>The "Vault of Ages" review terminal reveals its secret starting number through a chain of steps. Jordan reads the process aloud while she tests it: "Take the secret starting number, add your own badge number to it, double that result, then subtract 10. That's exactly how we got today's terminal reading: 200."</p>
+      <p><strong>Work backward from 200 to find the secret starting number.</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Undo the steps in reverse order: first undo "subtract 10," then undo "double it." That leaves you with "start number + badge number."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you've undone those two steps, you'll have a total equal to "start number + badge number." Don't forget the badge number Jordan gave you on your very first day at The Puzzle Parlor.</p></details>
+    <div class="answer-box" data-answer-hash="8be14d38">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 9 — Big "Aha!" — pure logic/cipher, combines earlier threads, no internet -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Jordan's Scrambled Note</h2>
+    <div class="puzzle">
+      <p>Jordan slides you a note before the judges arrive: <strong>"BCRA GUR INHYG"</strong></p>
+      <p>Her hint: take the highest number from that classic padlock's dial — the one you already found a few rooms back — and divide it by 26, the number of letters in the alphabet. The remainder is your shift number. Shift every letter in the note forward through the alphabet by that many places (wrapping past Z back around to A) to reveal the real message.</p>
+      <p><strong>Type the decoded message.</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>39 divided by 26 doesn't come out even — it's the remainder left over that becomes your shift, not 39 itself.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A shift of 13 is famous — shifting forward 13 places or backward 13 places lands on the exact same letter, since the alphabet has 26 letters. Try writing out A→N, B→O, C→P... and keep going.</p></details>
+    <div class="answer-box" data-answer-hash="c8476c56">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE — combine-the-clues, reveals the reward word "creativity", NOT multi-stage -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Golden Key Envelope</h2>
+    <div class="puzzle">
+      <p>The judges leave one sealed envelope on the front desk: a single coded word, <strong>"QFSOHWJWHM"</strong>, with a note that says to combine two numbers from your casefile to unlock it.</p>
+      <p>First: the true atomic number of gold you confirmed earlier — not Marisol's mixed-up guess. Second: the highest number on that classic padlock's dial. Subtract the smaller number from the larger one, then find the remainder when you divide that result by 26 — that remainder is your shift.</p>
+      <p>Shift every letter in the coded word BACKWARD through the alphabet by that many places (wrapping past A back around to Z) to reveal the one word that best describes what makes The Puzzle Parlor's rooms so special.</p>
+      <p><strong>Type that word.</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Subtract first (the larger of your two numbers minus the smaller), then divide by 26 and keep only the remainder — that remainder, not the subtraction result, is your shift.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Shifting backward means Q becomes C, F becomes R, and so on. Try writing the alphabet out twice in a row so it's easy to count backward without losing your place.</p></details>
+    <div class="answer-box" data-answer-hash="4964abd3">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every prototype needs exactly one correct answer — but building a room that clever takes real <strong>CREATIVITY</strong>. Thanks to your sharp eyes, careful math, and cipher-cracking, "Vault of Ages" passes inspection with zero ambiguous puzzles. Golden Key judges, meet your winner.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
