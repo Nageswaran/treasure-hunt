@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Impersonator in the Class Chat — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #3B4FA0;
+    --accent-dark: #2A3873;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .chat-log {
+    background: #EFEADF;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-left: 4px solid var(--hard);
+    border-radius: 4px;
+    padding: 0.9rem 1.1rem;
+    margin: 0.9rem 0;
+    font-size: 0.95rem;
+  }
+  .chat-log .from { font-weight: 700; color: var(--hard); display: block; margin-bottom: 0.3rem; }
+  .chat-log .timestamp { display: block; margin-top: 0.5rem; font-size: 0.8rem; color: rgba(0,0,0,0.55); font-style: italic; }
+  .notebook {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 4px;
+    padding: 0.7rem 1rem;
+    margin: 0.9rem 0;
+    font-size: 0.9rem;
+  }
+  .clue-list {
+    background: #EFEADF;
+    border-radius: 4px;
+    padding: 0.9rem 1.1rem 0.9rem 1.6rem;
+    margin: 0.9rem 0;
+    font-size: 0.95rem;
+  }
+  .clue-list li { margin: 0.35rem 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; font-weight: 700; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Impersonator in the Class Chat</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes (can be split across sessions)</div>
+</div>
+
+<div class="intro">
+  <p>Every week, the CircuitFoxes Robotics Club chats about parts, practice, and pizza in their private group chat — run by their coach, Coach Fenna, whose real account is always <strong>@Coach_Fenna</strong>. The club's real, official website is <strong>circuitfoxesclub.org</strong>.</p>
+  <p>Last night, something felt wrong: a message showed up that looked like it came from Coach Fenna, but it wasn't quite right. You've been called in as the club's Internet Safety Detective. Your job: figure out who — or what — is really behind it, spot every red flag before a single classmate clicks anything, and make sure the chat is safe again.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Weakest Lock in the Clubhouse</h2>
+    <div class="puzzle">
+      <p>Before the scary message even shows up, Coach Fenna wants your help with something every club member should double-check: their backup security question, used if anyone ever gets locked out of the chat account. Here's what each member picked:</p>
+    </div>
+    <div class="clue-list">
+      <ul>
+        <li><strong>Kai</strong> — Question: "What is your favorite color?" Answer: Blue. (His profile picture is even a little blue robot.)</li>
+        <li><strong>Lotte</strong> — Question: "What street did you grow up on?" Answer: Elm Street.</li>
+        <li><strong>Finn</strong> — Question: "What was the name of your first stuffed animal?" Answer: Bartholomew.</li>
+        <li><strong>Robin</strong> — Question: "What is your mother's maiden name?" Answer: de Groot.</li>
+      </ul>
+    </div>
+    <div class="puzzle">
+      <p>A good security question should be hard for a total stranger to guess AND hard to look up. One of these four is dangerously weak — both easy to guess (there are only a handful of common answers) and easy to spot just by glancing at the person's public profile. Whose security question is the weakest?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>For each question, ask yourself: about how many different answers are actually likely? And could a total stranger find the answer just by looking at their profile, without any real detective work?</p></details>
+    <div class="answer-box" data-answer-hash="700b47a8">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Real password guidelines from the U.S. National Institute of Standards and Technology (NIST) say a password's LENGTH matters more than cramming in symbols and capital letters — a long, simple passphrase can actually be harder to crack than a short "complex" one.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Message From (Almost) Coach Fenna</h2>
+    <div class="puzzle">
+      <p>Wednesday morning, this shows up in the CircuitFoxes group chat:</p>
+    </div>
+    <div class="chat-log">
+      <span class="from">From: @Coach_Fenna_HQ</span>
+      🚨 SUPER IMPORTANT — READ BEFORE MIDNIGHT!!! 🚨 CircuitFoxes has been specially chosen for a FREE robotics kit giveaway!! Only the FIRST members to claim it get one — tap here right now: circuitfoxesclub-prizes.win Don't tell anyone else in the chat, this offer is just for you! 💙🤖
+      <span class="timestamp">Logged: Tuesday, 9:47 PM</span>
+    </div>
+    <div class="notebook">🕵️ <strong>Agent's Notebook:</strong> Good detectives always log the exact time evidence appears. Write down: <strong>Tuesday, 9:47 PM</strong> — you never know when a timestamp will matter later in a case.</div>
+    <div class="puzzle">
+      <p>You already know the real coach's account is always @Coach_Fenna. Look very closely at who actually sent this message. The impersonator added one extra word onto the end of the real handle to make it sound official. Type just that one extra word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Compare the sender name shown above, letter by letter, with @Coach_Fenna. What's different at the very end?</p></details>
+    <div class="answer-box" data-answer-hash="503ad0d2">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type the extra word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Tricks like this have a name: phishing. It's spelled with "ph" instead of "f" as a nod to 1970s hackers who called their phone tricks "phone phreaking" — phishing scammers "fish" for your information the exact same way, just online.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>How Far Does One Click Travel?</h2>
+    <div class="puzzle">
+      <p>Before the club figured out the message was fake, the scam had already started to spread. Grab a pencil for this one — it's much easier worked out on paper than in your head.</p>
+      <p>One nervous classmate, worried about missing out, forwarded the message to 3 friends outside the chat. Each of those 3 friends — not knowing any better — forwarded it to 3 more friends of their own. Then each of THOSE friends forwarded it one more time, to 3 more friends each, before anyone realized it was a scam.</p>
+      <p>Counting that very first classmate who forwarded it, how many people in total have now seen the scam link?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Draw it like a tree: one person forwards to 3, then each of those 3 forwards to 3 more, then each of those forwards to 3 more again. Add up every single person at every level — including the very first one.</p></details>
+    <div class="answer-box" data-answer-hash="89e388a9">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type a number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Whose Password Left the Door Unlocked?</h2>
+    <div class="puzzle">
+      <p>The message really did come from inside a real CircuitFoxes account — someone's login was used. But whose account was it, and how did the scammer get in? Coach Fenna gathered what she knows about each member's password habits:</p>
+    </div>
+    <div class="clue-list">
+      <ul>
+        <li><strong>Lotte</strong> set up two-factor authentication the day she joined — even with her password, nobody could log in without a second code sent to her mom's phone.</li>
+        <li><strong>Finn</strong> uses a password manager that creates a brand new random password for every single site — none of his passwords are ever repeated anywhere.</li>
+        <li><strong>Kai</strong> changed his password last month, right after Mission 1's warning — it's now 20 random characters long, and used nowhere else.</li>
+        <li><strong>Robin</strong> loves how easy it is to remember just one password for everything — the very same one he's used since 3rd grade, on his old game website, his email, and the club chat.</li>
+      </ul>
+    </div>
+    <div class="puzzle">
+      <p>Using process of elimination, whose account was almost certainly the way in?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Cross off anyone whose habit would have stopped a stranger from logging in, even if that stranger somehow got hold of one password.</p></details>
+    <div class="answer-box" data-answer-hash="e81a69fb">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>De of Het? Coach Fenna Never Gets This Wrong</h2>
+    <div class="puzzle">
+      <p>Coach Fenna always writes perfect Dutch, even in a quick chat message — it's kind of her thing. Here are four words that keep coming up in this case:</p>
+      <p style="text-align:center; font-weight:700; letter-spacing:0.03em;">robot &middot; club &middot; wachtwoord &middot; link</p>
+      <p>Three of these words use "de" (de robot, de club, de link...). Exactly ONE of them uses "het" instead. Which word is the odd one out?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Say each word out loud with "de" in front of it, and then with "het" in front of it. One combination will sound clearly wrong to a careful Dutch speaker like Coach Fenna.</p></details>
+    <div class="answer-box" data-answer-hash="ad13e00f">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the Dutch word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Addresses, One Real Website</h2>
+    <div class="puzzle">
+      <p>Scammers usually can't use the club's exact real web address, so they build something that LOOKS almost the same. They might add extra words, swap a letter, or change the ending after the very last dot — even though ".org" and ".win" are two completely different websites, no matter what comes before them.</p>
+      <p>You know the club's real, official website is circuitfoxesclub.org. Here are four addresses that have been floating around the chat today:</p>
+    </div>
+    <div class="clue-list">
+      <ol>
+        <li>circuitfoxesclub.org</li>
+        <li>circuitfoxesclub.org.prize-claim.net</li>
+        <li>circuitfoxesclub-prizes.win</li>
+        <li>circutfoxesclub.org</li>
+      </ol>
+    </div>
+    <div class="puzzle">
+      <p>Only one of these is genuinely the club's real website. Type it exactly as shown above.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Compare each address letter by letter against "circuitfoxesclub.org" — the real one has no extra words, no extra dashes, and no missing or swapped letters.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>For address #2, remember: what matters most is the ending right before the very last dot — everything written in front of that can be faked to look official.</p></details>
+    <div class="answer-box" data-answer-hash="e4fed7d5">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the real address...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A padlock icon or "https" in a web address only means the connection is encrypted — it does NOT mean the site is trustworthy. Security researchers at the Anti-Phishing Working Group found that more than 9 out of 10 phishing websites used https in 2023. Always check the actual address, not just the padlock.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Where Was Everyone That Night?</h2>
+    <div class="puzzle">
+      <p>You've proven Robin's account sent that message. But did Robin actually type it himself? Remember the exact time you logged from that very first suspicious message — you'll need it now, and it won't be repeated here.</p>
+      <p>Here's where each club member says they were that evening:</p>
+    </div>
+    <div class="clue-list">
+      <ul>
+        <li>Robin's family locks all phones in a kitchen basket every night at 9:00 PM, no exceptions — confirmed by his older sister, who was doing homework in the kitchen the entire evening.</li>
+        <li>Lotte was on a plane to visit her grandparents, seatbelt sign on with no wifi, from takeoff at 8:15 PM to landing at 10:30 PM.</li>
+        <li>Finn was at swim practice from 8:30 PM to 10:00 PM, and phones aren't allowed anywhere near the pool deck.</li>
+        <li>Kai was on a family video call with his grandma from 9:15 PM to 10:00 PM, logged in the family's shared call history.</li>
+      </ul>
+    </div>
+    <div class="puzzle">
+      <p>Check each alibi against the exact time you logged earlier. If your logic proves that NONE of the four club members could have personally sent that message at that exact time, type NOBODY.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Line up each alibi's time window against the timestamp you wrote down earlier. Does it cover that exact minute, or not?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If every single alibi covers that timestamp, what does that prove about all four of them at once?</p></details>
+    <div class="answer-box" data-answer-hash="fb7f6c5e">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type your answer...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Crack the Fake "Verification Code"</h2>
+    <div class="puzzle">
+      <p>Whoever is controlling Robin's account sends one more message: "To prove this is real, reply with this verification code!" — followed by a strange string of letters. Real verification codes are always random numbers, never actual words, which is a red flag all by itself. Let's read it anyway.</p>
+    </div>
+    <div class="chat-log">
+      FRGH: WRWDOOB UHDO WUXVW PH
+    </div>
+    <div class="puzzle">
+      <p>Every letter in this message has been shifted forward by the same number of places in the alphabet. Here's your crib: FRGH decodes to CODE.</p>
+      <p>Figure out the shift, then decode the rest of the message (shifting every letter backward by that same amount). Type the decoded message that comes after "CODE:" — the part written in capital letters.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>F is 3 letters after C in the alphabet. R is 3 letters after O. Once you're sure of the shift, apply it to every remaining letter.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Shift every letter of the rest of the message backward by 3 places (so F becomes C, R becomes O, and so on).</p></details>
+    <div class="answer-box" data-answer-hash="10762fca">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type the decoded message...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>How Did They Really Get In?</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Time to work backward. You know Robin's account sent the message, and none of the four club members could have personally typed it. You also know Robin never once clicked a suspicious link or a password-reset request before this happened — and the scammer typed his EXACT password on the very first try, with no failed attempts ever logged.</p>
+      <p>If Robin never gave his password away and never clicked anything sketchy, where did the scammer most likely get an already-correct password on their very first try? Here's a hint toward the vocabulary: it's a two-word term for when a website's stored passwords get stolen and leaked onto the internet. Type your answer as two words.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think back to Robin's password habit from Mission 4 — the same password on his old game site, his email, and the club chat. If that old game site were ever hacked, what would happen to everyone's saved passwords, including Robin's?</p></details>
+    <div class="answer-box" data-answer-hash="af6b72a6">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type two words...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Even with a leaked password in hand, real accounts have a second lock that could have stopped the scammer cold — knowing the exact password wouldn't have been enough. Search the internet for the security feature that adds a second step to logging in, like a one-time code sent to your phone, on top of your password. It's usually shortened to a 3-character abbreviation. Type just the short abbreviation, not the full name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The full name starts with "two-factor..." — search for what protects an account even after a password has already leaked.</p></details>
+    <div class="answer-box" data-answer-hash="666b8678">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type the abbreviation...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Case Closed: The Real Rule About Real Prizes</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>One thread is still loose: that "free robotics kit" the message promised. Nobody in the CircuitFoxes chat ever signed up for any giveaway or contest. Search the internet for real advice on how legitimate contests and sweepstakes actually work, from a trustworthy source like an official consumer-protection agency. Then answer this: can you legitimately win a prize for a contest you never entered? Type YES or NO.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look for official consumer-protection advice on "prize scams" or "sweepstakes scams" — a trustworthy source like an official government consumer-advice site is a good place to start.</p></details>
+    <div class="answer-box" data-answer-hash="62366ffa">
+      <label for="finale-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage1" type="text" placeholder="YES or NO">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 — Final Answer</p>
+    <div class="puzzle">
+      <p>Case wrap-up. Count every classic scam red flag you uncovered in this case: a copy-cat account handle, a countdown-style urgency, a lookalike web address, a fake "verification code" that was really just words, and a prize nobody ever entered to win. How many is that?</p>
+      <p>Now use that number as a shift, and decode this final message by shifting each letter BACKWARD that many places in the alphabet:</p>
+    </div>
+    <div class="chat-log" style="text-align:center; font-weight:700; letter-spacing:0.1em;">BNXITR</div>
+    <div class="puzzle">
+      <p>Type the decoded word — it's the value that guided every move you made today.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Count the red flags listed just above — there are exactly that many. That's your shift number.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Shift each letter of BNXITR backward by that many places (B becomes what letter? N becomes what letter?).</p></details>
+    <div class="answer-box" data-answer-hash="2e0e79e6">
+      <label for="finale-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage2" type="text" placeholder="Type the decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Robin's account is secured, the whole club has been warned, and not a single classmate clicked that link. Every red flag you spotted and every fact you double-checked before trusting it — that's real WISDOM in action. Case closed, Detective.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

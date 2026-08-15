@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Toy Inventor's Trade-Fair Blueprint Heist — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #B5651D;
+    --accent-dark: #7A4413;
+    --easy: #4C7A52;
+    --medium: #B5651D;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle li { margin: 0.3rem 0; }
+  .puzzle table { border-collapse: collapse; margin: 0.8rem 0; width: 100%; font-size: 0.95rem; }
+  .puzzle th, .puzzle td { border: 1px solid rgba(0,0,0,0.2); padding: 0.4rem 0.6rem; text-align: left; }
+  .puzzle th { background: var(--paper-dark); }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Toy Inventor's Trade-Fair Blueprint Heist</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 80-100 minutes (a great one to spread across two sittings)</div>
+</div>
+
+<div class="intro">
+  <p>Mrs. Odette Verbeek has built wooden toys in her little workshop on the Molenkade for thirty years, but tomorrow was supposed to be different: her very first invitation to Spielwarenmesse, the biggest toy fair on Earth. Her prize invention, a wind-up wooden fox called the Whirlygig Fox, was finally ready.</p>
+  <p>Tonight, someone crept into the workshop and took both the only blueprint and the one working gear-mechanism prototype. Mrs. Verbeek's train leaves at dawn — no blueprint means no fox, and no fox means no fair. She's called the Internet Detective Academy. Detective, the workshop is yours. Find them before sunrise.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Torn Invitation</h2>
+    <div class="puzzle">
+      <p>On the workbench you find Mrs. Verbeek's invitation letter, torn clean across the middle. Only the bottom half survives, and it just calls the event "the biggest toy fair on Earth," held every year in one German city: Nuremberg. Mrs. Verbeek was in too much of a rush this morning to tell you more.</p>
+      <p>Search online to find the fair's real name — the short, one-word name almost everyone in the toy world actually calls it (it's a German word, and it's printed right on the fair's own website). Type just that one word, in lowercase is fine.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching something like "biggest toy fair in the world Nuremberg name." Look for the name printed on the fair's own official website, not just a nickname.</p></details>
+    <div class="answer-box" data-answer-hash="3c3af718">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Who Was Still in the Building?</h2>
+    <div class="puzzle">
+      <p>Three people were in or near the workshop between 8 and 10 p.m. last night: Pim, Mrs. Verbeek's apprentice; Koen, the delivery courier; and Mr. Haas, the fair's local sponsor.</p>
+      <ul>
+        <li>Clue 1: Koen's delivery van was caught on a traffic camera driving out of Berkenveld at 7:30 p.m., headed for a delivery two hours away — he couldn't possibly have made it back before midnight.</li>
+        <li>Clue 2: Mr. Haas was giving a speech at the town hall from 7:45 p.m. until 10:15 p.m., in front of fifty witnesses — the entire window and then some.</li>
+      </ul>
+      <p>Use the process of elimination: who is the only one of the three who could actually have been inside the workshop during that window? Type their first name.</p>
+      <p><em>Agent's Notebook: While you're in there, you spot something worth remembering. Taped inside the workbench drawer is a note in Mrs. Verbeek's handwriting: "Every prototype gets exactly 4 lucky spare gears, tucked in the blue velvet pouch, always." Jot that number down, detective — old habits like that have a way of mattering later.</em></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Cross off anyone who has an alibi — solid proof they were somewhere else — for the whole 8-10 p.m. window. Whoever's left is your answer.</p></details>
+    <div class="answer-box" data-answer-hash="72410b4d">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Nuremberg Toy Fair has been held every year since 1950. The very first one had just 351 companies and 4,300 buyers — today it's grown into the biggest toy fair on Earth.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Foam-Lined Crate</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Whoever took the blueprint also took the custom foam-lined crate Mrs. Verbeek uses to ship delicate prototypes — but one torn scrap of foam was left behind on the floor. Its outline is L-shaped, exactly like the diagram below.</p>
+      <p>Work out the total area of that leftover scrap, in square centimeters. Type just the number.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 200 160" width="200" height="160"
+         role="img" aria-label="An L-shaped scrap of foam: a large rectangle with a smaller rectangular notch cut from the top-right corner">
+      <polygon points="20,20 116,20 116,56 164,56 164,128 20,128"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="68" y="12" text-anchor="middle" font-size="12">16 cm</text>
+      <text x="128" y="38" text-anchor="middle" font-size="12" transform="rotate(-90 128 38)">6 cm</text>
+      <text x="140" y="50" text-anchor="middle" font-size="12">8 cm</text>
+      <text x="176" y="92" text-anchor="middle" font-size="12" transform="rotate(-90 176 92)">12 cm</text>
+      <text x="92" y="144" text-anchor="middle" font-size="12">24 cm</text>
+      <text x="10" y="74" text-anchor="middle" font-size="12" transform="rotate(-90 10 74)">18 cm</text>
+    </svg>
+    <div class="clue-caption">Every dimension you need is labeled right on the shape — split it into two plain rectangles.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Draw one straight line across the shape to split it into two ordinary rectangles, then find each rectangle's area on its own.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The full outer rectangle would be 24 cm × 18 cm. The missing notch is 8 cm × 6 cm. What do you do with those two areas to get what's actually there?</p></details>
+    <div class="answer-box" data-answer-hash="d164554e">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Sorting the Workshop Shelf</h2>
+    <div class="puzzle">
+      <p>While you search the shelves, you find six labels that fell off their jars and drawers, each showing a workshop word without its little article: <strong>blauwdruk, tandwiel, veer, uitvinding, prototype, werkplaats</strong>.</p>
+      <p>Four of these six words take <strong>DE</strong>. Two take <strong>HET</strong>. One of those two HET-words is a loanword — it didn't start out as a Dutch word at all — and that's exactly why so many grown-ups guess wrong on it, even though the other five all follow patterns a Dutch kid would recognize. Search a Dutch dictionary site (like woordenlijst.org) to sort all six words, then type just that one loanword.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The other five are more predictable: words ending in -ing are (almost) always DE, and compound words ending in -wiel borrow their gender from wiel.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's a word many languages share, and it ends in a silent "e" — most people assume that means DE, the way it works for blauwdruk. This one breaks the pattern.</p></details>
+    <div class="answer-box" data-answer-hash="b8440699">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Real Story Behind a Famous Toy</h2>
+    <div class="puzzle">
+      <p>Mrs. Verbeek keeps a favorite quote pinned above her workbench: "Every toy starts as somebody's stubborn idea." It's signed with just a name: Hans Beck.</p>
+      <p>Search online to find out: in what year did Hans Beck first show his now-world-famous toy figures to buyers — at the very same Nuremberg fair Mrs. Verbeek is headed to tomorrow? Type just the year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Hans Beck inventor toy figures." You're looking for a small, movable toy figure that's still hugely popular today.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The figures were unveiled at the Nuremberg Toy Fair — the toy line's name usually gets mentioned right alongside his in any article about him.</p></details>
+    <div class="answer-box" data-answer-hash="2349a9c4">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The oldest known machine full of gears is the Antikythera mechanism. Greek sailors lost it in a shipwreck about 2,200 years ago, and it used over 30 bronze gears to track the sun, moon, and even the dates of the Olympic Games.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Booth Number Fourteen</h2>
+    <div class="puzzle">
+      <p>At the fair, four other independent toy inventors have booths lined up in a row, numbered 12 to 15. The booth map got coffee-stained overnight, and only these clues survived:</p>
+      <ul>
+        <li>Ms. Okafor's booth number is the lowest of the four.</li>
+        <li>Dr. Andersen's booth number is exactly one higher than Mr. Silva's.</li>
+        <li>The inventor who makes kites is not in booth 12 or booth 14.</li>
+        <li>Ms. Park makes puzzles, and her booth number is the highest of the four.</li>
+        <li>Ms. Okafor builds robots.</li>
+      </ul>
+      <p>Figure out who has booth 14 — the inventor right next to the spot reserved for the missing Whirlygig Fox. Type their last name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clues that hand you an exact number right away, then work out the rest by elimination.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once booths 12 and 15 are filled, only two booths (13 and 14) and two people are left — one clue tells you exactly how those two line up.</p></details>
+    <div class="answer-box" data-answer-hash="2e90ae15">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Replacement Crate</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one too. With the original crate gone, Mrs. Verbeek needs to build a brand-new display case tonight, before the early courier arrives. She has exactly <strong>€80</strong> left in her workshop fund.</p>
+      <p>The case will be handled by hundreds of trade-fair visitors over three days, so it has to be genuinely sturdy. And since the regular delivery truck already left, it must go by early-morning express courier, whose weight limit is <strong>3 kilograms total</strong>.</p>
+      <table>
+        <tr><th>Material</th><th>Cost per sheet</th><th>Sheets needed</th><th>Weight per sheet</th></tr>
+        <tr><td>Birch plywood</td><td>€12</td><td>5</td><td>900 g</td></tr>
+        <tr><td>Basswood</td><td>€18</td><td>4</td><td>500 g</td></tr>
+        <tr><td>Balsa wood</td><td>€9</td><td>5</td><td>(search to find out)</td></tr>
+      </table>
+      <p>Search online to learn how balsa wood really compares to the other two — both in weight and in sturdiness. Then work out which single material is the only one that fits the budget, fits the weight limit, <em>and</em> is sturdy enough for constant handling. Type just that material's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out the total cost and total weight for each material first (cost per sheet × sheets needed, weight per sheet × sheets needed). Cross off anything that breaks the €80 budget or the 3,000 g weight limit.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Balsa is famous for being extremely light — but search "balsa wood soft" and you'll see why it's not a great fit for a case that gets picked up by strangers all day long.</p></details>
+    <div class="answer-box" data-answer-hash="c7016d13">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Balsa is the lightest and softest wood sold commercially anywhere in the world. It's so light it's roughly a tenth as dense as water — which is also exactly why it's too soft for parts that get handled a lot.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Note Under the Workbench</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Taped underneath Pim's side of the workbench, you find a torn note with a coded scrawl:</p>
+      <p style="font-size:1.3rem; letter-spacing:0.15em; text-align:center;"><strong>FVEQIP</strong></p>
+      <p>Every letter has been shifted forward in the alphabet, by Mrs. Verbeek's lucky number — the one you jotted down earlier in the case. Shift each letter of FVEQIP <em>backward</em> by that same number to decode it. Type the decoded letters exactly as they come out (it won't look like a real word yet).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You don't need to search for the number — it's already sitting in your notes from earlier in this case.</p></details>
+    <div class="answer-box" data-answer-hash="63aaf3da">
+      <label for="m8-stage1">Your decoded letters:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>What you just decoded isn't a real word — it's a real word with its letters all mixed up. Unscramble it to find the name of an ordinary toy... and exactly where in the workshop you should look next.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think of small round toys you flick or roll along the ground — collectible, often made of colorful glass.</p></details>
+    <div class="answer-box" data-answer-hash="645e7d80">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Four People, One Attic Ladder</h2>
+    <div class="puzzle">
+      <p>One more grid, and this is the big one. It turns out four people were near the workshop last night after all, each for their own reason: Koen doubled back for a forgotten toolbox, Mr. Haas (the sponsor) ducked in out of the rain, Ms. Lindqvist (a rival inventor) was returning a borrowed folder, and Pim was simply there, like always.</p>
+      <p>Sort out exactly what happened using these clues:</p>
+      <ul>
+        <li>Koen was the first of the four to arrive.</li>
+        <li>Whoever wore the blue badge arrived immediately after Koen — second overall.</li>
+        <li>Ms. Lindqvist arrived after the blue-badge-wearer, but before Pim.</li>
+        <li>Koen's badge was red.</li>
+        <li>Ms. Lindqvist's badge was not yellow.</li>
+        <li>The sponsor left carrying a poster tube full of fair contracts.</li>
+        <li>Whoever wore the green badge left carrying an empty bag.</li>
+        <li>Koen's hands were completely empty when he left — he'd already dropped off the forgotten toolbox.</li>
+      </ul>
+      <p>Work out who arrived last, wearing yellow, and left carrying an actual toolbox. Type their first name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First nail down the arrival order using the first three clues — there are only 4 time slots. Then use the badge clues to sort out the colors.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know all four badge colors, the last three clues tell you who carried what. Whoever's left over at the end gets the toolbox.</p></details>
+    <div class="answer-box" data-answer-hash="72410b4d">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Marble Jar</h2>
+    <div class="puzzle">
+      <p>Behind the jar of marbles on the windowsill, tucked in a hollow in the shelf, you find both the blueprint tube and the little gear-mechanism prototype — wrapped in Pim's scarf, with a note: <em>"I only ever meant to keep it safe. Ms. Lindqvist's assistant kept asking way too many questions about the Fox's gears, and I panicked. I'm sorry — and I'm so proud of this little fox. — Pim."</em></p>
+      <p>Stuck to the note is one last puzzle, in Mrs. Verbeek's own handwriting — the same code she stamps inside every prototype she's ever truly proud of: a row of numbers, where each number stands for its position in the alphabet (A=1, B=2, C=3 ... Z=26).</p>
+      <p style="font-size:1.2rem; letter-spacing:0.1em; text-align:center;"><strong>18 – 5 – 19 – 3 – 21 – 5 – 4</strong></p>
+      <p>Decode the numbers into a word. That word is exactly what you should stamp on Mrs. Verbeek's case file to close it for good.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>A=1, B=2, C=3... just count forward through the alphabet for each number.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first number, 18, is the letter R. The very last one, 4, is the letter D.</p></details>
+    <div class="answer-box" data-answer-hash="67fc7838">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Mrs. Verbeek makes her early train with both the blueprint and her fox tucked safely under her arm. She tells you the whole mess proves her favorite belief: the trickiest problems are hardly ever solved by simply following the rules — they're solved by <strong>CREATIVITY</strong>, the same quality that made Pim hide the fox in the first place, and the same one you used to crack every clue tonight. Well done, detective — Spielwarenmesse won't know what hit it.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

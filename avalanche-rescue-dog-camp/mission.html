@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Avalanche Rescue Dog Camp — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #3E7C96;
+    --accent-dark: #2A566A;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .notebook {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--hard);
+    padding: 1rem 1.3rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .notebook .eyebrow { color: var(--hard); }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>Avalanche Rescue Dog Camp</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes (across all 10 missions)</div>
+</div>
+
+<div class="intro">
+  <p>High in the Swiss Alps, the Rothorn Alpine Rescue Dog Camp is one night away from demonstrating its avalanche search dogs for a group of visiting government officials. But head trainer Elin Baumann just discovered two problems: her training logbook, with tomorrow's whole running order, has vanished from her desk — and Nera, one of the four demonstration dogs, is missing her tracking tag, which must have come loose sometime during evening training.</p>
+  <p>Nobody's in trouble. Nobody's a villain. Something ordinary happened, and Elin needs a sharp pair of eyes to retrace the evening before the officials arrive at dawn. That's you. Grab a notebook — real handlers always do.</p>
+</div>
+
+<!-- MISSION 1 — Easy — Logical Reasoning (Foundational: process of elimination) -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Three Staff, One Muddy Footprint</h2>
+    <div class="puzzle">
+      <p>Elin's logbook was on her desk in the office cabin yesterday evening. It isn't anymore. You start with the easiest question a detective always asks first: who was actually in that cabin?</p>
+      <p>The cabin floor shows one fresh trail of muddy footprints — dry, crumbly dirt, not wet snow-slush. Here's what you know from the duty roster:</p>
+      <p>1. Senior handler Marta was out on the practice slope from 4 PM until dinner, wearing snow boots the whole time.<br>
+      2. Vet Pieter spent that same stretch in the kennel building doing health checks — its floor is bare concrete, and the roster confirms he never left.<br>
+      3. Rookie volunteer Jonas drove back from a supply run to the village around 5 PM. The village road was muddy from that morning's rain, and he went straight to the cabin to drop off new lead ropes before dinner.</p>
+      <p>Only one of these three could possibly have left that muddy trail. Who was it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Match each person's boots and location at that hour to what the cabin floor actually shows — mud, not snow-slush, and bare concrete leaves no mud at all.</p></details>
+    <div class="answer-box" data-answer-hash="b17a8b48">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 — Easy — History + Internet Research -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Barry, the Dog Who Started It All</h2>
+    <div class="puzzle">
+      <p>While you wait for Jonas to come back from evening rounds, you notice an old framed print on the common-room wall: a huge dog wearing a small barrel on its collar, standing over a traveler in the snow. The caption reads "Barry, hero of the Great St Bernard Pass."</p>
+      <p>Marta glances over. "Everyone assumes that barrel part is true," she says. "It isn't. Go look up the real history — you'll be surprised."</p>
+      <p>Search online for the true story of Barry the rescue dog and the monks of the Great St Bernard Hospice. Fill in the blank: according to real historical records, Barry never actually carried a barrel of ___ around his neck.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Barry St Bernard dog true story" and look for what the hospice's own records say, not just the famous old painting everyone remembers.</p></details>
+    <div class="answer-box" data-answer-hash="c57f021d">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="notebook">
+  <div class="eyebrow">🕵️ Agent's Notebook — worth remembering</div>
+  <p>Elin taps the radio clipped to her jacket. "Tomorrow's demonstration runs on Channel 5. Every handler needs to know that number by heart — so should you." Jot it down. You won't need it right away.</p>
+</div>
+
+<p class="fact">💡 Did you know? Switzerland's rescue-dog association, REDOG, was founded in 1971 — and just five years later, in 1976, its dog teams helped find 16 survivors buried after a major earthquake in Italy's Friuli region.</p>
+
+<!-- MISSION 3 — Medium — Mathematics: geometry diagram (composite shape), pen-and-paper -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Shape of the Slide</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. This afternoon's search-training zone was marked out with flags on the practice slope, in the L-shaped patch shown below. Every corner is a right angle. Elin wants today's zone size written down for tomorrow's records, but with the logbook missing, you'll have to work it out yourself.</p>
+      <p>Find the total area of the marked zone, in square meters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 280 220" width="280" height="220"
+         role="img" aria-label="An L-shaped training zone: a large rectangle with a smaller rectangular notch cut from the top-right corner">
+      <polygon points="30,20 174,20 174,80 246,80 246,188 30,188"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="102" y="12" text-anchor="middle" font-size="12">12 m</text>
+      <text x="186" y="50" text-anchor="middle" font-size="12" transform="rotate(-90 186 50)">5 m</text>
+      <text x="210" y="72" text-anchor="middle" font-size="12">6 m</text>
+      <text x="258" y="134" text-anchor="middle" font-size="12" transform="rotate(-90 258 134)">9 m</text>
+      <text x="138" y="204" text-anchor="middle" font-size="12">18 m</text>
+      <text x="16" y="104" text-anchor="middle" font-size="12" transform="rotate(-90 16 104)">14 m</text>
+    </svg>
+    <div class="clue-caption">Every measurement you need is labeled right on the flags — no guessing required.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try splitting the L-shape into two rectangles — or start from the full outer rectangle and subtract the missing corner.</p></details>
+    <div class="answer-box" data-answer-hash="31ec81b5">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type just the number, like 100">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 — Medium — Dutch Language (de/het classification) -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>A Dutch Family's Word Card</h2>
+    <div class="puzzle">
+      <p>A Dutch family visited the camp last week and left behind a laminated card their kids used to practice camp words. Five words are listed, each needing "de" or "het" in front of it in Dutch:</p>
+      <p><strong>hond &middot; berg &middot; lawine &middot; sneeuw &middot; touw</strong></p>
+      <p>Four of these five words all take the same article. One doesn't belong — it takes the other article. Which ONE word is the odd one out?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Four of the five words use "de." Test each word out loud with both articles and listen for the one that sounds wrong with "de."</p></details>
+    <div class="answer-box" data-answer-hash="3a83f51c">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type just the odd-one-out word">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 — Medium — Science & Nature (real search-rate formula) + Internet Research (Geography/Science) -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>How Long Will the Demonstration Take?</h2>
+    <div class="puzzle">
+      <p>Here's something real Elin explained earlier tonight, worth knowing: a trained avalanche rescue dog can search about one hectare of snow (10,000 square meters) by scent in roughly 30 minutes — while a line of 20 human searchers using probes would take about 4 hours to search that same ground.</p>
+      <p>Tomorrow's demonstration search area is a rectangle 150 m by 100 m. Using the rate above, about how many minutes should the dogs' demonstration search take? (Remember: 1 hectare = 10,000 square meters.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the area of the rectangle in square meters, then work out how many hectares that is — then scale the 30-minutes-per-hectare rate to match.</p></details>
+    <div class="answer-box" data-answer-hash="8ce38d62">
+      <label for="m5a-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5a-answer" type="text" placeholder="Type just the number of minutes">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <div class="puzzle" style="margin-top:1.4rem;">
+      <p>One more thing pinned above the office desk: a faded thank-you certificate. The camp once lent its dogs to a real Swiss institute for a winter snow study. Elin can't remember the exact name. "Something about snow and avalanches, up near Davos," she says, "but everyone just calls it by its short letters."</p>
+      <p>Search online to find this real Swiss institute — it's one of the world's leading centers for snow and avalanche research, with a famous measuring station high on a mountain called Weissfluhjoch. What is its short, 3-letter abbreviation?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Switzerland snow avalanche research institute Davos."</p></details>
+    <div class="answer-box" data-answer-hash="c6385024">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type the 3-letter abbreviation">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A dog's nose has up to 300 million scent receptors, compared to only about 6 million in a human nose — that's part of why dogs, not machines, are still the fastest way to find someone buried in snow.</p>
+
+<!-- MISSION 6 — Hard — Cryptography (NATO phonetic alphabet + delayed-recall shift) -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Whistle Code From Base</h2>
+    <div class="puzzle">
+      <p>That evening, a short message crackles over the camp radio. It's spoken entirely in the phonetic alphabet that pilots and rescue teams use to spell out letters clearly over a crackly signal:</p>
+      <p style="text-align:center; font-weight:700; letter-spacing:0.03em;">"X-ray. Mike. Juliett. India."</p>
+      <p>Search online for that phonetic alphabet, and turn each of those four words into a single letter. Then remember the channel number you noted earlier tonight — shift each of your four letters that many places <em>backward</em> through the alphabet (A, B, C...) to reveal a real four-letter word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "NATO phonetic alphabet" — every word on that list always stands for exactly one letter, in every language.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you have four letters, shift each one backward by the channel number from your notebook. For example, shifting the letter "F" backward by 2 places gives "D."</p></details>
+    <div class="answer-box" data-answer-hash="985fcc5f">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the four-letter word">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 — Hard — Logical Reasoning Intermediate: logic grid -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Handlers, Four Dogs, One Kennel Card</h2>
+    <div class="puzzle">
+      <p>You now know something is happening near the shed. Before you head there, Elin wants Nera's actual handler warned in person — but the kennel cards are as scattered as everything else tonight. Four handlers (Anke, Bruno, Celine, and Felix) each look after one of four demonstration dogs (Nera the Border Collie, Ari the German Shepherd, Momo the Belgian Malinois, and Fara the Golden Retriever), each in their own numbered kennel (1, 2, 3, or 4). Work it out from these five clues:</p>
+      <p>1. The handler in Kennel 1 trains the Border Collie.<br>
+      2. Bruno's kennel number is exactly three more than Celine's kennel number.<br>
+      3. Anke does not train the Golden Retriever or the Malinois.<br>
+      4. Anke's kennel number is even.<br>
+      5. The Malinois's kennel number is odd.</p>
+      <p>Which handler will you need to warn about Nera's missing tracking tag?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 2 — with only kennels 1 to 4 to work with, there's only one pair of numbers that fits "three more than."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once all four kennel numbers are pinned down, clues 1, 3, 4, and 5 each force exactly one dog onto one handler.</p></details>
+    <div class="answer-box" data-answer-hash="b2c8e9b7">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type the handler's name">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 — Hard — Financial Literacy: real-world budget decision -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Budget That Saves the Demo</h2>
+    <div class="puzzle">
+      <p>Before the officials arrive, the equipment shed still needs restocking. There's 150 CHF left in the gear budget — but 15 CHF of that must stay untouched, because Marta already promised to buy a replacement whistle with it.</p>
+      <p>Camp rule: any new gear kit must include <strong>at least 3 collapsible probes AND at least 8 marker flags</strong>. Each probe costs 24 CHF. Each flag costs 3 CHF. Three suppliers offer ready-made kits:</p>
+      <p><strong>Mountain Set:</strong> 3 probes + 8 flags<br>
+      <strong>Value Pack:</strong> 2 probes + 12 flags<br>
+      <strong>Pro Bundle:</strong> 5 probes + 10 flags</p>
+      <p>Only one of these three kits meets the camp rule AND fits inside the real spending limit. Which kit should the shed buy?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Check each kit against the camp rule FIRST — if it fails the minimum probes or flags, its price doesn't matter at all.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Remember: 15 CHF must stay untouched, so the real spending limit isn't the full 150 CHF.</p></details>
+    <div class="answer-box" data-answer-hash="a32197de">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type the kit's name exactly as shown above">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? If someone is completely buried in an avalanche, their chances of survival are still above 90% if they're dug out within about the first 10 to 15 minutes — after that, the odds drop fast. That's exactly why a fast search dog can matter more than almost anything else on the mountain.</p>
+
+<!-- MISSION 9 — Big "Aha!" Moment — Multi-stage: Navigation (Pythagorean theorem) + Logical Reasoning Intermediate (knights & knaves) -->
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The Bearing to the Shed</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Grab your pencil again. Elin's assistant remembers roughly how Jonas walked earlier: starting at the camp flagpole, he walked 40 paces heading exactly East, then turned and walked 30 paces heading exactly North, arriving at the shed.</p>
+      <p>Using the Pythagorean theorem (a real formula: a² + b² = c²), what is the straight-line distance from the flagpole to the shed, in paces?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This is the Pythagorean theorem — a² + b² = c². The paces East and the paces North are the two shorter sides of a right triangle; the straight-line distance is the longest side.</p></details>
+    <div class="answer-box" data-answer-hash="83e140a0">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type just the number">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>You reach the shed — its door has a wheel lock with a 2-digit code. Two trainees, Sofie and Milo, are standing nearby. One of them always tells the truth. The other always lies.</p>
+      <p><strong>Sofie says:</strong> "Exactly one of us is telling the truth right now. Also, the real code is your Stage 1 distance minus Nera's kennel number."<br>
+      <strong>Milo says:</strong> "I'm telling the truth, and so is Sofie."</p>
+      <p>Work out who is lying, then use the truth-teller's rule — with your Stage 1 answer and the kennel number you already worked out for Nera — to find the code.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try assuming Milo is the truth-teller and see what that would force to be true about Sofie — does it match what "exactly one of us" would mean?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If assuming Milo is truthful leads to a contradiction, he must be the liar — which tells you Sofie's whole statement, including her rule for the code, is true.</p></details>
+    <div class="answer-box" data-answer-hash="90e393ae">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type just the number">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 10 — Grand Finale -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>What Made Tonight Work</h2>
+    <div class="puzzle">
+      <p>The wheel lock clicks open. Inside a storage crate: Elin's logbook, and Nera's tracking tag, tangled in a coil of spare leashes. Jonas comes jogging up, red-faced — he'd been quietly tidying the shed all evening so it would look sharp for the officials, and swept both items into the crate without ever checking what was inside it.</p>
+      <p>Nobody's angry. Elin laughs with relief and calls everyone over — you, Jonas, Marta, Pieter, Celine, Sofie, and Milo — to reset for tomorrow. She looks around at all of them and says only one word could really describe how a scattered pile of clues turned into a solved case by morning, with no single person ever holding the whole picture alone.</p>
+      <p>Type that word. It's also the exact reason a real rescue dog is never sent onto a slope by itself.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about how many different people's small pieces you had to combine tonight — the footprint, the history search, the shape of the slope, the radio code, the kennel card, the budget, the bearing, the truth-teller. No one of them solved the case alone.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>It's the same reason a search dog always works roped to a handler, and a handler always works as part of a team — never solo, on a real mountain.</p></details>
+    <div class="answer-box" data-answer-hash="b33bad79">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Jonas's honest mistake, Sofie and Milo's sharp eyes, Celine's steady hands with Nera, and your own detective work all needed each other tonight — exactly like a rescue dog and handler need each other on a real mountain. The value that cracked this whole case is <strong>teamwork</strong>. At dawn, the officials watch four dogs and four handlers work as one. Case closed, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
