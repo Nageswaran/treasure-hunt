@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Night Market Passport Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C9622A;
+    --accent-dark: #8F4419;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul, .puzzle ol { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle li { margin: 0.3rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .puzzle-table { width: 100%; border-collapse: collapse; margin: 0.9rem 0; font-size: 0.92rem; }
+  .puzzle-table th, .puzzle-table td { border: 1px solid rgba(0,0,0,0.18); padding: 0.4rem 0.55rem; text-align: left; }
+  .puzzle-table th { background: var(--paper-dark); font-family: 'Special Elite', monospace; font-size: 0.75rem; letter-spacing: 0.03em; }
+  .label-card {
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    padding: 0.9rem 1rem;
+    margin: 0.9rem 0;
+    background: var(--paper-dark);
+    font-size: 0.92rem;
+  }
+  .label-card .label-title { font-family: 'Special Elite', monospace; font-size: 0.85rem; letter-spacing: 0.04em; margin-bottom: 0.4rem; }
+  .notebook {
+    max-width: 700px;
+    margin: 0 auto 2.2rem;
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.92rem;
+  }
+  .notebook .notebook-label { font-family: 'Special Elite', monospace; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 0.3rem; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Night Market Passport Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 90-120 minutes</div>
+</div>
+
+<div class="intro">
+  Once a year, paper lanterns light up Compass Row for the International Night Market — one weekend, dozens of food and craft stalls, each one representing a different country. Kids who solve a challenge at every stall fill up a Junior Ambassador Passport with stamps. Tonight, Festival Director Nadia Voss has two problems: the Grand Lantern Raffle Drum's ticket count doesn't match the tally sheet, and a suspicious "buy your wristband online!" link is going around the family group chats. She's called in an Internet Detective Academy agent — you — to fill your passport, catch the mismatch, and close the case before the lanterns go out.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Postcard from the Donation Box</h2>
+    <div class="puzzle">
+      <p>While setting up the raffle table, a volunteer found a torn postcard stuck to the bottom of the donation box. It shows one country's flag: a plain white cross, dead-center, on a red background. But here's the strange part — unlike almost every other national flag in the world, this one isn't a rectangle at all. It's a perfect square.</p>
+      <p>Search to find out which country flies this flag — that's the stall where your passport gets its very first stamp.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="A postcard showing a perfectly square red flag with a plain white cross in the center">
+      <rect x="10" y="10" width="180" height="180" fill="#D8232A" stroke="#2B2A24" stroke-width="2"/>
+      <rect x="80" y="40" width="40" height="120" fill="#FFFFFF"/>
+      <rect x="40" y="80" width="120" height="40" fill="#FFFFFF"/>
+    </svg>
+    <div class="clue-caption">Measure the postcard's edges — this flag's height and width are exactly equal.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "only square national flag in the world" — the square shape (not the cross) is what makes this flag one of a kind.</p></details>
+    <div class="answer-box" data-answer-hash="b1b14682">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? This is one of only two square national flags in the world (the other belongs to Vatican City) — and the Red Cross symbol was actually designed by flipping this country's flag colors inside out.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Uncle Theo's Word Cart</h2>
+    <div class="puzzle">
+      <p>Uncle Theo runs the stroopwafel cart — Compass Row's "home team" stall. His hand-lettered sign fell apart into five word cards, each one needing "de" or "het" written in front of it: <strong>paspoort</strong>, <strong>kraam</strong>, <strong>markt</strong>, <strong>stempel</strong>, and <strong>muntje</strong>.</p>
+      <p>In Dutch, a diminutive word — the "little" or "cute" version of a word, usually ending in <em>-je</em> or <em>-tje</em> — always takes "het", no matter what article the original word normally uses. Exactly one of Uncle Theo's five words is a diminutive.</p>
+      <p>Which word is it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>A diminutive means "a small or cute version of the word." Read the five words out loud and think about which one sounds like a tiny version of something.</p></details>
+    <div class="answer-box" data-answer-hash="17ecdd70">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="notebook">
+  <div class="notebook-label">📓 Agent's Notebook</div>
+  <p>While you wait for your stroopwafel, you notice the booth number stitched onto Mr. Yilmaz's Turkish tea stand awning: <strong>Booth 9</strong>. Jot that down, Agent — a good detective never knows which number will matter later tonight.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Festival Place Mat</h2>
+    <div class="puzzle">
+      <p>Every table at Compass Row has a paper place mat listing six snacks from around the world, with two facts about each:</p>
+      <table class="puzzle-table">
+        <tr><th>Snack</th><th>Country</th><th>Bread-based?</th><th>Eaten with a fork?</th></tr>
+        <tr><td>Simit</td><td>Turkey</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Alfajores</td><td>Argentina</td><td>No</td><td>No</td></tr>
+        <tr><td>Mici</td><td>Romania</td><td>No</td><td>Yes</td></tr>
+        <tr><td>Mandazi</td><td>Kenya</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Halwa</td><td>Oman</td><td>No</td><td>Yes</td></tr>
+        <tr><td>Msemen</td><td>Morocco</td><td>Yes</td><td>Yes</td></tr>
+      </table>
+      <p>Which snack is the <strong>only</strong> one on the place mat that is both bread-based <em>and</em> eaten with a fork?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First, cross out every snack that ISN'T bread-based. That narrows your search down to just three.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Of the three bread-based snacks left, only one of them is also marked "eaten with a fork." The other two are eaten by hand.</p></details>
+    <div class="answer-box" data-answer-hash="8b149e54">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Aunty Bronwyn's Welsh Cakes</h2>
+    <div class="puzzle">
+      <p><strong>Quick-Learn:</strong> Search to confirm this official rule: under EU food-labeling law (Regulation 1169/2011), any packaged food must clearly emphasize the 14 major allergens — things like milk, eggs, wheat, and sesame — right inside the ingredients list, usually by making them bold.</p>
+      <p>Now look at the label on Aunty Bronwyn's Welsh cakes stall:</p>
+      <div class="label-card">
+        <div class="label-title">WELSH CAKES — INGREDIENTS</div>
+        <p><strong>Wheat flour</strong>, <strong>Sugar</strong>, Butter, Currants, <strong>Egg</strong>, <strong>Milk</strong>, <strong>Sesame seeds</strong>, Mixed spice.</p>
+      </div>
+      <p>Aunty Bronwyn bolded five ingredients to flag allergens for families — but she made one mistake. One bolded ingredient is NOT actually one of the official 14 major allergens. Which one?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for the confirmed list of 14 major allergens, then check each bolded word against that list, one at a time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Four of the five bolded words really are on the official list. Only one snuck in that shouldn't be there — it's not a common allergen at all.</p></details>
+    <div class="answer-box" data-answer-hash="71430585">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Traditional Welsh cakes are never baked in an oven — they're cooked on a flat griddle called a bakestone, a method that's more than 200 years old.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Compass Rose Route</h2>
+    <div class="puzzle">
+      <p>The market map is drawn on a grid, with the Fountain marking the start. Starting at the Fountain, walk <strong>3 blocks EAST</strong>, then <strong>2 blocks NORTH</strong>.</p>
+      <p>Which stall is waiting for you there?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 260" width="300" height="260" role="img" aria-label="A grid map of the night market with a compass rose, a fountain marking the start, and six labeled stalls">
+      <line x1="40" y1="20" x2="40" y2="220" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="80" y1="20" x2="80" y2="220" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="120" y1="20" x2="120" y2="220" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="160" y1="20" x2="160" y2="220" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="200" y1="20" x2="200" y2="220" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="240" y1="20" x2="240" y2="220" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="280" y1="20" x2="280" y2="220" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="40" y1="20" x2="280" y2="20" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="40" y1="60" x2="280" y2="60" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="40" y1="100" x2="280" y2="100" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="40" y1="140" x2="280" y2="140" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="40" y1="180" x2="280" y2="180" stroke="#B8AE93" stroke-width="1"/>
+      <line x1="40" y1="220" x2="280" y2="220" stroke="#B8AE93" stroke-width="1"/>
+      <!-- compass rose -->
+      <line x1="255" y1="46" x2="255" y2="14" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="255,6 250,16 260,16" fill="#2B2A24"/>
+      <text x="255" y="58" text-anchor="middle" font-size="11" font-weight="bold">S</text>
+      <text x="255" y="9" text-anchor="middle" font-size="11" font-weight="bold">N</text>
+      <line x1="230" y1="30" x2="280" y2="30" stroke="#2B2A24" stroke-width="1"/>
+      <text x="222" y="34" text-anchor="end" font-size="11" font-weight="bold">W</text>
+      <text x="288" y="34" text-anchor="start" font-size="11" font-weight="bold">E</text>
+      <!-- fountain -->
+      <circle cx="40" cy="220" r="8" fill="#2E7D8C" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="40" y="240" text-anchor="middle" font-size="10">FOUNTAIN (start)</text>
+      <!-- stalls -->
+      <circle cx="160" cy="220" r="7" fill="#C9622A" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="160" y="234" text-anchor="middle" font-size="10">Turkey</text>
+      <circle cx="160" cy="140" r="7" fill="#C9622A" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="160" y="128" text-anchor="middle" font-size="10">Ecuador</text>
+      <circle cx="40" cy="140" r="7" fill="#C9622A" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="40" y="128" text-anchor="middle" font-size="10">Oman</text>
+      <circle cx="240" cy="60" r="7" fill="#C9622A" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="240" y="48" text-anchor="middle" font-size="10">Kenya</text>
+      <circle cx="80" cy="180" r="7" fill="#C9622A" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="80" y="168" text-anchor="middle" font-size="10">Romania</text>
+      <circle cx="240" cy="220" r="7" fill="#C9622A" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="240" y="234" text-anchor="middle" font-size="10">Argentina</text>
+    </svg>
+    <div class="clue-caption">Each grid square is one block. East moves right, north moves up.</div>
+    <details class="hint"><summary>Hint 1</summary><p>East is to the right on this map, and north is up. Count one block at a time along the grid lines.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Count 3 full blocks east from the Fountain first and mark that spot. THEN count 2 blocks north from there — don't mix up the order.</p></details>
+    <div class="answer-box" data-answer-hash="d60f4228">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Vendors, Four Passport Stamps</h2>
+    <div class="puzzle">
+      <p>A gust of wind scattered four vendors' passport stamp cards. Each vendor has a first name, a country, a stall number (3, 6, 9, or 12), and one item they sell (chocolate, dates, honey, or coffee). Sketching a 4x4 grid on paper can help here. Here's what you know:</p>
+      <ol>
+        <li>Chidi's stall number is a single-digit number less than 6.</li>
+        <li>The vendor at stall 9 sells honey.</li>
+        <li>Anna's stall number is exactly double Chidi's stall number.</li>
+        <li>The Kenya vendor sells coffee, and does not have the highest stall number of the four.</li>
+        <li>Bilal's stall number is the highest of the four.</li>
+        <li>The Ecuador vendor's stall number is 6.</li>
+        <li>The Oman vendor sells dates.</li>
+        <li>Chidi sells coffee.</li>
+      </ol>
+      <p>Which country is the honey-selling vendor from?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue that pins down one exact stall number right away — that's your anchor for everything else.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you've worked out all four stall numbers, clue 2 tells you exactly which vendor sells honey. Their country is the last thing you need.</p></details>
+    <div class="answer-box" data-answer-hash="6baf57e0">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Loyalty Stamp Cipher</h2>
+    <div class="puzzle">
+      <p>Every passport stall stamps a tiny secret code next to its official stamp — Compass Row calls it the "loyalty cipher." Each letter has been shifted FORWARD through the alphabet by a secret number: the very number stamped on tonight's Turkish tea stand awning. (You wrote it down earlier — did you?)</p>
+      <p>Tonight's message, straight off Mr. Yilmaz's card:</p>
+      <p style="font-size:1.2rem; letter-spacing:0.1em; text-align:center;"><strong>LQNLT CQN MADV</strong></p>
+      <p>Shift each letter BACKWARD by that same number to read the real message.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The shift number is the one you already noted at the Turkish tea stand earlier tonight — not a new number.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Write the alphabet out twice in a row so it's easy to count backward 9 places without losing your spot.</p></details>
+    <div class="answer-box" data-answer-hash="2566872c">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Ecuador Stall's Family Deal</h2>
+    <p class="stage-label" style="margin-top:0;">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Search to confirm which official currency Ecuador uses today — you'll see why it matters in a moment. Señora Vega's Ecuador stall is the only one tonight that also accepts real US dollar bills, at a fixed festival rate of <strong>$1 = 5 Festival Tokens</strong>.</p>
+      <p>A family has $12 in cash, plus 18 tokens they already saved from an earlier stall. Grab a pencil for this one: how many tokens do they have in TOTAL once the cash is converted?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Convert the $12 into tokens first (multiply), then add the 18 tokens they already had.</p></details>
+    <div class="answer-box" data-answer-hash="97e5dd4a">
+      <label for="m8-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>The Ecuador Family Deal costs: 4 empanadas at 6 tokens each, 3 fresh juices at 9 tokens each, and 2 alfajores at 5 tokens each.</p>
+      <p>After the family buys the whole deal with their tokens from Stage 1, how many tokens do they have LEFT?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out the cost of each food item separately first (4 empanadas, then 3 juices, then 2 alfajores), add those three totals together, and only then subtract from your Stage 1 answer.</p></details>
+    <div class="answer-box" data-answer-hash="1aeb28b1">
+      <label for="m8-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m8-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Ecuador has used the US Dollar as its official currency since the year 2000, when it replaced an older currency called the sucre during an economic crisis.</p>
+
+<div class="notebook">
+  <div class="notebook-label">📓 Agent's Notebook (bonus — not scored)</div>
+  <p>Someone in the family group chat shared a link: "Buy your Compass Row wristband online — skip the line tonight!" Real Compass Row wristbands are only ever sold at the actual gate, never online. A link that asks you to pay before you can even find the real event on its own official website is a classic red flag. Tell a grown-up about links like that before anyone clicks.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Two Booths, One Better Deal</h2>
+    <div class="puzzle">
+      <p>Two currency-exchange booths sit side by side near the gate:</p>
+      <ul>
+        <li><strong>Golden Falcon Exchange:</strong> 3 Festival Tokens per euro, no fee at all, ever.</li>
+        <li><strong>River Booth Exchange:</strong> 4 Festival Tokens per euro — but charges a flat €5 fee if you're exchanging less than €50 (no fee at all once you exchange €50 or more).</li>
+      </ul>
+      <p>A family wants to exchange exactly €40. Work out how many tokens EACH booth would give them for that €40 — then figure out how many MORE tokens the better deal gives than the worse one.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out Golden Falcon's total first — it's the simpler one, with no fee to worry about.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>For River Booth, subtract the €5 fee from the €40 BEFORE multiplying by the rate — the fee comes off the euros, not off the tokens.</p></details>
+    <div class="answer-box" data-answer-hash="8df2997f">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Drum, the Rounds, and the Truth</h2>
+    <div class="puzzle">
+      <p>Inside the Grand Lantern Raffle Drum, the closing count was exactly <strong>300 tickets</strong> — that part's certain. Three volunteers each did a collection round earlier in the night: Round 2 added exactly 15 more tickets than Round 1. Round 3 added exactly 10 more than Round 2. Then, in the final hour before closing, a rush of last-minute buyers added exactly 80 more tickets, bringing the drum to its final total of 300.</p>
+      <p>Work backward from 300 to find out how many tickets Round 1 truly added.</p>
+      <p>If Round 1's true number is MORE than 50, read the closing-ceremony flag line-up below from top to bottom. If it's 50 or less, read it from bottom to top. Either way, take the FIRST LETTER of each flag, in that reading order, to spell one word.</p>
+      <p style="text-align:center;">Closing flags, top to bottom:<br><strong>Turkey · Ecuador · Argentina · Morocco · Wales · Oman · Romania · Kenya</strong></p>
+      <p>Type the word you spelled.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Round1 + Round2 + Round3 + 80 = 300. Since Round2 = Round1 + 15 and Round3 = Round1 + 25, that's the same as 3&times;Round1 + 40 + 80 = 300.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>3&times;Round1 = 300 &minus; 120 = 180, so Round1 = 60. That's more than 50 — so read the flags top to bottom.</p></details>
+    <div class="answer-box" data-answer-hash="b33bad79">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Every clue tonight came from a different stall, a different volunteer, a different kind of thinking — no single puzzle cracked the case alone. That's teamwork: the same reason a market with a hundred different stalls somehow feels like one big party. Passport fully stamped, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

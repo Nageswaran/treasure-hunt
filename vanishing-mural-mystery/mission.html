@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Vanishing Mural — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #A8447A;
+    --accent-dark: #7A3059;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .note {
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent-dark);
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+    border-radius: 2px;
+  }
+  .note strong { color: var(--accent-dark); }
+  .quote-block {
+    background: #FBF6E9;
+    border: 1px dashed rgba(0,0,0,0.25);
+    padding: 0.8rem 1rem;
+    margin: 0.9rem 0;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    border-radius: 2px;
+  }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.2rem 0 0.6rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Vanishing Mural</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75–100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Tomorrow at 10 AM, Riverside Park Community Center unveils its brand-new mural, "Roots &amp; Wings," painted by artist Anke Bloem. But tonight, committee chair Mr. Devries found a mess: the finished wall doesn't match the approved sketch. Colors are swapped. A key symbol is missing. And nobody can agree who painted what, or when.</p>
+  <p>Anke is on a ferry with no phone signal until morning. The ribbon-cutting can't wait. Mr. Devries has called in the Internet Detective Academy's newest recruit — you — to figure out what went wrong before the crowd arrives.</p>
+</div>
+
+<!-- MISSION 1 — Easy — Art & Culture, Internet Research. Plants the delayed-recall detail (Badge No. 30). -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Sketch on the Corkboard</h2>
+    <div class="puzzle">
+      <p>You arrive at the community center the evening before the big day. Pinned to the corkboard is Anke's approved sketch: a tree with roots reaching into a river, its branches turning into wings.</p>
+      <p>Next to it, Mr. Devries has pinned a note: "Anke told me she studied one famous mural before designing this one — a giant painted wall by a Mexican artist, showing factory workers, inside a real museum you can actually visit today."</p>
+      <p>Search online to find out: in which U.S. city can you visit that real, famous mural right now?</p>
+    </div>
+    <div class="note"><strong>Agent's Notebook:</strong> Clipped to the corner of the corkboard is a laminated volunteer badge: "Access Badge No. 30." Something about it feels important. Jot that number down — you might need it before this case closes.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Diego Rivera factory mural museum" — one city name will show up in almost every result.</p></details>
+    <div class="answer-box" data-answer-hash="deeb3c8">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? That real mural has 27 separate painted panels, and the artist, Diego Rivera, called it his greatest work.</p>
+
+<!-- MISSION 2 — Easy — Logical Reasoning (Foundational: classification/odd-one-out) + Dutch language + Internet Research -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>De Kwast, Het Doek</h2>
+    <div class="puzzle">
+      <p>Anke grew up in the Netherlands, and she labeled the volunteer supply closet in Dutch. Every Dutch word needs either "de" or "het" in front of it — but the labels fell off and got mixed up.</p>
+      <p>Here are five supply words: <strong>kwast</strong> (brush), <strong>emmer</strong> (bucket), <strong>ladder</strong> (ladder), <strong>muur</strong> (wall), <strong>doek</strong> (canvas).</p>
+      <p>Four of these words use the same article. One doesn't belong. Search "[word] de of het" for each one, then type the ONE word that uses a different article than the other four.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search each word one at a time, like "kwast de of het" — most of these five words will give you the same article.</p></details>
+    <div class="answer-box" data-answer-hash="18dc1118">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 3 — Medium — Mathematics: composite-shape geometry diagram, pen-and-paper heavy -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Wall That Doesn't Add Up</h2>
+    <div class="puzzle">
+      <p>Before you can sort out the colors, the paint order form needs the exact size of the mural wall. <strong>Grab a pencil for this one</strong> — it has a few steps.</p>
+      <p>The wall is shaped like a big rectangle, but the bottom-right corner is missing: that part is a utility box that doesn't get painted.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 200" width="300" height="200"
+         role="img" aria-label="A mural wall shaped like a large rectangle with a smaller rectangular utility box cut from the bottom-right corner">
+      <polygon points="20,20 260,20 260,116 196,116 196,164 20,164"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="140" y="14" text-anchor="middle" font-size="12">15 m</text>
+      <text x="272" y="68" text-anchor="middle" font-size="12" transform="rotate(-90 272 68)">6 m</text>
+      <text x="228" y="132" text-anchor="middle" font-size="12">4 m</text>
+      <text x="184" y="140" text-anchor="middle" font-size="12" transform="rotate(-90 184 140)">3 m</text>
+      <text x="108" y="180" text-anchor="middle" font-size="12">11 m</text>
+      <text x="8" y="92" text-anchor="middle" font-size="12" transform="rotate(-90 8 92)">9 m</text>
+    </svg>
+    <div class="clue-caption">Use every labeled measurement to find the wall's paintable area.</div>
+    <div class="puzzle">
+      <p>Find the total area that actually gets painted, in square meters.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Split the L-shape into two rectangles and add their areas — or find the area of the whole big rectangle and subtract the utility box.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The big outer rectangle is 15 m by 9 m. The missing utility box is 4 m by 3 m.</p></details>
+    <div class="answer-box" data-answer-hash="7238631b">
+      <label for="m3-answer">Your answer (just the number of square meters):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 — Medium — Quick-Learn: verified color-theory rule, applied (not just recalled) -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Color Wheel Rule</h2>
+    <div class="puzzle">
+      <p><strong>Quick lesson:</strong> Artists arrange colors in a circle called a color wheel. Colors sitting directly opposite each other are called <strong>complementary colors</strong>. Look at the wheel below: red sits opposite green, blue sits opposite orange, and yellow sits opposite purple.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 230" width="300" height="230"
+         role="img" aria-label="A color wheel with six wedges: red, orange, yellow, green, blue, and purple, arranged so each color sits opposite its complementary color">
+      <path d="M 150 115 L 150.0 30.0 A 85 85 0 0 1 223.6 72.5 Z" fill="#D9483C" stroke="#2B2A24" stroke-width="1.5"/>
+      <path d="M 150 115 L 223.6 72.5 A 85 85 0 0 1 223.6 157.5 Z" fill="#E08A2C" stroke="#2B2A24" stroke-width="1.5"/>
+      <path d="M 150 115 L 223.6 157.5 A 85 85 0 0 1 150.0 200.0 Z" fill="#E6C736" stroke="#2B2A24" stroke-width="1.5"/>
+      <path d="M 150 115 L 150.0 200.0 A 85 85 0 0 1 76.4 157.5 Z" fill="#4E9A51" stroke="#2B2A24" stroke-width="1.5"/>
+      <path d="M 150 115 L 76.4 157.5 A 85 85 0 0 1 76.4 72.5 Z" fill="#3A6EA5" stroke="#2B2A24" stroke-width="1.5"/>
+      <path d="M 150 115 L 76.4 72.5 A 85 85 0 0 1 150.0 30.0 Z" fill="#7A4FA0" stroke="#2B2A24" stroke-width="1.5"/>
+      <text x="177.6" y="67.2" text-anchor="middle" font-size="11" fill="#fff">RED</text>
+      <text x="205.3" y="119" text-anchor="middle" font-size="11" fill="#fff">ORANGE</text>
+      <text x="177.6" y="167" text-anchor="middle" font-size="11" fill="#2B2A24">YELLOW</text>
+      <text x="122.4" y="167" text-anchor="middle" font-size="11" fill="#fff">GREEN</text>
+      <text x="94.8" y="119" text-anchor="middle" font-size="11" fill="#fff">BLUE</text>
+      <text x="122.4" y="67.2" text-anchor="middle" font-size="11" fill="#fff">PURPLE</text>
+      <text x="150" y="222" text-anchor="middle" font-size="11" fill="#2B2A24">Opposite wedges = complementary colors</text>
+    </svg>
+    <div class="puzzle">
+      <p>Volunteer Sam left a note: "Oops — I mixed up the river ribbon's paint. I grabbed the color exactly OPPOSITE the correct one on the wheel by mistake."</p>
+      <p>A photo of the finished wall shows the river ribbon painted <strong>orange</strong>. Using the rule above, what color was the river ribbon actually supposed to be?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Find orange's wedge on the wheel above, then look at the wedge directly across the circle from it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Opposite wedges are exactly halfway around the circle — count three wedges from orange in either direction.</p></details>
+    <div class="answer-box" data-answer-hash="82fbf5cd">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The very first color wheel was made by Isaac Newton, who arranged rainbow colors into a circle back in the 1660s.</p>
+
+<!-- MISSION 5 — Medium — Internet Safety & Digital Citizenship + Internet Research -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Urgent Message</h2>
+    <div class="puzzle">
+      <p>The treasurer shows you a text message she got tonight, supposedly from Anke:</p>
+    </div>
+    <div class="quote-block">"URGENT!! Hi mural comittee, this is Anke!! My card got decline at the paint store!! Please send $500 in Amazon gift cards RIGHT NOW before 6pm or the mural wont be ready for tommorow!! Reply fast, dont call, my phone is broken. &ndash; Anke B."</div>
+    <div class="puzzle">
+      <p>Real scam experts watch for warning signs like these: rushing you, asking for an unusual payment method, spelling mistakes, and discouraging you from double-checking.</p>
+      <p>Search "FTC gift card scams" and open the official page. According to the FTC, no legitimate business or government agency will ever ask you to pay using what? (Two words.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search exactly: FTC gift card scams — look for the official page at consumer.ftc.gov.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The answer is the same unusual payment method mentioned in the message above.</p></details>
+    <div class="answer-box" data-answer-hash="40280b0c">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 6 — Hard — Technology (binary) + Logical Reasoning (Advanced: multi-constraint/AND filtering) -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Cans, One Clue</h2>
+    <div class="puzzle">
+      <p>Three mislabeled paint cans turned up in the wrong supply box. The label maker broke, so someone scratched a binary code into each lid instead of writing the section number.</p>
+      <p>Can X: <strong>0 1 1 1 1</strong><br>
+      Can Y: <strong>1 0 1 1 0</strong><br>
+      Can Z: <strong>1 1 0 0 1</strong></p>
+      <p>A separate note reads: "The mystery can's section number, once you convert it from binary, is greater than 20 — but it is <strong>NOT</strong> a multiple of 5."</p>
+      <p>Convert all three binary codes to decimal numbers, then use the note to find the mystery can. Type just that can's section number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Binary place values from left to right are 16, 8, 4, 2, 1. Add up the place values wherever you see a 1.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Two of the three numbers are bigger than 20. Only one of those two is NOT a multiple of 5 (like 5, 10, 15, 20, 25).</p></details>
+    <div class="answer-box" data-answer-hash="8ff29ca5">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Diego Rivera painted another mural at Rockefeller Center in New York — but it was destroyed in 1934 because he refused to remove a painted portrait of Lenin.</p>
+
+<!-- MISSION 7 — Hard — Financial Literacy: Real-World Decision-Making -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Paint Suppliers, One Decision</h2>
+    <div class="puzzle">
+      <p>The committee needs 8 liters of white primer for touch-ups before tomorrow. Two suppliers can deliver tonight:</p>
+      <p><strong>TrueBrand Paints:</strong> €12 per liter, plus a flat €25 delivery fee, no matter the order size.<br>
+      <strong>ColorWorks Supply:</strong> €14 per liter. Delivery is FREE on orders over €90 — otherwise it's a €10 delivery fee.</p>
+      <p>Work out the total cost of 8 liters from each supplier, delivery included. Type the total cost, in euros, of whichever supplier turns out to be cheaper. (Numbers only, no € sign.)</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out each supplier's total separately: liters &times; price per liter, then add the delivery fee.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Before adding ColorWorks Supply's delivery fee, check whether the order total already passes their €90 free-delivery threshold.</p></details>
+    <div class="answer-box" data-answer-hash="6b36197f">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 — Hard — Logical Reasoning (Intermediate: logic grid, self-contained) -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Who Painted the River?</h2>
+    <div class="puzzle">
+      <p>The volunteer sign-in sheet is a mess, but three volunteers — Mia, Noah, and Zara — each painted one of three sections: Leaves, River, and Sun. Nobody remembers who painted what. You find three clues:</p>
+      <p>1. Noah did not paint the River section.<br>
+      2. The Sun section was painted by someone who signed in earlier that morning than Noah did.<br>
+      3. According to the approved color key, the River section is blue — and Zara refuses to work with blue paint, so she didn't paint it.</p>
+      <p>Using only these three clues, figure out which volunteer actually painted the River section.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 2 — think carefully about what it tells you about who could have painted Sun.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If Noah didn't paint River (clue 1) and couldn't have painted Sun (clue 2), there's only one section left for him.</p></details>
+    <div class="answer-box" data-answer-hash="be8f3406">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- BIG "AHA!" MOMENT — Multi-stage Mathematics: paint quantity -> paint cost -->
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Fixing the River, Stage by Stage</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Now you know the river ribbon needs to be completely repainted. It's a rectangle 12 meters long and 1.5 meters wide.</p>
+      <p>The paint can label says: "1 liter covers 6 square meters with one coat." The plan calls for 2 coats, for full color.</p>
+      <p>How many liters of paint are needed in total?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the river ribbon's area (length &times; width). Then work out how many liters ONE coat needs before doubling it for two coats.</p></details>
+    <div class="answer-box" data-answer-hash="330ca589">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 (final)</p>
+    <div class="puzzle">
+      <p>Paint only comes in 2.5-liter cans, costing &euro;19 each — you can't buy part of a can.</p>
+      <p>Using the number of liters you found in Stage 1, how many EUROS will the team spend on river-repair paint?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Divide the liters from Stage 1 by 2.5 — if it isn't a whole number, round UP to the next whole can.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know how many whole cans are needed, multiply that by &euro;19.</p></details>
+    <div class="answer-box" data-answer-hash="8ae14ba5">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE — combine two earlier clues into a Caesar shift, decode the reward word "creativity" -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Envelope Behind the Frame</h2>
+    <div class="puzzle">
+      <p>Taped to the back of the mural's frame, you find a sealed envelope from Anke. Inside is a coded word: <strong>KZMIBQDQBG</strong>, with a note.</p>
+      <p>The note says: "Take the badge number you noticed on your very first evening here. Subtract the section number you found on that mystery paint can. That difference is your shift number."</p>
+      <p>Shift every letter of KZMIBQDQBG BACKWARD through the alphabet by that many places (wrapping from A back around to Z) to reveal the one word that best describes how you cracked this whole case.</p>
+      <p><strong>Type that word.</strong></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Badge number minus mystery-can number gives you a small shift — count backward that many letters for each character.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Write out the alphabet A to Z on paper, then count backward from each coded letter by your shift number.</p></details>
+    <div class="answer-box" data-answer-hash="4964abd3">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The word is <strong>CREATIVITY</strong>. You cracked this case by looking at things sideways — art, geometry, a coded paint can, and one lucky Dutch word. Mr. Devries hangs your report right next to the mural, and the missing dove takes flight on the wall just in time for tomorrow's ribbon-cutting.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

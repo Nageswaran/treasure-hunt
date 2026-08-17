@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Library's Vanishing Chapter — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #3B5B6E;
+    --accent-dark: #28404E;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul, .puzzle ol { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle li { margin: 0.3rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .notebook {
+    background: #EFE6CE;
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.92rem;
+    margin: 0.8rem 0;
+  }
+  .listing {
+    background: #efe9db;
+    border-left: 3px solid var(--hard);
+    border-radius: 2px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0.8rem 0;
+  }
+  .url-list {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.88rem;
+    background: #EFE6CE;
+    border-radius: 3px;
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0;
+    line-height: 1.9;
+    word-break: break-all;
+  }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Library's Vanishing Chapter</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Tomorrow morning, Fenwick Ridge Public Library launches its new Rare Illustrated Books Archive online — years of carefully scanning beautiful, fragile old picture books, finally ready for the whole world to see. Tonight, the preview site is glitching: Chapter Seven of the library's oldest illustrated fairy-tale collection shows up scrambled and broken. Worse, an anonymous online auction just appeared, claiming to sell "the leaked original manuscript pages" for cash before the archive even opens. Ms. Okafor, head of Special Collections, needs a sharp young detective to figure out the truth before the launch: is this a digitization glitch, a prank, or a scam?</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Scanner's Secret Code</h2>
+    <div class="puzzle">
+      <p>Instead of its usual green "OK" light, the library's book-scanning machine printed this on its little screen when it choked on Chapter Seven:</p>
+      <p style="font-family:'Special Elite',monospace; letter-spacing:0.05em; background:#EFE6CE; padding:0.6rem 0.9rem; border-radius:3px;">01010011 01000011 01000001 01001110</p>
+      <p>Computers store letters as binary numbers using a code called ASCII. Decode these four 8-digit groups into four letters to find out what mode the scanner says it's stuck in.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Each 8-digit group is one letter. Add up the value of every "1" digit using these place values: 128, 64, 32, 16, 8, 4, 2, 1. Then match the total number to a letter using an ASCII chart (A=65, B=66, C=67...).</p></details>
+    <div class="answer-box" data-answer-hash="ece838e8">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sorting the Returns Cart</h2>
+    <div class="puzzle">
+      <p>While the scanner problem gets looked at, Ms. Okafor asks you to help sort six books off the returns cart. In Dutch, every noun is either a "de" word or a "het" word — and every one of these six is a real library word:</p>
+      <ul>
+        <li><strong>boek</strong> (book)</li>
+        <li><strong>bibliotheek</strong> (library)</li>
+        <li><strong>verhaal</strong> (story)</li>
+        <li><strong>kaart</strong> (card / map)</li>
+        <li><strong>pagina</strong> (page)</li>
+        <li><strong>raadsel</strong> (riddle)</li>
+      </ul>
+      <p>Sort all six into a "DE" pile and a "HET" pile. How many of the six belong in the "HET" pile?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>There's no single trick that works for every word — Dutch children mostly memorize each one. A search for "de bibliotheek" or "het bibliotheek" (with the quote marks) will show you which one people actually use.</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <div class="notebook">🕵️ <strong>Agent's Notebook:</strong> While you wait, you notice the brass plaque mounted by the front doors: "Fenwick Ridge Public Library — Est. 1911." Jot that down — you never know when an old number like that might matter again.</div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Libraries organize their books using the Dewey Decimal system, which today is used in over 200,000 libraries in at least 135 countries around the world.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Illustrator's Legacy</h2>
+    <div class="puzzle">
+      <p>The rare volume with the vanishing chapter is a hundred-year-old collection of illustrated fairy tales, bound in the grand tradition of Victorian-era English picture books — the same tradition that made illustrator Randolph Caldecott famous.</p>
+      <p>Caldecott's lively, detailed drawings for children's books were so admired that a major American award for picture-book illustration was later named after him. Search the internet to find out: in what year was the very first Caldecott Medal actually awarded? Type just the year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Caldecott Medal first awarded year."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The medal itself was created by the American Library Association one year, but the very first WINNER was announced the year after that. Make sure you find the year of the first winner.</p></details>
+    <div class="answer-box" data-answer-hash="9f536754">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Real Site or Copycat?</h2>
+    <div class="puzzle">
+      <p>Late last night, a listing appeared on an unfamiliar site:</p>
+      <div class="listing">"SELLING: leaked original manuscript pages from Fenwick Ridge's rare archive — CASH OR GIFT CARD ONLY, act fast before the library shuts this down!"</div>
+      <p>Something about it feels off. Before jumping to conclusions, real internet detectives always check a website itself first. Cybersecurity experts (like the ones at CISA, the U.S. government's cybersecurity agency) recommend three checks:</p>
+      <ol>
+        <li>Read the web address letter by letter. Scammers often add extra words, hyphens, or swap in a similar-looking domain ending.</li>
+        <li>Look for "https://" and a small padlock icon, which means the connection is encrypted — though a scam site can have this too, so it's a helpful clue, not proof by itself.</li>
+        <li>When in doubt, don't click the link at all. Search for the organization's name yourself and go straight to its official site.</li>
+      </ol>
+      <p>Four different links claim to be Fenwick Ridge Public Library's real website. Using the checks above, read each one carefully:</p>
+      <div class="url-list">
+        A) http://fenwickridge-library-auctions.net<br>
+        B) https://www.fenwickrldgelibrary.org<br>
+        C) https://www.fenwickridgelibrary.org<br>
+        D) https://fenwickridgelibrary-rarebooks.com
+      </div>
+      <p>Type just the real domain name — without "https://" or "www." — like this format: <code>example.org</code></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Read each option letter by letter. One of them has a single sneaky letter swapped for a very similar-looking one.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Real public libraries almost always use a plain ".org" address — not ".net," not ".com," and not extra words tacked on like "auctions" or "rarebooks."</p></details>
+    <div class="answer-box" data-answer-hash="777a394a">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The real FTC (a U.S. government consumer-protection agency) says it plainly: "Gift cards are for gifts. Only gifts. Not payments." If anyone — even a friendly seller — asks you to pay with a gift card code, it's a scam, every single time.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Bookplate's Missing Corner</h2>
+    <div class="puzzle">
+      <p>Tucked inside the front cover of the rare volume is its original ownership bookplate — but one corner was neatly trimmed off long ago, probably to fit an old picture frame.</p>
+      <p>Grab a pencil for this one: split the bookplate's outline into a rectangle and a right triangle, work out each shape's area separately, then subtract to find the bookplate's total area in square centimeters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 270 175" width="270" height="175"
+         role="img" aria-label="A five-sided bookplate shape: an 18 by 10 centimeter rectangle with a right-triangle corner trimmed off the top right, the triangle's legs measuring 6 centimeters and 4 centimeters">
+      <polygon points="20,20 164,20 236,68 236,140 20,140" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="200" y="14" text-anchor="middle" font-size="12">6 cm</text>
+      <text x="248" y="44" text-anchor="middle" font-size="12" transform="rotate(-90 248 44)">4 cm</text>
+      <text x="128" y="158" text-anchor="middle" font-size="12">18 cm</text>
+      <text x="10" y="80" text-anchor="middle" font-size="12" transform="rotate(-90 10 80)">10 cm</text>
+    </svg>
+    <div class="clue-caption">The full rectangle would measure 18 cm by 10 cm if the corner weren't missing. The missing corner is a right triangle with the two shorter sides shown.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Find the area of the whole 18 cm by 10 cm rectangle first, as if the corner were still there.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The missing corner is a right triangle with a 6 cm side and a 4 cm side. A triangle's area is half of base times height. Subtract that from the rectangle's area.</p></details>
+    <div class="answer-box" data-answer-hash="f32ea0d2">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>How Old Is the Archive?</h2>
+    <div class="puzzle">
+      <p>Every book in the archive is organized using the Dewey Decimal system. Search the internet to find the real year Melvil Dewey first published his famous library classification system.</p>
+      <p>Then subtract that year from the founding year you noted earlier in this case — it's on that old brass plaque. Type the number of years between them.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Melvil Dewey Decimal Classification year published."</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you have Dewey's real year, subtract it from the year on that brass plaque you noted down earlier in the case. Don't restate the plaque's year here — just use what you already wrote down.</p></details>
+    <div class="answer-box" data-answer-hash="8cf05955">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Who Was Cataloging Folklore?</h2>
+    <div class="puzzle">
+      <p>Four curators worked in the archive this week, each on a different day and each cataloging a different section. Use these clues to find out who was cataloging Folklore on Wednesday — the exact shelf where Chapter Seven belongs:</p>
+      <ol>
+        <li>Farah worked exactly one day after Ben.</li>
+        <li>Ben cataloged Poetry, and worked on Monday.</li>
+        <li>The curator who cataloged Maps worked on Tuesday.</li>
+        <li>Priya worked exactly two days after Ben, and did not catalog Manuscripts.</li>
+      </ol>
+      <p>Grab some scrap paper and build a small table with the four curators, the four days (Monday-Thursday), and the four sections (Poetry, Maps, Folklore, Manuscripts).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 2 — it pins down one curator's day and section completely. Then work out the other days using clues 1 and 4.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once all four days are set, only two sections are left to hand out. Clue 4 tells you which one Priya does NOT catalog — that leaves only one option for her.</p></details>
+    <div class="answer-box" data-answer-hash="35c3d78">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Restorers, One Decision</h2>
+    <div class="puzzle">
+      <p>Before the volume goes on permanent display, its 15 damaged pages need professional restoration. Two studios sent in quotes:</p>
+      <ul>
+        <li><strong>Old Towne Bindery:</strong> a flat inspection fee of €50, plus €6 per page.</li>
+        <li><strong>QuickFix Paper Studio:</strong> no flat fee at all, but €11 per page.</li>
+      </ul>
+      <p>Work out the TOTAL price from each studio for all 15 pages. Which studio actually costs less overall — and what is that lower total, in euros? Type just the number (for example: <code>99</code>).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out each studio's total separately. Multiply the per-page price by 15 first, then add any flat fee on top.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A price with no flat fee can look cheaper at first glance than one with a fee attached — but for 15 pages, you have to compute both totals all the way through before you can be sure which is really lower.</p></details>
+    <div class="answer-box" data-answer-hash="6f2953d8">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Randolph Caldecott died young, at just 39 — but his lively, funny drawings changed picture books forever, which is why America's top illustration award still carries his name today.</p>
+
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The Marginalia's Secret</h2>
+    <div class="puzzle">
+      <p>In the scrambled preview, one thing survived clearly: a faint handwritten note in the margin of Chapter Seven, in curling old ink. It looks like a code.</p>
+    </div>
+
+    <p class="stage-label">Stage 1 of 3</p>
+    <div class="puzzle">
+      <p>This kind of code is called a Caesar cipher, named after a real Roman general and statesman. According to the ancient historian Suetonius, he really did use this trick to protect his military messages — always shifting each letter forward by the same small, fixed number of places in the alphabet.</p>
+      <p>Search the internet to find: what shift number is Julius Caesar's own cipher famously said to have used? Type just the digit.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Caesar cipher historical shift Suetonius."</p></details>
+    <div class="answer-box" data-answer-hash="360caa42">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 3</p>
+    <div class="puzzle">
+      <p>Good. Now use that shift number. The marginalia reads: <strong>VHYHQ</strong></p>
+      <p>Shift every letter BACKWARD by that many places in the alphabet (for example, if the shift number were 1, Z would become Y). The letters will spell out a number, written as a word. Type that number as a digit — for example, if you decode the word "FOUR," type 4.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>V shifted backward becomes S. Do the same thing to each of the other four letters.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Here's the alphabet to count backward on: ...P Q R S T U V W X Y Z. Shift each letter of VHYHQ back the same number of places you found in Stage 1.</p></details>
+    <div class="answer-box" data-answer-hash="320ca3f6">
+      <label for="m9-stage2">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 3 of 3</p>
+    <div class="puzzle">
+      <p>That number is the shelf where Chapter Seven's original volume lives. Multiply it by the 12 volumes stored on that shelf, then subtract 50. The result is the exact page number the old scanner choked on. Type that page number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Multiply first, then subtract — do the steps in that order.</p></details>
+    <div class="answer-box" data-answer-hash="8bf057c2">
+      <label for="m9-stage3">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage3" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Case Closed: Who Forgot to Log Out?</h2>
+    <div class="puzzle">
+      <p>You now know the scrambled chapter was just an honest accident — a torn page an old scanner couldn't read. But how did "RareFindsBidz88" know enough about the archive to invent a believable-sounding auction post? The answer traces back to a public computer terminal that was found still logged into the archive system the next morning.</p>
+      <p>Four volunteers used that terminal the evening before, each tapping their staff badge out at a different time as they left. The library's front doors auto-lock at exactly 8:00 PM, and whoever left LAST is the one who forgot to log out. Work backward from the clues below:</p>
+      <ol>
+        <li>Deshawn tapped out at 7:30 PM.</li>
+        <li>Aisha tapped out exactly 10 minutes after Deshawn.</li>
+        <li>Carla tapped out exactly 5 minutes before the doors auto-locked.</li>
+        <li>Marco tapped out exactly 20 minutes before Carla.</li>
+      </ol>
+      <p>Who forgot to log out?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start from the one clue anchored to a fixed time — the 8:00 PM auto-lock — and work backward from there to find Carla's exact time first.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Carla's exact time, Marco's follows directly from clue 4. Then just line up all four times to see who left last.</p></details>
+    <div class="answer-box" data-answer-hash="8404eb22">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Piecing together a torn page, a forgotten log-out, and a scammer's empty bluff — instead of jumping straight to the scariest explanation — takes real wisdom. Case closed, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
