@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The App Lab Funding Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E7D8C;
+    --accent-dark: #1F5965;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul, .puzzle ol { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle table { border-collapse: collapse; margin: 0.7rem 0; width: 100%; }
+  .puzzle table th, .puzzle table td { border: 1px solid rgba(0,0,0,0.15); padding: 0.4rem 0.6rem; text-align: left; font-size: 0.95rem; }
+  .puzzle table th { background: var(--paper-dark); }
+  .note-aside {
+    font-style: italic;
+    color: var(--accent-dark);
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent);
+    padding: 0.5rem 0.8rem;
+    margin: 0.8rem 0;
+    font-size: 0.95rem;
+  }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The App Lab Funding Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-75 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Last night, the App Lab Coding Club held Demo Night — five student-built apps shown off to raise money for Fernwood Animal Shelter, with every donated dollar promised straight to the shelter. This morning, the amount actually in the cash box doesn't match last night's tally sheet, and the club has to hand the district's Innovation Grant Committee an exact, honest total at tomorrow's big pitch.</p>
+  <p>Club advisor Ms. Alvarez has called in the Internet Detective Academy's sharpest agent — you — to retrace every dollar from last night, figure out exactly what's missing, and crack open a locked overflow cash box before the deadline. Nobody's in trouble. You just need to follow the clues.</p>
+</div>
+
+<!-- MISSION 1 — EASY — Technology (binary) -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Closet Keypad</h2>
+    <div class="puzzle">
+      <p>Taped inside Ms. Alvarez's planning notebook is a torn sticky note. Someone scribbled "SUPPLY CLOSET CODE (binary!)" above a string of 1s and 0s:</p>
+      <p style="font-family:'Special Elite',monospace; font-size:1.3rem; letter-spacing:0.3em; text-align:center;">101011</p>
+      <p>The closet's keypad only understands regular decimal numbers, not binary. Convert the binary code above into a normal decimal number to open the closet — that's where last night's donation paperwork is stored.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Each digit stands for a power of two. Reading left to right, the six columns are worth 32, 16, 8, 4, 2, and 1 — add up only the columns where you see a 1.</p></details>
+    <div class="answer-box" data-answer-hash="86e383f0">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type the decimal number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 — EASY — Financial Literacy -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Two Sticker Shops</h2>
+    <div class="puzzle">
+      <p>Inside the closet, you find quotes from two print shops the club was comparing for donor thank-you stickers. App Lab needs exactly <strong>120 stickers</strong> for tomorrow's pitch.</p>
+      <table>
+        <tr><th>Shop</th><th>Deal</th></tr>
+        <tr><td>Bright Print Co.</td><td>$16.00 per bundle of 40 stickers (bundles only)</td></tr>
+        <tr><td>QuickSticker Shop</td><td>$0.30 per sticker, any amount</td></tr>
+      </table>
+      <p>Work out the total cost of exactly 120 stickers at each shop. How many dollars would App Lab save by choosing the cheaper shop instead of the pricier one?</p>
+      <p style="font-size:0.9rem; color:rgba(0,0,0,0.6);">Type just the number of dollars saved — no dollar sign, no decimal point. Example: 12</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Bright Print only sells in bundles of 40 — figure out exactly how many bundles equal 120 stickers, then find each shop's total price for 120.</p></details>
+    <div class="answer-box" data-answer-hash="1deb2d6a">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Dollars saved...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 3 — MEDIUM — Mathematics (geometry/measurement, self-drawn SVG) -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Gym Floor Plan</h2>
+    <div class="puzzle">
+      <p>Demo Night was held in the school gym. The diagram below shows the gym floor from above — a big rectangle, with a smaller rectangular "stage alcove" roped off in one corner for the sound equipment (no donation booths allowed there).</p>
+      <svg class="clue-diagram" viewBox="0 0 300 190" width="300" height="190" role="img" aria-label="Gym floor plan: a large rectangle with a smaller rectangular stage alcove cut from the top-right corner, roped off from booth space">
+        <polygon points="20,20 202,20 202,76 272,76 272,160 20,160" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+        <text x="237" y="52" text-anchor="middle" font-size="10" fill="rgba(0,0,0,0.55)">stage</text>
+        <text x="237" y="64" text-anchor="middle" font-size="10" fill="rgba(0,0,0,0.55)">alcove</text>
+        <text x="111" y="12" text-anchor="middle" font-size="12">13 m</text>
+        <text x="216" y="52" text-anchor="middle" font-size="12" transform="rotate(-90 216 52)">4 m</text>
+        <text x="237" y="70" text-anchor="middle" font-size="12">5 m</text>
+        <text x="286" y="118" text-anchor="middle" font-size="12" transform="rotate(-90 286 118)">6 m</text>
+        <text x="146" y="176" text-anchor="middle" font-size="12">18 m</text>
+        <text x="10" y="90" text-anchor="middle" font-size="12" transform="rotate(-90 10 90)">10 m</text>
+      </svg>
+      <div class="clue-caption">Every side length you need is marked on the diagram. How much floor space (in square meters) is left over for donation booths, once the stage alcove is roped off?</div>
+      <p style="font-size:0.9rem; color:rgba(0,0,0,0.6);">Type just the number of square meters. Example: 50</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try splitting the whole floor into one big rectangle (as if the alcove weren't there), then subtract the area of the roped-off alcove rectangle.</p></details>
+    <div class="answer-box" data-answer-hash="fb2ead6a">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Square meters...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The word "bit" (as in a binary digit, a 1 or a 0) was coined in 1947 by mathematician John Tukey at Bell Labs, as a short way of saying "binary digit." Every photo, app, and website your computer shows you is ultimately built from millions of these tiny bits!</p>
+
+<!-- MISSION 4 — MEDIUM — Mathematics/Financial Literacy (pen-and-paper tally, delayed-recall plant) -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Counting Every Dollar</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Inside the closet's paperwork folder, you find this morning's counted totals from every donation source at Demo Night:</p>
+      <table>
+        <tr><th>Source</th><th>Amount</th></tr>
+        <tr><td>Front table cash jar</td><td>$86.25</td></tr>
+        <tr><td>Online donations (QR code app report)</td><td>$54.00</td></tr>
+        <tr><td>Sponsor check — Maple Street Bakery</td><td>$75.00</td></tr>
+        <tr><td>Raffle ticket stubs — 23 tickets &times; $2 each</td><td>?</td></tr>
+      </table>
+      <p>Work out the raffle total, then add up all four sources for this morning's grand total.</p>
+      <p>Now compare that to last night's written tally sheet — filled in live at closing time — which reads a total of <strong>$312.75</strong>.</p>
+      <p class="note-aside">📝 Agent's notebook: while counting the raffle stubs, you spot the winning ticket set aside in its own little envelope for tomorrow's drawing — stub #18. Worth remembering.</p>
+      <p>How much money (in dollars) is unaccounted for between the tally sheet and this morning's count?</p>
+      <p style="font-size:0.9rem; color:rgba(0,0,0,0.6);">Type the amount with a decimal point, no dollar sign. Example: 3.50</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the raffle total (23 tickets &times; $2), then add all four sources together — that's this morning's grand total. Subtract it from $312.75.</p></details>
+    <div class="answer-box" data-answer-hash="cd12b412">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Amount missing...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 — MEDIUM — Logical Reasoning (Foundational: classification) -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Who Was Where</h2>
+    <div class="puzzle">
+      <p>Ms. Alvarez pulls up last night's volunteer sign-up sheet. Six club members helped run the donation table. For each one, you learn two things: whether they worked the very last hour before closing (7-8 PM), and whether they already knew the supply closet's code before last night.</p>
+      <table>
+        <tr><th>Member</th><th>Worked the last hour (7-8 PM)?</th><th>Already knew the closet code?</th></tr>
+        <tr><td>Priya</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td>Jonas</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Theo</td><td>No</td><td>Yes</td></tr>
+        <tr><td>Maya</td><td>No</td><td>No</td></tr>
+        <tr><td>Ruby</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Sam</td><td>No</td><td>Yes</td></tr>
+      </table>
+      <p>Only ONE club member both worked the last hour AND already knew the closet code before last night. That's the person most likely to know where an overflow jar might have been tucked away. Who is it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Make two separate lists — everyone who worked the last hour, and everyone who knew the code. Whoever's name shows up on BOTH lists is your answer.</p></details>
+    <div class="answer-box" data-answer-hash="35c3d78">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? In the United States, "unit pricing" — showing the price per ounce or per item on the shelf tag, so shoppers can compare deals fairly — first became a law in New Jersey in 1975. It's one reason those little price-per-unit numbers show up on grocery shelves today!</p>
+
+<!-- MISSION 6 — HARD — Critical Thinking & Media Literacy (light Internet Safety touch) -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Messages, One Fake</h2>
+    <div class="puzzle">
+      <p>You find two printed emails about the club's online donation account, both claiming to be from PledgePost, the fundraiser platform App Lab uses. Only one is real.</p>
+      <table>
+        <tr><th>Email A</th><th>Email B</th></tr>
+        <tr>
+          <td>
+            <strong>From:</strong> PledgePost Team &lt;support@pledgepost-verify-account.net&gt;<br>
+            <strong>Subject:</strong> URGENT!! Confirm donations within 2 HOURS or funds get frozen!!<br><br>
+            "Dear Customer, reply immediately with your team login PASSWORD to confirm you are the account holder, or your club's donations will be permanently frozen."
+          </td>
+          <td>
+            <strong>From:</strong> PledgePost Support &lt;support@pledgepost.org&gt;<br>
+            <strong>Subject:</strong> Your Demo Night donation report is ready<br><br>
+            "Hi App Lab Coding Club, your donation report for last night is ready in your dashboard whenever you'd like to check it. We will never ask for your password by email — call us at the number on your account page if anything looks off."
+          </td>
+        </tr>
+      </table>
+      <p>Which email is genuinely from PledgePost — A or B?</p>
+      <p style="font-size:0.9rem; color:rgba(0,0,0,0.6);">Type just the single letter, A or B.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look closely at the sender's actual email address in each one, not just the name shown before it — does it match the kind of domain you'd expect from the real company?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>A real organization won't threaten you with a countdown timer to make you panic, and it will never ask you to send your password by email.</p></details>
+    <div class="answer-box" data-answer-hash="e70c2de5">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="A or B...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 — HARD — Technology (QR codes) -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Hand-Drawn QR Grid</h2>
+    <div class="puzzle">
+      <p>App Lab's printer broke, so someone hand-drew a QR-style code for online donations and taped it to the jar. Real QR codes were invented in 1994 by an engineer named Masahiro Hara, at a Japanese company called Denso Wave, to help track auto parts moving through car factories — "QR" literally stands for "Quick Response." Denso Wave even chose not to enforce their patent, which is part of why anyone, even a school coding club, can put a QR code on a homemade poster for free.</p>
+      <p>Under the jar's grid, a note reads: "Read top row first, five blocks per row, dark = 1, light = 0." Each row is a 5-digit binary number.</p>
+      <svg class="clue-diagram" viewBox="0 0 210 190" width="210" height="190" role="img" aria-label="A hand-drawn grid of five rows of black and white blocks, five blocks per row, representing five binary numbers">
+        <rect x="24" y="20" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="47" y="20" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="70" y="20" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="93" y="20" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="116" y="20" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <text x="146" y="34" font-size="12" fill="#2B2A24">Row 1</text>
+
+        <rect x="24" y="52" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="47" y="52" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="70" y="52" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="93" y="52" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="116" y="52" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <text x="146" y="66" font-size="12" fill="#2B2A24">Row 2</text>
+
+        <rect x="24" y="84" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="47" y="84" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="70" y="84" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="93" y="84" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="116" y="84" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <text x="146" y="98" font-size="12" fill="#2B2A24">Row 3</text>
+
+        <rect x="24" y="116" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="47" y="116" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="70" y="116" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="93" y="116" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="116" y="116" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <text x="146" y="130" font-size="12" fill="#2B2A24">Row 4</text>
+
+        <rect x="24" y="148" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="47" y="148" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="70" y="148" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="93" y="148" width="20" height="20" fill="#FFFDF7" stroke="#2B2A24" stroke-width="1.5"/>
+        <rect x="116" y="148" width="20" height="20" fill="#2B2A24" stroke="#2B2A24" stroke-width="1.5"/>
+        <text x="146" y="162" font-size="12" fill="#2B2A24">Row 5</text>
+      </svg>
+      <div class="clue-caption">Convert each row's 5-digit binary number to a decimal number (1-26), then to a letter using A=1, B=2, C=3 ... Z=26. Five rows, five letters, one word.</div>
+      <p style="font-size:0.9rem; color:rgba(0,0,0,0.6);">Type the word you spell, all lowercase.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Each row is one letter. Convert it the same way you did for the closet's binary code — add up the columns worth 16, 8, 4, 2, 1 wherever there's a dark block.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Real QR codes are scanned one small square at a time, in a set order — do the same here: solve Row 1 all the way to a letter, then Row 2, and so on, top to bottom.</p></details>
+    <div class="answer-box" data-answer-hash="885a9a2d">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="The word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Denso Wave, the Japanese company that invented the QR code in 1994, decided not to enforce its patent rights on the design. That single decision is a big part of why QR codes became free for anyone in the world to use — from grocery store receipts to school fundraiser posters.</p>
+
+<!-- MISSION 8 — HARD — Logical Reasoning (Intermediate: knights and knaves) -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Who Has the Spare Key?</h2>
+    <div class="puzzle">
+      <p>Behind the stage alcove sits the overflow cash box you've heard about — but it's locked, and Ms. Alvarez needs the spare key to even try opening it. Three club members answer when she asks who has it:</p>
+      <ul>
+        <li><strong>Sam:</strong> "I've got the spare key right here."</li>
+        <li><strong>Ruby:</strong> "Sam does not have the key."</li>
+        <li><strong>Theo:</strong> "I've got the spare key."</li>
+      </ul>
+      <p>Exactly ONE of these three statements is mistaken (or a joke) — the other two are the plain truth. Who really has the spare key?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Sam and Theo can't both be telling the truth — they're each claiming to have the SAME single key. Figure out which one of the two of them is right first.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Try assuming Sam is the mistaken one, and check whether Ruby's and Theo's statements agree with each other without any contradiction. Then try assuming Theo is the mistaken one instead, and see what breaks.</p></details>
+    <div class="answer-box" data-answer-hash="e622eb09">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 9 — AHA! — multi-stage -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The True Shortfall</h2>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>One more receipt turns up, this time from the online donation app itself. It turns out the app quietly charges a $0.25 service fee on every single online gift — a fee that's subtracted before the money ever reaches the club's account. Nobody "lost" that money; it just never arrived in the first place, so it never showed up as missing before now.</p>
+      <p>The receipt shows the number of online gifts that came in last night — and it happens to match a number you already know by heart from earlier tonight, set aside in its own little envelope.</p>
+      <p>Multiply that number of gifts by the $0.25 fee, then add the result to the shortfall you calculated earlier. What is the TRUE amount still unaccounted for, in whole dollars?</p>
+      <p style="font-size:0.9rem; color:rgba(0,0,0,0.6);">It comes out to a whole number of dollars — no cents needed. Example: 40</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Multiply the number on that little envelope by $0.25, then add that onto the shortfall amount you already worked out.</p></details>
+    <div class="answer-box" data-answer-hash="89e14a12">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="True shortfall, in dollars...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Ms. Alvarez remembers two things about the overflow cash box's 3-digit combination lock: the three digits add up to a number related to the true shortfall you just found, and the first digit is even.</p>
+      <p>Add the two digits of your Stage 1 answer together — that sum is the code's digit-sum. Type that digit-sum as your answer.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>If your Stage 1 answer was a two-digit number, just add those two digits to each other.</p></details>
+    <div class="answer-box" data-answer-hash="1ceb2bd7">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Digit-sum...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE — Logical Reasoning (Advanced: combinatorics/counting) -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Cracking the Cash Box</h2>
+    <div class="puzzle">
+      <p>You already know two things about the overflow box's 3-digit lock: the digits add up to the digit-sum you just found, and the first digit is even. That still leaves a lot of possible codes. Luckily, three club members each remember one more detail:</p>
+      <ul>
+        <li><strong>Maya:</strong> "I'm sure the first digit was a 4."</li>
+        <li><strong>Jonas:</strong> "The second digit was bigger than the third digit."</li>
+        <li><strong>Priya:</strong> "The third digit was even — but it definitely wasn't a zero."</li>
+      </ul>
+      <p>Grab a pencil: list out every 3-digit code that starts with 4 and whose three digits add up to your digit-sum. Then use Jonas's and Priya's clues to cross options off, one by one, until exactly ONE code is left.</p>
+      <p>Picture spinning the dial to that code — the box clicks open. Inside is a strip of paper reading <strong>EPLXHZCV</strong>, with a note: "Shift every letter backward through the alphabet by the digit-sum you already know (wrap from A back around to Z if you need to)."</p>
+      <p>Decode the strip to reveal the word that describes exactly how App Lab cracked this case tonight. Type that word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start by listing every code that begins with 4 and whose three digits add up to your digit-sum — write them all out in a column, there aren't too many.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Cross off any code where the second digit ISN'T bigger than the third. Then, of what's left, cross off any code where the third digit is odd, or is a zero.</p></details>
+    <div class="answer-box" data-answer-hash="b33bad79">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="The decoded word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Nobody stole a thing — the money was scattered across a jar, an app, a check, and a stack of raffle stubs, and it took every single clue (and every club member's memory) working together to add it all back up. That's exactly what tomorrow's grant committee is going to hear about: <strong>teamwork</strong> is what actually saved Demo Night.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

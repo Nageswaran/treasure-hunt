@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Kiwi Ranger's Geyser Trail — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #4C7A52;
+    --accent-dark: #355B3A;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.2rem 0 0.6rem; }
+  .notebook {
+    background: var(--paper-dark);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook strong { color: var(--accent-dark); }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Kiwi Ranger's Geyser Trail</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  Last night, a huge storm rolled over a geothermal reserve on New Zealand's North Island and knocked out the ranger station's power. When it came back on, the digital release records for tonight's young kiwi chick were completely scrambled — and the chick MUST be set free at exactly the right spot before dark, or it will spend a dangerous extra day in its travel box. The head ranger has called you in: an Internet Detective who can rebuild the day's trail from paper clues, radio static, old maps, and a few numbers worth remembering. Follow the trail, mission by mission, and find the gate before nightfall.
+</div>
+
+<!-- MISSION 1 — Easy — Geography & World Knowledge (internet research) -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Welcome to the Valley</h2>
+    <div class="puzzle">
+      <p>All the head ranger remembers before the power went out is this: the reserve sits inside a famous geothermal valley near the city of Rotorua, on New Zealand's North Island. That valley is home to the tallest, most active geyser in the whole Southern Hemisphere — one that can blast boiling water up to 30 metres into the air and can erupt as often as 20 times in a single day.</p>
+      <p>Search online to find this famous geyser's name. Type just its Māori name — one word, no need to add the word "geyser".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching something like "largest geyser Southern Hemisphere Rotorua". The valley it stands in has a Māori name starting with "Wh".</p></details>
+    <div class="answer-box" data-answer-hash="2d934fe4">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 — Easy — Science & Nature / Foundational Logical Reasoning (classification, with real image) -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Missing Page</h2>
+    <div class="puzzle">
+      <p>Before the storm, the reserve's field guide had a page about one very special bird — the one tonight's chick belongs to. The storm-soaked page tore off, leaving only four true facts behind:</p>
+      <p>
+        &bull; It cannot fly. Its wings are tiny and almost useless.<br>
+        &bull; It is nocturnal — active at night, and asleep through the day.<br>
+        &bull; It is the ONLY bird in the entire world with its nostrils at the very tip of its beak, which it uses like a nose to sniff out food underground.<br>
+        &bull; Compared to its own body size, it lays one of the biggest eggs of ANY bird on Earth — sometimes close to a fifth of its own body weight.
+      </p>
+      <p>Careful — New Zealand also has another famous flightless, nocturnal bird: the kākāpō, a giant parrot. It shares some of these facts too. Only ONE of the four facts above is true for this mystery bird and NOT for the kākāpō. Use that fact to be sure. What bird is this?</p>
+    </div>
+    <img class="clue-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Apteryx_mantelli_-Rotorua,_North_Island,_New_Zealand-8a.jpg?width=800" alt="A North Island brown kiwi, a small round brown bird with a long thin beak, photographed at Rainbow Springs Kiwi Wildlife Park in Rotorua, New Zealand">
+    <div class="clue-caption">This photo was taken right in the Rotorua area — look closely at where its beak meets its face.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Flightless AND nocturnal fits more than one New Zealand bird — but only one of them has a nose built into the very tip of its beak.</p></details>
+    <div class="answer-box" data-answer-hash="bffdf499">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A mother kiwi's egg can weigh up to a fifth of her own body weight — the largest egg of any bird on Earth, compared to body size.</p>
+
+<!-- MISSION 3 — Medium — Mathematics: geometry/measurement, self-drawn SVG diagram -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Predator-Proof Enclosure</h2>
+    <div class="puzzle">
+      <p>Every young kiwi chick at the reserve grows up safe inside a predator-proof fenced enclosure. The diagram below shows its exact shape — there's a gate cut into one corner for the ranger's path. Using the measurements marked on the fence-line, work out the TOTAL AREA of ground protected inside the fence, in square metres.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 190" width="300" height="190"
+         role="img" aria-label="A fenced enclosure shaped like a rectangle with a smaller rectangular gate notch cut from the bottom-left corner">
+      <polygon points="30,20 230,20 230,160 90,160 90,110 30,110"
+               fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="130" y="12" text-anchor="middle" font-size="12">20 m</text>
+      <text x="250" y="90" text-anchor="middle" font-size="12" transform="rotate(-90 250 90)">14 m</text>
+      <text x="60" y="102" text-anchor="middle" font-size="12">6 m</text>
+      <text x="102" y="135" text-anchor="middle" font-size="12" transform="rotate(-90 102 135)">5 m</text>
+    </svg>
+    <div class="clue-caption">Tip: a straight line across the notch turns this into two ordinary rectangles.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Split the L-shape into two rectangles — find each rectangle's area, then add them together. Or: find the area of the full outer rectangle, then subtract the missing gate notch.</p></details>
+    <div class="answer-box" data-answer-hash="25db25b0">
+      <label for="m3-answer">Your answer (type the number only, no units):</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 — Medium — Mathematics: pen-and-paper multi-step tally -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Retrace Your Steps</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one — it's a job for paper, not just your head. Here is today's boardwalk trail, leg by leg, copied from the ranger's paper log:</p>
+      <p>
+        Leg 1: Ranger Station &rarr; Silica Terrace Edge: <strong>240 m</strong><br>
+        Leg 2: Silica Terrace Edge &rarr; Bubbling Mud Pools: <strong>185 m</strong><br>
+        Leg 3: Bubbling Mud Pools &rarr; Pōhutu Geyser Deck: <strong>310 m</strong><br>
+        Leg 4: Pōhutu Geyser Deck &rarr; Kiwi Conservation House: <strong>265 m</strong><br>
+        Shortcut: Kiwi Conservation House straight back to Ranger Station: <strong>150 m</strong>
+      </p>
+      <p>It's getting dark, and kiwi are waking up for the night, so you must hurry back before you disturb them. Walk the whole outbound trail (all four legs) to reach the Kiwi Conservation House, then turn around and take the shortcut path straight back to the Ranger Station. In total, how many metres did you walk, there and back?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add the four outbound legs together first to get one big number, then add the shortcut distance on top of that.</p></details>
+    <div class="answer-box" data-answer-hash="322ff42">
+      <label for="m4-answer">Your answer (type the number only, no units):</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 — Medium — Navigation & Orientation: compass bearings, with planted delayed-recall detail -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Bearings to the Terrace</h2>
+    <div class="puzzle">
+      <p>The ranger hut has a hand-drawn compass map pinned by the flagpole, showing eight lookout points arranged around it like a compass rose:</p>
+      <p>
+        North (000&deg;): Redwood Ridge Lookout<br>
+        Northeast (045&deg;): Steam Vent Point<br>
+        East (090&deg;): Boardwalk Junction<br>
+        Southeast (135&deg;): Sacred Terrace View<br>
+        South (180&deg;): Mud Pool Terrace<br>
+        Southwest (225&deg;): Silica Terrace Edge<br>
+        West (270&deg;): Visitor Gate<br>
+        Northwest (315&deg;): Old Kauri Grove
+      </p>
+      <p>Stand at the flagpole facing due North (bearing 000&deg;). Turn clockwise 225&deg;. Walk straight ahead in that new direction until you reach a lookout point. Which lookout point do you arrive at? Type its full name.</p>
+    </div>
+    <div class="notebook">📔 <strong>Ranger's Notebook</strong> (pinned to the corkboard by the flagpole): "Entry No. 114 — release tag for the last chick we set free before the storm hit. Small numbers like this are easy to lose track of, but worth holding onto."</div>
+    <details class="hint"><summary>Hint 1</summary><p>Turning clockwise from North: 45&deg; = NE, 90&deg; = E, 135&deg; = SE, 180&deg; = S... keep counting up by 45&deg;s to see exactly where 225&deg; lands.</p></details>
+    <div class="answer-box" data-answer-hash="88021c5">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Rotorua is nicknamed "Sulphur City" because of the rotten-egg smell caused by hydrogen sulphide gas rising naturally out of the ground.</p>
+
+<!-- MISSION 6 — Hard — Cryptography & Secret Codes: Caesar shift -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Radio Static</h2>
+    <div class="puzzle">
+      <p>Old ranger radios still use a classic trick to keep messages private: every letter is shifted FORWARD 3 places in the alphabet (A becomes D, B becomes E, and so on). Spaces stay exactly where they are. A crackly message just came through the ranger hut's radio:</p>
+      <p style="font-family:'Special Elite', monospace; font-size:1.1rem; letter-spacing:0.06em; text-align:center;">WKH FKLFN ZDLWV DW WKH ROG NDXUL JURYH</p>
+      <p>Shift each letter BACKWARD 3 places to decode it, and type the location it names (lowercase is fine).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try it on the first word only: W, K, H — shift each letter back 3 places in the alphabet and see what three-letter word appears.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Since A was shifted forward to become D, going backward D becomes A. Work through it letter by letter — the message is five words long, and the last three name a place in the forest.</p></details>
+    <div class="answer-box" data-answer-hash="58c3e3a7">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 — Hard — History & Civilizations: Māori heritage "who/what am I" riddle from verified facts -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Valley's True Name</h2>
+    <div class="puzzle">
+      <p>Long before any ranger station stood here, this valley had another name — one still used today. Piece it together from these real, true clues:</p>
+      <p>
+        &bull; Its full Māori name honours a warrior named Wāhiao, and means "the gathering place for the war parties of Wāhiao".<br>
+        &bull; Local guides trace their whakapapa (ancestry) back to the Te Arawa people, who first settled this valley in the year 1325.<br>
+        &bull; In 1886, when nearby Mount Tarawera erupted and buried the land of another tribe, Tūhourangi, the people of this valley took them in — and the two peoples became one, known today as Tūhourangi Ngāti Wāhiao.
+      </p>
+      <p>Locals usually shorten the valley's long full name down to one word. What is it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The shortened name starts with "Wh" — it's also the name of a living Māori village you can visit today, right next to the geyser you found in Mission 1.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Search for "living Māori village Rotorua Te Puia" and look for a one-word valley/village name.</p></details>
+    <div class="answer-box" data-answer-hash="a54dd105">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The National Kiwi Hatchery near Rotorua has hatched more than 2,600 kiwi chicks since 1995, and released over 1,000 of them back into the wild.</p>
+
+<!-- MISSION 8 — Hard — Logical Reasoning, Intermediate tier: logic grid solved by elimination -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Who Saw the Kiwi?</h2>
+    <div class="puzzle">
+      <p>Four rangers each patrolled a different part of the reserve this morning, and each spotted a different native bird. Use the four clues below to work out who spotted the kiwi.</p>
+      <p>
+        <strong>Rangers:</strong> Aria, Manaia, Koro, Briar<br>
+        <strong>Birds spotted:</strong> kiwi, kea, tūī, kārearea (New Zealand falcon)<br>
+        <strong>Locations patrolled:</strong> Fern Gully, Redwood Ridge, Boardwalk Junction, Steam Vent Point
+      </p>
+      <p>
+        1. Manaia spotted the kea at Redwood Ridge.<br>
+        2. The ranger who saw the kārearea was patrolling Boardwalk Junction.<br>
+        3. Aria wasn't at Steam Vent Point or Fern Gully.<br>
+        4. Briar never patrolled Fern Gully and didn't see the tūī.
+      </p>
+      <p>Which ranger spotted the kiwi?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 1 — it hands you a ranger, a bird, AND a location all at once, for free.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know where Aria must be (clue 3), clue 2 tells you exactly what Aria saw. That leaves only two rangers and two locations — clue 4 finishes the job.</p></details>
+    <div class="answer-box" data-answer-hash="5d32ca7">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- BIG "AHA!" MOMENT — Multi-stage: delayed recall + calculation, then a lookup to pinpoint the final observation point -->
+<div class="mission">
+  <div class="tab">BIG "AHA!" MOMENT</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Storm-Scrambled Numbers</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>The ranger's tablet is completely fried, but she remembers most of what mattered. Find the release-tag number you noted earlier today — it's easy to overlook, but you wrote it down. Subtract from it the maximum number of times Pōhutu can erupt in one busy day (you found this fact all the way back on your very first case).</p>
+      <p>What number do you get?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look back through your case file for a small tag number pinned to a corkboard note, then subtract the eruption number you found in Mission 1.</p></details>
+    <div class="answer-box" data-answer-hash="7fe9280">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 (final)</p>
+    <div class="puzzle">
+      <p>That number is a gate number! Match it to the ranger's gate list below to find exactly where you need to report before dusk:</p>
+      <p>
+        Gate 58 — Steam Vent Deck<br>
+        Gate 76 — Fern Gully Gate<br>
+        Gate 94 — Dusk Release Platform<br>
+        Gate 103 — Redwood Overlook
+      </p>
+      <p>Using your Stage 1 number, where do you need to report?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Find the gate number that matches your Stage 1 answer exactly — no rounding needed.</p></details>
+    <div class="answer-box" data-answer-hash="759d26b0">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE — Logical Reasoning, Advanced tier: multi-constraint logic grid revealing the reward word "perseverance" -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Gate</h2>
+    <div class="puzzle">
+      <p>Tonight, four rangers are each stationed at a different gate, each tracking a different animal, carrying a different piece of equipment, and working a different shift. Work out which gate YOU should report to — the one where a ranger is about to release a young kiwi chick.</p>
+      <p>
+        <strong>Rangers:</strong> Ihaka, Nia, Toby, Marama<br>
+        <strong>Animals being tracked:</strong> kiwi chick, tuatara, wētā, longfin eel<br>
+        <strong>Equipment:</strong> torch, binoculars, thermal thermometer, radio<br>
+        <strong>Shift times:</strong> 6 AM, noon, 6 PM (dusk), 9 PM<br>
+        <strong>Gates:</strong> Redwood Overlook, Fern Gully Gate, Steam Vent Deck, Perseverance Point
+      </p>
+      <p>
+        1. Marama works the dusk (6 PM) shift and always carries a torch.<br>
+        2. The kiwi chick is released at dusk.<br>
+        3. Ihaka starts the earliest shift, at 6 AM, and is the one tracking the tuatara.<br>
+        4. Toby has the last shift of the day, at 9 PM.<br>
+        5. Toby does not study insects.<br>
+        6. The ranger tracking the tuatara uses binoculars to watch it bask on rocks.<br>
+        7. Toby radios in his eel counts from the river.<br>
+        8. The tuatara-watcher reports to Redwood Overlook.<br>
+        9. The wētā researcher's gate has the word "Fern" in its name.<br>
+        10. The eel-counter's gate overlooks the steam vents.
+      </p>
+      <p>Which gate should you report to? Type just the special word in that gate's name (skip the word "Point").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Lock down the four shift times first — clues 1, 3, and 4 place three rangers immediately, and the fourth ranger simply gets whichever time is left over.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once every ranger has an animal (tuatara goes to Ihaka; clue 5 rules out wētā for Toby, so Toby gets the eel and Nia gets the wētā), match each animal to its gate using clues 8, 9, and 10 — whichever gate is left over is your answer.</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Even with every digital file scrambled by the storm, you never gave up — you rebuilt the whole day's trail out of scraps of paper, crackly radio static, an old compass rose, and your own memory. That's <strong>perseverance</strong>: the very quality tonight's kiwi chick will need too, taking its first steps into the wild. Case closed, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

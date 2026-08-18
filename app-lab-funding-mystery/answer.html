@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Answer Key — The App Lab Funding Mystery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #2E7D8C;
+    --stamp-red: #A33B2D;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+  }
+  h1, .banner, .label-eyebrow { font-family: 'Special Elite', monospace; }
+  .banner {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    border: 3px solid var(--stamp-red);
+    color: var(--stamp-red);
+    padding: 0.9rem 1rem;
+    transform: rotate(-1deg);
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2rem; }
+  .case-header h1 { font-size: clamp(1.5rem, 4.5vw, 2.1rem); margin: 0; }
+  .case-header .subtitle { color: rgba(0,0,0,0.55); font-size: 0.9rem; margin-top: 0.4rem; }
+  .answer-card {
+    max-width: 700px;
+    margin: 0 auto 1.6rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    padding: 1.5rem 1.6rem;
+  }
+  .answer-card .eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+  .answer-card h2 { margin: 0.2rem 0 0.9rem; font-size: 1.15rem; }
+  .answer {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+    background: var(--paper-dark);
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 3px;
+  }
+  .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(0,0,0,0.5); margin-top: 1rem; }
+  .answer-card p { margin: 0.35rem 0 0; }
+  .answer-card a { color: var(--accent); }
+  .stage-divider { border: none; border-top: 1px dashed rgba(0,0,0,0.15); margin: 1.2rem 0; }
+</style>
+</head>
+<body>
+
+<div class="banner">🔒 CONFIDENTIAL — PARENT / GUARDIAN ANSWER KEY — DO NOT SHOW TO THE CHILD</div>
+
+<div class="case-header">
+  <h1>The App Lab Funding Mystery — Answer Key</h1>
+  <div class="subtitle">Keep this closed until your agent is stuck or finished. Matches mission.html in this same folder.</div>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 01 &middot; Easy</div>
+  <h2>The Closet Keypad</h2>
+  <div class="answer">Answer: 43</div>
+  <div class="label">How to get there</div>
+  <p>Binary 101011, read left to right, uses place values 32-16-8-4-2-1. Add the columns with a 1: 32 + 8 + 2 + 1 = 43.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Binary-to-decimal conversion is purely mechanical — there is exactly one decimal value for a given binary string, so 43 is the only correct conversion of 101011.</p>
+  <div class="label">Source / fact used</div>
+  <p>Standard base-2 (binary) place-value conversion, taught as part of basic computer-science / number-systems curricula.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 02 &middot; Easy</div>
+  <h2>Two Sticker Shops</h2>
+  <div class="answer">Answer: 12</div>
+  <div class="label">How to get there</div>
+  <p>Bright Print Co. sells only in bundles of 40, so 120 stickers = exactly 3 bundles &times; $16.00 = $48.00. QuickSticker Shop charges $0.30 &times; 120 = $36.00. The difference is $48.00 - $36.00 = $12.00, so the answer (dollars saved, no decimal) is 12.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>120 divides evenly into Bright Print's bundle size (3 bundles exactly, no leftover or rounding-up needed), so both totals are unambiguous and the $12 gap is the one correct savings figure.</p>
+  <div class="label">Source / fact used</div>
+  <p>Straightforward unit-price arithmetic (fictional in-story shop quotes; no external source needed).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 03 &middot; Medium</div>
+  <h2>The Gym Floor Plan</h2>
+  <div class="answer">Answer: 160</div>
+  <div class="label">How to get there</div>
+  <p>Treat the whole floor as one 18 m &times; 10 m rectangle: 18 &times; 10 = 180 m&sup2;. Then subtract the roped-off stage alcove, which is 5 m &times; 4 m = 20 m&sup2;. 180 - 20 = 160 m&sup2; of usable booth space.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>The diagram's marked side lengths are mutually consistent (13 + 5 = 18 across the top, and 4 + 6 = 10 down the side), so there is exactly one way to decompose the shape and exactly one resulting area.</p>
+  <div class="label">Source / fact used</div>
+  <p>Composite-shape area = area of full rectangle minus area of the removed notch; diagram drawn to the exact stated measurements and re-verified during mission design.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 04 &middot; Medium</div>
+  <h2>Counting Every Dollar</h2>
+  <div class="answer">Answer: 51.50</div>
+  <div class="label">How to get there</div>
+  <p>Raffle total: 23 tickets &times; $2 = $46.00. Grand total counted this morning: $86.25 + $54.00 + $75.00 + $46.00 = $261.25. Last night's written tally sheet said $312.75 at closing. Shortfall: $312.75 - $261.25 = $51.50.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>All four source amounts are given exactly, and the comparison total ($312.75) is stated exactly, so the subtraction has one correct result. (This mission also plants the delayed-recall detail — "stub #18" — needed again, without being restated, in Mission 9 Stage 1.)</p>
+  <div class="label">Source / fact used</div>
+  <p>In-story tally sheet and morning count figures (fictional); plain addition and subtraction.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 05 &middot; Medium</div>
+  <h2>Who Was Where</h2>
+  <div class="answer">Answer: Priya</div>
+  <div class="label">How to get there</div>
+  <p>List everyone who worked the last hour (Priya, Jonas, Ruby) and everyone who knew the closet code (Priya, Theo, Sam). Priya is the only name on both lists.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>The six members' two attributes were designed so exactly one person satisfies both conditions simultaneously — a genuine two-circle classification (Venn-style) puzzle with a single overlap.</p>
+  <div class="label">Source / fact used</div>
+  <p>In-story sign-up sheet data (fictional); solved by simple two-list intersection / classification.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 06 &middot; Hard</div>
+  <h2>Two Messages, One Fake</h2>
+  <div class="answer">Answer: B</div>
+  <div class="label">How to get there</div>
+  <p>Email A's sender address is "support@pledgepost-verify-account.net" — a lookalike domain, not PledgePost's real domain. It also uses urgency ("URGENT!! within 2 HOURS"), a generic greeting ("Dear Customer"), and asks the club to reply with its account PASSWORD. Email B comes from "support@pledgepost.org" (the platform's own domain), addresses the club by name, has no countdown pressure, and explicitly states it will never ask for a password by email. B is the real one.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Email A stacks multiple well-known phishing red flags at once (mismatched/lookalike sender domain, manufactured urgency, a direct password request, generic greeting) while Email B has none of them — there is no reasonable reading where A is the legitimate message.</p>
+  <div class="label">Source / fact used</div>
+  <p>General, well-established phishing red flags (mismatched sender domain, urgency language, requests for passwords/credentials) as described by CISA/FTC-aligned guidance, e.g. <a href="https://www.huntress.com/phishing-guide/indicators-of-a-phishing-attempt">Huntress: Indicators of a Phishing Attempt</a> and <a href="https://hoxhunt.com/blog/phishing-red-flags">Hoxhunt: Phishing Red Flags</a> — both emails and the platform ("PledgePost") are entirely fictional, invented for this puzzle.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 07 &middot; Hard</div>
+  <h2>The Hand-Drawn QR Grid</h2>
+  <div class="answer">Answer: stage</div>
+  <div class="label">How to get there</div>
+  <p>Each row is a 5-bit binary number (place values 16-8-4-2-1), converted to a letter with A=1...Z=26:</p>
+  <p>Row 1: 10011 = 16+2+1 = 19 = S<br>
+  Row 2: 10100 = 16+4 = 20 = T<br>
+  Row 3: 00001 = 1 = A<br>
+  Row 4: 00111 = 4+2+1 = 7 = G<br>
+  Row 5: 00101 = 4+1 = 5 = E</p>
+  <p>Reading the rows in order spells "STAGE" — a hint that the overflow cash box (found in Mission 8/the Finale) is stashed near the stage alcove from Mission 3.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Binary-to-decimal-to-letter conversion is mechanical and one-to-one within A-Z, so each row yields exactly one letter and the five rows in order spell exactly one word.</p>
+  <div class="label">Source / fact used</div>
+  <p>Real, verified fact used for story flavor: the QR code was invented in 1994 by engineer Masahiro Hara at Denso Wave (Japan) to track automobile parts in factories; "QR" stands for "Quick Response," and Denso Wave chose not to enforce its patent, making QR codes free to use worldwide. Sources: <a href="https://en.wikipedia.org/wiki/QR_code">Wikipedia: QR code</a>, <a href="https://www.qrcode.com/en/history/">Denso Wave: History of QR Code</a>, <a href="https://en.wikipedia.org/wiki/Masahiro_Hara">Wikipedia: Masahiro Hara</a>. The hand-drawn grid itself and its binary values are original to this puzzle, not a real QR code.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 08 &middot; Hard</div>
+  <h2>Who Has the Spare Key?</h2>
+  <div class="answer">Answer: Theo</div>
+  <div class="label">How to get there</div>
+  <p>Test each person as the one mistaken statement:</p>
+  <p><strong>If Sam is mistaken</strong> (Ruby, Theo truthful): Sam doesn't have the key. Ruby's "Sam does not have the key" is true — consistent. Theo's "I've got the spare key" is true — consistent. No contradictions: Theo has the key.</p>
+  <p><strong>If Ruby is mistaken</strong> (Sam, Theo truthful): Sam has the key (his statement true) AND Theo has the key (his statement true) — but only one person can hold the single key. Contradiction — invalid.</p>
+  <p><strong>If Theo is mistaken</strong> (Sam, Ruby truthful): Sam has the key (true). Ruby's "Sam does not have the key" would then have to be true too — but that directly contradicts Sam having it. Contradiction — invalid.</p>
+  <p>Only the first case holds together without contradiction, so Theo has the spare key (and Sam was the one joking/mistaken).</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Of the three possible "who is mistaken" assignments, two produce a direct logical contradiction and only one is fully self-consistent — a classic knights-and-knaves elimination with a single forced solution.</p>
+  <div class="label">Source / fact used</div>
+  <p>Pure logic puzzle, verified by hand-checking all three cases above (see this session's design notes); no external source needed.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 09 &middot; Aha! (2 stages)</div>
+  <h2>The True Shortfall</h2>
+  <p class="label">Stage 1 answer</p>
+  <div class="answer">56</div>
+  <p>The online donation app charged a $0.25 fee on each of the 18 online gifts that night (18 is the raffle stub number planted in Mission 4 — "stub #18"). Missed fees: 18 &times; $0.25 = $4.50. True shortfall: the $51.50 shortfall from Mission 4, plus the $4.50 in missed fees = $56.00, i.e. 56 whole dollars.</p>
+  <hr class="stage-divider">
+  <p class="label">Stage 2 (final) answer</p>
+  <div class="answer">11</div>
+  <p>Add the two digits of Stage 1's answer (56): 5 + 6 = 11. That's the cash box's digit-sum, used again in the Grand Finale along with "first digit is even."</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Stage 1 requires recalling the specific number planted in Mission 4 (stub #18) and combining it with a new $0.25-per-gift calculation — there is one correct product, and adding it to the one correct Mission 4 shortfall gives exactly one true shortfall ($56). Stage 2 is a direct, unambiguous digit-sum of that unique number (11).</p>
+  <div class="label">Source / fact used</div>
+  <p>In-story receipt and fee details (fictional); the delayed-recall detail (raffle stub #18) was planted in Mission 4 without being restated here, as intended.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Grand Finale &middot; Advanced Logical Reasoning (Combinatorics)</div>
+  <h2>Cracking the Cash Box</h2>
+  <div class="answer">Answer: teamwork</div>
+  <div class="label">How to get there</div>
+  <p><strong>Step 1 — find the code.</strong> Constraints: 3 digits summing to 11 (from Mission 9 Stage 2), first digit even, first digit specifically 4 (Maya's clue). That leaves 8 possible codes where digits 2 and 3 sum to 7: 407, 416, 425, 434, 443, 452, 461, 470.</p>
+  <p>Apply Jonas's clue (2nd digit bigger than 3rd): only 443, 452, 461, 470 survive (407, 416, 425, 434 all have a 2nd digit smaller than or equal to the 3rd).</p>
+  <p>Apply Priya's clue (3rd digit even, and not zero): 443 (3rd digit 3, odd) fails; 461 (3rd digit 1, odd) fails; 470 (3rd digit 0, even but zero) fails; 452 (3rd digit 2, even and not zero) passes. Exactly one code survives: <strong>452</strong>.</p>
+  <p><strong>Step 2 — decode the word.</strong> The digit-sum (11) is also the Caesar-shift amount. Shifting each letter of EPLXHZCV backward by 11 (wrapping A&rarr;Z as needed): E&rarr;T, P&rarr;E, L&rarr;A, X&rarr;M, H&rarr;W, Z&rarr;O, C&rarr;R, V&rarr;K, spelling <strong>TEAMWORK</strong>.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>The full 36-code space allowed by "digit-sum 11, first digit even" is narrowed by Maya's clue to the 8 codes starting with 4, then Jonas's clue removes 4 more, then Priya's clue removes all but one — verified by hand above, leaving exactly code 452. Caesar-shift decoding is a one-to-one, reversible operation, so shifting EPLXHZCV back by exactly 11 produces exactly one possible plaintext: TEAMWORK.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained logic and arithmetic puzzle, fully re-solved by hand during mission design to confirm a single forced code and a single decoded word (no external source needed).</p>
+  <div class="label">Reward revealed</div>
+  <p>The value word is <strong>teamwork</strong> — every mission's separate donation source, memory, and clue had to be combined by the club (and by the young detective) to add up to the true total, which is exactly what "teamwork" means in this case.</p>
+</div>
+
+</body>
+</html>

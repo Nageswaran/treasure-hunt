@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Inca Sky-Terrace Code — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C08A2E;
+    --accent-dark: #8F6420;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul, .puzzle ol { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle li { margin: 0.3rem 0; }
+  .journal-note {
+    font-style: italic;
+    background: var(--paper-dark);
+    padding: 0.7rem 0.95rem;
+    border-radius: 3px;
+    margin: 0.8rem 0;
+    border-left: 3px solid var(--accent);
+  }
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.8rem 0;
+    font-size: 0.92rem;
+  }
+  .cost-table th, .cost-table td {
+    border: 1px solid rgba(0,0,0,0.18);
+    padding: 0.4rem 0.55rem;
+    text-align: left;
+  }
+  .cost-table th { background: var(--paper-dark); }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Inca Sky-Terrace Code</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  <p>A small earth tremor shook the Sacred District of Machu Picchu overnight, and a stone slab in one of the old storage rooms shifted — revealing something no one has touched in centuries. Lead archaeologist Dr. Elena Rivas has called in extra help before word gets out and the wrong people come looking.</p>
+  <p>You've been named Junior Field Detective for this dig. Using real history, sky-watching, terrace math, market money-sense, and the Incas' own knotted-cord code, can you find the true sealed chamber — and figure out exactly who to report it to first?</p>
+</div>
+
+<!-- MISSION 1 — EASY — Geography / internet research -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Getting Your Bearings</h2>
+    <div class="puzzle">
+      <p>Before your team starts work, Dr. Rivas wants to be sure you've got your bearings. Machu Picchu is perched high in the Andes Mountains of Peru, in the Cusco region, roughly 2,430 meters (about 7,970 feet) above sea level.</p>
+      <p>Search online to confirm one more fact: which real river almost completely wraps around the mountain on three sides, far below the ruins? Type just the river's name (one word — no need to add "River").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Machu Picchu river" — the river shares its name with the wider valley the site overlooks.</p></details>
+    <div class="answer-box" data-answer-hash="d81b0b5a">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 — EASY — Science & Nature / History (astronomy) -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Sun-Tying Stone</h2>
+    <div class="puzzle">
+      <p>In the Sacred District stands a carved granite pillar called the Intihuatana — "hitching post of the sun" in Quechua, the Inca language. At the two solstices each year (the two days when the sun's path in the sky reaches its farthest point), its shadow behaves in opposite ways:</p>
+      <ul>
+        <li>At the <strong>June solstice</strong>, the pillar casts its <strong>longest</strong> shadow, stretching south.</li>
+        <li>At the <strong>December solstice</strong>, it casts its <strong>shortest</strong> shadow, pointing north.</li>
+      </ul>
+      <p>Today, your team measured the shadow at local noon: it stretched out long, toward the south. Which solstice matches this measurement — June or December? Type just the month.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about which solstice makes the shadow stretch out to its longest, not its shortest.</p></details>
+    <div class="answer-box" data-answer-hash="82416065">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Machu Picchu's stone walls have no mortar at all — many blocks are cut so precisely that not even a knife blade fits between them.</p>
+
+<!-- MISSION 3 — MEDIUM — Mathematics (geometry / measurement, self-drawn diagram) -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Terrace Number 7</h2>
+    <div class="puzzle">
+      <p>On the east flank of the mountain, survey markers point you to "Terrace Number 7" — one of the stepped agricultural platforms (called an <em>andén</em>) the Incas carved into the slope for farming. This one is shaped like a rectangle with a triangular point jutting out, following the natural contour of the mountainside.</p>
+      <p>The diagram below is drawn to scale, with the dashed lines showing how the shape splits into two simpler pieces. Find the terrace's total area in square meters. Grab a pencil — remember that a triangle's area is half its base times its height. Type the number only.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 270 140" width="270" height="140" role="img" aria-label="A stepped terrace shaped like a rectangle 16 meters wide and 6 meters deep, with a triangular point extending 8 meters further out from the bottom-right corner">
+      <polygon points="30,30 158,30 222,78 30,78" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="158" y1="30" x2="158" y2="78" stroke="#2B2A24" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="158" y1="30" x2="222" y2="30" stroke="#2B2A24" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="94" y="22" text-anchor="middle" font-size="12">16 m</text>
+      <text x="14" y="58" text-anchor="middle" font-size="12" transform="rotate(-90 14 58)">6 m</text>
+      <text x="190" y="22" text-anchor="middle" font-size="12">8 m</text>
+    </svg>
+    <div class="clue-caption">The dashed lines split the terrace into a rectangle (16 m × 6 m) and a right triangle (base 8 m, height 6 m).</div>
+    <details class="hint"><summary>Hint 1</summary><p>Split the shape along the dashed lines into a rectangle and a right triangle — find each area separately, then add them together.</p></details>
+    <div class="answer-box" data-answer-hash="733864ae">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 — MEDIUM — Financial Literacy -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Market Day in Pisac</h2>
+    <div class="puzzle">
+      <p>Before heading up to camp, the team needs supplies from the famous Sunday market in Pisac, a town in Peru's Sacred Valley. Prices there are in Peruvian soles (S/). Two different stalls sell what the team needs — but in very different ways. Grab a pencil for this one; you'll want a table.</p>
+      <p>The team's shopping list: <strong>3 canteens, 6 field notebooks, 2 rain ponchos, and 3 headlamps.</strong></p>
+      <table class="cost-table">
+        <tr><th>Stall A — priced per item</th><th>Price</th></tr>
+        <tr><td>Canteen</td><td>S/ 9 each</td></tr>
+        <tr><td>Field notebook</td><td>S/ 4 each</td></tr>
+        <tr><td>Rain poncho</td><td>S/ 28 each</td></tr>
+        <tr><td>Headlamp</td><td>S/ 18 each</td></tr>
+      </table>
+      <table class="cost-table">
+        <tr><th>Stall B — bundle deal</th><th>Price</th></tr>
+        <tr><td>"Trekker's Bundle" (1 canteen + 2 notebooks + 1 headlamp, sold only as a full bundle)</td><td>S/ 40 per bundle</td></tr>
+        <tr><td>Rain poncho</td><td>S/ 30 each</td></tr>
+      </table>
+      <p>Stall B doesn't sell canteens, notebooks, or headlamps on their own — only inside the bundle. Work out the total cost of the whole shopping list at each stall. Which stall is cheaper overall, and by how many soles? Type just the number of soles saved.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>At Stall B, figure out how many whole bundles you must buy to get enough canteens — then check whether that also happens to cover the notebooks and headlamps needed.</p></details>
+    <div class="answer-box" data-answer-hash="14eb1f3f">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 — MEDIUM — Logical Reasoning (Foundational: sequencing) + delayed-recall plant -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Four Torn Fragments</h2>
+    <div class="puzzle">
+      <p class="journal-note">Expedition Journal — Dr. Rivas's field notes: "Catalogued this morning: Artifact Q-114, a sealed ceramic vessel found wedged beside the storage room's north wall, untouched since the tremor. Definitely one to remember."</p>
+      <p>In the old ranger station, your team finds four torn fragments of a timeline listing real events from Inca history — but they've been shuffled out of order.</p>
+      <ul>
+        <li><strong>Event 1:</strong> The Spanish executed the emperor Atahualpa.</li>
+        <li><strong>Event 2:</strong> Hiram Bingham brought worldwide attention to Machu Picchu.</li>
+        <li><strong>Event 3:</strong> The ruler Pachacuti began expanding Cusco into a vast empire.</li>
+        <li><strong>Event 4:</strong> The last Inca stronghold at Vilcabamba fell to the Spanish.</li>
+      </ul>
+      <p>Put the four events in the correct chronological order (earliest first). Type the four event numbers separated by commas, with no spaces — like this: <code>1,2,3,4</code></p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the ruler who began the empire's big expansion — that event happened centuries before the other three.</p></details>
+    <div class="answer-box" data-answer-hash="562b3827">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Inca road network, the Qhapaq Ñan, stretched more than 30,000 kilometers across the Andes — one of the largest transportation systems in the ancient world.</p>
+
+<!-- MISSION 6 — HARD — Navigation & Orientation -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Final Stretch</h2>
+    <div class="puzzle">
+      <p>Your team's tracker shows the final stretch of the Inca Trail: from the Sun Gate (Inti Punku) at about 2,720 meters, the trail drops down to Machu Picchu itself at 2,430 meters. This last stretch runs almost due southwest, according to the trail map.</p>
+      <p>Calculate the team's "waypoint code": take the elevation drop in meters between the Sun Gate and Machu Picchu, divide it by 10, then add the compass bearing (in degrees) for southwest — where north = 0°, east = 90°, south = 180°, west = 270°, and southwest sits exactly halfway between south and west. Type the final waypoint code number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find how many meters of elevation are lost between the Sun Gate and Machu Picchu — subtract the two elevations.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Southwest sits exactly halfway between south (180°) and west (270°) on a compass. Add that number of degrees to (elevation drop ÷ 10).</p></details>
+    <div class="answer-box" data-answer-hash="29db2bfc">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 7 — HARD — Cryptography (real quipu decoding) -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Knotted Cord</h2>
+    <div class="puzzle">
+      <p>Long before paper reached the Andes, the Incas recorded numbers on <em>quipu</em> (also spelled khipu) — cords with knots tied at different points along their length. Real quipu used a base-10 place-value system, just like the numbers you use every day:</p>
+      <ul>
+        <li>The position on the cord shows the place value: closer to the main cord means a bigger place (hundreds), further down means smaller (tens, then ones).</li>
+        <li>At the hundreds and tens positions, a tight cluster of single overhand knots shows the digit — count the knots in the cluster.</li>
+        <li>At the very last position (ones), a different knot is used instead: a <strong>long knot</strong> with one turn per unit, for digits 2 through 9 — or a special <strong>figure-eight knot</strong> to mean exactly 1.</li>
+      </ul>
+      <svg class="clue-diagram" viewBox="0 0 220 170" width="220" height="170" role="img" aria-label="A vertical quipu cord with three knot clusters: a hundreds cluster near the top, a tens cluster in the middle, and a long knot near the bottom end">
+        <line x1="110" y1="10" x2="110" y2="150" stroke="#2B2A24" stroke-width="3"/>
+        <circle cx="110" cy="40" r="4" fill="#8F6420"/>
+        <circle cx="102" cy="48" r="4" fill="#8F6420"/>
+        <circle cx="118" cy="48" r="4" fill="#8F6420"/>
+        <text x="150" y="46" font-size="11">Hundreds: 3 knots</text>
+        <circle cx="110" cy="85" r="4" fill="#8F6420"/>
+        <circle cx="100" cy="90" r="4" fill="#8F6420"/>
+        <circle cx="120" cy="90" r="4" fill="#8F6420"/>
+        <circle cx="93" cy="80" r="4" fill="#8F6420"/>
+        <circle cx="127" cy="80" r="4" fill="#8F6420"/>
+        <circle cx="88" cy="72" r="4" fill="#8F6420"/>
+        <circle cx="132" cy="72" r="4" fill="#8F6420"/>
+        <text x="150" y="88" font-size="11">Tens: 7 knots</text>
+        <path d="M100,135 Q110,120 120,135 Q130,150 110,150 Q90,150 100,135" fill="none" stroke="#8F6420" stroke-width="3"/>
+        <text x="150" y="140" font-size="11">Ones: long knot,</text>
+        <text x="150" y="153" font-size="11">4 turns</text>
+      </svg>
+      <p>One dangling cord that survived the tremor has three knot clusters, described above: <strong>3 single knots</strong> closest to the main cord (hundreds), <strong>7 single knots</strong> in the middle (tens), and a <strong>long knot with 4 turns</strong> at the very end (ones). What number does this cord record?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work from the top of the cord down — the position closest to the main cord is the biggest place value (hundreds), and the very end of the cord is the smallest (ones).</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>3 single knots at the hundreds position = 300. 7 single knots at the tens position = 70. A long knot's turns work the same way at the ones position — 4 turns = 4. Add all three together.</p></details>
+    <div class="answer-box" data-answer-hash="d3578c81">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Machu Picchu has more than 700 individual stone terraces. Their hidden layers of stone, gravel, and sand drained rain water and kept the mountainside from washing away.</p>
+
+<!-- MISSION 8 — HARD — Logical Reasoning (Intermediate: logic grid) -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Who Found What, and Where</h2>
+    <div class="puzzle">
+      <p>Back at camp, three team members — Tomás, Inés, and Kwaku — each explored a different room and each found one artifact. Read the clues, then figure out who found the quipu cord.</p>
+      <p>Rooms: the Sun Temple, the Sacred Plaza, and the Storage Qolqa. Artifacts: a ceramic jug, a bronze knife, and a quipu cord.</p>
+      <ul>
+        <li>Clue 1: Whoever found the bronze knife was not working in the Sacred Plaza.</li>
+        <li>Clue 2: Inés was working in the Storage Qolqa.</li>
+        <li>Clue 3: Tomás did not find the quipu cord.</li>
+        <li>Clue 4: The ceramic jug was found in the Sun Temple — and it wasn't Kwaku who found it.</li>
+      </ul>
+      <p>Type the name of the team member who found the quipu cord.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 2 — it tells you exactly where Inés was working. Then use clue 4 to figure out who found the jug, and where.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know Tomás found the jug in the Sun Temple, only two people and two artifacts are left. Clue 1 tells you which of those two can't have the bronze knife.</p></details>
+    <div class="answer-box" data-answer-hash="570b442a">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 9 — BIG "AHA!" MOMENT — multi-stage, delayed recall -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The Numbered Dial</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Deeper in the storage complex, your team finds a sealed doorway with a numbered dial lock instead of a keyhole. Dr. Rivas radios in: "Take half of the number on the vessel we catalogued this week beside the storage room's north wall. Then add 15 — that's how many terrace sectors the survey markers show on this side of the mountain."</p>
+      <p>What number unlocks the dial?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You wrote that vessel's number down for a reason, back when your team first catalogued it beside the north wall.</p></details>
+    <div class="answer-box" data-answer-hash="8de5cd8c">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>The dial clicks open, revealing a hand-drawn chamber map pinned just inside. It's a grid of rooms numbered 1 to 100, split into four equal sectors: Sector A holds rooms 1–25, Sector B holds 26–50, Sector C holds 51–75, and Sector D holds 76–100.</p>
+      <p>Using your dial number from Stage 1, which sector holds the sealed chamber? Type "Sector" followed by the letter — for example, "Sector A".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Which of the four 25-room ranges contains your Stage 1 number?</p></details>
+    <div class="answer-box" data-answer-hash="87d9013a">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE — Logical Reasoning (Advanced: working backward) -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Wisdom to Report It Right</h2>
+    <div class="puzzle">
+      <p>You've found it: a sealed chamber, undisturbed since long before Hiram Bingham's time. But finding it is only half the job — a real archaeologist never just keeps digging. Before your team opens the sealed doorway, you need to know exactly who to contact FIRST, right now, at the site.</p>
+      <p>You already know how this discovery will end, months from now: it will be catalogued and placed on permanent display at Peru's Larco Museum, in Lima. Dr. Rivas hands you three rules that got it there — work <strong>backward</strong> from that final museum case to figure out the very first person your team must contact today.</p>
+      <ul>
+        <li>Rule 1: The Larco Museum only accepts artifacts that already carry an official transport permit from the Cusco Regional Culture Office.</li>
+        <li>Rule 2: The Cusco Regional Culture Office only issues a transport permit for finds that are already logged in Machu Picchu park's own site registry.</li>
+        <li>Rule 3: The park's site registry only logs a find after the on-duty park ranger has personally inspected and sealed it at the exact discovery spot.</li>
+      </ul>
+      <p>Reasoning backward from the museum, who must your team radio FIRST, today, before anything else can happen? Type just one word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Don't start from today and guess forward — start at the museum, the very last step, and ask what had to happen right before it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The museum needs a permit from the Cusco office; the Cusco office needs the park's own registry entry; and the registry needs someone on-site to act first. Who is that?</p></details>
+    <div class="answer-box" data-answer-hash="8867dfe0">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Rule after rule, you traced the path backward until it led to one clear answer: call the ranger first, right now — not the office in Lima, not the museum, and not even Dr. Rivas's own supervisors far away. Respecting the proper order, instead of rushing straight to the biggest name, is exactly the kind of patient thinking real archaeologists prize. That patient, careful thinking is <strong>wisdom</strong> — and it's what protects Machu Picchu's secrets for the next detective who comes looking. Case closed, Agent.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
