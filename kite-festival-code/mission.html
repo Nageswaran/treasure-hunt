@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Vanishing Dragon Kite — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C0392B;
+    --accent-dark: #8E2A20;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .notebook {
+    background: rgba(192,57,43,0.07);
+    border: 1px dashed var(--accent);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook b { color: var(--accent-dark); }
+  .stage-label {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.55);
+    margin: 1.2rem 0 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; text-align: center; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .virtue-board {
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.9rem 1.1rem;
+    margin: 0.9rem 0;
+    font-size: 0.95rem;
+  }
+  .virtue-board ol { margin: 0.4rem 0 0; padding-left: 1.4rem; }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Vanishing Dragon Kite</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  <p>It is early morning in Weifang, China — a city so famous for kites that the whole world calls it the "Kite Capital." Today is the final round of the International Kite Festival. But the giant dragon kite meant to open the finals has vanished from its display stand, leaving only an empty pedestal and a small brass number tag.</p>
+  <p>The Head Judge has called in one detective for the job: you. Follow every clue, and by the last mission you will not only find the dragon kite — you'll uncover the one quality that cracked the whole case.</p>
+</div>
+
+<!-- MISSION 01 -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Empty Pedestal</h2>
+    <div class="puzzle">
+      <p>The judges' pavilion is buzzing with panic. Before you chase suspects, prove you know your case file. Here is a photo pinned to the case board of a famous building in the very city hosting this festival:</p>
+    </div>
+    <img class="clue-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Weifang%20World%20Kite%20Museum.jpg" alt="The Weifang World Kite Museum, a two-story building whose roof is shaped like a dragon-headed centipede kite and covered in peacock-blue glazed tiles">
+    <div class="clue-caption">Look closely at the roof's shape and color — search those details to identify the building and the city it's in.</div>
+    <div class="puzzle">
+      <p>This city is so famous for kites that the whole world gave it a nickname. Search online: which Chinese city is nicknamed the "World Kite Capital," and in what year was it officially given that title (at the festival's 5th edition)? Type just the year, as four digits.</p>
+    </div>
+    <div class="notebook"><b>Agent's Notebook:</b> The brass tag on the empty pedestal reads "27" — the missing dragon kite's competitor number. Jot that down. You may need it later.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for the roof's shape and its blue tile color to identify the building and its city. Then look for when that city's nickname became <em>official</em> — that's a different year from when the festival itself first began.</p></details>
+    <div class="answer-box" data-answer-hash="21476807">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Kites were invented in China over 2,000 years ago. Around 200 BC, a general named Han Xin even flew one over an enemy city's wall — just to measure how far his soldiers would need to tunnel to get underneath it!</p>
+
+<!-- MISSION 02 -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Wind Gauge Log</h2>
+    <div class="puzzle">
+      <p>Could the dragon kite have simply blown off its stand in a strong gust? The groundskeeper's wind gauge logged four readings early this morning: 3 km/h, 6 km/h, 15 km/h, and 22 km/h.</p>
+      <p>Search online: about how many kilometers per hour of wind does a kite need at minimum just to lift off the ground (not to do tricks — just to rise at all)? Then figure out how many of the four logged readings were strong enough to lift a kite off its stand by itself. Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for the wind speed a kite needs just to <em>lift off</em>, not the speed for fancy stunts. Then sort the four readings into "strong enough" and "too calm."</p></details>
+    <div class="answer-box" data-answer-hash="370cabd5">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 03 -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Spare Sail Panel</h2>
+    <div class="puzzle">
+      <p>In the workshop tent, you find a folded silk sail panel shaped like a diamond — the same shape as the missing dragon kite's own panels. Its maker labeled both cross-lines (called diagonals) with their exact lengths, shown in the diagram below.</p>
+      <p>Grab a pencil for this one: what is the area of this diamond-shaped panel, in square centimeters?</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 220 220" width="220" height="220"
+         role="img" aria-label="A diamond kite shape with a vertical diagonal labeled 96 centimeters and a horizontal diagonal labeled 65 centimeters, crossing at a right angle">
+      <polygon points="110,10 175,70 110,202 45,70" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="110" y1="10" x2="110" y2="202" stroke="#A33B2D" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="45" y1="70" x2="175" y2="70" stroke="#A33B2D" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="122" y="108" font-size="12" fill="#8E2A20">96 cm</text>
+      <text x="95" y="62" text-anchor="middle" font-size="12" fill="#8E2A20">65 cm</text>
+    </svg>
+    <div class="clue-caption">The two dashed lines are the diagonals. They cross at a perfect right angle.</div>
+    <details class="hint"><summary>Hint 1</summary><p>For a diamond (kite) shape whose diagonals cross at a right angle, there's a formula that uses both diagonal lengths together — think about how a rectangle split by both diagonals relates to this shape.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply the two diagonal lengths together, then divide the result by 2. Type just the number — no units.</p></details>
+    <div class="answer-box" data-answer-hash="ab22803">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Weifang, China calls itself the "World Kite Capital." More than 70% of all kites sold around the world are made there, and the city has hosted an International Kite Festival every year since 1984.</p>
+
+<!-- MISSION 04 -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>HQ's Language Check-In</h2>
+    <div class="puzzle">
+      <p>While you wait for the workshop's fingerprint results, Detective Academy HQ radios in a quick language drill — every agent must stay sharp in Dutch, no matter where in the world a case takes them.</p>
+      <p>In Dutch, every noun pairs with either "de" or "het." Here are six words connected to kites and wind: <strong>vlieger</strong> (kite), <strong>wind</strong> (wind), <strong>touw</strong> (string), <strong>papier</strong> (paper), <strong>lucht</strong> (sky/air), <strong>staart</strong> (tail).</p>
+      <p>How many of these six words use "het" instead of "de"? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try each word in a short sentence, like "Ik zie ___ vlieger" (I see ___ kite), first with "de" and then with "het." Most will only sound right one way.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Two of the six often trip people up: the word for "string" and the word for "paper." Test both "de" and "het" in front of each one and listen for what sounds wrong.</p></details>
+    <div class="answer-box" data-answer-hash="370cabd5">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 05 -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Judge's Coded Note</h2>
+    <div class="puzzle">
+      <p>Tucked inside the dragon kite's empty display case, you find a note in a code the judges use to protect competitors' secrets:</p>
+      <p style="font-family:'Special Elite',monospace; font-size:1.15rem; letter-spacing:0.1em; text-align:center;">WXSVEKI XIRX</p>
+      <p>Every letter has been shifted <strong>forward</strong> by 4 places in the alphabet (A becomes E, B becomes F, and so on — spaces stay spaces). Shift each letter <strong>back</strong> by 4 to read the real message. Type your answer as two words.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Write out the alphabet on scratch paper. For each letter in the note, count backward 4 letters to find the real one.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first word names a place where things are kept. The second word is a common name for a canvas shelter set up at a fair or festival.</p></details>
+    <div class="answer-box" data-answer-hash="c7b5722f">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 06 -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Stalls Around the Fountain</h2>
+    <div class="puzzle">
+      <p>The coded note points you to the repair stalls near the courtyard fountain. Three stalls stand around it, each in a different compass direction: North, East, and South.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 220 220" width="220" height="220"
+         role="img" aria-label="A compass rose with a fountain at the center and the directions North, East, South, and West marked around it">
+      <circle cx="110" cy="110" r="80" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="110" y1="30" x2="110" y2="190" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="30" y1="110" x2="190" y2="110" stroke="#2B2A24" stroke-width="1"/>
+      <circle cx="110" cy="110" r="10" fill="#C0392B"/>
+      <text x="110" y="114" text-anchor="middle" font-size="8" fill="#fff">⛲</text>
+      <text x="110" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#8E2A20">N</text>
+      <text x="200" y="114" text-anchor="middle" font-size="13" font-weight="bold" fill="#8E2A20">E</text>
+      <text x="110" y="205" text-anchor="middle" font-size="13" font-weight="bold" fill="#8E2A20">S</text>
+      <text x="18" y="114" text-anchor="middle" font-size="13" font-weight="bold" fill="#8E2A20">W</text>
+    </svg>
+    <div class="clue-caption">The fountain sits at the center of the courtyard.</div>
+    <div class="puzzle">
+      <p>Clues from your interviews:</p>
+      <p>1. The stall to the North sells bamboo repair tape.<br>
+      2. Mr. Zhao's stall is not to the North.<br>
+      3. Ms. Li's stall does not sell glue.<br>
+      4. The stall that sells silk thread is to the East.<br>
+      5. Mr. Zhao sells silk thread.</p>
+      <p>The repair ledger for today also shows: competitor #12 got a silk-thread patch, competitor #40 got a glue seal, and competitor #27 got bamboo tape.</p>
+      <p>Which compass direction is the stall that repaired the kite you're investigating today? Type just the direction (North, East, or South).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Logic grids: start with the clue that names a person AND what they sell directly — that gives you your first solid fact to build from.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you work out which direction sells bamboo tape, check the ledger to see which competitor number got that repair. Does that number look familiar from earlier in your case file?</p></details>
+    <div class="answer-box" data-answer-hash="daef9304">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type the direction...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Weifang World Kite Museum is the largest kite museum on Earth. Its roof is shaped like a giant dragon-headed centipede kite and covered in shiny peacock-blue tiles!</p>
+
+<!-- MISSION 07 -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG "AHA"</span>
+    <h2>The Bamboo Stall's Receipts</h2>
+    <div class="puzzle">
+      <p>The bamboo-tape vendor's receipts show the team was choosing between two kite-line suppliers to restring the giant dragon kite, which needs a line rated to hold at least 80 kilograms of pull.</p>
+      <p><strong>Golden Dragon Line:</strong> 500 meters for ¥60, delivery included. Woven from a strong material called braided Dacron, rated to hold 80 kg.</p>
+      <p><strong>Bargain Breeze Threads:</strong> 500 meters for ¥40 — but with the festival only 2 days away, it needs a rush-delivery fee of ¥15 to arrive in time. Made from cotton-blend twine, rated to hold only 20 kg.</p>
+      <p>First, work out the <em>total</em> cost of each supplier once the rush fee is included. Then search online: is braided Dacron line or cotton-blend twine actually strong enough for big, heavy kites?</p>
+      <p>Which supplier should the team have chosen to fly the dragon kite safely? Type the supplier's two-word name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Add up Bargain Breeze's price <em>including</em> its rush fee before you compare totals — the sticker price alone doesn't tell the whole story.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you've compared the totals, search for which material — braided Dacron or cotton-blend twine — is strong enough for a heavy dragon kite. That fact matters more than the few yuan difference in price.</p></details>
+    <div class="answer-box" data-answer-hash="b4cd7b57">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type the supplier's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 08 - GRAND FINALE -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Judges' Scoreboard</h2>
+    <div class="puzzle">
+      <p>Case cracked: the weak cotton-blend line snapped under the wind, and the dragon kite drifted safely to a soft landing nearby, undamaged. Now the Head Judge hands you the scoreboard used to crown this year's Best Flyer — and challenges you to read it like a true agent.</p>
+    </div>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>The scoring rule: <strong>Score = (flight time in minutes × wind speed in km/h) ÷ number of dips</strong>.</p>
+      <p>Today's dragon kite flew for 10 minutes in a 12 km/h wind, and dipped 15 times before landing. What was its score? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Do the multiplication first (flight time × wind speed), then divide that result by the number of dips.</p></details>
+    <div class="answer-box" data-answer-hash="3d0cb547">
+      <label for="finale-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage1" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2 — Final Answer</p>
+    <div class="puzzle">
+      <p>The Head Judge keeps a numbered "Virtue Board" listing the eight qualities every great detective needs. Find the score from Stage 1 in the numbered list below, and type the matching word.</p>
+    </div>
+    <div class="virtue-board">
+      <ol>
+        <li>curiosity</li>
+        <li>courage</li>
+        <li>discovery</li>
+        <li>creativity</li>
+        <li>teamwork</li>
+        <li>kindness</li>
+        <li>wisdom</li>
+        <li>???</li>
+      </ol>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Count down the numbered list to the number that matches your Stage 1 score.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Think about what quality kept you going through six earlier missions, even when a clue seemed impossible to crack. The Virtue Board's last word means "never giving up."</p></details>
+    <div class="answer-box" data-answer-hash="8d3ae60e">
+      <label for="finale-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="finale-stage2" type="text" placeholder="Type the missing word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>You never gave up — not on the coded note, not on the tricky logic grid, not on a single clue. That is exactly what the last word on the Virtue Board means. Case closed, Agent. The dragon kite flies again tomorrow, all because you never quit.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

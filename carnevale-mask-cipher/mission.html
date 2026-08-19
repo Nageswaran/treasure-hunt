@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Case of the Vanished Mask Pattern — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #B8860B;
+    --accent-dark: #7A5C08;
+    --easy: #4C7A52;
+    --medium: #B8860B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .notebook {
+    background: rgba(184,134,11,0.09);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.9rem 0;
+    font-size: 0.92rem;
+  }
+  .notebook strong { color: var(--accent-dark); }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; font-weight: 700; }
+  .stage-label:first-of-type { margin-top: 0.7rem; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Case of the Vanished Mask Pattern</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-100 minutes</div>
+</div>
+
+<div class="intro">
+  Signora Elena Contarini is Venice's most celebrated mascareri — a mask maker. Tonight is the Volo dell'Angelo, the ceremony that opens Carnevale, and her masterpiece mask, the "Regina d'Oro," is meant to lead the parade. But the secret pattern needed to finish it has vanished from her workshop. Elena has called the Internet Detective Academy. Follow the clues through Venice's canals, guild history, and a centuries-old code to recover the pattern before the parade begins.
+</div>
+
+<!-- MISSION 1 — EASY — Dutch Language -->
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Guild's Word Test</h2>
+    <div class="puzzle">
+      <p>Elena's apprentice, Marco, won't let just anyone into the workshop. "Every detective who trains with the Academy proves it first," he says, and hands you a list of workshop words in Dutch — each one written with "de" in front.</p>
+      <p><em>de veer &middot; de spiegel &middot; de naald &middot; de zijde &middot; de goud &middot; de lijm</em></p>
+      <p>Five of these words are correctly paired with "de." One of them is wrong — it should really use "het" instead. Which word is the odd one out? Type just that one word (no "de" or "het" in front).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Say each phrase out loud. Materials and metals — like silver, iron, or this one — often prefer "het" instead of "de."</p></details>
+    <div class="answer-box" data-answer-hash="1ea111da">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 2 — EASY — Logical Reasoning (Foundational: classification) -->
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sorting the Workshop Shelf</h2>
+    <div class="puzzle">
+      <p>Marco lets you in. On a shelf, five unfinished masks wait for their ribbons. A card sits under each one:</p>
+      <p>
+        <strong>Bauta</strong> — hides the whole face, from chin to forehead.<br>
+        <strong>Volto</strong> — hides the whole face, smooth and pale.<br>
+        <strong>Zanni</strong> — hides the whole face, with a long beak-like nose.<br>
+        <strong>Medico della Peste</strong> — hides the whole face, with a long beak-like nose.<br>
+        <strong>Colombina</strong> — hides only the area around the eyes and nose, leaving the mouth and chin free.
+      </p>
+      <p>Four of these masks cover the same amount of face. One does not belong with the others. Which mask is it?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Read each card again and compare how MUCH of the face each mask covers, not what it looks like.</p></details>
+    <div class="answer-box" data-answer-hash="e42aecfd">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Napoleon banned Venice's Carnevale in 1797, afraid that masked crowds could plot against him in secret. It wasn't officially celebrated again until 1979 — almost 200 years later!</p>
+
+<!-- MISSION 3 — MEDIUM — Art & Culture (real image) -->
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Photograph on the Wall</h2>
+    <div class="notebook">🕵️ <strong>Agent's Notebook:</strong> As you step inside the workshop, you notice a small brass plate above the door: <strong>"Bottega No. 7."</strong> Numbers like this are always worth remembering.</div>
+    <div class="puzzle">
+      <p>Pinned above Elena's workbench is a real photograph of Venetian Carnival masks. Look for the plainest, palest style — the one called the <strong>Bauta</strong>.</p>
+    </div>
+    <img class="clue-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Venetian_Carnival_Mask_-_Maschera_di_Carnevale_-_Venice_Italy_-_Creative_Commons_by_gnuckx_(4821064506).jpg" alt="Photograph of traditional Venetian Carnival masks, including a pale full-face Bauta-style mask, displayed in Venice, Italy.">
+    <div class="clue-caption">A real photo of Venetian Carnival masks on display in Venice.</div>
+    <div class="puzzle">
+      <p>Search online to learn about the Bauta mask. It's famous for something it does NOT have — a missing facial feature that let its wearer eat, drink, and talk all night without ever taking the mask off. Type just that one missing feature (one word).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Bauta mask Venice" and read how people could still eat and talk while wearing it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Try the exact search "Bauta mask no mouth" and read the first good result carefully.</p></details>
+    <div class="answer-box" data-answer-hash="742581dc">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 4 — MEDIUM — Geography & World Knowledge -->
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Elena's Neighborhood</h2>
+    <div class="puzzle">
+      <p>Elena's old guild ledger says her workshop stands in Venice's <strong>smallest sestiere</strong> — a sestiere is one of Venice's six historic districts. Her sestiere is also one of the very oldest parts of the city, built up right beside the Rialto Bridge.</p>
+      <p>Search online to find the name of this sestiere. Type its name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Venice has six sestieri in total. Look up a map or list of all six and where each one sits.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Search "smallest sestiere of Venice" directly.</p></details>
+    <div class="answer-box" data-answer-hash="5666da23">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 5 — MEDIUM — Mathematics (geometry/measurement, self-drawn SVG) -->
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Gold Leaf for the Regina d'Oro</h2>
+    <div class="puzzle">
+      <p>Before she can cut a new pattern, Elena needs to know how much gold leaf to order. Here is the flat mask shape she plans to cover — every measurement you need is labeled on the drawing. Both eye holes are exactly the same size.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 210" width="300" height="210"
+         role="img" aria-label="A rectangular mask shape, 16 centimeters wide and 10 centimeters tall, with two identical rectangular eye holes cut out, each 3 centimeters wide and 2 centimeters tall">
+      <rect x="30" y="25" width="240" height="150" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <rect x="90" y="70" width="45" height="30" fill="#FFFDF7" stroke="#2B2A24" stroke-width="2"/>
+      <rect x="165" y="70" width="45" height="30" fill="#FFFDF7" stroke="#2B2A24" stroke-width="2"/>
+      <text x="150" y="16" text-anchor="middle" font-size="13">16 cm</text>
+      <text x="14" y="100" text-anchor="middle" font-size="13" transform="rotate(-90 14 100)">10 cm</text>
+      <text x="112" y="63" text-anchor="middle" font-size="12">3 cm</text>
+      <text x="78" y="85" text-anchor="middle" font-size="12" transform="rotate(-90 78 85)">2 cm</text>
+    </svg>
+    <div class="clue-caption">Find the area of gold leaf needed — the whole mask shape, minus BOTH eye holes. Answer in square centimeters (just the number).</div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the area of the big rectangle. Then find the area of ONE eye hole and double it.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Big rectangle: 16 × 10. One eye hole: 3 × 2. Subtract both eye holes from the big rectangle.</p></details>
+    <div class="answer-box" data-answer-hash="67294740">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Venetian women once wore a small oval mask called the Moretta, held in place only by biting a button between their teeth. That made talking impossible — so it earned the nickname "the mute mask"!</p>
+
+<!-- MISSION 6 — HARD — History & Civilizations + Critical Thinking / Media Literacy -->
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Websites Disagree</h2>
+    <div class="puzzle">
+      <p>Elena wants to know exactly how old her craft's traditions really are. You find two websites that disagree about the mask-makers' guild, called the <strong>Mascareri</strong>.</p>
+      <p><strong>Site A</strong> says: "The mask-makers of Venice received their own official guild statute in 1436."<br>
+      <strong>Site B</strong> says: "The mask-makers of Venice received their own official guild statute in 1650."</p>
+      <p>Search online to find out which year real historical sources confirm. Type the correct year (just the number).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Mascareri guild statute Venice" and check when their craft was first officially recognized with its own rules.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Real sources often name an exact day and month too, in April of that year.</p></details>
+    <div class="answer-box" data-answer-hash="5e168ee5">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Murano and Burano, two small islands in the Venice lagoon, are famous for two totally different crafts — Murano for colorful blown glass, and Burano for delicate handmade lace.</p>
+
+<!-- MISSION 7 — HARD — Logical Reasoning (Intermediate: logic grid) -->
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Four Apprentices, Four Masks</h2>
+    <div class="puzzle">
+      <p>Four apprentices — Giulia, Marco, Beatrice, and Luca — are racing to finish four masks — Bauta, Volto, Colombina, and Moretta — each in its own color, before tonight. Use these clues:</p>
+      <p>
+        1. Giulia is not making the Bauta. Giulia is not making the Volto either.<br>
+        2. The Moretta will be painted black.<br>
+        3. Marco's mask will be gold. Marco is not making the Colombina.<br>
+        4. Beatrice is not making the Moretta.<br>
+        5. The Colombina will be silver.<br>
+        6. Luca is making the Volto.
+      </p>
+      <p>Which apprentice's mask will be painted black?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the clue that names someone directly, like Luca's mask. Then use the other clues to rule out options one by one.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>You know Marco's mask is gold. Which mask does another clue say is a different color? That mask can't be Marco's.</p></details>
+    <div class="answer-box" data-answer-hash="6867500a">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 8 — HARD — Financial Literacy + Mathematics (pen-and-paper) -->
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Glassmaker's Bargain</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. On Murano, two glassmakers sell the tiny glass beads Elena needs to decorate the Regina d'Oro:</p>
+      <p><strong>Deal A:</strong> 60 beads for €48, with a 10% discount if bought today.<br>
+      <strong>Deal B:</strong> 100 beads for €68, no discount.</p>
+      <p>Work out the price PER BEAD for each deal, after any discount. Which deal gives the lower price per bead — A or B? Type just the letter.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find each deal's total price AFTER any discount is subtracted. Deal B has no discount to apply.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Then divide each deal's discounted total price by its number of beads, to get the price for just one bead.</p></details>
+    <div class="answer-box" data-answer-hash="e70c2de5">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION 9 — BIG "AHA!" — Logical Reasoning (Advanced: working-backward + combinatorics), MULTI-STAGE -->
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Elena's Paint Shelf</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Elena suddenly remembers something. "I used exactly HALF of my pigment bottles finishing the mask," she says. "Then I gave 3 bottles to my apprentice Giulia. After that, I had exactly 5 bottles left."</p>
+      <p>How many pigment bottles did Elena start with?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work backwards from the end. Start at 5 bottles, and undo each step in reverse order.</p></details>
+    <div class="answer-box" data-answer-hash="19eb271e">
+      <label for="m9-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Now use the number you just found — that's how many different pigment colors Elena started with. The guild seal needs exactly 2 different colors mixed together for the Regina d'Oro's signature shade.</p>
+      <p>How many different 2-color combinations are possible, if the order doesn't matter (Gold+Silver is the same pair as Silver+Gold)?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>This is a combinations problem, not a permutations problem — picking Gold-then-Silver is the same pair as Silver-then-Gold, so don't count it twice.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The number of ways to choose 2 items from a group of n is n × (n − 1) ÷ 2. Plug in the number from Stage 1.</p></details>
+    <div class="answer-box" data-answer-hash="733864ae">
+      <label for="m9-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m9-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GRAND FINALE — Cryptography, with delayed-recall shift value -->
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Guild's Secret Code</h2>
+    <div class="puzzle">
+      <p>Behind a loose floorboard, you find the missing pattern — folded around a strip of parchment covered in strange letters. A note explains: the Mascareri guild always protected its secrets with a <strong>shift cipher</strong>. Every real letter was moved forward through the alphabet by a fixed number of places to hide it.</p>
+      <p>You need that number. Then think back to your very first minutes inside Elena's workshop — a small brass plate held the number the guild has always used as its key.</p>
+      <p>Shift each letter of this message BACKWARD by that many places to reveal what your detective work has earned:</p>
+      <p style="font-size:1.3rem; letter-spacing:0.2em; font-weight:700; text-align:center;">JYLHAPCPAF</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>A shift cipher (also called a Caesar cipher) moves every letter the same number of steps through the alphabet: A, B, C, D... To undo it, shift each letter backward by that same number.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Not sure of the number? Scroll back to Mission 3, the moment you first stepped inside the workshop — a brass plate above the door held it.</p></details>
+    <div class="answer-box" data-answer-hash="4964abd3">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The pattern is safe, and Elena's Regina d'Oro will lead tonight's parade. But the real treasure was how you cracked this case — by mixing language, maps, math, logic, and code-breaking into one clever chain of clues. That's <strong>creativity</strong> at work, Agent — well done.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
