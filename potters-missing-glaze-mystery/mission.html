@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Potter's Missing Glaze Mystery — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C1652E;
+    --accent-dark: #8F4118;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle li { margin: 0.35rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Potter's Missing Glaze Mystery</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 75-95 minutes (a great one to split across two sessions)</div>
+</div>
+
+<div class="intro">
+  <p>Riverbend Clay Studio smells like wet earth and warm dust this morning. The big community craft fair is in two days, and master potter Mira Voss needs to fire her kiln tonight — but the notebook page with her secret glaze recipe has vanished. Without it, the pieces on her shelves stay dull and grey forever.</p>
+  <p>Mira has called in the studio's newest detective-in-residence: you. Clay dust, torn notebook corners, and half-finished jars are scattered everywhere. Follow the clues, rebuild the recipe, and get that kiln firing before the fair.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Plate on the Shelf</h2>
+    <div class="puzzle">
+      <p>Above Mira's workbench sits one old plate, wrapped in a tea towel for safekeeping. It's bright white, painted with only one color: a deep blue. The pattern shows tiny windmills, ships, and swirling flowers, all in that same blue.</p>
+      <p>"My Opa (grandfather) brought it from the Netherlands," Mira says. "It's a very famous style. See if you can find its name."</p>
+      <p>Search online to find out: what is this famous style of blue-and-white Dutch pottery called? Type the name in English — two words, a city's name plus a color.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "blue and white Dutch pottery" plus the name of a Dutch city famous for it.</p></details>
+    <div class="answer-box" data-answer-hash="e4ee6f6c">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The deep blue on Delft Blue pottery starts out grey. It only turns that famous blue after the cobalt paint is fired in a hot kiln.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Five Jars, One Odd Jar Out</h2>
+    <div class="puzzle">
+      <p>In the studio's supply cupboard, five labeled jars sit in a row: <strong>Silica</strong>, <strong>Feldspar</strong>, <strong>Whiting</strong>, <strong>Iron Oxide</strong>, and <strong>Sponge</strong>.</p>
+      <p>Four of these are glaze ingredients — powders Mira mixes into her glaze recipes. One of them is a studio tool, not an ingredient at all.</p>
+      <p>Which jar doesn't belong with the others?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Ask yourself: could you mix each one into a glaze bucket? Or is it something you'd hold in your hand instead?</p></details>
+    <div class="answer-box" data-answer-hash="434d3dc7">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">📓 Studio Notebook: Mira always fires her glaze tests to <strong>Cone 6</strong> — a marker that tells the kiln when it's hot enough (about 1,222°C!). She writes "Cone 6" in the corner of every jar and every page. Worth remembering, detective.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Smudged Word</h2>
+    <div class="puzzle">
+      <p>Mira's notebook has a coffee ring right over one important word. You can still make out the Dutch word underneath: <strong>glazuur</strong> — the shiny, glassy coating baked onto a pot.</p>
+      <p>But the tiny word in front of it (<em>de</em> or <em>het</em>) is smudged completely.</p>
+      <p>Search "de of het glazuur" or check a Dutch dictionary website to find the correct article. Type the article and the word together, exactly like this: "het glazuur" (or "de glazuur," whichever is correct).</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>In Dutch, most nouns use "de," but a good number of shorter, everyday words use "het" instead — there's no shortcut except checking.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Try a dictionary site like Van Dale, or search the exact phrase "de of het glazuur."</p></details>
+    <div class="answer-box" data-answer-hash="6a1001c2">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Six Parts, Three Parts, One Part</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Mira's basic glaze recipe mixes feldspar, silica, and whiting in a <strong>6 : 3 : 1</strong> ratio by weight — 10 equal parts in total.</p>
+      <p>The only number that survived the smudged page is the silica: <strong>300 grams</strong>.</p>
+      <p>Figure out how many grams of feldspar this batch needs. Type just the number, no units.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Ratio 6 : 3 : 1 means 10 equal parts total. Work out what one single part weighs first.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>300 g of silica is 3 of those parts. Divide to find 1 part, then multiply by 6 for feldspar.</p></details>
+    <div class="answer-box" data-answer-hash="889bd751">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The World's Oldest Pot</h2>
+    <div class="puzzle">
+      <p>Long before Delft Blue, long before the potter's wheel, people were already shaping clay and baking it hard in fire.</p>
+      <p>Search online to find out: in which country was the world's oldest known pottery discovered — fragments dated to around 20,000 years old?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "oldest pottery in the world discovered" and look for a science or research source, not a forum.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The cave where it was found sits in a province in the south of this country.</p></details>
+    <div class="answer-box" data-answer-hash="eca4a890">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Many people think the potter's wheel was the very first wheel ever invented — by the Sumerians, around 3500 BCE, long before wheels were used on carts.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Apprentices, Three Test Tiles</h2>
+    <div class="puzzle">
+      <p>Three of Mira's apprentices — Sanne, Bram, and Iris — each fired one glazed test tile this month. Each tile has a different glaze color and was fired for a different number of hours.</p>
+      <p>Work out the full picture using only these clues — pure reasoning, no searching needed:</p>
+      <ul>
+        <li>Iris's tile is Celadon Green.</li>
+        <li>The tile fired for 8 hours is not Ash White.</li>
+        <li>The tile fired for 10 hours — the longest firing of the three — belongs to Bram.</li>
+        <li>Sanne's tile fired for fewer hours than the Temmoku Black tile.</li>
+      </ul>
+      <p>What color is Sanne's tile? Type both words together (for example: "temmoku black").</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with the first clue — that gives you one full match right away. Then work out who fired the Temmoku Black tile.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If Sanne's tile were Temmoku Black, the last clue would say she fired fewer hours than herself — impossible. So Sanne can't be Temmoku Black.</p></details>
+    <div class="answer-box" data-answer-hash="9012f61e">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>How Much Glaze for the Big Vase?</h2>
+    <div class="puzzle">
+      <p>Mira is glazing a cylindrical vase — a pot shaped like a tube, open at the top. It's 14 cm across (the diameter) and 20 cm tall.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 240 290" width="240" height="290" role="img" aria-label="A cylindrical vase, open at the top, 14 centimeters across and 20 centimeters tall">
+      <ellipse cx="120" cy="60" rx="70" ry="18" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="50" y1="60" x2="50" y2="260" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="190" y1="60" x2="190" y2="260" stroke="#2B2A24" stroke-width="2"/>
+      <path d="M 50 260 A 70 18 0 0 0 190 260" fill="none" stroke="#2B2A24" stroke-width="2"/>
+      <path d="M 50 260 A 70 18 0 0 1 190 260" fill="none" stroke="#2B2A24" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.5"/>
+      <text x="120" y="42" text-anchor="middle" font-size="13">14 cm across</text>
+      <text x="222" y="165" text-anchor="middle" font-size="13" transform="rotate(-90 222 165)">20 cm tall</text>
+    </svg>
+    <div class="clue-caption">She needs to glaze the curved side and the flat bottom (the top stays open so it can breathe during firing).</div>
+    <div class="puzzle">
+      <p>Her glaze bottle says: "Covers 2 square centimeters per milliliter."</p>
+      <p>Grab a pencil: since the radius is 7 cm, use π ≈ 22/7 to keep the numbers whole. Find the total area to be glazed, then work out how many milliliters of glaze Mira needs. Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find the radius (half of 14 cm), then find the circle's circumference using 2 × π × radius.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The curved side's area is the circumference times the height. Add the flat bottom circle's area (π × radius × radius) before converting to milliliters.</p></details>
+    <div class="answer-box" data-answer-hash="329aec4c">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? A clay pot can shrink by 12-15% in size between when it's freshly shaped and when it comes out of the kiln, glazed and finished.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Clay Suppliers, One Better Deal</h2>
+    <div class="puzzle">
+      <p>Mira needs 100 kg of clay for the fair — that's four 25 kg bags. Two suppliers deliver locally:</p>
+      <ul>
+        <li><strong>Riverside Clay Co.:</strong> €18 per bag, plus a flat €10 delivery fee no matter how many bags.</li>
+        <li><strong>Potters' Supply Barn:</strong> €21 per bag, but delivery is free when you order 4 bags or more (otherwise €15 delivery).</li>
+      </ul>
+      <p>Work out each supplier's total cost for the 4 bags Mira needs. How many euros will she save by choosing the cheaper one? Type just the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out each supplier's total separately: bags first, then add delivery.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Riverside: 4 × €18, plus its flat fee. Potters' Supply Barn: 4 × €21 — check whether delivery is free for 4 bags.</p></details>
+    <div class="answer-box" data-answer-hash="370cabd5">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>The Kiln Schedule</h2>
+    <div class="puzzle">
+      <p>Mira's kiln logbook doesn't write cone numbers as plain digits. She uses her own old system of maker's-marks, passed down from her teacher — the same kind of pictograph potters have scratched into wet clay for thousands of years to sign their work. Her key, pinned above the kiln:</p>
+      <p style="font-size:1.3rem; letter-spacing:0.3em; text-align:center; margin:0.9rem 0;">△ = Cone 4 &nbsp;&nbsp; ◆ = Cone 6 &nbsp;&nbsp; ✦ = Cone 8 &nbsp;&nbsp; ● = Cone 10</p>
+      <p>Four pieces are firing this week, one per day, Monday through Thursday: a Mug, a Bowl, a Vase, and a Platter. Each needs a different cone (a higher cone number means a hotter fire).</p>
+      <p>Decode the marks, then work out the whole schedule from these clues:</p>
+      <ul>
+        <li>The Platter fires at ● — the hottest firing of the week.</li>
+        <li>Mira's usual cone (you already know which mark that is) is used on Wednesday.</li>
+        <li>The Mug fires exactly two days before the Vase.</li>
+        <li>Whichever piece fires at ✦ goes in the day right after the Mug.</li>
+        <li>The Platter does not fire on Monday.</li>
+      </ul>
+      <p>Which day does the Bowl go into the kiln? Type the day of the week.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Decode each mark to a number first. Then: the "two days before" clue only fits two possible day-pairs for the Mug and Vase. Try both, and see which one the "not Monday" clue rules out.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know the Mug's day, the ✦ clue tells you exactly which piece fires the day after it.</p></details>
+    <div class="answer-box" data-answer-hash="26285d10">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Torn Corner</h2>
+    <div class="puzzle">
+      <p>Under a pile of clean rags, you find the very last torn corner of Mira's notebook. Only a few words survived: <em>"Fire the final glaze test to 1,200°C."</em> But the kiln display in the corner only shows Fahrenheit.</p>
+    </div>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Convert 1,200°C to Fahrenheit. Use the formula: °F = (°C × 9 ÷ 5) + 32. Grab a pencil for this one.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First multiply 1,200 by 9, then divide that by 5. Add 32 last.</p></details>
+    <div class="answer-box" data-answer-hash="678610c7">
+      <label for="m10-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m10-stage1" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Mira's timer rule: run the kiln for 1 hour for every 200°F, rounding <strong>down</strong> to the whole hour. Using your Stage 1 answer, how many hours should the timer run?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Divide your Fahrenheit number by 200, then drop everything after the decimal point.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>2,192 ÷ 200 is a little under 11 — but "a little under" still rounds down.</p></details>
+    <div class="answer-box" data-answer-hash="1beb2a44">
+      <label for="m10-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m10-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The kiln door clicks shut, timer humming. Mira wipes clay from her hands and grins. "You didn't just find my old recipe," she says. "You found new ways to work out what was missing, every single time. That's the real secret ingredient in this studio: <strong>creativity</strong>."</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dead Air at Riverbend Radio — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /*
+    THEMING: warm amber-red accent, like the glow of an ON AIR sign,
+    fitting the community-radio-station mystery theme.
+  */
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C1442D;
+    --accent-dark: #8F3220;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .puzzle ul, .puzzle ol { margin: 0.5rem 0; padding-left: 1.4rem; }
+  .puzzle li { margin: 0.3rem 0; }
+  .clue-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin: 0.9rem 0;
+    display: block;
+  }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  .stage-label:first-of-type { margin-top: 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>Dead Air at Riverbend Radio</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 60-75 minutes</div>
+</div>
+
+<div class="intro">
+  <p>Every evening at 6:00 pm, Riverbend Community Radio goes on air. But tonight, something is wrong. Static keeps chewing up the signal, and the special guest for the 7:00 pm interview has vanished without a word. The station manager just called <strong>you</strong>, the Academy's newest detective-in-residence, straight to the studio. Fix the static, find the guest, and get the show back on air before the red ON AIR light goes dark for good.</p>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>How Does a Voice Become a Broadcast?</h2>
+    <div class="puzzle">
+      <p>A broadcast is a show sent out over the air to many radios at once. Before tonight's show can start, you need to understand how sound leaves the studio and reaches a listener's radio.</p>
+      <p>Search online for how a radio broadcast travels from a station to a radio. Then put these five steps in the correct order, from what happens first to what happens last:</p>
+      <ul>
+        <li><strong>A.</strong> The radio wave zooms through the air at the speed of light.</li>
+        <li><strong>B.</strong> A DJ speaks into a microphone.</li>
+        <li><strong>C.</strong> A listener's radio catches the wave and turns it back into sound.</li>
+        <li><strong>D.</strong> The transmitter turns the signal into a radio wave, and the antenna beams it out.</li>
+        <li><strong>E.</strong> The microphone changes the sound into an electrical signal.</li>
+      </ul>
+      <p>Type the five letters in the correct order, with no spaces or commas — like <strong>ABCDE</strong>.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about what has to happen first: someone must make a sound before anything else can happen. Which step is the very start?</p></details>
+    <div class="answer-box" data-answer-hash="3d3385fc">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Radio waves travel at the speed of light — about 300,000 kilometers every second. That's fast enough to circle the whole Earth more than 7 times in a single second.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Odd Item in the Equipment Rack</h2>
+    <div class="puzzle">
+      <p>The station manager keeps a shelf of studio items near the control room. Four of them help send tonight's show out over the airwaves. One item does nothing at all for the broadcast.</p>
+      <p>Here is the list: <strong>microphone, mixing board, transmitter, antenna, framed photograph.</strong></p>
+      <p>Which one does NOT help the signal reach a listener?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Ask yourself: does this item touch the sound, the signal, or the radio wave in any way at all?</p></details>
+    <div class="answer-box" data-answer-hash="b705c792">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type your answer exactly as: framed photograph">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">📓 Producer's Notebook: Scrawled on the studio whiteboard — "Reminder: the usual Tuesday sponsor slot runs exactly 15 minutes. No more, no less." Worth remembering, Detective.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Coded Note by the Coffee Machine</h2>
+    <div class="puzzle">
+      <p>Taped to the coffee machine is a note written in code:</p>
+      <p><strong>MIKE UNIFORM SIERRA ECHO UNIFORM MIKE</strong></p>
+      <p>Search online for the real "NATO phonetic alphabet" — the code pilots and sailors use so words are never misheard over a crackly radio. Use it to turn each code word back into a single letter.</p>
+      <p>Put the six letters together in order. They spell a place — inside a building.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Each code word stands for exactly one letter. Search "NATO phonetic alphabet" and find the letter that matches each word.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you have all six letters, read them in order. They spell a room full of old, important things.</p></details>
+    <div class="answer-box" data-answer-hash="b4816015">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type just that one word...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The NATO phonetic alphabet — Alfa, Bravo, Charlie, and so on — was finished in 1956. It helps pilots and sailors understand each other clearly, no matter what language they speak.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Building Tonight's Special Rundown</h2>
+    <div class="puzzle">
+      <p>Tonight's broadcast is a special two-hour show, from 6:00 pm to 8:00 pm — different from any regular weekday show. Grab a pencil and paper for this one.</p>
+      <p>Here are five notes from the producer, jotted down out of order:</p>
+      <ul>
+        <li>The opening theme song lasts 3 minutes and starts right at 6:00 pm.</li>
+        <li>Right after the theme song comes the local news, which takes 7 minutes.</li>
+        <li>After the news, a music set plays 5 songs. Each song lasts about 4 minutes.</li>
+        <li>After the music set comes the weather report. It always takes exactly 4 minutes.</li>
+        <li>Right before the interview, there is a 6-minute break for sponsors.</li>
+      </ul>
+      <p>Add up the minutes to find what time the mystery guest's interview segment is supposed to begin.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Work out how many minutes pass before the interview starts. Add every segment's length, in order, starting from 6:00 pm.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>3 minutes, plus 7 minutes, plus a music set (5 songs x 4 minutes each), plus 4 minutes, plus 6 minutes. How many minutes is that in total?</p></details>
+    <div class="answer-box" data-answer-hash="c63026a0">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type the time like this: 6:40 pm">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Night Radio Changed Everything</h2>
+    <div class="puzzle">
+      <p>The station manager mutters, "This whole studio owes something to one night, over a hundred years ago."</p>
+      <p>Search online for: <strong>KDKA first commercial radio broadcast election results</strong>. Find the year that station broadcast the results of a U.S. presidential election live, before most newspapers could even print them.</p>
+      <p>Type that year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search for the radio station called KDKA, based in Pittsburgh, Pennsylvania.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The broadcast happened on November 2nd of that year. Search for what major event happened across the United States that same day.</p></details>
+    <div class="answer-box" data-answer-hash="9d55a2c5">
+      <label for="m5-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type just the year...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? In the 1920s, most families did not own their own radio. Many neighbors gathered around one big radio in someone's living room to listen together.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Weekday Afternoon Lineup</h2>
+    <div class="puzzle">
+      <p>Three DJs host the station's regular weekday afternoon shows: Max, Priya, and Sam. Each one hosts one time slot — 4:00, 5:00, or 6:00 — and plays one kind of music — Jazz, Pop, or Rock.</p>
+      <p>Use these clues to work out who plays what, and when:</p>
+      <ol>
+        <li>The Rock show is not at 4:00.</li>
+        <li>Priya's show starts right after Max's show.</li>
+        <li>Sam never plays Jazz.</li>
+        <li>The Pop show airs at 5:00.</li>
+        <li>Max does not host the 6:00 slot.</li>
+      </ol>
+      <p>Which DJ hosts the Rock show?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clues 1 and 4. Together, they tell you exactly which time slot has which kind of music — before you even think about the DJs.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Once you know each time slot's music, clue 2 only allows two possible pairings for Max and Priya. Try both, then use clue 3 to rule one out.</p></details>
+    <div class="answer-box" data-answer-hash="dd1c9ddc">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type just the DJ's name...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>How Tall Is the Transmitter Tower?</h2>
+    <div class="puzzle">
+      <p>The chief engineer needs the exact height of the broadcast tower, but nobody can climb it tonight.</p>
+      <p>At exactly 4:00 pm, you plant a measuring pole that stands 2 meters tall. It casts a shadow 3 meters long. At that same moment, the tower's shadow stretches 42 meters across the parking lot.</p>
+      <p>The sun hits both the pole and the tower at the very same angle, so their height-to-shadow ratio is equal. Find the tower's true height in meters.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 320 170" width="320" height="170"
+         role="img" aria-label="Two right triangles side by side: a small triangle for the measuring pole, labeled 2 meters tall with a 3 meter shadow, and a larger triangle for the transmitter tower, labeled with a 42 meter shadow and an unknown height marked with a question mark. Both triangles have the same angle at the ground, showing the height-to-shadow ratio is equal for both.">
+      <line x1="10" y1="150" x2="300" y2="150" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="40,150 40,110 70,150" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="26" y="134" text-anchor="middle" font-size="11">2 m</text>
+      <text x="55" y="163" text-anchor="middle" font-size="11">3 m</text>
+      <polygon points="150,150 150,40 300,150" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="136" y="98" text-anchor="middle" font-size="11">? m</text>
+      <text x="225" y="163" text-anchor="middle" font-size="11">42 m</text>
+      <text x="150" y="20" text-anchor="middle" font-size="10" font-style="italic">Tower (not drawn to true scale)</text>
+      <text x="55" y="20" text-anchor="middle" font-size="10" font-style="italic">Pole</text>
+    </svg>
+    <div class="clue-caption">Diagram not drawn to true scale — but the ratio between height and shadow is the same for both.</div>
+    <details class="hint"><summary>Hint 1</summary><p>The pole's height divided by its shadow length gives you a ratio. That exact same ratio applies to the tower.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>2 divided by 3 is the same as the tower's height divided by 42. What number, divided by 42, gives that same ratio?</p></details>
+    <div class="answer-box" data-answer-hash="95f2a617">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type just the number, like 28">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Which Sponsor Gets the Better Deal?</h2>
+    <div class="puzzle">
+      <p>Two local businesses want to sponsor tonight's show. The station manager wants to know which one pays less for every minute of airtime — that tells us who is really getting the better deal.</p>
+      <ul>
+        <li><strong>WaveTown Bakery</strong> pays $180 a week to air their ad in the usual Tuesday sponsor slot.</li>
+        <li><strong>Riverside Bikes</strong> pays $150 a week to air their ad in a 12-minute slot on Thursdays.</li>
+      </ul>
+      <p>Figure out the cost per minute for each business. Which one pays less per minute?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You already know how long the usual Tuesday sponsor slot lasts. Check your notes from earlier in the case if you don't remember.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Divide each business's weekly payment by the number of minutes their ad airs. Then compare the two results.</p></details>
+    <div class="answer-box" data-answer-hash="397fe4bc">
+      <label for="m8-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8-answer" type="text" placeholder="Type the business name, like: WaveTown Bakery">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">AHA!</span>
+    <h2>Two Callers, One Truth</h2>
+    <div class="puzzle">
+      <p>The phone rings twice tonight. Two callers phone in with tips about where the missing guest might be. One caller ALWAYS tells the truth. The other ALWAYS lies — every single word. You don't know which is which yet.</p>
+      <p><strong>Caller 1 — Rick:</strong> "Nadia always lies to you, I promise. Also, I saw the missing guest heading into the History Museum earlier tonight."</p>
+      <p><strong>Caller 2 — Nadia:</strong> "Rick and I are actually the exact same kind of caller — either we're both truth-tellers, or we're both liars. And the guest is at the Library, not the museum."</p>
+      <p>Figure out which caller always tells the truth. Where is the guest really hiding?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try assuming Rick always tells the truth. Follow what that means for Nadia's two claims — does everything still fit together without breaking a rule?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Now try assuming Rick always lies instead, and follow that all the way through Nadia's claims too. Only one of the two assumptions works without breaking a rule.</p></details>
+    <div class="answer-box" data-answer-hash="b4816015">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type just the location, one word">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Signal Boost Code</h2>
+    <div class="puzzle">
+      <p>You race to the History Museum archive room and find the missing guest — station archivist Mrs. Nomvula Patel — completely lost in an old wartime radio logbook. "I'm so sorry!" she says. "I found something the town forgot about, and I simply could not stop reading." She hands you one last note from the transmitter room to finish the case.</p>
+    </div>
+
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Taped inside the transmitter panel is the engineer's cheat-sheet: "Signal boost code = (tower height in meters ÷ 4) − 2."</p>
+      <p>Use the tower height you found earlier tonight to work out today's signal boost code.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>You already measured the tower's height using the shadow ratio. Divide that number by 4 first, then finish the rest of the formula.</p></details>
+    <div class="answer-box" data-answer-hash="300ca0d0">
+      <label for="m10-stage1">Your answer:</label>
+      <div class="answer-row">
+        <input id="m10-stage1" type="text" placeholder="Type just the number...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>On the museum door hangs an old cipher wheel with one rule: "Shift each letter of the scrambled word BACKWARD in the alphabet by the signal boost code."</p>
+      <p>The scrambled word is: <strong>INXHTAJWD</strong></p>
+      <p>Decode it, letter by letter, to reveal what you have truly done tonight.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>For each letter, count backward that many places through the alphabet. I is the 9th letter — count back from there.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The wheel wraps around: if counting back takes you past A, keep going from Z.</p></details>
+    <div class="answer-box" data-answer-hash="89fa7115">
+      <label for="m10-stage2">Your final answer:</label>
+      <div class="answer-row">
+        <input id="m10-stage2" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The static is gone, the ON AIR light glows steady red, and Mrs. Patel makes it to her interview just in time. Solving tonight's mystery took real <strong>discovery</strong> — noticing small details nobody else caught, and following them all the way to the truth. Case closed, Detective.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
