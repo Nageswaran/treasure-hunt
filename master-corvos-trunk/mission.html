@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Master Corvo's Trunk — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #A33B6E;
+    --accent-dark: #722749;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .cipher-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.85rem;
+    margin: 0.8rem 0;
+    background: var(--paper-dark);
+  }
+  .cipher-table td, .cipher-table th {
+    border: 1px solid rgba(0,0,0,0.2);
+    text-align: center;
+    padding: 0.35rem 0.3rem;
+  }
+  .cipher-code {
+    font-family: 'Special Elite', monospace;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.7rem;
+    border-radius: 3px;
+    margin: 0.8rem 0;
+    word-spacing: 0.6em;
+  }
+  .clipping {
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent);
+    padding: 0.7rem 0.9rem;
+    margin: 0.6rem 0;
+    font-style: italic;
+    font-size: 0.95rem;
+  }
+  .tally-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 0.8rem 0;
+  }
+  .tally-table th, .tally-table td {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+  }
+  .tally-table th { background: var(--paper-dark); }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .notebook {
+    background: #FBF3D9;
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>Master Corvo's Trunk</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  Once a year, on Founder's Day, the puppeteers of the old touring theatre unlock Master Corvo's antique trunk — a tradition started over a century ago. Inside is this year's set of trials, and whoever solves them all gets to choose tonight's role in the show. This year, you're the guest apprentice who gets to try. Open the trunk, and let's see what Master Corvo left behind.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Sorting the Puppets</h2>
+    <div class="puzzle">
+      <p>A yellowed card is taped inside the trunk's lid, in Master Corvo's handwriting:</p>
+      <p style="font-style:italic;">"If a puppet has red string, it is a Villain puppet. If a puppet is a Villain puppet, it is kept in the LEFT drawer."</p>
+      <p>Today's puppet on the workbench has red string. Which drawer is it kept in — LEFT or RIGHT?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Follow the chain one step at a time: red string tells you what KIND of puppet it is. Then the second sentence tells you where that kind is kept.</p></details>
+    <div class="answer-box" data-answer-hash="124aec70">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Faded Ticket Stub</h2>
+    <div class="puzzle">
+      <p>Tucked in the trunk is an old ticket stub from a real marionette theatre in Austria, founded by a sculptor named Anton Aicher. It's one of the most famous puppet theatres in the world, and it's still open today.</p>
+      <p>Search the internet to find the year this theatre first opened its curtain. Type the year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Salzburg Marionette Theatre founded" — Anton Aicher opened it in a city famous for Mozart.</p></details>
+    <div class="answer-box" data-answer-hash="2258b2bb">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The Salzburg Marionette Theatre's very first show, in 1913, was a Mozart opera called "Bastien and Bastienne" — performed entirely by puppets.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Dot-Pattern Note</h2>
+    <div class="puzzle">
+      <p>Master Corvo used her own version of an old code called a Baconian cipher — every letter is written as five A's and B's. She made sure every letter got its own unique pattern (no sharing, unlike some old versions). Here's the part of her key you'll need:</p>
+    </div>
+    <table class="cipher-table">
+      <tr><th>Letter</th><td>E</td><td>F</td><td>I</td><td>V</td></tr>
+      <tr><th>Code</th><td>AABAA</td><td>AABAB</td><td>ABAAA</td><td>BABAB</td></tr>
+    </table>
+    <div class="puzzle">
+      <p>Decode this note, tucked under the trunk's tray:</p>
+    </div>
+    <div class="cipher-code">AABAB &nbsp;ABAAA &nbsp;BABAB &nbsp;AABAA</div>
+    <div class="puzzle">
+      <p>It tells you how many acts are in tonight's show. Type the number as a word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Match each 5-letter group to the key table above, one group at a time.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first group, AABAB, is the letter F. What common number-word starts with F?</p></details>
+    <div class="answer-box" data-answer-hash="aeb44395">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <div class="notebook">📓 Agent's Notebook: Tonight's show has <strong>five</strong> acts. Worth remembering...</div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Heritage Certificate</h2>
+    <div class="puzzle">
+      <p>A framed certificate hangs backstage: the puppetry traditions of Slovakia and Czechia were added to a very special worldwide list — UNESCO's Representative List of the Intangible Cultural Heritage of Humanity.</p>
+      <p>Search the internet to find the exact year this happened. Type the year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Puppetry Slovakia Czechia UNESCO Intangible Cultural Heritage."</p></details>
+    <div class="answer-box" data-answer-hash="ce2c5bb4">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Stage Valance</h2>
+    <div class="puzzle">
+      <p>The fabric valance above the puppet stage is shaped like a parallelogram — a slanted rectangle. The seamstress needs its total area to order fabric. Careful: one of the measurements below is a distraction!</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 280 170" width="280" height="170" role="img" aria-label="A slanted parallelogram valance shape with a 50 centimeter base, a 34 centimeter slanted side, and a 20 centimeter straight-up height marked with a dashed line">
+      <polygon points="40,140 190,140 240,40 90,40" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="90" y1="140" x2="90" y2="40" stroke="#2B2A24" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="85" y1="140" x2="95" y2="140" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="85" y1="40" x2="95" y2="40" stroke="#2B2A24" stroke-width="1"/>
+      <text x="115" y="158" font-size="12" text-anchor="middle">50 cm (base)</text>
+      <text x="105" y="95" font-size="12" text-anchor="middle" transform="rotate(-90 105 95)">20 cm (height)</text>
+      <text x="175" y="82" font-size="12" text-anchor="middle" transform="rotate(-52 175 82)">34 cm (slanted side)</text>
+    </svg>
+    <div class="clue-caption">Find the total area of the valance in square centimeters.</div>
+    <details class="hint"><summary>Hint 1</summary><p>A parallelogram's area uses its BASE and its straight-up-and-down HEIGHT — not the slanted side.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>50 × 20 = ?</p></details>
+    <div class="answer-box" data-answer-hash="2297cac4">
+      <label for="m5-answer">Your answer (in cm²):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Two Programme Notes</h2>
+    <div class="puzzle">
+      <p>Backstage law, written in the troupe's oldest rulebook: <strong>"Only the FIRST show of any season is ever held on the museum's anniversary — never the fourth, never any other."</strong></p>
+      <p>Two old programme notes both claim to describe the same night:</p>
+    </div>
+    <div class="clipping">Note 1: "Opening Night fell on the museum's 100th anniversary, a Friday, and it was the FOURTH show of the season."</div>
+    <div class="clipping">Note 2: "Opening Night fell on the museum's 100th anniversary, a Friday, and it was the FIRST show of the season."</div>
+    <div class="puzzle">
+      <p>They can't both be right. Using the backstage law above, which note is accurate — Note 1 or Note 2? Type "note 1" or "note 2".</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Re-read the backstage law carefully. One of the two notes directly breaks that law.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The law says the anniversary is ONLY ever the first show — so any note claiming a different show number on the anniversary must be the wrong one.</p></details>
+    <div class="answer-box" data-answer-hash="762ead8f">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Candle Game</h2>
+    <div class="puzzle">
+      <p>Backstage tradition: before opening night, two puppeteers play a game with 21 candle stubs in a row. Taking turns, each player removes 1, 2, or 3 candles. Whoever takes the very LAST candle wins the right to open the show.</p>
+      <p>Master Corvo always lets the newest apprentice go first. If both players play perfectly, how many candles should YOU take on your very first turn to GUARANTEE a win?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think in groups of 4. If you can always make sure that the total taken in each "round" (your turn plus your opponent's turn) equals 4, you control the game.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>21 is 1 more than a multiple of 4 (20 = 5 × 4). Take just enough to leave a multiple of 4 for your opponent.</p></details>
+    <div class="answer-box" data-answer-hash="340ca71c">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Box Office Ledger</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Master Corvo's old programme is written partly in Dutch. It says this week has "acht voorstellingen" — Dutch for a number of shows. What number does the Dutch word "acht" mean? Type the number.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>In Dutch, "twee" is two and "zes" is six. "Acht" is a bit more than "zes."</p></details>
+    <div class="answer-box" data-answer-hash="3d0cb547">
+      <label for="m8a-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8a-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Here is the box office ledger for this week's shows. The Saturday evening show sold exactly as many MORE tickets than Friday evening as the Dutch number you just found in Stage 1 — so Saturday evening's ticket count is Friday evening's count plus that number.</p>
+    </div>
+    <table class="tally-table">
+      <tr><th>Show</th><th>Tickets</th><th>Price each (€)</th></tr>
+      <tr><td>Friday evening</td><td>42</td><td>6</td></tr>
+      <tr><td>Saturday matinee</td><td>55</td><td>5</td></tr>
+      <tr><td>Saturday evening</td><td>42 + Stage 1 number</td><td>7</td></tr>
+      <tr><td>Sunday matinee</td><td>38</td><td>5</td></tr>
+    </table>
+    <div class="puzzle">
+      <p>Multiply each row (tickets × price), then add all four totals together. What was the total box office revenue for the week, in euros?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First work out the Saturday evening ticket count using your Stage 1 answer. Then multiply each row and write down all four answers before adding.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Friday evening, Saturday matinee, and Sunday matinee give you 252, 275, and 190. Work out Saturday evening's total and add all four together.</p></details>
+    <div class="answer-box" data-answer-hash="91926953">
+      <label for="m8b-answer">Your final answer (in €):</label>
+      <div class="answer-row">
+        <input id="m8b-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? Marionette puppets are traditionally controlled by strings tied to a wooden crossbar — puppeteers can spend years learning to make a puppet walk, bow, or dance convincingly.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Opera on the Stub</h2>
+    <div class="puzzle">
+      <p>Remember that ticket stub from Mission 2? Master Corvo's notes say the Salzburg Marionette Theatre's very FIRST-EVER performance, back when it opened, was a famous opera called "Bastien and Bastienne" — performed entirely by puppets.</p>
+      <p>Search the internet to find which world-famous composer wrote that opera. Type the composer's last name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Bastien and Bastienne composer" — he was a child prodigy from Salzburg himself.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>His full name is often shortened to just two names — his first name means "beloved" in several languages.</p></details>
+    <div class="answer-box" data-answer-hash="6c084772">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Last Latch</h2>
+    <div class="puzzle">
+      <p>Master Corvo's trunk has one final latch, marked with a blank number dial. Take the number of acts in tonight's show — the one you were told to remember, right at the start — and add the winning first move from the candle game.</p>
+      <p>Turn the dial to that number to open the last latch and claim tonight's role.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>The acts number came from the dot-pattern note. The candle-game number came from the game where you go first.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Five acts, plus the one candle you should take first — add them together.</p></details>
+    <div class="answer-box" data-answer-hash="330ca589">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>The last latch clicks open. Inside is a single carved puppet, unfinished, with a note in Master Corvo's hand: "Finish it however you like — that's the whole point." Tonight, for the first time in a hundred years, the Founder's Day role goes to someone who solved it with a bit of their own creativity, not just by following the old rules.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

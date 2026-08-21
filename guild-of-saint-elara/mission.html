@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Guild of Saint Elara — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #6A4C93;
+    --accent-dark: #4B3569;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .cipher-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.85rem;
+    margin: 0.8rem 0;
+    background: var(--paper-dark);
+  }
+  .cipher-table td, .cipher-table th {
+    border: 1px solid rgba(0,0,0,0.2);
+    text-align: center;
+    padding: 0.35rem 0.2rem;
+  }
+  .cipher-strip {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.9rem;
+    background: var(--paper-dark);
+    padding: 0.7rem 0.6rem;
+    border-radius: 3px;
+    overflow-x: auto;
+    letter-spacing: 0.12em;
+    margin: 0.8rem 0;
+  }
+  .cipher-code {
+    font-family: 'Special Elite', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-align: center;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.7rem;
+    border-radius: 3px;
+    margin: 0.8rem 0;
+  }
+  .tally-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 0.8rem 0;
+  }
+  .tally-table th, .tally-table td {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+  }
+  .tally-table th { background: var(--paper-dark); }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .notebook {
+    background: #FBF3D9;
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Guild of Saint Elara</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  Master Liesel Van Doorn is retiring after 40 years as the town's last true stained-glass master. Before she hangs up her tools, she has left her new apprentice — you — one final trial: a trail of puzzles hidden around the Guild of Saint Elara's workshop. Solve them all to uncover the finished design for the guild's great rose window, ready to be unveiled at the town's 800-Year Founding Festival. Finish the trial, and Master Liesel will name you a Journeyman Glazier.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Practice Rosette</h2>
+    <div class="puzzle">
+      <p>Before she started the real window, Master Liesel arranged colored glass in a repeating pattern on her practice rosette, to make sure her hands still remembered the rhythm. Here is the order of petals she laid, left to right:</p>
+      <p style="text-align:center; font-weight:700; letter-spacing:0.05em;">RED, GOLD, GOLD, BLUE, RED, GOLD, GOLD, BLUE, RED, GOLD, GOLD, ___?</p>
+      <p>What color comes next?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Look for a small group of colors that keeps repeating. How many colors are in one repeat?</p></details>
+    <div class="answer-box" data-answer-hash="82fbf5cd">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>The Reddest Red</h2>
+    <div class="puzzle">
+      <p>Master Liesel's notebook says: "The deepest red in my glass comes from melting in a precious metal — the very same one used in wedding rings and old coins. It is NOT copper, and it is NOT iron."</p>
+      <p>Search the internet to find which metal glassmakers melt into glass to make the richest ruby-red stained glass. Type the metal's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "ruby red stained glass metal" — one shiny, precious metal is famous for this trick.</p></details>
+    <div class="answer-box" data-answer-hash="ec66d793">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The famous deep blue in Chartres Cathedral's windows in France — sometimes called "Chartres blue" — comes from tiny amounts of cobalt mixed into the glass while it was still molten, back in the 1200s.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Grid on the Workbench</h2>
+    <div class="puzzle">
+      <p>Scratched into the corner of Master Liesel's workbench is an old number grid she calls her "cipher square." Each letter of the alphabet has a row number and a column number.</p>
+    </div>
+    <table class="cipher-table">
+      <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+      <tr><th>1</th><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
+      <tr><th>2</th><td>F</td><td>G</td><td>H</td><td>I/J</td><td>K</td></tr>
+      <tr><th>3</th><td>L</td><td>M</td><td>N</td><td>O</td><td>P</td></tr>
+      <tr><th>4</th><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td></tr>
+      <tr><th>5</th><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td></tr>
+    </table>
+    <div class="puzzle">
+      <p>Next to the grid, pinned to a scrap of paper, is this message (each pair of numbers is row, then column):</p>
+    </div>
+    <div class="cipher-code">44 52 &nbsp; 15 &nbsp; 31 51 15</div>
+    <div class="puzzle">
+      <p>Decode the message to find out how many glaziers first founded the Guild of Saint Elara. Type the number as a word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Each pair of numbers is (row, column) — find where they cross on the grid.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first pair is 4, 4 — find row 4, column 4. That's your first letter.</p></details>
+    <div class="answer-box" data-answer-hash="f5352bb4">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <div class="notebook">📓 Agent's Notebook: The Guild of Saint Elara was founded by <strong>twelve</strong> glaziers. Worth remembering...</div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The City of Sixteenth-Century Glass</h2>
+    <p class="stage-label">Part 1 of 2</p>
+    <div class="puzzle">
+      <p>Master Liesel once trained for a year in a Dutch city famous for its 16th-century stained glass, painted mostly by two brothers. Search to find the city where the "Goudse Glazen" — the famous stained-glass windows of the Sint-Janskerk, painted largely by the Crabeth brothers — can still be seen today. Type the city's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "Crabeth brothers stained glass Netherlands" — the windows are named after the city they're in.</p></details>
+    <div class="answer-box" data-answer-hash="f28ee961">
+      <label for="m4a-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4a-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Part 2 of 2</p>
+    <div class="puzzle">
+      <p>Master Liesel's notebook has one Dutch word scrambled: <strong>SAGLINODOL</strong>. Unscramble it to find the Dutch word for "stained glass" — written as one word, no spaces or hyphens.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>In Dutch, this window is made of GLASS (glas) held together by strips of a metal called LOOD (lead) — the word is "glas" + "in" + "lood" mashed together.</p></details>
+    <div class="answer-box" data-answer-hash="136fc0a7">
+      <label for="m4b-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4b-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The Lead-Came Order</h2>
+    <div class="puzzle">
+      <p>Here is Master Liesel's finished rosette design: a hexagon center with six triangle petals around it. The glass cutter needs to know the total length of lead-came (the metal strip that holds glass pieces together) needed to trace only the <strong>outer</strong> edge of the whole flower shape. The hexagon's own sides are hidden underneath the petals, so they don't count.</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 300 310" width="300" height="310" role="img" aria-label="A hexagon with six triangular petals around it, forming a flower shape">
+      <polygon points="232,155 196,217.35 124,217.35 88,155 124,92.65 196,92.65" fill="#E8DEC4" stroke="#2B2A24" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <polygon points="232,155 273.9,220.8 196,217.35" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="196,217.35 160,286.55 124,217.35" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="124,217.35 46.1,220.8 88,155" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="88,155 46.1,89.2 124,92.65" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="124,92.65 160,23.45 196,92.65" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <polygon points="196,92.65 273.9,89.2 232,155" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <text x="214" y="150" font-size="11" text-anchor="middle">6 cm</text>
+      <text x="150" y="70" font-size="10" text-anchor="middle" fill="#555">(hidden edge)</text>
+      <text x="253" y="185" font-size="11" text-anchor="middle" transform="rotate(35 253 185)">6.5 cm</text>
+      <text x="235" y="192" font-size="11" text-anchor="middle" transform="rotate(-40 235 192)">6.5 cm</text>
+    </svg>
+    <div class="clue-caption">Each petal's two slanted outer edges measure 6.5 cm (all six petals are identical). Only the slanted edges form the outside of the flower.</div>
+    <details class="hint"><summary>Hint 1</summary><p>Only the SLANTED outside edges count — the hexagon's own sides are hidden under the petals, so don't add those in.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Each petal has TWO outer edges of 6.5 cm. There are 6 petals. Multiply 6.5 × 2 × 6.</p></details>
+    <div class="answer-box" data-answer-hash="97e5dd4a">
+      <label for="m5-answer">Your answer (in cm):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Apprentices, One Ledger</h2>
+    <div class="puzzle">
+      <p>Three apprentices — Anke, Bram, and Corin — each worked on one colored petal (Red, Blue, or Gold) with one tool (grozing iron, diamond cutter, or soldering iron) for the practice rosette. Master Liesel's ledger has five torn clues:</p>
+      <ol>
+        <li>Anke did not use the grozing iron.</li>
+        <li>Whoever worked on the Gold petal used the diamond cutter.</li>
+        <li>Bram worked on the Blue petal.</li>
+        <li>Corin did not use the soldering iron.</li>
+        <li>Corin has never used the diamond cutter.</li>
+      </ol>
+      <p>Which apprentice used the diamond cutter on the Gold petal?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Start with clue 3 — it tells you exactly who worked on Blue. That leaves only two people for Red and Gold.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Clue 5 rules out one of those two people from having Gold (and the diamond cutter) — so the other one must have it.</p></details>
+    <div class="answer-box" data-answer-hash="c1d80ed6">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Last Four Petals</h2>
+    <div class="puzzle">
+      <p>Master Liesel has one gap left in her rosette: four different colors of petal glass — red, blue, gold, and green — still need to be installed into four empty slots, one color per slot, each color used exactly once.</p>
+      <p>For her ledger, she wants to know: in how many different orders could the four colors be installed into the four slots, if any order is allowed?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Think about the first slot: how many color choices do you have for it? Then how many are left for the second slot, and the third?</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply: 4 choices for the first slot × 3 for the second × 2 for the third × 1 for the last.</p></details>
+    <div class="answer-box" data-answer-hash="89f29333">
+      <label for="m7-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Sand Order</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>Master Liesel's guild uses a keyword cipher, built from the guild founder's name, ELARA. Here is the key: write ELARA's unique letters first (E, L, A, R), then the rest of the alphabet in order, skipping any letters already used.</p>
+    </div>
+    <div class="cipher-strip">
+      Plain: &nbsp;A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>
+      Cipher: E L A R B C D F G H I J K M N O P Q S T U V W X Y Z
+    </div>
+    <div class="puzzle">
+      <p>To decode a message, find each ciphertext letter in the CIPHER row, then read the letter directly above it in the PLAIN row. Decode this word:</p>
+    </div>
+    <div class="cipher-code">M G M B</div>
+    <div class="puzzle">
+      <p>That word is how many colors of glass Master Liesel ordered for the big window. Type the decoded word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Find each ciphertext letter in the bottom CIPHER row, then read the letter directly above it in the top PLAIN row.</p></details>
+    <div class="answer-box" data-answer-hash="16266f55">
+      <label for="m8a-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8a-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Here is Master Liesel's tally of lead-came pieces needed for each section of the window. The Center section's piece count is smudged — but her notebook says it needs exactly as many pieces as the number of glass colors you just decoded in Stage 1.</p>
+    </div>
+    <table class="tally-table">
+      <tr><th>Section</th><th>Pieces</th><th>Length each (cm)</th></tr>
+      <tr><td>North</td><td>14</td><td>22</td></tr>
+      <tr><td>East</td><td>9</td><td>35</td></tr>
+      <tr><td>South</td><td>11</td><td>28</td></tr>
+      <tr><td>West</td><td>6</td><td>41</td></tr>
+      <tr><td>Center</td><td>? (from Stage 1)</td><td>60</td></tr>
+    </table>
+    <div class="puzzle">
+      <p>Multiply each row (pieces × length), then add all five totals together. What is the TOTAL length of lead-came (in cm) needed for the whole window?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Do one row at a time: pieces × length. Write each row's answer down before adding them all up.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>North, East, South, and West give you 308, 315, 308, and 246. Now work out the Center row using your Stage 1 answer, and add everything together.</p></details>
+    <div class="answer-box" data-answer-hash="a3c0f315">
+      <label for="m8b-answer">Your final answer (in cm):</label>
+      <div class="answer-row">
+        <input id="m8b-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The word "stained" in stained glass is a bit misleading — most of the color isn't painted on afterward. It's mixed right into the glass while it's still hot and liquid, so the color runs all the way through.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>The Oldest Glass in the World</h2>
+    <div class="puzzle">
+      <p>Master Liesel says every glazier should know their history. Search the internet to find the German cathedral famous for having the OLDEST surviving stained-glass windows in the world — five windows from the 11th century, showing Old Testament prophets like David and Moses.</p>
+      <p>Type just the city's name.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "oldest stained glass window in the world" — it's a cathedral in Bavaria, Germany.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The cathedral sits in a Bavarian city whose name starts with the same letter as "August."</p></details>
+    <div class="answer-box" data-answer-hash="9fb5df93">
+      <label for="m9-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>The Workshop Door</h2>
+    <div class="puzzle">
+      <p>Master Liesel's finished rose window has 5 full rings of petals around the center, each ring bigger than the last. Ring 1 (closest to the center) has 6 petals. Ring 2 has 12. Ring 3 has 18. Do you see the pattern? Each ring has 6 more petals than the ring before it.</p>
+      <p>Find the total number of petals across all 5 rings. Then add the number from Master Liesel's early note — the one about the guild's founders, that you were told to remember. Type that final number into the workshop's ceremonial door to complete Master Liesel's life's work.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>First find how many petals are in each of the 5 rings (6, 12, 18, 24, 30), then add them all up.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>That gives you 90 petals total. Now add the number of founding glaziers from Mission 3's notebook entry.</p></details>
+    <div class="answer-box" data-answer-hash="6933d7c2">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Master Liesel smiles and sets down her tools for the last time. "Wisdom isn't something you're given," she says. "It's something you piece together — clue by clue, year by year, like glass in a window." You are now a Journeyman Glazier of the Guild of Saint Elara, and Master Liesel's wisdom lives on in you.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Answer Key — Master Corvo's Trunk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #A33B6E;
+    --stamp-red: #A33B2D;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+  }
+  h1, .banner, .label-eyebrow { font-family: 'Special Elite', monospace; }
+  .banner {
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    border: 3px solid var(--stamp-red);
+    color: var(--stamp-red);
+    padding: 0.9rem 1rem;
+    transform: rotate(-1deg);
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2rem; }
+  .case-header h1 { font-size: clamp(1.5rem, 4.5vw, 2.1rem); margin: 0; }
+  .case-header .subtitle { color: rgba(0,0,0,0.55); font-size: 0.9rem; margin-top: 0.4rem; }
+  .answer-card {
+    max-width: 700px;
+    margin: 0 auto 1.6rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    padding: 1.5rem 1.6rem;
+  }
+  .answer-card .eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+  .answer-card h2 { margin: 0.2rem 0 0.9rem; font-size: 1.15rem; }
+  .answer {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+    background: var(--paper-dark);
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 3px;
+  }
+  .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(0,0,0,0.5); margin-top: 1rem; }
+  .answer-card p { margin: 0.35rem 0 0; }
+  .answer-card a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div class="banner">🔒 CONFIDENTIAL — PARENT / GUARDIAN ANSWER KEY — DO NOT SHOW TO THE CHILD</div>
+
+<div class="case-header">
+  <h1>Master Corvo's Trunk — Answer Key</h1>
+  <div class="subtitle">Keep this closed until your agent is stuck or finished. Matches mission.html in this same folder.</div>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 01 &middot; Easy</div>
+  <h2>Sorting the Puppets</h2>
+  <div class="answer">Answer: Left</div>
+  <div class="label">How to get there</div>
+  <p>Chain the two if-then rules: red string &rarr; Villain puppet (rule 1); Villain puppet &rarr; LEFT drawer (rule 2). Since today's puppet has red string, it is a Villain puppet, and therefore kept in the LEFT drawer.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Both rules are stated as absolute (if-then) facts with no exceptions, so following the chain produces exactly one forced conclusion.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained conditional-logic puzzle, no outside source needed.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 02 &middot; Easy</div>
+  <h2>The Faded Ticket Stub</h2>
+  <div class="answer">Answer: 1913</div>
+  <div class="label">How to get there</div>
+  <p>Searching "Salzburg Marionette Theatre founded" confirms Anton Aicher founded the theatre, which opened on February 27, 1913.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Multiple independent sources (the theatre's own history page, Wikipedia, and puppetry archives) consistently confirm 1913 as the founding/opening year.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search: Wikipedia's "Salzburg Marionette Theatre" and "Anton Aicher" entries, and the theatre's own official history page (marionetten.at).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Fact check &middot; first Salzburg show</div>
+  <h2>"Did you know?" fact after Mission 2</h2>
+  <p>Verified: the Salzburg Marionette Theatre's first production, on February 27, 1913, was Mozart's opera "Bastien and Bastienne." Confirmed via web search (Wikipedia's "Anton Aicher" entry).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 03 &middot; Medium</div>
+  <h2>The Dot-Pattern Note</h2>
+  <div class="answer">Answer: Five</div>
+  <div class="label">How to get there</div>
+  <p>Using the given key, decode each group: AABAB=F, ABAAA=I, BABAB=V, AABAA=E. That spells F-I-V-E.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>This puzzle uses a custom unique 5-letter-code table (provided in full for the letters needed) with no letter sharing a code, so each group decodes to exactly one letter.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained cipher puzzle (a Baconian-style cipher variant with a unique code per letter, to avoid the classic cipher's I/J and U/V ambiguity). This also plants the delayed-recall detail ("five" acts) needed again, without restating, in the Grand Finale.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 04 &middot; Medium</div>
+  <h2>The Heritage Certificate</h2>
+  <div class="answer">Answer: 2016</div>
+  <div class="label">How to get there</div>
+  <p>Searching "Puppetry Slovakia Czechia UNESCO Intangible Cultural Heritage" shows the tradition was inscribed on UNESCO's Representative List on December 1, 2016.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>UNESCO's own official listing and multiple independent cultural-heritage sources all confirm 2016 as the inscription year.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search: UNESCO's official Intangible Cultural Heritage listing page (ich.unesco.org) for "Puppetry in Slovakia and Czechia."</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 05 &middot; Medium</div>
+  <h2>The Stage Valance</h2>
+  <div class="answer">Answer: 1000 (cm²)</div>
+  <div class="label">How to get there</div>
+  <p>A parallelogram's area = base × perpendicular height = 50 × 20 = 1000. The 34 cm slanted side is not needed for the area calculation.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>The parallelogram area formula only requires the base and the perpendicular height; the slanted side is a distractor measurement that plays no role in the standard formula.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained geometry puzzle; recomputed directly from the stated dimensions.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 06 &middot; Hard</div>
+  <h2>Two Programme Notes</h2>
+  <div class="answer">Answer: Note 2</div>
+  <div class="label">How to get there</div>
+  <p>The backstage law states the anniversary is ONLY EVER the first show of a season. Note 1 claims the anniversary show was the FOURTH show, which directly violates that law. Note 2 claims it was the FIRST show, which is exactly consistent with the law.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Since the law is absolute ("never the fourth, never any other"), any note contradicting it must be false — that eliminates Note 1, leaving Note 2 as the only note consistent with the given rule.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained critical-evaluation/contradiction-spotting puzzle, solved purely by cross-referencing the two notes against the given backstage law.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 07 &middot; Hard</div>
+  <h2>The Candle Game</h2>
+  <div class="answer">Answer: 1</div>
+  <div class="label">How to get there</div>
+  <p>This is a classic subtraction game (take 1-3, last one wins). A position is "safe" for the player about to move only when it's NOT a multiple of 4 (any multiple of 4 forces a loss if the opponent plays perfectly, because whatever you take, they can always take enough to bring the round total to 4). 21 is 1 more than 20 (a multiple of 4), so taking exactly 1 candle leaves 20 — a losing position for the opponent. From then on, whatever the opponent takes (1, 2, or 3), the first player takes enough to make each round total exactly 4, guaranteeing they take the very last candle.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Verified by computing the full win/loss table for every pile size from 0 to 21: positions 4, 8, 12, 16, and 20 are the only losing positions for the player to move, and taking 1 from 21 is the unique first move that lands the opponent on one of them (taking 2 or 3 leaves 19 or 18, both winning positions for the opponent).</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained combinatorial game theory puzzle (a Nim-style subtraction game), verified by full computer-checked win/loss table for piles 0 through 21.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 08 &middot; Hard (Stage 1 of 2)</div>
+  <h2>The Box Office Ledger</h2>
+  <div class="answer">Stage 1 answer: 8</div>
+  <div class="label">How to get there</div>
+  <p>"Acht" is the Dutch word for the number eight.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Standard Dutch vocabulary: "acht" = 8, unambiguous.</p>
+  <div class="label">Source / fact used</div>
+  <p>Standard Dutch numeral vocabulary.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 08 &middot; Hard (Stage 2 of 2)</div>
+  <h2>The Box Office Ledger — final</h2>
+  <div class="answer">Stage 2 (final) answer: 1067 (€)</div>
+  <div class="label">How to get there</div>
+  <p>Saturday evening tickets = 42 + 8 (Stage 1's number) = 50. Row totals: Friday evening 42×6=252; Saturday matinee 55×5=275; Saturday evening 50×7=350; Sunday matinee 38×5=190. Total: 252+275+350+190 = 1067.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Every row's multiplication is fixed once the Saturday evening ticket count is known, and that count is only knowable after solving Stage 1 — making this a genuine two-stage dependency with one forced final total.</p>
+  <div class="label">Source / fact used</div>
+  <p>Self-contained arithmetic; recomputed independently to confirm 1067.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Fact check &middot; marionette control strings</div>
+  <h2>"Did you know?" fact after Mission 8</h2>
+  <p>Verified (kept deliberately general): marionettes are traditionally controlled by strings tied to a wooden crossbar. Note for parents: the exact number of strings varies widely by source (anywhere from about 4 to over 20 depending on the puppet's complexity), so this fact intentionally avoids citing one specific number, to stay accurate. Confirmed via web search (marionettes.cz control-device pages, World Encyclopedia of Puppetry Arts).</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Mission 09 &middot; Big Aha!</div>
+  <h2>The Opera on the Stub</h2>
+  <div class="answer">Answer: Mozart</div>
+  <div class="label">How to get there</div>
+  <p>Searching "Bastien and Bastienne composer" shows it was written by Wolfgang Amadeus Mozart, composed in 1768 when he was a child prodigy.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>"Bastien and Bastienne" is uniquely and consistently attributed to Mozart across every music-history source; no other composer is associated with this specific opera.</p>
+  <div class="label">Source / fact used</div>
+  <p>Verified via web search, cross-checked against the same sources confirming the Salzburg Marionette Theatre's 1913 opening production.</p>
+</div>
+
+<div class="answer-card">
+  <div class="eyebrow">Grand Finale</div>
+  <h2>The Last Latch</h2>
+  <div class="answer">Answer: 6</div>
+  <div class="label">How to get there</div>
+  <p>Add the number of acts from Mission 3 (five) to the winning first move from the candle game (one): 5 + 1 = 6.</p>
+  <div class="label">Why this is the only answer</div>
+  <p>Both inputs are uniquely fixed by earlier missions, leaving exactly one correct sum.</p>
+  <div class="label">Source / fact used</div>
+  <p>Combines the finale's own simple arithmetic with the delayed-recall detail planted in Mission 3 (non-adjacent, six missions earlier, never restated by mission number in the finale text).</p>
+  <div class="label">Reward revealed</div>
+  <p>Creativity — the closing text reveals an unfinished puppet with a note encouraging the child to finish it "however you like," tying the reward directly to creative freedom rather than following more rules.</p>
+</div>
+
+</body>
+</html>

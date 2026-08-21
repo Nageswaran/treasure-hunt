@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Hare and Hounds Trial — Internet Detective Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3ECDA;
+    --paper-dark: #E8DEC4;
+    --ink: #2B2A24;
+    --accent: #C9622B;
+    --accent-dark: #8F441D;
+    --easy: #4C7A52;
+    --medium: #B5792B;
+    --hard: #A33B2D;
+    --finale: #5B3A8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(0,0,0,0.035), transparent 55%),
+      radial-gradient(circle at 85% 92%, rgba(0,0,0,0.035), transparent 55%);
+    font-family: 'Atkinson Hyperlegible', sans-serif;
+    color: var(--ink);
+    margin: 0;
+    padding: 2.5rem 1rem 5rem;
+    line-height: 1.55;
+    font-size: 1.05rem;
+  }
+  h1, h2, .stamp, .tab, .eyebrow { font-family: 'Special Elite', monospace; }
+  .case-header { text-align: center; max-width: 700px; margin: 0 auto 2.2rem; }
+  .eyebrow { letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.75rem; color: var(--accent-dark); }
+  .case-header h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); margin: 0.5rem 0 0.8rem; }
+  .case-header .subtitle { color: rgba(0,0,0,0.6); font-size: 0.95rem; }
+  .intro {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.4rem;
+    border-radius: 2px;
+    max-width: 660px;
+    margin: 0 auto 2.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .mission {
+    max-width: 700px;
+    margin: 0 auto 2.4rem;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 3px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .tab {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .mission-body { padding: 2.1rem 1.4rem 1.5rem; }
+  .stamp {
+    display: inline-block;
+    border: 2px solid currentColor;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    transform: rotate(-3deg);
+    margin-bottom: 0.7rem;
+  }
+  .stamp.easy { color: var(--easy); }
+  .stamp.medium { color: var(--medium); }
+  .stamp.hard { color: var(--hard); }
+  .stamp.finale { color: var(--finale); }
+  .mission h2 { margin: 0 0 0.7rem; font-size: 1.25rem; }
+  .puzzle { margin: 0.7rem 0; }
+  .puzzle p { margin: 0.5rem 0; }
+  .clue-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.9rem auto;
+    background: #FFFDF7;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 3px;
+  }
+  .clue-diagram text { font-family: 'Atkinson Hyperlegible', sans-serif; }
+  .clue-caption { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin-top: -0.5rem; margin-bottom: 0.9rem; }
+  .morse-strip {
+    font-family: 'Special Elite', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    text-align: center;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.7rem;
+    border-radius: 3px;
+    margin: 0.8rem 0;
+  }
+  .morse-key {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin: 0.8rem 0;
+  }
+  .morse-key th, .morse-key td {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.35rem 0.5rem;
+    text-align: center;
+  }
+  .morse-key th { background: var(--paper-dark); }
+  .tally-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 0.8rem 0;
+  }
+  .tally-table th, .tally-table td {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+  }
+  .tally-table th { background: var(--paper-dark); }
+  .stage-label { font-size: 0.85rem; color: rgba(0,0,0,0.55); margin: 1.3rem 0 0.6rem; }
+  details.hint {
+    margin-top: 0.7rem;
+    background: var(--paper-dark);
+    border-radius: 3px;
+    padding: 0.55rem 0.85rem;
+  }
+  details.hint summary { cursor: pointer; font-weight: 700; color: var(--accent-dark); }
+  details.hint summary::marker { color: var(--accent-dark); }
+  details.hint p { margin: 0.5rem 0 0; }
+  .answer-box { margin-top: 1.1rem; }
+  .answer-box label { font-size: 0.85rem; color: rgba(0,0,0,0.6); display: block; margin-bottom: 0.3rem; }
+  .answer-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .answer-box input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .check-btn {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border: none;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-result { font-size: 0.9rem; margin: 0.5rem 0 0; min-height: 1.2em; font-weight: 700; }
+  .check-result.correct { color: var(--easy); }
+  .check-result.incorrect { color: var(--hard); }
+  .fact {
+    max-width: 660px;
+    margin: 0 auto 2.2rem;
+    font-style: italic;
+    color: var(--accent-dark);
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .notebook {
+    background: #FBF3D9;
+    border: 1px dashed var(--accent-dark);
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+  }
+  .finale { border: 2px solid var(--finale); }
+  .finale .tab { background: var(--finale); }
+  .finale h2 { color: var(--finale); }
+  .reward-reveal {
+    max-width: 660px;
+    margin: 2.5rem auto 0;
+    text-align: center;
+    padding: 1.6rem 1.2rem;
+    border: 2px dashed var(--finale);
+    border-radius: 4px;
+    background: var(--paper-dark);
+  }
+</style>
+</head>
+<body>
+
+<div class="case-header">
+  <div class="eyebrow">Internet Detective Academy &middot; Case File</div>
+  <h1>The Hare and Hounds Trial</h1>
+  <div class="subtitle">Agent briefing — read carefully before you begin</div>
+  <div class="subtitle">⏱ Estimated case time: 70-90 minutes</div>
+</div>
+
+<div class="intro">
+  Today is your first day on the Skyline Chase Crew. In an hour, the town's balloon festival kicks off its biggest event — the Hare and Hounds race — and Captain Rosa Ibarra needs a certified navigator riding in her chase van. Before she'll hand you the radio, she has one more thing for you to do: pass her navigator's trial. Finish it, and you'll help chase down the winning balloon for real.
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 01</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Packing the Van</h2>
+    <div class="puzzle">
+      <p>Captain Rosa hands you the chase van's kit bag to check before launch. Inside: a compass, a walkie-talkie, a folding step-ladder, and a paintbrush.</p>
+      <p>Which one of these does NOT belong in a chase crew's kit — the one item that would never help you find or catch up with a balloon?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Three of these help you navigate, communicate, or see over a fence. One of them is for painting a fence, not chasing a balloon.</p></details>
+    <div class="answer-box" data-answer-hash="b9f6a871">
+      <label for="m1-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m1-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 02</div>
+  <div class="mission-body">
+    <span class="stamp easy">EASY</span>
+    <h2>Weather Words</h2>
+    <div class="puzzle">
+      <p>Captain Rosa quizzes every new navigator on Dutch weather words, since some of the visiting pilots only speak Dutch. Here are four Dutch words: <strong>wind, lucht, storm, appel</strong>.</p>
+      <p>Three of them are about weather or air. One of them is not — it means a fruit you'd pack for lunch, not something you'd find in the sky. Which word doesn't belong?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>"Wind" means wind, "lucht" means air, "storm" means storm. The odd one out is a round, crunchy fruit.</p></details>
+    <div class="answer-box" data-answer-hash="72b9059b">
+      <label for="m2-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m2-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The very first hot air balloon passengers ever were a rooster, a sheep, and a duck — sent up by the Montgolfier brothers at Versailles on September 19, 1783, before any human dared to fly.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 03</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Radio Static</h2>
+    <div class="puzzle">
+      <p>Captain Rosa's walkie-talkie crackles and drops to clicks — Morse code. Here's her cheat-sheet for the letters you'll need:</p>
+    </div>
+    <table class="morse-key">
+      <tr><th>Letter</th><th>E</th><th>N</th><th>S</th><th>V</th></tr>
+      <tr><th>Morse</th><td>.</td><td>-.</td><td>...</td><td>...-</td></tr>
+    </table>
+    <div class="morse-strip">... &nbsp; . &nbsp; ...&#8211; &nbsp; . &nbsp; &#8211;.</div>
+    <div class="puzzle">
+      <p>Decode the message. It's the number of Captain Rosa's assigned chase-radio channel — worth remembering. Type the number as a word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Each group of dots and dashes, separated by a gap, is one letter. Match each group to the key.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>The first letter is three dots: S. What comes after S-E-V...?</p></details>
+    <div class="answer-box" data-answer-hash="3583acfe">
+      <label for="m3-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m3-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+    <div class="notebook">📓 Agent's Notebook: Chase channel <strong>seven</strong>. Worth remembering...</div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 04</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>The First Sky Sailors</h2>
+    <div class="puzzle">
+      <p>Captain Rosa says every navigator should know how ballooning began. Search the internet to find the exact year the first-ever manned hot air balloon flight took place — with real human pilots aboard, not just farm animals. (Two brothers built the balloon; the pilots were Pilâtre de Rozier and the Marquis d'Arlandes.)</p>
+      <p>Type the year.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try searching "first manned hot air balloon flight" — it happened a few months after the famous animal flight at Versailles.</p></details>
+    <div class="answer-box" data-answer-hash="afd6cc48">
+      <label for="m4-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m4-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? That first human flight, on November 21, 1783, lasted about 26 minutes and carried its pilots over the rooftops of Paris.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 05</div>
+  <div class="mission-body">
+    <span class="stamp medium">MEDIUM</span>
+    <h2>Roping Off the Landing Zone</h2>
+    <div class="puzzle">
+      <p>The ground crew ropes off a trapezoid-shaped safe zone for landing balloons. Here are the measurements:</p>
+    </div>
+    <svg class="clue-diagram" viewBox="0 0 260 210" width="260" height="210" role="img" aria-label="A trapezoid landing zone with a 40 meter bottom side, a 26 meter top side, and an 18 meter height between them">
+      <polygon points="50,160 210,160 182,88 78,88" fill="#F3ECDA" stroke="#2B2A24" stroke-width="2"/>
+      <line x1="40" y1="160" x2="40" y2="88" stroke="#2B2A24" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="35" y1="160" x2="45" y2="160" stroke="#2B2A24" stroke-width="1"/>
+      <line x1="35" y1="88" x2="45" y2="88" stroke="#2B2A24" stroke-width="1"/>
+      <text x="130" y="178" font-size="12" text-anchor="middle">40 m</text>
+      <text x="130" y="80" font-size="12" text-anchor="middle">26 m</text>
+      <text x="20" y="128" font-size="12" text-anchor="middle" transform="rotate(-90 20 128)">18 m (height)</text>
+    </svg>
+    <div class="clue-caption">The two roped sides (top and bottom) are parallel to each other. Find the total area of the landing zone in square meters.</div>
+    <details class="hint"><summary>Hint 1</summary><p>For a trapezoid, add the two parallel sides together, divide by 2, then multiply by the height.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>(40 + 26) ÷ 2 = 33. Now multiply 33 by the height.</p></details>
+    <div class="answer-box" data-answer-hash="c5af5b6d">
+      <label for="m5-answer">Your answer (in m²):</label>
+      <div class="answer-row">
+        <input id="m5-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 06</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Three Spotters, One Balloon</h2>
+    <div class="puzzle">
+      <p>Three ground spotters — Dana, Theo, and Mika — radio in about where a balloon landed. It's one of three fields: Miller's Pasture, Oak Ridge Field, or Sunflower Meadow.</p>
+      <p>You already know Miller's Pasture had cows grazing in it all morning — the balloon couldn't have landed there.</p>
+      <ul>
+        <li>Dana says: "It landed in Oak Ridge Field."</li>
+        <li>Theo says: "It landed in Sunflower Meadow."</li>
+        <li>Mika says: "Dana is lying."</li>
+      </ul>
+      <p>Exactly ONE of the three spotters always lies — the other two always tell the truth. Which field did the balloon actually land in?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Try assuming Dana is telling the truth (Oak Ridge). Check whether that makes exactly one liar among the three. Then try assuming she's lying, and check again.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>If Dana were truthful (Oak Ridge), then Theo AND Mika would both have to be wrong — that's two liars, not one. Only one assumption gives exactly one liar.</p></details>
+    <div class="answer-box" data-answer-hash="d299ed7">
+      <label for="m6-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m6-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 07</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>The Fuel Log</h2>
+    <div class="puzzle">
+      <p>Grab a pencil for this one. Here is the chase van's fuel log for the whole day:</p>
+    </div>
+    <table class="tally-table">
+      <tr><th>Leg</th><th>Hours driven</th><th>Liters per hour</th></tr>
+      <tr><td>Morning drive to field</td><td>2</td><td>7</td></tr>
+      <tr><td>Chase (fast)</td><td>3</td><td>11</td></tr>
+      <tr><td>Chase (slow, traffic)</td><td>1</td><td>9</td></tr>
+      <tr><td>Return trip</td><td>4</td><td>6</td></tr>
+    </table>
+    <div class="puzzle">
+      <p>Multiply each row (hours × liters per hour), then add all four totals together. How many liters of fuel did the van use all day?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Multiply each row first, and write down all four answers before adding.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>You should get 14, 33, 9, and 24 — add those four numbers together.</p></details>
+    <div class="answer-box" data-answer-hash="9201aa55">
+      <label for="m7-answer">Your answer (in liters):</label>
+      <div class="answer-row">
+        <input id="m7-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission">
+  <div class="tab">MISSION 08</div>
+  <div class="mission-body">
+    <span class="stamp hard">HARD</span>
+    <h2>Roadrunner and Coyote</h2>
+    <p class="stage-label">Stage 1 of 2</p>
+    <div class="puzzle">
+      <p>The real Hare and Hounds race (sometimes called "Roadrunner and Coyotes") started at a famous balloon festival in the United States. In the race, one balloon launches first and lands to lay out a target. The other balloons then launch and try to drop a marker as close to that target as possible.</p>
+      <p>Search the internet to find: which balloon in the race launches FIRST and lands to lay the target — the "Hare" or the "Hounds"? Type just that one word.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Search "Hare and Hounds balloon race rules" — think about which animal usually runs first in a chase.</p></details>
+    <div class="answer-box" data-answer-hash="e5c35d6f">
+      <label for="m8a-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="m8a-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+
+    <p class="stage-label">Stage 2 of 2</p>
+    <div class="puzzle">
+      <p>Count the letters in the word you just found. That's how many liters of fuel the van uses per hour when it's chasing at full speed today. If the van chases for 3.5 hours at that rate, how many liters does it use?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Count the letters in your Stage 1 answer first — that number is the liters-per-hour rate.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Multiply that number by 3.5.</p></details>
+    <div class="answer-box" data-answer-hash="17eb23f8">
+      <label for="m8b-answer">Your final answer (in liters):</label>
+      <div class="answer-row">
+        <input id="m8b-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<p class="fact">💡 Did you know? The very first event ever held at that famous balloon festival, back in 1972, was a Hare and Hounds race — the exact same kind of race you just trained for.</p>
+
+<div class="mission">
+  <div class="tab">MISSION 09</div>
+  <div class="mission-body">
+    <span class="stamp hard">BIG AHA!</span>
+    <h2>Three Legs of the Drive</h2>
+    <div class="puzzle">
+      <p>At the end of the trial run, the van's trip odometer reads 132 km for the whole day. Captain Rosa explains: "We drove the same distance to reach the launch field as we then drove chasing the balloon. Then, because of road closures, we drove all the way back the long way round — double the distance we chased."</p>
+      <p>Those three legs (drive to the field, chase, and the long way home) add up to the total of 132 km. How far was the drive TO the launch field?</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Let the drive-to-the-field distance be x. The chase leg is also x. The way home is double the chase leg, so 2x. Add all three together.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>x + x + 2x = 132, which means 4x = 132. Divide to find x.</p></details>
+    <div class="answer-box" data-answer-hash="86f04fe3">
+      <label for="m9-answer">Your answer (in km):</label>
+      <div class="answer-row">
+        <input id="m9-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="mission finale">
+  <div class="tab">GRAND FINALE</div>
+  <div class="mission-body">
+    <span class="stamp finale">FINALE</span>
+    <h2>Calling It In</h2>
+    <div class="puzzle">
+      <p>The balloon has landed and the scoreboard is waiting. Take the launch-field distance you worked out earlier, and double it — because the winning marker-drop team has to drive back out to it and then return, there and back. Then add the chase team's radio channel number — the one you were told to remember on your very first day.</p>
+      <p>Radio in that final number to win the Founders' Cup.</p>
+    </div>
+    <details class="hint"><summary>Hint 1</summary><p>Take your Mission 9 answer and double it first.</p></details>
+    <details class="hint"><summary>Hint 2</summary><p>Now add the channel number from the very first radio message you decoded.</p></details>
+    <div class="answer-box" data-answer-hash="8ee5cf1f">
+      <label for="finale-answer">Your answer:</label>
+      <div class="answer-row">
+        <input id="finale-answer" type="text" placeholder="Type what you discovered...">
+        <button type="button" class="check-btn" onclick="checkAnswer(this)">Check</button>
+      </div>
+      <p class="check-result" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
+<div class="reward-reveal">
+  <div class="eyebrow">Case closed?</div>
+  <p>Captain Rosa hands you a chase-crew patch, still warm from her pocket. "Not bad for your first morning," she says. "Chasing a balloon means going wherever the wind takes it, trusting your own two feet and a good map — that takes courage." You've earned your place riding shotgun in the chase van, for real this time.</p>
+</div>
+
+
+<script>
+  // Deterministic, dependency-free string hash (FNV-1a, 32-bit).
+  // Not cryptography — just enough to give instant right/wrong feedback
+  // in this static file without ever storing the plaintext answer.
+  function hashAnswer(str) {
+    const normalized = String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+    let hash = 0x811c9dc5;
+    for (let i = 0; i < normalized.length; i++) {
+      hash ^= normalized.charCodeAt(i);
+      hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16);
+  }
+
+  function checkAnswer(button) {
+    const box = button.closest('.answer-box');
+    const input = box.querySelector('input');
+    const result = box.querySelector('.check-result');
+    const correct = hashAnswer(input.value) === box.dataset.answerHash;
+    result.textContent = correct ? '✅ Correct! Great detective work.' : '❌ Not quite — try again, or open a hint.';
+    result.className = 'check-result ' + (correct ? 'correct' : 'incorrect');
+  }
+</script>
+
+</body>
+</html>
